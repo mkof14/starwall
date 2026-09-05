@@ -2,27 +2,27 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        orange: "var(--orange)",
-        navy: "var(--navy)",
-        "navy-text": "var(--navy-text)",
-        sand: "var(--sand)",
-        grey: "var(--grey)",
-        ok: "var(--ok)",
-        attn: "var(--attn)",
-        crit: "var(--crit)",
+        orange: "#F15A00",
+        navy: "#0F1922",
+        navyText: "#1B2A3A",
+        sand: "#E9E4DA",
+        grey: "#6B7280",
+        ok: "#33D3A6",
+        attn: "#E8B23D",
+        crit: "#FF4757",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        serif: ["var(--font-cormorant)", "Georgia", "serif"],
-        bridge: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        heading: ["var(--font-cormorant)", "Georgia", "serif"],
+        ui: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
+        body: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
     },
   },

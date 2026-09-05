@@ -1,15 +1,12 @@
 # StarWall by AGRON
 
-Marketing and product site for StarWall — intelligence, integration, and decision-support for yacht, marina, port, and private-island security.
-
-This is a dedicated StarWall site (not a section of agron1.com). The first slice is the project scaffold: App Router routes, shared chrome, design tokens, and holding copy until the source documents are attached.
+Scaffold for the StarWall marketing and product site — a maritime security intelligence product.
 
 ## Stack
 
-- Next.js 14 (App Router) and TypeScript
-- Tailwind CSS, themed from the tokens in `docs/SPEC.md` §4
-- Framer Motion (one motion moment per page)
-- `next/font` — Cormorant Garamond, Inter, Space Grotesk, JetBrains Mono
+- Next.js 14, TypeScript, App Router, `src/`
+- Tailwind CSS with the StarWall design tokens
+- Google fonts via `next/font`: Cormorant Garamond (`font-heading`), Inter (`font-body`), Space Grotesk (`font-ui`), JetBrains Mono (`font-mono`)
 
 ## Run locally
 
@@ -18,34 +15,22 @@ npm install
 npm run dev
 ```
 
-The dev server binds to `http://127.0.0.1:43180`.
-
-```bash
-npm run lint    # Next lint + banned-term copy check
-npm run build
-```
+Dev server: `http://127.0.0.1:43180`
 
 ## Routes
 
-| Path | Page |
+Placeholder pages only (an `<h1>` each). Content comes in later tasks.
+
+| Path | Heading |
 |---|---|
-| `/` | Overview |
-| `/how-it-works` | Capabilities, architecture, scenario |
-| `/interface` | AGRON Bridge demo (placeholder until the HTML prototype is ported) |
-| `/levels` | Service levels — Available now / In development |
-| `/technology` | Integrations and OEM tiers |
+| `/` | StarWall — Overview |
+| `/how-it-works` | How it works |
+| `/interface` | Interface |
+| `/levels` | Levels |
+| `/technology` | Technology |
 | `/faq` | FAQ |
-| `/contact` | Briefing request form |
+| `/contact` | Contact |
 
-## Still needed
+## Wordmark
 
-- `StarWall_Logo_Kit_v0.1.zip` — replace the typographic wordmark and favicon
-- Source copy: Website Content Spec, Software Intelligence, MVP Scope, Integration Catalog, Services & Capabilities, FAQ draft
-- `agron_bridge.html` — native Bridge port
-- Email provider for `/api/contact` (Resend, Formspree, or an existing AGRON channel). The form currently accepts submissions locally and does not send mail.
-
-## Conventions
-
-- “Star” and “Wall” are always two colors. Full name “StarWall by AGRON” only in a page hero; “StarWall” everywhere else.
-- Do not use Node, Command (as a feature name), Dominate, or Autonomous. `npm run lint:copy` enforces this in `app/` and `components/`.
-- No testimonials, partner logos, or usage statistics until they are real.
+When “StarWall” is a heading or logo-style text, render **Star** and **Wall** in two colors — never one flat color. Star is navy or white depending on the background; Wall is always the orange accent (`#F15A00`).

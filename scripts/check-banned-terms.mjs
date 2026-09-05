@@ -2,7 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
-const SCAN_DIRS = ["app", "components"];
+const SCAN_DIRS = ["src"];
 const EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".md"]);
 
 const BANNED = [
@@ -52,4 +52,4 @@ if (hits.length) {
   process.exit(1);
 }
 
-console.log("Copy lint passed: no banned terms in app/ or components/.");
+console.log("Copy lint passed: no banned terms in src/.");
