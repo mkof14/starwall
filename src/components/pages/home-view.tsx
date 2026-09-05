@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { HeroRadar } from "@/components/hero-radar";
 import { usePreferences } from "@/lib/i18n/context";
@@ -43,7 +44,7 @@ export function HomeView() {
               href="/starwall-overview.pdf"
               className="inline-flex items-center justify-center gap-2.5 border border-ink px-4 py-2 text-sm font-medium text-ink hover:border-orange hover:text-orange"
             >
-              <img
+              <Image
                 src="/overview-leaflet-thumb.jpg"
                 alt=""
                 width={24}
