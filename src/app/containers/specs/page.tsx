@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContainersBackLink } from "@/components/containers-back-link";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -20,6 +21,8 @@ export default function ContainersSpecsPage() {
   return (
     <div className="bg-white text-navyText">
       <div className="mx-auto max-w-3xl space-y-10 px-4 py-14 md:px-6 lg:py-20">
+        <ContainersBackLink />
+
         <header>
           <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
             AGRON Containers

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContainersBackLink } from "@/components/containers-back-link";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -25,6 +26,8 @@ export default function ContainersCountermeasuresPage() {
   return (
     <div className="bg-white text-navyText">
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-14 md:px-6 lg:py-20">
+        <ContainersBackLink />
+
         <aside className="border-l-4 border-orange bg-[#FFF1E8] px-4 py-4 text-sm leading-relaxed text-navyText">
           Countermeasure equipment is available on select container tiers.
           Enabling or operating it always requires jurisdiction-specific

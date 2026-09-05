@@ -40,6 +40,12 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/levels` | Levels |
 | `/technology` | Technology |
 | `/faq` | FAQ |
+| `/containers` | AGRON Containers |
+| `/containers/detection` | Detection Suite |
+| `/containers/countermeasures` | Countermeasures |
+| `/containers/tiers` | Container Tiers |
+| `/containers/specs` | Specifications |
+| `/containers/deployment` | Deployment |
 | `/contact` | Contact |
 
 ## Wordmark

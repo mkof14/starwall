@@ -30,7 +30,7 @@ export const pageMeta = {
       "Answers on captain responsibility, connectivity, data access, specialized equipment, and existing systems.",
   },
   containers: {
-    title: "AGRON Containers — Deployable Security Hardware",
+    title: "Containers — AGRON",
     description:
       "A self-contained detection, analysis, and response platform — deployable by land, sea, or fixed site. Detection runs on StarWall.",
   },
@@ -40,7 +40,7 @@ export const pageMeta = {
       "AESA radar, acoustic radar, spectral analyzer, multi-spectrum cameras, and acoustic sonar on the AGRON container.",
   },
   containersSpecs: {
-    title: "Container Specifications — AGRON Containers",
+    title: "Specifications — AGRON Containers",
     description:
       "ISO dimensions, weight, power, operating temperature, and autonomy for the AGRON security container.",
   },
@@ -50,9 +50,14 @@ export const pageMeta = {
       "Authorized countermeasure options on select container tiers. Activation is always a human decision.",
   },
   containersTiers: {
-    title: "Container Tiers — AGRON Containers",
+    title: "Tiers — AGRON Containers",
     description:
       "Basic, Business, Premium, and Exclusive container builds — Exclusive is subject to export control and end-user certification.",
+  },
+  containersDeployment: {
+    title: "Deployment — AGRON Containers",
+    description:
+      "Maritime, port, infrastructure, estate, and special-event deployment for AGRON security containers.",
   },
   contact: {
     title: "Contact — StarWall by AGRON",
