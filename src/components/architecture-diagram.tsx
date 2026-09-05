@@ -1,16 +1,16 @@
 const stages = [
-  { name: "Data Sources", label: "radar, AIS, cameras, sensors" },
-  { name: "Integration", label: "adapters, protocols, APIs" },
-  { name: "Unified Data", label: "one shared data model" },
-  { name: "Intelligence / AI", label: "correlation, learning" },
-  { name: "Risk & Scenario", label: "explainable risk levels" },
-  { name: "Decision", label: "recommended next step" },
-  { name: "Support Center", label: "human specialist, live" },
+  { name: "Data Sources", lines: ["radar, AIS,", "cameras, sensors"] },
+  { name: "Integration", lines: ["adapters, protocols, APIs"] },
+  { name: "Unified Data", lines: ["one shared data model"] },
+  { name: "Intelligence / AI", lines: ["correlation, learning"] },
+  { name: "Risk & Scenario", lines: ["explainable risk levels"] },
+  { name: "Decision", lines: ["recommended next step"] },
+  { name: "Support Center", lines: ["human specialist, live"] },
 ];
 
 const BOX_W = 156;
-const BOX_H = 92;
-const GAP = 40;
+const BOX_H = 100;
+const GAP = 36;
 const PAD = 8;
 
 export function ArchitectureDiagram() {
@@ -20,12 +20,11 @@ export function ArchitectureDiagram() {
   return (
     <div className="overflow-x-auto">
       <svg
-        width={width}
-        height={height}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label="StarWall architecture flow: Data Sources, Integration, Unified Data, Intelligence / AI, Risk and Scenario, Decision, Support Center"
-        className="max-w-none"
+        className="h-auto w-full min-w-[880px]"
+        preserveAspectRatio="xMinYMid meet"
       >
         <title>StarWall architecture flow</title>
         {stages.map((stage, index) => {
@@ -35,33 +34,35 @@ export function ArchitectureDiagram() {
 
           return (
             <g key={stage.name}>
-              <rect
-                x={x}
-                y={y}
-                width={BOX_W}
-                height={BOX_H}
-                fill="#0F1922"
-              />
+              <rect x={x} y={y} width={BOX_W} height={BOX_H} fill="#0F1922" />
               <text
                 x={x + BOX_W / 2}
-                y={y + 36}
+                y={y + 32}
                 textAnchor="middle"
                 fill="#ffffff"
                 fontFamily="var(--font-cormorant), Georgia, serif"
-                fontSize="16"
+                fontSize="15"
                 fontWeight="700"
               >
                 {stage.name}
               </text>
               <text
                 x={x + BOX_W / 2}
-                y={y + 62}
+                y={y + 56}
                 textAnchor="middle"
                 fill="#6B7280"
                 fontFamily="var(--font-inter), system-ui, sans-serif"
                 fontSize="11"
               >
-                {stage.label}
+                {stage.lines.map((line, lineIndex) => (
+                  <tspan
+                    key={line}
+                    x={x + BOX_W / 2}
+                    dy={lineIndex === 0 ? 0 : 14}
+                  >
+                    {line}
+                  </tspan>
+                ))}
               </text>
               {index < stages.length - 1 ? (
                 <g>
