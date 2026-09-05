@@ -19,7 +19,7 @@ Dev server: `http://127.0.0.1:43180`
 
 ## Routes
 
-Placeholder pages only (an `<h1>` each). Content comes in later tasks.
+Shared sticky header and footer wrap every route via the root layout. Page bodies are still placeholder `<h1>`s until later content tasks.
 
 | Path | Heading |
 |---|---|

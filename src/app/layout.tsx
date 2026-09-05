@@ -6,6 +6,8 @@ import {
   JetBrains_Mono,
   Space_Grotesk,
 } from "next/font/google";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -52,7 +54,11 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${jetbrains.variable} ${inter.variable}`}
     >
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
