@@ -22,7 +22,7 @@ export function ScenarioStill({ file }: ScenarioStillProps) {
 
   if (!src) {
     return (
-      <div className="flex aspect-video w-full items-center justify-center border border-bridge-line bg-[#1A222A] font-mono text-sm text-bridge-dim">
+      <div className="flex aspect-video w-full items-center justify-center border border-bridge-line bg-bridge-panel font-mono text-sm text-bridge-dim">
         {file}
       </div>
     );

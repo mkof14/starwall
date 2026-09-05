@@ -3,13 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --page: #ffffff;
-  --panel: #f4f1ea;
+  --page: #e4ebf2;
+  --panel: #eef3f8;
   --ink: #1b2a3a;
-  --muted: #6b7280;
-  --stroke: #e5e7eb;
-  --header: #ffffff;
+  --muted: #5b6976;
+  --stroke: #c5d0db;
+  --header: #e4ebf2;
   --callout: #fff1e8;
+  --bridge-bg: #d9e4ee;
+  --bridge-panel: #e7eef5;
+  --bridge-line: #b4c2d0;
+  --bridge-text: #1b2a3a;
+  --bridge-dim: #5a6a78;
 }
 
 .dark {
@@ -20,6 +25,11 @@
   --stroke: #1c2830;
   --header: #0a0f14;
   --callout: #2a1a10;
+  --bridge-bg: #0a0f14;
+  --bridge-panel: #111820;
+  --bridge-line: #1c2830;
+  --bridge-text: #e7ecef;
+  --bridge-dim: #7c8894;
 }
 
 body {

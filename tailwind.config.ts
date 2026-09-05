@@ -26,11 +26,11 @@ const config: Config = {
         attn: "#E8B23D",
         crit: "#FF4757",
         bridge: {
-          bg: "#0A0F14",
-          panel: "#111820",
-          line: "#1C2830",
-          text: "#E7ECEF",
-          dim: "#7C8894",
+          bg: "var(--bridge-bg)",
+          panel: "var(--bridge-panel)",
+          line: "var(--bridge-line)",
+          text: "var(--bridge-text)",
+          dim: "var(--bridge-dim)",
         },
       },
       fontFamily: {
