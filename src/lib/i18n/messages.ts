@@ -171,13 +171,18 @@ export type Messages = {
     title: string;
     lead: string;
     name: string;
+    organization: string;
+    optional: string;
     email: string;
+    assetType: string;
+    assetSelect: string;
+    assets: [string, string, string, string, string, string, string];
     message: string;
+    messagePlaceholder: string;
     send: string;
-    sending: string;
     success: string;
-    error: string;
-    unable: string;
+    required: string;
+    invalidEmail: string;
   };
   containers: {
     kicker: string;
@@ -559,16 +564,29 @@ export const en: Messages = {
   },
   contact: {
     kicker: "Contact",
-    title: "Request a briefing",
-    lead: "For owners, captains, brokers, and teams evaluating a pilot. An outbound email service is not connected yet — submissions are received locally until AGRON confirms the channel.",
+    title: "Let's talk",
+    lead: "Whether it's a yacht, a marina, an island, or a special case — tell us about your situation and we'll get back to you.",
     name: "Name",
+    organization: "Organization",
+    optional: "optional",
     email: "Email",
+    assetType: "Asset type",
+    assetSelect: "Select…",
+    assets: [
+      "Yacht / Superyacht",
+      "Marina",
+      "Port",
+      "Private Island",
+      "Special Object",
+      "Family Office / Multi-Asset",
+      "Other",
+    ],
     message: "Message",
+    messagePlaceholder: "Tell us about your object and what you're looking for",
     send: "Send",
-    sending: "Sending…",
-    success: "Received locally. An outbound email service is not connected yet.",
-    error: "Something went wrong.",
-    unable: "Unable to send.",
+    success: "Thanks — we'll be in touch shortly.",
+    required: "This field is required.",
+    invalidEmail: "Enter a valid email address.",
   },
   containers: {
     kicker: "AGRON · DEPLOYABLE SECURITY CONTAINER",
