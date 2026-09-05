@@ -233,14 +233,7 @@ export function BridgeConsole() {
             </HudPanel>
 
             <HudPanel title="RECOMMENDED ACTION">
-              <span
-                className={cn(
-                  "inline-block border px-2 py-0.5 font-mono text-[10px] tracking-wider",
-                  elevated
-                    ? "border-orange text-orange"
-                    : "border-ok text-ok",
-                )}
-              >
+              <span className="inline-block border border-orange px-2 py-0.5 font-mono text-[10px] tracking-wider text-orange">
                 {riskLevel}
               </span>
               <p className="mt-3 text-sm leading-relaxed text-bridge-dim">

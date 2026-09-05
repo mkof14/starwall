@@ -1,9 +1,6 @@
-import type { Metadata } from "next";
-import { BridgeConsole } from "@/components/bridge/bridge-console";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Interface",
-};
+import { BridgeConsole } from "@/components/bridge/bridge-console";
 
 export default function InterfacePage() {
   return <BridgeConsole />;
