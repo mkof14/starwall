@@ -34,4 +34,5 @@ body {
 .bridge-sweep {
   transform-origin: 340px 214px;
   animation: spin 7s linear infinite;
+  pointer-events: none;
 }

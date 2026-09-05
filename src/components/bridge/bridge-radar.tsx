@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type MouseEvent } from "react";
+import { createPortal } from "react-dom";
 
 type Tooltip = {
   x: number;
@@ -141,7 +142,7 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           strokeWidth="1"
           strokeDasharray="2 4"
         />
-        <g className="bridge-sweep">
+        <g className="bridge-sweep" style={{ pointerEvents: "none" }}>
           <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
         </g>
         <defs>
@@ -166,6 +167,7 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           onMouseMove={onContactMove}
           onMouseLeave={() => setTooltip(null)}
         >
+          <circle r="16" fill="transparent" />
           <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
           <circle r="3.5" fill="#33D3A6" />
           <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
@@ -182,6 +184,7 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           onMouseMove={onContactMove}
           onMouseLeave={() => setTooltip(null)}
         >
+          <circle r="16" fill="transparent" />
           <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
           <circle r="3.5" fill="#33D3A6" />
           <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
@@ -198,6 +201,7 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           onMouseMove={onContactMove}
           onMouseLeave={() => setTooltip(null)}
         >
+          <circle r="16" fill="transparent" />
           <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
           <circle r="3.5" fill="#33D3A6" />
           <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
@@ -215,6 +219,7 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
             onMouseMove={onContactMove}
             onMouseLeave={() => setTooltip(null)}
           >
+            <circle r="16" fill="transparent" />
             <circle r="5" fill="none" stroke="#F15A00" strokeWidth="1.4" />
             <circle r="3.5" fill="#F15A00" />
             <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#F15A00">
@@ -223,16 +228,19 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           </g>
         ) : null}
       </svg>
-      {tooltip ? (
-        <div
-          className="pointer-events-none fixed z-50 border border-bridge-line bg-bridge-panel px-2 py-1.5 font-mono text-[10px] text-bridge-text shadow-lg"
-          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
-        >
-          <p className="text-bridge-text">{tooltip.name}</p>
-          <p className="text-bridge-dim">{tooltip.type}</p>
-          <p className="text-bridge-dim">{tooltip.dist}</p>
-        </div>
-      ) : null}
+      {tooltip && typeof document !== "undefined"
+        ? createPortal(
+            <div
+              className="pointer-events-none fixed z-[80] border border-bridge-line bg-bridge-panel px-2 py-1.5 font-mono text-[10px] text-bridge-text shadow-lg"
+              style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+            >
+              <p className="text-bridge-text">{tooltip.name}</p>
+              <p className="text-bridge-dim">{tooltip.type}</p>
+              <p className="text-bridge-dim">{tooltip.dist}</p>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
