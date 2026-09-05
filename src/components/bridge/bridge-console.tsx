@@ -5,6 +5,7 @@ import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { SessionReport } from "@/components/bridge/session-report";
+import { TrainingTour } from "@/components/bridge/training-tour";
 import { SonarView } from "@/components/bridge/sonar-panel";
 import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
@@ -100,6 +101,7 @@ export function BridgeConsole() {
   const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportAt, setReportAt] = useState<Date | null>(null);
+  const [training, setTraining] = useState(false);
 
   const systems = t.bridge.systems.map((name, index) => ({
     name,
@@ -164,6 +166,25 @@ export function BridgeConsole() {
               {t.bridge.subtitle}
             </p>
           </div>
+          <div className="flex flex-wrap items-start justify-end gap-3">
+            <button
+              type="button"
+              data-testid="training-toggle"
+              onClick={() => {
+                setTraining((open) => {
+                  if (!open) setReportOpen(false);
+                  return !open;
+                });
+              }}
+              className={cn(
+                "border px-3 py-1.5 font-ui text-xs",
+                training
+                  ? "border-orange bg-orange text-white"
+                  : "border-bridge-text/40 text-bridge-text hover:border-orange hover:text-orange",
+              )}
+            >
+              Training Mode
+            </button>
           <div
             data-testid="risk-badge"
             className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end"
@@ -178,9 +199,13 @@ export function BridgeConsole() {
               {t.bridge.riskLevel}
             </p>
           </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 border border-bridge-line bg-bridge-panel px-3 py-2 sm:grid-cols-4 lg:grid-cols-7">
+        <div
+          data-testid="telemetry-strip"
+          className="grid grid-cols-2 gap-3 border border-bridge-line bg-bridge-panel px-3 py-2 sm:grid-cols-4 lg:grid-cols-7"
+        >
           {t.bridge.telemetry.map((label, index) => (
             <div key={label}>
               <p className="font-mono text-[9px] tracking-wider text-bridge-dim">
@@ -200,6 +225,7 @@ export function BridgeConsole() {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
+          <div data-testid="situational-panel">
           <HudPanel
             testId={picture.testId}
             title={picture.title}
@@ -211,9 +237,10 @@ export function BridgeConsole() {
           >
             {picture.view}
           </HudPanel>
+          </div>
 
           <div className="flex flex-col gap-4">
-            <HudPanel title={t.bridge.riskLevel}>
+            <HudPanel testId="risk-level-panel" title={t.bridge.riskLevel}>
               <ul className="space-y-2">
                 {RISK_KEYS.map((key, index) => {
                   const active = key === riskLevel;
@@ -242,7 +269,7 @@ export function BridgeConsole() {
               </ul>
             </HudPanel>
 
-            <HudPanel title={t.bridge.connected}>
+            <HudPanel testId="connected-systems-panel" title={t.bridge.connected}>
               <ul className="space-y-1.5">
                 {systems.map((system) => (
                   <li
@@ -281,6 +308,7 @@ export function BridgeConsole() {
         </div>
 
         <HudPanel
+          testId="event-log-panel"
           title={t.bridge.eventLog}
           extra={
             <div className="flex flex-wrap items-center justify-end gap-2">
@@ -324,6 +352,7 @@ export function BridgeConsole() {
                 type="button"
                 data-testid="generate-report"
                 onClick={() => {
+                  setTraining(false);
                   setReportAt(new Date());
                   setReportOpen(true);
                 }}
@@ -353,6 +382,7 @@ export function BridgeConsole() {
 
         <p className="font-mono text-[11px] text-bridge-dim">{t.bridge.disclaimer}</p>
       </div>
+      <TrainingTour active={training} onClose={() => setTraining(false)} />
       {reportOpen && reportAt ? (
         <SessionReport
           events={sessionEvents}
