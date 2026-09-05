@@ -29,6 +29,11 @@ export const pageMeta = {
     description:
       "Answers on captain responsibility, connectivity, data access, specialized equipment, and existing systems.",
   },
+  containers: {
+    title: "AGRON Containers — Deployable Security Hardware",
+    description:
+      "A self-contained detection, analysis, and response platform — deployable by land, sea, or fixed site. Detection runs on StarWall.",
+  },
   contact: {
     title: "Contact — StarWall by AGRON",
     description:

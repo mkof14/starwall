@@ -96,6 +96,12 @@ export default function OverviewPage() {
           </Link>
         ))}
       </section>
+
+      <p className="mx-auto max-w-6xl px-4 pb-16 text-sm text-grey md:px-6">
+        <Link href="/containers" className="hover:text-navyText">
+          StarWall also runs inside AGRON&apos;s deployable container hardware →
+        </Link>
+      </p>
     </div>
   );
 }
