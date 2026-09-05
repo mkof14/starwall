@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { BrandLogo } from "@/components/brand-logo";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
@@ -262,10 +261,7 @@ export function BridgeConsole() {
           </ul>
         </HudPanel>
 
-        <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] text-bridge-dim">
-          <BrandLogo className="h-5" />
-          <p>{t.bridge.disclaimer}</p>
-        </div>
+        <p className="font-mono text-[11px] text-bridge-dim">{t.bridge.disclaimer}</p>
       </div>
     </div>
   );
