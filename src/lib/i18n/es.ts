@@ -1,0 +1,439 @@
+import type { Messages } from "@/lib/i18n/messages";
+
+export const es: Messages = {
+  nav: {
+    home: "Inicio",
+    howItWorks: "Cómo funciona",
+    interface: "Interfaz",
+    levels: "Niveles",
+    technology: "Tecnología",
+    faq: "FAQ",
+    containers: "Contenedores",
+    contact: "Contacto",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    primary: "Navegación principal",
+    mobile: "Navegación móvil",
+    footer: "Pie de página",
+  },
+  chrome: {
+    rights: "© AGRON Inc. 2026 · Todos los derechos reservados",
+    themeToLight: "Cambiar a tema claro",
+    themeToDark: "Cambiar a tema oscuro",
+    language: "Idioma",
+  },
+  seo: {
+    home: "StarWall by AGRON — inteligencia de seguridad marítima",
+    howItWorks: "Cómo funciona StarWall — StarWall by AGRON",
+    interface: "AGRON Bridge — demostración interactiva — StarWall by AGRON",
+    levels: "Niveles de suscripción — StarWall by AGRON",
+    technology: "Equipos e integración — StarWall by AGRON",
+    faq: "FAQ — StarWall by AGRON",
+    containers: "Contenedores — AGRON",
+    containersDetection: "Conjunto de detección — AGRON Containers",
+    containersSpecs: "Especificaciones — AGRON Containers",
+    containersCountermeasures: "Contramedidas — AGRON Containers",
+    containersTiers: "Niveles — AGRON Containers",
+    containersDeployment: "Despliegue — AGRON Containers",
+    contact: "Contacto — StarWall by AGRON",
+  },
+  home: {
+    kicker: "AGRON MARITIME · STARWALL BY AGRON",
+    title: "Una imagen. Todas las fuentes. Una decisión en la que puede confiar.",
+    lead: "StarWall conecta el equipo que ya tiene en su yate, marina, puerto o isla privada en una sola imagen actualizada de forma continua — y da a quien está al mando una base clara para cada decisión, en segundos.",
+    points: [
+      "Funciona con el equipo que ya tiene — no hace falta sustituirlo",
+      "Aprende su buque o emplazamiento y gana precisión cuanto más tiempo opera",
+      "Se conecta de inmediato al Security Support Center de AGRON cuando importa",
+    ],
+    contactCta: "Contactar con AGRON Maritime",
+    pdfCta: "Descargar resumen (PDF)",
+    cards: [
+      { title: "Cómo funciona", body: "Conectar, comprender, decidir — en tres pasos" },
+      { title: "Véalo en acción", body: "Una mirada interactiva a la interfaz Bridge" },
+      { title: "Niveles", body: "Del seguimiento esencial a una construcción totalmente a medida" },
+      { title: "Equipos", body: "A qué se conecta y cómo" },
+    ],
+    containersLink: "StarWall también funciona dentro del equipo de contenedor desplegable de AGRON →",
+  },
+  how: {
+    kicker: "Cómo funciona",
+    title: "Conectar, comprender, decidir",
+    stepsLabel: "Flujo de tres pasos",
+    steps: [
+      {
+        title: "Conectar",
+        body: "StarWall lee el radar, las cámaras, el AIS y demás sistemas ya instalados — no hace falta sustituir el equipo.",
+      },
+      {
+        title: "Comprender",
+        body: "Las señales se reúnen en una sola línea temporal y un mapa; el historial se conserva tras cerrar cada alerta.",
+      },
+      {
+        title: "Decidir",
+        body: "Un nivel de riesgo claro y explicable y, cuando hace falta, una línea directa al Security Support Center de AGRON.",
+      },
+    ],
+    architecture: "Arquitectura",
+    architectureLabel:
+      "Flujo de arquitectura de StarWall: fuentes de datos, integración, datos unificados, inteligencia / IA, riesgo y escenario, decisión, Support Center",
+    stages: [
+      { name: "Fuentes de datos", lines: ["radar, AIS,", "cámaras, sensores"] },
+      { name: "Integración", lines: ["adaptadores, protocolos, API"] },
+      { name: "Datos unificados", lines: ["un modelo de datos compartido"] },
+      { name: "Inteligencia / IA", lines: ["correlación, aprendizaje"] },
+      { name: "Riesgo y escenario", lines: ["niveles de riesgo explicables"] },
+      { name: "Decisión", lines: ["siguiente paso recomendado"] },
+      { name: "Support Center", lines: ["especialista humano, en vivo"] },
+    ],
+    does: "Qué hace StarWall",
+    capabilities: [
+      {
+        title: "Imagen unificada",
+        body: "Radar, vídeo, AIS, drones y sensores perimetrales se muestran como una sola imagen situacional, no como pantallas sueltas.",
+      },
+      {
+        title: "Historial continuo",
+        body: "Cada objeto y cada suceso se conservan; no se descartan al cerrar una alerta.",
+      },
+      {
+        title: "Niveles de riesgo explicables",
+        body: "Una escala definida — Normal, Attention, Elevated, Critical — con las razones de cada cambio siempre visibles.",
+      },
+      {
+        title: "Funciona con el equipo existente",
+        body: "Se sitúa sobre los sistemas ya instalados a bordo o en el emplazamiento, con independencia del fabricante.",
+      },
+      {
+        title: "Aprende el buque o el emplazamiento concreto",
+        body: "Construye un perfil de actividad normal de ese yate, marina o propiedad, y señala lo que se sale de él.",
+      },
+      {
+        title: "Conectado al Support Center de AGRON",
+        body: "Escala a un especialista formado cuando la situación lo requiere, no solo una alerta automática.",
+      },
+    ],
+  },
+  walkthrough: {
+    kicker: "ESCENARIO",
+    title: "Recorrido",
+    note: "Escenario ilustrativo. Pruébelo usted mismo en la demostración en vivo más abajo.",
+    steps: [
+      "02:14 — un contacto entra en el alcance de 6 NM sin señal AIS, en un rumbo que podría interceptar el de M/Y Aurelia.",
+      "StarWall correlaciona el radar y el AIS en segundos y pasa el nivel de riesgo a Elevated.",
+      "Bridge muestra una recomendación clara: llamar por VHF ch.16, reforzar la guardia y estar listo para alterar el rumbo si la distancia baja de 1.0 NM.",
+      "El suceso se registra automáticamente, con marca de tiempo, listo para el parte de la mañana — no hay que redactar nada a mano.",
+    ],
+  },
+  bridge: {
+    title: "AGRON Bridge",
+    subtitle: "INTERFAZ DEL CAPITÁN / OFICIAL DE SEGURIDAD",
+    mobileNotice: "Esta interfaz se ve mejor en una pantalla grande.",
+    riskLevel: "NIVEL DE RIESGO",
+    situational: "IMAGEN SITUACIONAL",
+    contacts4: "ALCANCE 6.0 NM · 4 CONTACTOS",
+    contacts5: "ALCANCE 6.0 NM · 5 CONTACTOS",
+    connected: "SISTEMAS CONECTADOS",
+    recommended: "ACCIÓN RECOMENDADA",
+    eventLog: "REGISTRO DE SUCESOS",
+    live: "LIVE",
+    simulate: "Simular alerta",
+    resolve: "Resolver y restablecer",
+    disclaimer: "© AGRON Inc. · StarWall — interfaz de demostración, datos ilustrativos, no es un buque en vivo.",
+    risks: ["Normal", "Attention", "Elevated", "Critical"],
+    systems: [
+      "Radar",
+      "AIS",
+      "CCTV · 6 cámaras",
+      "Sensores perimetrales",
+      "Sonar",
+      "Enlace satelital",
+    ],
+    online: "En línea",
+    standby: "En espera",
+    telemetry: ["BUQUE", "POSICIÓN", "RUMBO", "VELOCIDAD", "VIENTO", "SONDA"],
+    log: [
+      "Contacto SIRENA reclasificado — buque conocido, vecino de la marina",
+      "Sensor perimetral 3 — comprobación rutinaria, sin anomalía",
+      "Contacto no identificado entró en alcance de 6 NM, sin señal AIS",
+      "Actualización de derrota aceptada — próximo punto de paso 41°19'N 002°05'E",
+      "Relevo de guardia — Support Center acusó recibo",
+    ],
+    normalAdvice:
+      "La imagen es estable. El tráfico conocido mantiene el rumbo. Conserve la guardia estándar y mantenga el contacto no identificado en la carta.",
+    elevatedAdvice:
+      "Contacto no identificado que se cierra a 8 kn en un rumbo de aspecto interceptor, sin respuesta AIS tras dos intentos. Recomendación: llamar por VHF ch.16, reforzar la guardia, prepararse para alterar el rumbo si la distancia baja de 1.0 NM.",
+    resolveLog:
+      "Contacto llamado e identificado — pesquero local, sin AIS instalado. Nivel de riesgo restablecido.",
+  },
+  levels: {
+    kicker: "Niveles",
+    title: "Del seguimiento esencial a una construcción totalmente a medida",
+    tiersLabel: "Niveles de servicio",
+    honestySr: "Disponible ahora y en desarrollo",
+    mapNote:
+      "Estos niveles se corresponden con la estructura de servicio actual de AGRON Maritime: LIGHT y ADVANCED encajan en Protect; INTELLIGENCE y CUSTOM se extienden a Intelligence + Support.",
+    honesty: "Preferimos decir exactamente qué está construido antes que prometerlo todo de una vez.",
+    available: "Disponible ahora",
+    developing: "En desarrollo",
+    tiers: [
+      {
+        name: "LIGHT",
+        subtitle: "Esencial",
+        points: [
+          "Conexión del equipo que el cliente ya tiene",
+          "Imagen unificada en una sola interfaz",
+          "Soporte en horario laboral",
+        ],
+      },
+      {
+        name: "ADVANCED",
+        subtitle: "Protección estándar",
+        points: [
+          "Risk Engine, 4 niveles de amenaza",
+          "Historial de sucesos y objetos",
+          "Support Center 24/7",
+        ],
+      },
+      {
+        name: "INTELLIGENCE",
+        subtitle: "Adaptativo",
+        points: [
+          "IA adaptativa y detección de anomalías",
+          "Scenario Engine",
+          "Soporte de vigilancia proactiva",
+        ],
+      },
+      {
+        name: "CUSTOM",
+        subtitle: "Soluciones a medida",
+        points: [
+          "Configuración individual",
+          "Equipo especializado, Crisis Mode",
+          "Responsable de seguridad dedicado",
+        ],
+      },
+    ],
+    availableNow: [
+      "Integración de equipos (Gateway)",
+      "Imagen situacional unificada",
+      "Niveles de riesgo basados en reglas",
+      "Interfaz Bridge",
+      "Escalado manual al Support Center",
+    ],
+    inDevelopment: [
+      "IA adaptativa / detección de anomalías",
+      "Scenario Engine",
+      "Vista Family Office de varios objetos",
+      "Special Event / Crisis Mode",
+      "Generación automática de informes",
+    ],
+  },
+  tech: {
+    kicker: "Tecnología",
+    title: "A qué se conecta y cómo",
+    lead: "StarWall no está atado a un solo fabricante. Su capa de integración conecta cualquier equipo moderno del mercado mediante adaptadores — incluidas clases de dispositivos nuevas y especializadas.",
+    catalog: "Catálogo de equipos",
+    category: "Categoría",
+    connects: "Qué se conecta",
+    legal:
+      "Algunas categorías de equipo — por ejemplo detección RF/contra-drones o sistemas de guerra electrónica — requieren revisión de control de exportaciones y licencias propia de cada jurisdicción antes del despliegue. La arquitectura de StarWall las admite como módulos opcionales; activar cualquiera de ellas pasa siempre primero por una revisión jurídica aparte, y cualquier capacidad de respuesta asociada exige un operador con licencia y autorización humana. Para más detalles,",
+    contactUs: "contáctenos",
+    oem: "Alianza OEM",
+    rows: [
+      {
+        name: "Plataforma del buque / emplazamiento",
+        connects:
+          "Redes de a bordo, pasarelas NMEA, bus de infraestructura de marina o finca",
+      },
+      {
+        name: "Navegación y electrónica marina",
+        connects: "NMEA0183/2000, AIS, GPS/GNSS, radar",
+      },
+      {
+        name: "Vídeo y óptica",
+        connects: "ONVIF, RTSP, PTZ, cámaras térmicas, módulos EO/IR",
+      },
+      {
+        name: "Perímetro e IoT",
+        connects: "Modbus, MQTT, CAN, SNMP, sensores perimetrales y de infraestructura",
+      },
+      {
+        name: "Drones y contra-UAS",
+        connects: "Detección RF de drones, clasificación, geocercas",
+      },
+      {
+        name: "Submarino",
+        connects: "Sonar, detección de objetos y nadadores bajo el agua",
+      },
+      {
+        name: "Comunicaciones por satélite",
+        connects: "Starlink, VSAT — tanto como canal de datos como sistema vigilado",
+      },
+    ],
+    partners: [
+      { name: "Compatibility", body: "Cualquier dispositivo del mercado mediante protocolos abiertos" },
+      {
+        name: "StarWall Certified",
+        body: "Validación técnica, prioridad en las recomendaciones a clientes",
+      },
+      {
+        name: "Technology Partner",
+        body: "Desarrollo conjunto de integraciones para nuevas clases de dispositivos",
+      },
+      {
+        name: "Exclusive / OEM",
+        body: "Producto conjunto construido según la configuración de StarWall",
+      },
+    ],
+  },
+  faq: {
+    kicker: "FAQ",
+    title: "Preguntas que esperamos primero",
+    items: [
+      {
+        q: "¿Sustituye StarWall al capitán?",
+        a: "No. StarWall aporta información más rápida y clara y un siguiente paso recomendado — la decisión y la responsabilidad siguen siendo siempre del capitán o del oficial de seguridad.",
+      },
+      {
+        q: "¿Qué ocurre si perdemos la conectividad?",
+        a: "StarWall sigue trabajando en local y almacena los datos en búfer hasta que vuelve la conexión. Perder un enlace no apaga la protección del objeto.",
+      },
+      {
+        q: "¿Quién tiene acceso a nuestros datos?",
+        a: "El acceso sigue el rol: propietario, capitán, marina y Support Center ven solo lo que les corresponde. Los datos identificables del objeto no se comparten fuera de su cuenta para ningún entrenamiento de IA.",
+      },
+      {
+        q: "Hemos oído que StarWall puede integrar equipos de detección especializados — ¿es legal?",
+        a: "Algunas categorías de equipo (por ejemplo detección RF/contra-drones) requieren comprobaciones de exportación y licencias propias de cada jurisdicción antes del despliegue. La arquitectura de StarWall lo admite como módulo opcional; activarlo pasa siempre primero por una revisión jurídica aparte.",
+      },
+      {
+        q: "¿Tenemos que sustituir el equipo que ya tenemos?",
+        a: "No. StarWall está hecho para conectarse a lo que ya está instalado — radar, cámaras, navegación — mediante adaptadores, no para sustituirlo.",
+      },
+    ],
+  },
+  contact: {
+    kicker: "Contacto",
+    title: "Solicitar una presentación",
+    lead: "Para armadores, capitanes, brókeres y equipos que evalúan un piloto. El servicio de correo saliente aún no está conectado — las solicitudes se reciben en local hasta que AGRON confirme el canal.",
+    name: "Nombre",
+    email: "Correo",
+    message: "Mensaje",
+    send: "Enviar",
+    sending: "Enviando…",
+    success: "Recibido en local. El servicio de correo saliente aún no está conectado.",
+    error: "Algo ha fallado.",
+    unable: "No se ha podido enviar.",
+  },
+  containers: {
+    kicker: "AGRON · CONTENEDOR DE SEGURIDAD DESPLEGABLE",
+    title: "Un contenedor. Conciencia de espectro completo.",
+    lead: "Una plataforma autocontenida de detección, análisis y respuesta — desplegable por tierra, mar o emplazamiento fijo en horas, no en semanas. La detección y el análisis corren sobre StarWall; el equipo de respuesta está disponible en niveles seleccionados, siempre bajo autorización humana.",
+    contact: "Contactar con AGRON",
+    back: "← Volver a la visión general de contenedores",
+    eyebrow: "AGRON Containers",
+    howLink: "ver cómo funciona →",
+    detectionLink:
+      "La detección y el análisis de este contenedor corren sobre StarWall —",
+    zones: [
+      {
+        title: "Conjunto de detección",
+        body: "Radar, sensores acústicos, cámaras EO/IR y multiespectro, sonar",
+      },
+      {
+        title: "Bahía de contramedidas",
+        body: "Disponible en niveles seleccionados — véase la página de contramedidas",
+      },
+      {
+        title: "Soporte vital e IT",
+        body: "Energía, comunicaciones, bastidores de servidores y datos, control ambiental",
+      },
+      {
+        title: "Puesto del operador",
+        body: "En el sitio o control totalmente remoto",
+      },
+    ],
+    subpages: ["Niveles", "Especificaciones", "Contramedidas", "Despliegue"],
+    detectionTitle: "Conjunto de detección",
+    equipment: "Equipo",
+    spec: "Especificación",
+    detectionRows: [
+      { name: "3D AESA Radar", spec: "Detección aérea y de superficie 360° hasta 15 km" },
+      {
+        name: "Acoustic Radar",
+        spec: "Detecta blancos bajos, lentos y pequeños, y perturbaciones de superficie",
+      },
+      {
+        name: "Spectral Analyzer",
+        spec: "Inteligencia RF y de señales, vigilancia de espectro amplio",
+      },
+      {
+        name: "Multi-Spectrum Cameras",
+        spec: "Día, noche, térmica, SWIR hasta 10 km",
+      },
+      { name: "Acoustic Sonar", spec: "Detección de amenazas submarinas hasta 1 km" },
+    ],
+    detectionNote: "Toda la detección y el análisis de este conjunto corren sobre StarWall —",
+    specsTitle: "Especificaciones del contenedor",
+    specs: [
+      { label: "Longitud", value: "6.058 m (19.9 ft)" },
+      { label: "Anchura", value: "2.438 m (8.0 ft)" },
+      { label: "Altura", value: "2.896 m (9.5 ft)" },
+      { label: "Peso", value: "~9,500 kg" },
+      { label: "Potencia", value: "10–15 kW" },
+      { label: "Temperatura de operación", value: "−30°C to +50°C" },
+      { label: "Autonomía", value: "72+ horas (según la misión)" },
+    ],
+    rapid: "Despliegue rápido: menos de 2 horas desde la llegada hasta operativo.",
+    cmTitle: "Contramedidas",
+    cmLegal:
+      "El equipo de contramedidas está disponible en niveles de contenedor seleccionados. Activarlo u operarlo exige siempre autorización propia de la jurisdicción y un operador con licencia. La capa de detección y análisis de AGRON Container (StarWall) nunca activa estos sistemas por sí misma — la activación es siempre una decisión humana, tomada por un operador autorizado, cada vez.",
+    cmItems: [
+      {
+        name: "Sistema de drones interceptor",
+        body: "UAV de alta velocidad y múltiples funciones, control remoto. Velocidad máxima 200+ km/h, alcance hasta 20 km, autonomía hasta 25 min.",
+      },
+      { name: "Guerra electrónica", body: "Interferencia, suplantación, denegación de señal" },
+      { name: "Sistema de microondas", body: "Energía dirigida no cinética, anti-enjambre" },
+    ],
+    tiersTitle: "Niveles de contenedor",
+    customBadge: "A medida",
+    tiers: [
+      { name: "Basic", body: "Conjunto de detección + análisis StarWall únicamente" },
+      { name: "Business", body: "+ mayor alcance de sensores, conexión al Support Center" },
+      {
+        name: "Premium",
+        body: "+ bahía de contramedidas (no cinética: guerra electrónica)",
+      },
+      {
+        name: "Exclusive",
+        body: "Construcción totalmente a medida, hasta configuraciones gubernamentales/de defensa autorizadas, sujeta a control de exportaciones y certificación del usuario final",
+      },
+    ],
+    deployTitle: "Despliegue",
+    photo: "Foto —",
+    cases: [
+      {
+        name: "Marítimo",
+        body: "Protección continua a bordo o en tierra, integrada con los sistemas de navegación y seguridad existentes.",
+      },
+      {
+        name: "Puerto y dársena",
+        body: "Vigilancia de gran área sobre agua, aire y aproximaciones terrestres.",
+      },
+      {
+        name: "Infraestructura crítica",
+        body: "Conciencia de perímetro y espacio aéreo para instalaciones fijas.",
+      },
+      {
+        name: "Fincas privadas e islas",
+        body: "Protección remota y autosuficiente donde una plantilla continua no es práctica.",
+      },
+      {
+        name: "Eventos especiales",
+        body: "Despliegue temporal para reuniones de alto perfil, con montaje y desmontaje rápidos.",
+      },
+    ],
+  },
+};

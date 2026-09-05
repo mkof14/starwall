@@ -1,0 +1,439 @@
+import type { Messages } from "@/lib/i18n/messages";
+
+export const ja: Messages = {
+  nav: {
+    home: "ホーム",
+    howItWorks: "仕組み",
+    interface: "インターフェース",
+    levels: "レベル",
+    technology: "技術",
+    faq: "FAQ",
+    containers: "コンテナ",
+    contact: "お問い合わせ",
+    openMenu: "メニューを開く",
+    closeMenu: "メニューを閉じる",
+    primary: "メインナビゲーション",
+    mobile: "モバイルナビゲーション",
+    footer: "フッター",
+  },
+  chrome: {
+    rights: "© AGRON Inc. 2026 · 無断転載を禁じます",
+    themeToLight: "ライトテーマに切り替え",
+    themeToDark: "ダークテーマに切り替え",
+    language: "言語",
+  },
+  seo: {
+    home: "StarWall by AGRON — 海上セキュリティインテリジェンス",
+    howItWorks: "StarWall の仕組み — StarWall by AGRON",
+    interface: "AGRON Bridge — インタラクティブデモ — StarWall by AGRON",
+    levels: "サブスクリプションレベル — StarWall by AGRON",
+    technology: "装備と統合 — StarWall by AGRON",
+    faq: "FAQ — StarWall by AGRON",
+    containers: "コンテナ — AGRON",
+    containersDetection: "探知スイート — AGRON Containers",
+    containersSpecs: "仕様 — AGRON Containers",
+    containersCountermeasures: "対抗手段 — AGRON Containers",
+    containersTiers: "ティア — AGRON Containers",
+    containersDeployment: "展開 — AGRON Containers",
+    contact: "お問い合わせ — StarWall by AGRON",
+  },
+  home: {
+    kicker: "AGRON MARITIME · STARWALL BY AGRON",
+    title: "一枚の状況図。すべての情報源。信頼できる判断。",
+    lead: "StarWall は、ヨット、マリーナ、港、プライベートアイランドに既にある装備を、継続的に更新される一枚の状況図にまとめ — 当直責任者に、秒単位で各判断の明確な根拠を示します。",
+    points: [
+      "既設の装備で動作します — 入れ替えは不要です",
+      "船舶やサイトを学習し、稼働が長いほど精度が上がります",
+      "必要なときは AGRON の Security Support Center に直接つながります",
+    ],
+    contactCta: "AGRON Maritime に問い合わせる",
+    pdfCta: "概要をダウンロード（PDF）",
+    cards: [
+      { title: "仕組み", body: "接続、理解、判断 — 三つの手順" },
+      { title: "実際の動きを見る", body: "Bridge インターフェースのインタラクティブな確認" },
+      { title: "レベル", body: "必須の監視から完全な個別構築まで" },
+      { title: "装備", body: "何に、どのように接続するか" },
+    ],
+    containersLink: "StarWall は AGRON の展開可能なコンテナハードウェアでも稼働します →",
+  },
+  how: {
+    kicker: "仕組み",
+    title: "接続、理解、判断",
+    stepsLabel: "三段階の流れ",
+    steps: [
+      {
+        title: "接続",
+        body: "StarWall は、既設のレーダー、カメラ、AIS、その他のシステムを読み取ります — 装備の入れ替えは不要です。",
+      },
+      {
+        title: "理解",
+        body: "信号は一つのタイムラインと地図に集約され、各警報を閉じたあとも履歴は残ります。",
+      },
+      {
+        title: "判断",
+        body: "明確で説明可能なリスクレベルと、必要なときは AGRON の Security Support Center への直通回線。",
+      },
+    ],
+    architecture: "アーキテクチャ",
+    architectureLabel:
+      "StarWall アーキテクチャの流れ：データ源、統合、統一データ、インテリジェンス / AI、リスクとシナリオ、判断、Support Center",
+    stages: [
+      { name: "データ源", lines: ["レーダー、AIS、", "カメラ、センサー"] },
+      { name: "統合", lines: ["アダプター、プロトコル、API"] },
+      { name: "統一データ", lines: ["共有データモデル一つ"] },
+      { name: "インテリジェンス / AI", lines: ["相関、学習"] },
+      { name: "リスクとシナリオ", lines: ["説明可能なリスクレベル"] },
+      { name: "判断", lines: ["推奨される次の一手"] },
+      { name: "Support Center", lines: ["人の専門家、ライブ"] },
+    ],
+    does: "StarWall が行うこと",
+    capabilities: [
+      {
+        title: "統一された状況図",
+        body: "レーダー、映像、AIS、ドローン、周辺センサーを別々の画面ではなく、一つの状況図として示します。",
+      },
+      {
+        title: "途切れない履歴",
+        body: "すべての物標と事象は保持され、警報を閉じても破棄されません。",
+      },
+      {
+        title: "説明可能なリスクレベル",
+        body: "定められた尺度 — Normal、Attention、Elevated、Critical — 各変更の理由は常に見えます。",
+      },
+      {
+        title: "既設装備で動作",
+        body: "船上または現地に既にあるシステムの上に載り、メーカーを問いません。",
+      },
+      {
+        title: "その船舶・そのサイトを学習",
+        body: "そのヨット、マリーナ、物件の通常活動のプロファイルを作り、そこから外れたものを示します。",
+      },
+      {
+        title: "AGRON の Support Center に接続",
+        body: "状況が求めるときは訓練を受けた専門家へエスカレーションし、自動警報だけにはしません。",
+      },
+    ],
+  },
+  walkthrough: {
+    kicker: "シナリオ",
+    title: "手順の確認",
+    note: "説明用のシナリオです。下のライブデモでご自身でもお試しください。",
+    steps: [
+      "02:14 — AIS 信号のない物標が 6 NM 圏内に入り、M/Y Aurelia の針路を横切る方位です。",
+      "StarWall は数秒でレーダーと AIS を照合し、リスクレベルを Elevated に上げます。",
+      "Bridge は一つの明確な推奨を示します。VHF ch.16 で呼び出し、当直を強化し、距離が 1.0 NM を下回れば変針の準備。",
+      "事象は自動で記録され、時刻印が付き、朝の報告にそのまま使えます — 手書きは不要です。",
+    ],
+  },
+  bridge: {
+    title: "AGRON Bridge",
+    subtitle: "船長 / 保安士官インターフェース",
+    mobileNotice: "このインターフェースは大きな画面での表示が適しています。",
+    riskLevel: "リスクレベル",
+    situational: "状況図",
+    contacts4: "距離 6.0 NM · 物標 4",
+    contacts5: "距離 6.0 NM · 物標 5",
+    connected: "接続済みシステム",
+    recommended: "推奨アクション",
+    eventLog: "事象ログ",
+    live: "LIVE",
+    simulate: "警報を模擬",
+    resolve: "解消してリセット",
+    disclaimer: "© AGRON Inc. · StarWall — デモインターフェース、説明用データ、実船ではありません。",
+    risks: ["Normal", "Attention", "Elevated", "Critical"],
+    systems: [
+      "レーダー",
+      "AIS",
+      "CCTV · カメラ 6 台",
+      "周辺センサー",
+      "ソナー",
+      "衛星通信リンク",
+    ],
+    online: "オンライン",
+    standby: "待機",
+    telemetry: ["船舶", "位置", "針路", "速力", "風", "水深"],
+    log: [
+      "物標 SIRENA を再分類 — 既知の船舶、マリーナの隣船",
+      "周辺センサー 3 — 定期点検、異常なし",
+      "未識別物標が 6 NM 圏内に進入、AIS 信号なし",
+      "針路更新を受理 — 次の変針点 41°19'N 002°05'E",
+      "当直交代 — Support Center が確認",
+    ],
+    normalAdvice:
+      "状況図は安定しています。既知の通航は針路を維持。標準当直を続け、未識別物標をプロット上に保持してください。",
+    elevatedAdvice:
+      "未識別物標が 8 kn で迎撃に近い方位から接近、二度の試行後も AIS 応答なし。推奨：VHF ch.16 で呼び出し、当直を強化、距離が 1.0 NM を下回れば変針の準備。",
+    resolveLog:
+      "物標を呼び出し識別 — 地元の漁船、AIS 非搭載。リスクレベルをリセットしました。",
+  },
+  levels: {
+    kicker: "レベル",
+    title: "必須の監視から完全な個別構築まで",
+    tiersLabel: "サービスティア",
+    honestySr: "現在提供中と開発中",
+    mapNote:
+      "これらのレベルは AGRON Maritime の現行サービス構成に対応します。LIGHT と ADVANCED は Protect に、INTELLIGENCE と CUSTOM は Intelligence + Support に広がります。",
+    honesty: "一度にすべてを約束するより、何が既にできているかを正確にお伝えします。",
+    available: "現在提供中",
+    developing: "開発中",
+    tiers: [
+      {
+        name: "LIGHT",
+        subtitle: "必須",
+        points: [
+          "顧客が既に持つ装備の接続",
+          "一つのインターフェースに統一された状況図",
+          "営業時間内のサポート",
+        ],
+      },
+      {
+        name: "ADVANCED",
+        subtitle: "標準防護",
+        points: [
+          "Risk Engine、脅威レベル 4 段階",
+          "事象と物標の履歴",
+          "Support Center 24/7",
+        ],
+      },
+      {
+        name: "INTELLIGENCE",
+        subtitle: "適応型",
+        points: [
+          "適応型 AI と異常検知",
+          "Scenario Engine",
+          "能動的な監視サポート",
+        ],
+      },
+      {
+        name: "CUSTOM",
+        subtitle: "個別ソリューション",
+        points: [
+          "個別構成",
+          "専用装備、Crisis Mode",
+          "専任の保安責任者",
+        ],
+      },
+    ],
+    availableNow: [
+      "装備統合（Gateway）",
+      "統一された状況図",
+      "ルールに基づくリスクレベル",
+      "Bridge インターフェース",
+      "Support Center への手動エスカレーション",
+    ],
+    inDevelopment: [
+      "適応型 AI / 異常検知",
+      "Scenario Engine",
+      "複数物件の Family Office ビュー",
+      "Special Event / Crisis Mode",
+      "報告書の自動生成",
+    ],
+  },
+  tech: {
+    kicker: "技術",
+    title: "何に、どのように接続するか",
+    lead: "StarWall は特定メーカーに縛られません。統合層はアダプター経由で市場のあらゆる現行装備をつなぎます — 新発売や特殊な機器クラスも含みます。",
+    catalog: "装備カタログ",
+    category: "区分",
+    connects: "接続対象",
+    legal:
+      "一部の装備区分 — たとえば RF / 対ドローン探知や電子戦システム — は、展開前に管轄ごとの輸出管理と許認可の審査が必要です。StarWall のアーキテクチャはこれらをオプションモジュールとして支えます。いずれも有効化の前に必ず別途の法務審査を経て、関連する対応能力には免許を持つ操作者と人の承認が必要です。詳細は",
+    contactUs: "お問い合わせください",
+    oem: "OEM 提携",
+    rows: [
+      {
+        name: "船舶 / サイト基盤",
+        connects:
+          "船上ネットワーク、NMEA ゲートウェイ、マリーナ / 邸宅のインフラバス",
+      },
+      {
+        name: "航海と舶用電子",
+        connects: "NMEA0183/2000、AIS、GPS/GNSS、レーダー",
+      },
+      {
+        name: "映像と光学",
+        connects: "ONVIF、RTSP、PTZ、熱画像カメラ、EO/IR モジュール",
+      },
+      {
+        name: "周辺と IoT",
+        connects: "Modbus、MQTT、CAN、SNMP、周辺およびインフラセンサー",
+      },
+      {
+        name: "ドローンと対 UAS",
+        connects: "RF によるドローン探知、分類、ジオフェンス",
+      },
+      {
+        name: "水中",
+        connects: "ソナー、水中物標と遊泳者の探知",
+      },
+      {
+        name: "衛星通信",
+        connects: "Starlink、VSAT — データ回線としても、監視対象システムとしても",
+      },
+    ],
+    partners: [
+      { name: "Compatibility", body: "公開プロトコル経由で市場のあらゆる機器" },
+      {
+        name: "StarWall Certified",
+        body: "技術検証、顧客推奨での優先",
+      },
+      {
+        name: "Technology Partner",
+        body: "新しい機器クラス向け統合の共同開発",
+      },
+      {
+        name: "Exclusive / OEM",
+        body: "StarWall の構成に合わせた共同製品",
+      },
+    ],
+  },
+  faq: {
+    kicker: "FAQ",
+    title: "最初にいただく質問",
+    items: [
+      {
+        q: "StarWall は船長に取って代わりますか。",
+        a: "いいえ。StarWall はより速く明確な情報と、推奨される次の一手を示します — 判断と責任は常に船長または保安士官にあります。",
+      },
+      {
+        q: "接続が切れたらどうなりますか。",
+        a: "StarWall は現地で動き続け、接続が戻るまでデータをバッファします。一本の回線を失っても、対象の防護は止まりません。",
+      },
+      {
+        q: "データには誰がアクセスできますか。",
+        a: "アクセスは役割に従います。オーナー、船長、マリーナ、Support Center はそれぞれに必要な範囲だけを見ます。識別可能な対象データは、いかなる AI 学習のためにもアカウント外へ共有されません。",
+      },
+      {
+        q: "StarWall は特殊な探知装備を統合できると聞きました — それは合法ですか。",
+        a: "一部の装備区分（たとえば RF / 対ドローン探知）は、展開前に管轄ごとの輸出と許認可の確認が必要です。StarWall のアーキテクチャはこれをオプションモジュールとして支えます。有効化の前には必ず別途の法務審査を経ます。",
+      },
+      {
+        q: "既設装備を入れ替える必要はありますか。",
+        a: "ありません。StarWall はアダプター経由で、既に据え付けられたレーダー、カメラ、航海機器に接続するよう作られており、置き換えません。",
+      },
+    ],
+  },
+  contact: {
+    kicker: "お問い合わせ",
+    title: "説明会を依頼する",
+    lead: "パイロットを検討中のオーナー、船長、ブローカー、チーム向けです。送信メールサービスはまだ接続されていません — AGRON が経路を確認するまで、送信内容は現地で受け取ります。",
+    name: "氏名",
+    email: "メール",
+    message: "メッセージ",
+    send: "送信",
+    sending: "送信中…",
+    success: "現地で受け取りました。送信メールサービスはまだ接続されていません。",
+    error: "問題が発生しました。",
+    unable: "送信できません。",
+  },
+  containers: {
+    kicker: "AGRON · 展開可能なセキュリティコンテナ",
+    title: "一つのコンテナ。全スペクトルの状況把握。",
+    lead: "探知、分析、対応を一つに収めたプラットフォーム — 陸上、海上、固定サイトへ、数週間ではなく数時間で展開できます。探知と分析は StarWall 上で動き、対応装備は選定ティアで提供され、常に人の承認の下にあります。",
+    contact: "AGRON に問い合わせる",
+    back: "← コンテナ概要へ戻る",
+    eyebrow: "AGRON Containers",
+    howLink: "仕組みを見る →",
+    detectionLink:
+      "このコンテナ上の探知と分析は StarWall で稼働します —",
+    zones: [
+      {
+        title: "探知スイート",
+        body: "レーダー、音響センサー、EO/IR およびマルチスペクトルカメラ、ソナー",
+      },
+      {
+        title: "対抗手段ベイ",
+        body: "選定ティアで利用可 — 対抗手段のページを参照",
+      },
+      {
+        title: "生命維持と IT",
+        body: "電源、通信、サーバー / データラック、環境制御",
+      },
+      {
+        title: "操作者の作業席",
+        body: "現地、または完全な遠隔運用",
+      },
+    ],
+    subpages: ["ティア", "仕様", "対抗手段", "展開"],
+    detectionTitle: "探知スイート",
+    equipment: "装備",
+    spec: "仕様",
+    detectionRows: [
+      { name: "3D AESA Radar", spec: "360° の空中・水面探知、最大 15 km" },
+      {
+        name: "Acoustic Radar",
+        spec: "低く遅く小さい目標と水面擾乱を探知",
+      },
+      {
+        name: "Spectral Analyzer",
+        spec: "RF および信号インテリジェンス、広帯域スペクトル監視",
+      },
+      {
+        name: "Multi-Spectrum Cameras",
+        spec: "昼、夜、熱画像、SWIR、最大 10 km",
+      },
+      { name: "Acoustic Sonar", spec: "水中脅威の探知、最大 1 km" },
+    ],
+    detectionNote: "このスイートの探知と分析はすべて StarWall で稼働します —",
+    specsTitle: "コンテナ仕様",
+    specs: [
+      { label: "長さ", value: "6.058 m (19.9 ft)" },
+      { label: "幅", value: "2.438 m (8.0 ft)" },
+      { label: "高さ", value: "2.896 m (9.5 ft)" },
+      { label: "重量", value: "~9,500 kg" },
+      { label: "電力", value: "10–15 kW" },
+      { label: "動作温度", value: "−30°C to +50°C" },
+      { label: "持続時間", value: "72+ 時間（任務による）" },
+    ],
+    rapid: "迅速展開：到着から稼働まで 2 時間未満。",
+    cmTitle: "対抗手段",
+    cmLegal:
+      "対抗手段の装備は、選定されたコンテナティアで利用できます。有効化または運用には、常に管轄ごとの認可と免許を持つ操作者が必要です。AGRON Container の探知・分析層（StarWall）がこれらのシステムを自ら起動することはありません — 起動は毎回、認可された操作者による人の判断です。",
+    cmItems: [
+      {
+        name: "迎撃ドローンシステム",
+        body: "高速多用途 UAV、遠隔操作。最高速度 200+ km/h、航続距離最大 20 km、航続時間最大 25 min。",
+      },
+      { name: "電子戦", body: "妨害、なりすまし、信号拒否" },
+      { name: "マイクロ波システム", body: "非運動エネルギーの指向性エネルギー、対群" },
+    ],
+    tiersTitle: "コンテナティア",
+    customBadge: "個別",
+    tiers: [
+      { name: "Basic", body: "探知スイート + StarWall 分析のみ" },
+      { name: "Business", body: "+ センサー距離の延長、Support Center 接続" },
+      {
+        name: "Premium",
+        body: "+ 対抗手段ベイ（非運動エネルギー：電子戦）",
+      },
+      {
+        name: "Exclusive",
+        body: "完全な個別構築。認可された政府・防衛向け構成まで対応。輸出管理およびエンドユーザー認証の対象です",
+      },
+    ],
+    deployTitle: "展開",
+    photo: "写真 —",
+    cases: [
+      {
+        name: "海上",
+        body: "船上または陸上での継続防護。既存の航海・保安システムと統合します。",
+      },
+      {
+        name: "港と泊地",
+        body: "水面、空、陸側接近を広く監視します。",
+      },
+      {
+        name: "重要インフラ",
+        body: "固定施設の周辺と空域の把握。",
+      },
+      {
+        name: "私有地と島",
+        body: "常時要員が現実的でない場所での、遠隔で自給できる防護。",
+      },
+      {
+        name: "特別行事",
+        body: "注目度の高い集まりへの一時展開。迅速な設置と撤収。",
+      },
+    ],
+  },
+};
