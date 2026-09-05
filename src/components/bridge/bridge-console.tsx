@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { BrandLogo } from "@/components/brand-logo";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
-import { Wordmark } from "@/components/wordmark";
+import { usePreferences } from "@/lib/i18n/context";
 import { cn } from "@/lib/cn";
 
 type RiskLevel = "NORMAL" | "ELEVATED";
@@ -17,67 +18,17 @@ type LogEntry = {
   text: string;
 };
 
-const INITIAL_LOG: LogEntry[] = [
-  {
-    time: "14:32:07",
-    level: "NORMAL",
-    text: "Contact SIRENA reclassified — known vessel, marina neighbor",
-  },
-  {
-    time: "14:18:44",
-    level: "NORMAL",
-    text: "Perimeter sensor 3 — routine check, no anomaly",
-  },
-  {
-    time: "13:55:12",
-    level: "ATTENTION",
-    text: "Unidentified contact entered 6 NM range, no AIS signal",
-  },
-  {
-    time: "13:40:03",
-    level: "NORMAL",
-    text: "Route update accepted — next waypoint 41°19'N 002°05'E",
-  },
-  {
-    time: "13:12:58",
-    level: "NORMAL",
-    text: "Shift handover — Support Center acknowledged",
-  },
-];
-
-const NORMAL_ADVICE =
-  "Picture is stable. Known traffic holding. Maintain standard watch and keep the unidentified contact on the plot.";
-
-const ELEVATED_ADVICE =
-  "Unidentified contact closing at 8 kn on an intercept-like bearing, no AIS response after two attempts. Recommend: hail on VHF ch.16, increase watch, prepare to alter course if range closes below 1.0 NM.";
-
-const RESOLVE_LOG =
-  "Contact hailed and identified — local fishing vessel, no AIS fitted. Risk level reset.";
-
-const RISK_ROWS = [
-  { key: "NORMAL", label: "Normal", bar: "bg-ok" },
-  { key: "ATTENTION", label: "Attention", bar: "bg-attn" },
-  { key: "ELEVATED", label: "Elevated", bar: "bg-orange" },
-  { key: "CRITICAL", label: "Critical", bar: "bg-crit" },
+const TELEMETRY_VALUES = [
+  "M/Y AURELIA",
+  "41°23'06\"N 002°11'42\"E",
+  "247° TRUE",
+  "11.4 KN",
+  "14 KN NE",
+  "62 M",
 ] as const;
 
-const SYSTEMS = [
-  { name: "Radar", status: "Online" },
-  { name: "AIS", status: "Online" },
-  { name: "CCTV · 6 cameras", status: "Online" },
-  { name: "Perimeter sensors", status: "Online" },
-  { name: "Sonar", status: "Standby" },
-  { name: "Satcom link", status: "Online" },
-] as const;
-
-const TELEMETRY = [
-  { label: "VESSEL", value: "M/Y AURELIA" },
-  { label: "POSITION", value: "41°23'06\"N 002°11'42\"E" },
-  { label: "HEADING", value: "247° TRUE" },
-  { label: "SPEED", value: "11.4 KN" },
-  { label: "WIND", value: "14 KN NE" },
-  { label: "DEPTH", value: "62 M" },
-];
+const RISK_KEYS = ["NORMAL", "ATTENTION", "ELEVATED", "CRITICAL"] as const;
+const RISK_BARS = ["bg-ok", "bg-attn", "bg-orange", "bg-crit"] as const;
 
 function nowStamp() {
   return new Date().toISOString().slice(11, 19);
@@ -91,17 +42,29 @@ function levelClass(level: LogLevel) {
 }
 
 export function BridgeConsole() {
+  const { t } = usePreferences();
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
-  const [logEntries, setLogEntries] = useState<LogEntry[]>(INITIAL_LOG);
+  const [logSeed] = useState(() => [
+    { time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0] },
+    { time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1] },
+    { time: "13:55:12", level: "ATTENTION" as const, text: t.bridge.log[2] },
+    { time: "13:40:03", level: "NORMAL" as const, text: t.bridge.log[3] },
+    { time: "13:12:58", level: "NORMAL" as const, text: t.bridge.log[4] },
+  ]);
+  const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
   const [showNewContact, setShowNewContact] = useState(false);
 
   const elevated = riskLevel === "ELEVATED";
+  const systems = t.bridge.systems.map((name, index) => ({
+    name,
+    online: index !== 4,
+  }));
 
   function simulateAlert() {
     setRiskLevel("ELEVATED");
     setShowNewContact(true);
     setLogEntries((entries) => [
-      { time: nowStamp(), level: "ELEVATED", text: ELEVATED_ADVICE },
+      { time: nowStamp(), level: "ELEVATED", text: t.bridge.elevatedAdvice },
       ...entries,
     ]);
   }
@@ -110,7 +73,7 @@ export function BridgeConsole() {
     setRiskLevel("NORMAL");
     setShowNewContact(false);
     setLogEntries((entries) => [
-      { time: nowStamp(), level: "NORMAL", text: RESOLVE_LOG },
+      { time: nowStamp(), level: "NORMAL", text: t.bridge.resolveLog },
       ...entries,
     ]);
   }
@@ -119,16 +82,18 @@ export function BridgeConsole() {
     <div className="bg-bridge-bg font-ui text-bridge-text">
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-6 md:px-6">
         <p className="hidden max-[599px]:block border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
-          This interface is best viewed on a larger screen.
+          {t.bridge.mobileNotice}
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="font-ui text-2xl font-bold tracking-wide">AGRON Bridge</h1>
+            <h1 className="font-ui text-2xl font-bold tracking-wide">
+              {t.bridge.title}
+            </h1>
             <p className="mt-1 font-mono text-[10px] tracking-[0.18em] text-bridge-dim">
-              CAPTAIN / SECURITY OFFICER INTERFACE
+              {t.bridge.subtitle}
             </p>
           </div>
-          <div className="border border-bridge-line bg-bridge-panel px-3 py-2 text-right">
+          <div className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end">
             <div className="flex items-center justify-end gap-2">
               <span
                 className={cn(
@@ -145,33 +110,37 @@ export function BridgeConsole() {
                 {riskLevel}
               </span>
             </div>
-            <p className="mt-1 font-mono text-[10px] text-bridge-dim">RISK LEVEL</p>
+            <p className="mt-1 font-mono text-[10px] text-bridge-dim">
+              {t.bridge.riskLevel}
+            </p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3 border border-bridge-line bg-bridge-panel px-3 py-2 sm:grid-cols-4 lg:grid-cols-7">
-          {TELEMETRY.map((item) => (
-            <div key={item.label}>
+          {t.bridge.telemetry.map((label, index) => (
+            <div key={label}>
               <p className="font-mono text-[9px] tracking-wider text-bridge-dim">
-                {item.label}
+                {label}
               </p>
-              <p className="font-mono text-sm text-bridge-text">{item.value}</p>
+              <p className="font-mono text-sm text-bridge-text">
+                {TELEMETRY_VALUES[index]}
+              </p>
             </div>
           ))}
           <div>
-            <p className="font-mono text-[9px] tracking-wider text-bridge-dim">UTC</p>
+            <p className="font-mono text-[9px] tracking-wider text-bridge-dim">
+              UTC
+            </p>
             <UtcClock />
           </div>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
           <HudPanel
-            title="SITUATIONAL PICTURE"
+            title={t.bridge.situational}
             extra={
               <span className="font-mono text-[10px] text-bridge-dim">
-                {showNewContact
-                  ? "RANGE 6.0 NM · 5 CONTACTS"
-                  : "RANGE 6.0 NM · 4 CONTACTS"}
+                {showNewContact ? t.bridge.contacts5 : t.bridge.contacts4}
               </span>
             }
           >
@@ -179,14 +148,14 @@ export function BridgeConsole() {
           </HudPanel>
 
           <div className="flex flex-col gap-4">
-            <HudPanel title="RISK LEVEL">
+            <HudPanel title={t.bridge.riskLevel}>
               <ul className="space-y-2">
-                {RISK_ROWS.map((row) => {
+                {RISK_KEYS.map((key, index) => {
                   const active =
-                    (row.key === "NORMAL" && !elevated) ||
-                    (row.key === "ELEVATED" && elevated);
+                    (key === "NORMAL" && !elevated) ||
+                    (key === "ELEVATED" && elevated);
                   return (
-                    <li key={row.key} className="flex items-center gap-3">
+                    <li key={key} className="flex items-center gap-3">
                       <span
                         className={cn(
                           "w-24 font-ui text-xs",
@@ -195,12 +164,12 @@ export function BridgeConsole() {
                             : "text-bridge-dim",
                         )}
                       >
-                        {row.label}
+                        {t.bridge.risks[index]}
                       </span>
                       <span
                         className={cn(
                           "h-1.5 flex-1",
-                          row.bar,
+                          RISK_BARS[index],
                           active ? "opacity-100" : "opacity-25",
                         )}
                       />
@@ -210,49 +179,46 @@ export function BridgeConsole() {
               </ul>
             </HudPanel>
 
-            <HudPanel title="CONNECTED SYSTEMS">
+            <HudPanel title={t.bridge.connected}>
               <ul className="space-y-1.5">
-                {SYSTEMS.map((system) => {
-                  const online = system.status === "Online";
-                  return (
-                    <li
-                      key={system.name}
-                      className="flex items-center justify-between gap-3 font-mono text-xs"
-                    >
-                      <span className="text-bridge-text">{system.name}</span>
-                      <span className="flex items-center gap-2 text-bridge-dim">
-                        <span
-                          className={cn(
-                            "h-1.5 w-1.5 rounded-full",
-                            online ? "bg-ok" : "bg-bridge-dim",
-                          )}
-                        />
-                        {system.status}
-                      </span>
-                    </li>
-                  );
-                })}
+                {systems.map((system) => (
+                  <li
+                    key={system.name}
+                    className="flex items-center justify-between gap-3 font-mono text-xs"
+                  >
+                    <span className="text-bridge-text">{system.name}</span>
+                    <span className="flex items-center gap-2 text-bridge-dim">
+                      <span
+                        className={cn(
+                          "h-1.5 w-1.5 rounded-full",
+                          system.online ? "bg-ok" : "bg-bridge-dim",
+                        )}
+                      />
+                      {system.online ? t.bridge.online : t.bridge.standby}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </HudPanel>
 
-            <HudPanel title="RECOMMENDED ACTION">
+            <HudPanel title={t.bridge.recommended}>
               <span className="inline-block border border-orange px-2 py-0.5 font-mono text-[10px] tracking-wider text-orange">
                 {riskLevel}
               </span>
               <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
-                {elevated ? ELEVATED_ADVICE : NORMAL_ADVICE}
+                {elevated ? t.bridge.elevatedAdvice : t.bridge.normalAdvice}
               </p>
             </HudPanel>
           </div>
         </div>
 
         <HudPanel
-          title="EVENT LOG"
+          title={t.bridge.eventLog}
           extra={
             <div className="flex flex-wrap items-center justify-end gap-3">
               <span className="flex items-center gap-1.5 text-ok">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
-                LIVE
+                {t.bridge.live}
               </span>
               {elevated ? (
                 <button
@@ -260,7 +226,7 @@ export function BridgeConsole() {
                   onClick={resolveReset}
                   className="border border-bridge-text/40 px-3 py-1 font-ui text-xs text-bridge-text hover:border-bridge-text"
                 >
-                  Resolve & reset
+                  {t.bridge.resolve}
                 </button>
               ) : (
                 <button
@@ -268,13 +234,13 @@ export function BridgeConsole() {
                   onClick={simulateAlert}
                   className="bg-orange px-3 py-1 font-ui text-xs font-medium text-white hover:bg-orange/90"
                 >
-                  Simulate alert
+                  {t.bridge.simulate}
                 </button>
               )}
             </div>
           }
         >
-          <ul className="max-h-56 space-y-2 overflow-y-auto pr-1">
+          <ul className="max-h-56 space-y-2 overflow-y-auto pe-1">
             {logEntries.map((entry, index) => (
               <li
                 key={`${entry.time}-${index}`}
@@ -290,10 +256,10 @@ export function BridgeConsole() {
           </ul>
         </HudPanel>
 
-        <p className="font-mono text-[11px] text-bridge-dim">
-          © AGRON Inc. · <Wordmark className="text-[11px]" /> — demo interface,
-          illustrative data, not a live vessel.
-        </p>
+        <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] text-bridge-dim">
+          <BrandLogo className="h-5" />
+          <p>{t.bridge.disclaimer}</p>
+        </div>
       </div>
     </div>
   );

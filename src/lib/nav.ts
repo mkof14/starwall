@@ -1,10 +1,12 @@
-export const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/how-it-works", label: "How it works" },
-  { href: "/interface", label: "Interface" },
-  { href: "/levels", label: "Levels" },
-  { href: "/technology", label: "Technology" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/containers", label: "Containers" },
-  { href: "/contact", label: "Contact" },
-] as const;
+import type { Messages } from "@/lib/i18n/messages";
+
+export const navItems: Array<{ href: string; key: keyof Messages["nav"] }> = [
+  { href: "/", key: "home" },
+  { href: "/how-it-works", key: "howItWorks" },
+  { href: "/interface", key: "interface" },
+  { href: "/levels", key: "levels" },
+  { href: "/technology", key: "technology" },
+  { href: "/faq", key: "faq" },
+  { href: "/containers", key: "containers" },
+  { href: "/contact", key: "contact" },
+];

@@ -48,6 +48,8 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/deployment` | Deployment |
 | `/contact` | Contact |
 
-## Wordmark
+## Brand, theme, and language
 
-When “StarWall” is a heading or logo-style text, render **Star** and **Wall** in two colors — never one flat color. Star is navy or white depending on the background; Wall is always the orange accent (`#F15A00`).
+The only site logo is `public/SW3.png`. Do not substitute another mark.
+
+Header and footer include a sun/moon theme switch (light/dark, stored in the browser) and a language menu: English, Spanish, French, German, Russian, Ukrainian, Arabic, Chinese, Japanese, Hebrew. Arabic and Hebrew switch the page to RTL.

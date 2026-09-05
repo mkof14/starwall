@@ -2,8 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --page: #ffffff;
+  --panel: #f4f1ea;
+  --ink: #1b2a3a;
+  --muted: #6b7280;
+  --stroke: #e5e7eb;
+  --header: #ffffff;
+  --callout: #fff1e8;
+}
+
+.dark {
+  --page: #0f1922;
+  --panel: #111820;
+  --ink: #e9e4da;
+  --muted: #9ca3af;
+  --stroke: #1c2830;
+  --header: #0a0f14;
+  --callout: #2a1a10;
+}
+
 body {
-  @apply bg-navy font-body text-sand antialiased;
+  @apply bg-page font-body text-ink antialiased;
 }
 
 @keyframes hero-radar-sweep {

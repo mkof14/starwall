@@ -1,12 +1,6 @@
-const stages = [
-  { name: "Data Sources", lines: ["radar, AIS,", "cameras, sensors"] },
-  { name: "Integration", lines: ["adapters, protocols, APIs"] },
-  { name: "Unified Data", lines: ["one shared data model"] },
-  { name: "Intelligence / AI", lines: ["correlation, learning"] },
-  { name: "Risk & Scenario", lines: ["explainable risk levels"] },
-  { name: "Decision", lines: ["recommended next step"] },
-  { name: "Support Center", lines: ["human specialist, live"] },
-];
+"use client";
+
+import { usePreferences } from "@/lib/i18n/context";
 
 const BOX_W = 156;
 const BOX_H = 100;
@@ -14,6 +8,8 @@ const GAP = 36;
 const PAD = 8;
 
 export function ArchitectureDiagram() {
+  const { t } = usePreferences();
+  const stages = t.how.stages;
   const width = PAD * 2 + stages.length * BOX_W + (stages.length - 1) * GAP;
   const height = BOX_H + PAD * 2;
 
@@ -22,18 +18,18 @@ export function ArchitectureDiagram() {
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label="StarWall architecture flow: Data Sources, Integration, Unified Data, Intelligence / AI, Risk and Scenario, Decision, Support Center"
+        aria-label={t.how.architectureLabel}
         className="h-auto w-full min-w-[880px]"
         preserveAspectRatio="xMinYMid meet"
       >
-        <title>StarWall architecture flow</title>
+        <title>{t.how.architecture}</title>
         {stages.map((stage, index) => {
           const x = PAD + index * (BOX_W + GAP);
           const y = PAD;
           const midY = y + BOX_H / 2;
 
           return (
-            <g key={stage.name}>
+            <g key={`${stage.name}-${index}`}>
               <rect x={x} y={y} width={BOX_W} height={BOX_H} fill="#0F1922" />
               <text
                 x={x + BOX_W / 2}
