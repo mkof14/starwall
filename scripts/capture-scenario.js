@@ -1,20 +1,41 @@
+const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 
 const BASE = "http://localhost:3000";
 const OUT = path.join(__dirname, "..", "public", "bridge");
 
-function unionBox(a, b) {
-  const x = Math.min(a.x, b.x);
-  const y = Math.min(a.y, b.y);
-  const right = Math.max(a.x + a.width, b.x + b.width);
-  const bottom = Math.max(a.y + a.height, b.y + b.height);
-  return {
-    x: Math.max(0, x),
-    y: Math.max(0, y),
-    width: right - Math.max(0, x),
-    height: bottom - Math.max(0, y),
-  };
+async function stitchBadgeAndRadar(page, outPath) {
+  const badgePng = await page.getByTestId("risk-badge").screenshot();
+  const radarPng = await page.getByTestId("radar-panel").screenshot();
+  const data = await page.evaluate(
+    async ([badgeB64, radarB64]) => {
+      function load(src) {
+        return new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = reject;
+          image.src = src;
+        });
+      }
+      const badge = await load(`data:image/png;base64,${badgeB64}`);
+      const radar = await load(`data:image/png;base64,${radarB64}`);
+      const gap = 12;
+      const width = Math.max(badge.width, radar.width);
+      const height = badge.height + gap + radar.height;
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#0A0F14";
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(badge, width - badge.width, 0);
+      ctx.drawImage(radar, 0, badge.height + gap);
+      return canvas.toDataURL("image/png").split(",")[1];
+    },
+    [badgePng.toString("base64"), radarPng.toString("base64")],
+  );
+  fs.writeFileSync(outPath, Buffer.from(data, "base64"));
 }
 
 async function scrollTargetIntoView(page, testId) {
@@ -44,15 +65,7 @@ async function main() {
   await page.waitForTimeout(500);
 
   await scrollTargetIntoView(page, "risk-badge");
-  const badge = await page.getByTestId("risk-badge").boundingBox();
-  const radar = await page.getByTestId("radar-panel").boundingBox();
-  if (!badge || !radar) {
-    throw new Error("Could not measure risk-badge or radar-panel");
-  }
-  await page.screenshot({
-    path: path.join(OUT, "risk-elevated.png"),
-    clip: unionBox(badge, radar),
-  });
+  await stitchBadgeAndRadar(page, path.join(OUT, "risk-elevated.png"));
 
   await page.getByTestId("recommended-action-panel").screenshot({
     path: path.join(OUT, "recommended-action.png"),
