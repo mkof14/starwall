@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --page: #e4ebf2;
-  --panel: #eef3f8;
+  --page: #d4e6f5;
+  --panel: #e3f0fa;
   --ink: #1b2a3a;
-  --muted: #5b6976;
-  --stroke: #c5d0db;
-  --header: #e4ebf2;
+  --muted: #4f6478;
+  --stroke: #a8c3d8;
+  --header: #d4e6f5;
   --callout: #fff1e8;
-  --bridge-bg: #d9e4ee;
-  --bridge-panel: #e7eef5;
-  --bridge-line: #b4c2d0;
+  --bridge-bg: #c5dcf0;
+  --bridge-panel: #d8eaf7;
+  --bridge-line: #96b4cc;
   --bridge-text: #1b2a3a;
-  --bridge-dim: #5a6a78;
+  --bridge-dim: #4d6274;
 }
 
 .dark {
