@@ -5,3 +5,19 @@
 body {
   @apply bg-navy font-body text-sand antialiased;
 }
+
+@keyframes hero-radar-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hero-radar-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 310deg,
+    rgb(51 211 166 / 0.16) 360deg
+  );
+  animation: hero-radar-sweep 14s linear infinite;
+}
