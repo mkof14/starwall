@@ -44,6 +44,16 @@ export const pageMeta = {
     description:
       "ISO dimensions, weight, power, operating temperature, and autonomy for the AGRON security container.",
   },
+  containersCountermeasures: {
+    title: "Countermeasures — AGRON Containers",
+    description:
+      "Authorized countermeasure options on select container tiers. Activation is always a human decision.",
+  },
+  containersTiers: {
+    title: "Container Tiers — AGRON Containers",
+    description:
+      "Basic, Business, Premium, and Exclusive container builds — Exclusive is subject to export control and end-user certification.",
+  },
   contact: {
     title: "Contact — StarWall by AGRON",
     description:

@@ -16,6 +16,7 @@ const zones = [
   {
     title: "Countermeasure bay",
     body: "Available on select tiers — see Countermeasures page",
+    href: "/containers/countermeasures",
   },
   {
     title: "Life support & IT",
