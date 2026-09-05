@@ -41,8 +41,15 @@ export function HomeView() {
             </Link>
             <a
               href="/starwall-overview.pdf"
-              className="inline-flex items-center justify-center border border-ink px-4 py-2.5 text-sm font-medium text-ink hover:border-orange hover:text-orange"
+              className="inline-flex items-center justify-center gap-2.5 border border-ink px-4 py-2 text-sm font-medium text-ink hover:border-orange hover:text-orange"
             >
+              <img
+                src="/overview-leaflet-thumb.jpg"
+                alt=""
+                width={24}
+                height={36}
+                className="h-9 w-6 shrink-0 border border-stroke object-cover"
+              />
               {t.home.pdfCta}
             </a>
           </div>
