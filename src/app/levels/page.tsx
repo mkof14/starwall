@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { cn } from "@/lib/cn";
 
+import { pageMeta } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "Levels",
+  title: pageMeta.levels.title,
+  description: pageMeta.levels.description,
 };
 
 const tiers = [

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 
+import { pageMeta } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "How it works",
+  title: pageMeta.howItWorks.title,
+  description: pageMeta.howItWorks.description,
 };
 
 const steps = [

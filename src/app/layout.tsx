@@ -39,7 +39,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "StarWall by AGRON",
+  title: {
+    default: "StarWall by AGRON — Maritime Security Intelligence",
+    template: "%s",
+  },
   description:
     "Intelligence, integration, and decision support for yacht, marina, port, and private island security.",
 };

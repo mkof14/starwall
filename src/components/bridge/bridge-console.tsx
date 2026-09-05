@@ -118,6 +118,9 @@ export function BridgeConsole() {
   return (
     <div className="bg-bridge-bg font-ui text-bridge-text">
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-6 md:px-6">
+        <p className="hidden max-[599px]:block border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
+          This interface is best viewed on a larger screen.
+        </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="font-ui text-2xl font-bold tracking-wide">AGRON Bridge</h1>

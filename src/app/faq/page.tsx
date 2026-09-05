@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  title: pageMeta.faq.title,
+  description: pageMeta.faq.description,
 };
 
 const faqs = [
   {
-    q: "Does StarWall replace the captain?",
+    q: (
+      <>
+        Does <span className="text-navyText">Star</span>
+        <span className="text-orange">Wall</span> replace the captain?
+      </>
+    ),
     a: "No. StarWall gives faster, clearer information and a recommended next step — the decision and the responsibility stay with the captain or security officer at all times.",
   },
   {
@@ -18,7 +25,13 @@ const faqs = [
     a: "Access follows role — owner, captain, marina, Support Center each see only what's relevant to them. Object data isn't shared outside your account, identifiable, for any AI training.",
   },
   {
-    q: "We've heard StarWall can integrate specialized detection equipment — is that legal?",
+    q: (
+      <>
+        We&apos;ve heard <span className="text-navyText">Star</span>
+        <span className="text-orange">Wall</span> can integrate specialized
+        detection equipment — is that legal?
+      </>
+    ),
     a: "Some equipment categories (for example RF/counter-drone detection) require jurisdiction-specific export and licensing checks before deployment. StarWall's architecture supports this as an optional module; enabling it always goes through a separate legal review first.",
   },
   {
@@ -41,11 +54,11 @@ export default function FaqPage() {
         </header>
 
         <div className="divide-y divide-gray-200 border-y border-gray-200">
-          {faqs.map((item) => (
-            <details key={item.q} className="group py-5">
+          {faqs.map((item, index) => (
+            <details key={index} className="group py-5">
               <summary className="cursor-pointer list-none font-heading text-xl font-bold text-navyText marker:content-none">
                 <span className="flex items-start justify-between gap-4">
-                  {item.q}
+                  <span>{item.q}</span>
                   <span
                     aria-hidden
                     className="text-orange transition-transform group-open:rotate-45"

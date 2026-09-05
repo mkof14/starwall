@@ -24,7 +24,7 @@ export function SiteHeader() {
           <span className="text-sm text-grey">by AGRON</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-5 lg:flex" aria-label="Primary">
           {navItems.map((item) => {
             const active =
               item.href === "/"
@@ -44,7 +44,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center text-navyText md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center text-navyText lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((value) => !value)}
@@ -59,7 +59,7 @@ export function SiteHeader() {
       {open ? (
         <nav
           id="mobile-nav"
-          className="w-full border-t border-gray-200 bg-white md:hidden"
+          className="w-full border-t border-gray-200 bg-white lg:hidden"
           aria-label="Mobile"
         >
           <ul>

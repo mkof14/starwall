@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroRadar } from "@/components/hero-radar";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: pageMeta.home.title,
+  description: pageMeta.home.description,
+};
 
 const points = [
   "Works with the equipment you already have — no replacement required",

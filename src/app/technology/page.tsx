@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { pageMeta } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "Technology",
+  title: pageMeta.technology.title,
+  description: pageMeta.technology.description,
 };
 
 const categories = [
