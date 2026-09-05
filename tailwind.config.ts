@@ -17,6 +17,13 @@ const config: Config = {
         ok: "#33D3A6",
         attn: "#E8B23D",
         crit: "#FF4757",
+        bridge: {
+          bg: "#0A0F14",
+          panel: "#111820",
+          line: "#1C2830",
+          text: "#E7ECEF",
+          dim: "#7C8894",
+        },
       },
       fontFamily: {
         heading: ["var(--font-cormorant)", "Georgia", "serif"],

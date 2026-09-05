@@ -21,3 +21,17 @@ body {
   );
   animation: hero-radar-sweep 14s linear infinite;
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bridge-sweep {
+  transform-origin: 340px 214px;
+  animation: spin 7s linear infinite;
+}
