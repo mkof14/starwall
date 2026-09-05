@@ -21,21 +21,12 @@ const TICKS = [
   { label: "5.8GHz", t: 1 },
 ] as const;
 
-export function SpectrumPanel() {
+export function SpectrumView() {
   const span = RIGHT - LEFT;
   const gap = 1.4;
   const width = span / BAR_COUNT - gap;
 
   return (
-    <HudPanel
-      testId="spectrum-panel"
-      title="RF SPECTRUM"
-      extra={
-        <span className="font-mono text-[10px] text-bridge-dim">
-          WIDE-BAND SCAN · ACTIVE
-        </span>
-      }
-    >
       <div className="relative overflow-hidden bg-[#0A0F14]">
         <svg viewBox="0 0 680 428" className="h-auto w-full">
           {NOISE_HEIGHTS.map((height, index) => {
@@ -89,6 +80,21 @@ export function SpectrumPanel() {
           ))}
         </svg>
       </div>
+  );
+}
+
+export function SpectrumPanel() {
+  return (
+    <HudPanel
+      testId="spectrum-panel"
+      title="RF SPECTRUM"
+      extra={
+        <span className="font-mono text-[10px] text-bridge-dim">
+          WIDE-BAND SCAN · ACTIVE
+        </span>
+      }
+    >
+      <SpectrumView />
     </HudPanel>
   );
 }

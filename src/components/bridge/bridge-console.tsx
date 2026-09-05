@@ -3,17 +3,25 @@
 import { useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
+import { PerimeterView } from "@/components/bridge/perimeter-panel";
+import { SonarView } from "@/components/bridge/sonar-panel";
+import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
 import { usePreferences } from "@/lib/i18n/context";
 import { cn } from "@/lib/cn";
-
-type RiskLevel = "NORMAL" | "ELEVATED";
-
-type LogLevel = "NORMAL" | "ATTENTION" | "ELEVATED" | "CRITICAL";
+import {
+  PANEL_CHROME,
+  RESET_LOG,
+  SCENARIO_CATEGORIES,
+  SCENARIOS,
+  type PanelType,
+  type RiskLevel,
+  type Scenario,
+} from "@/lib/scenarios";
 
 type LogEntry = {
   time: string;
-  level: LogLevel;
+  level: RiskLevel;
   text: string;
 };
 
@@ -33,16 +41,51 @@ function nowStamp() {
   return new Date().toISOString().slice(11, 19);
 }
 
-function levelClass(level: LogLevel) {
+function levelClass(level: RiskLevel) {
   if (level === "NORMAL") return "text-ok border-ok/40";
   if (level === "ATTENTION") return "text-attn border-attn/40";
   if (level === "ELEVATED") return "text-orange border-orange/40";
   return "text-crit border-crit/40";
 }
 
+function riskTone(level: RiskLevel) {
+  if (level === "ATTENTION") return { dot: "bg-attn", text: "text-attn", chip: "border-attn text-attn" };
+  if (level === "ELEVATED") return { dot: "bg-orange", text: "text-orange", chip: "border-orange text-orange" };
+  if (level === "CRITICAL") return { dot: "bg-crit", text: "text-crit", chip: "border-crit text-crit" };
+  return { dot: "bg-ok", text: "text-ok", chip: "border-ok text-ok" };
+}
+
+function pictureFor(panelType: PanelType, showNewContact: boolean, situational: string, contacts4: string, contacts5: string) {
+  if (panelType === "radar") {
+    return {
+      testId: "radar-panel",
+      title: situational,
+      extra: showNewContact ? contacts5 : contacts4,
+      view: <BridgeRadar showNewContact={showNewContact} />,
+    };
+  }
+  const chrome = PANEL_CHROME[panelType];
+  return {
+    testId: chrome.testId,
+    title: chrome.title,
+    extra: chrome.extra,
+    view:
+      panelType === "sonar" ? (
+        <SonarView />
+      ) : panelType === "spectrum" ? (
+        <SpectrumView />
+      ) : (
+        <PerimeterView />
+      ),
+  };
+}
+
 export function BridgeConsole() {
   const { t } = usePreferences();
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
+  const [panelType, setPanelType] = useState<PanelType>("radar");
+  const [actionText, setActionText] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState("");
   const [logSeed] = useState(() => [
     { time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0] },
     { time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1] },
@@ -53,26 +96,39 @@ export function BridgeConsole() {
   const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
   const [showNewContact, setShowNewContact] = useState(false);
 
-  const elevated = riskLevel === "ELEVATED";
   const systems = t.bridge.systems.map((name, index) => ({
     name,
     online: index !== 4,
   }));
+  const tone = riskTone(riskLevel);
+  const picture = pictureFor(
+    panelType,
+    showNewContact,
+    t.bridge.situational,
+    t.bridge.contacts4,
+    t.bridge.contacts5,
+  );
 
-  function simulateAlert() {
-    setRiskLevel("ELEVATED");
-    setShowNewContact(true);
+  function applyScenario(scenario: Scenario) {
+    setSelectedId(scenario.id);
+    setRiskLevel(scenario.riskLevel);
+    setPanelType(scenario.panelType);
+    setActionText(scenario.actionText);
+    setShowNewContact(scenario.panelType === "radar");
     setLogEntries((entries) => [
-      { time: nowStamp(), level: "ELEVATED", text: t.bridge.elevatedAdvice },
+      { time: nowStamp(), level: scenario.riskLevel, text: scenario.logText },
       ...entries,
     ]);
   }
 
-  function resolveReset() {
+  function resetToNormal() {
+    setSelectedId("");
     setRiskLevel("NORMAL");
+    setPanelType("radar");
+    setActionText(null);
     setShowNewContact(false);
     setLogEntries((entries) => [
-      { time: nowStamp(), level: "NORMAL", text: t.bridge.resolveLog },
+      { time: nowStamp(), level: "NORMAL", text: RESET_LOG },
       ...entries,
     ]);
   }
@@ -97,18 +153,8 @@ export function BridgeConsole() {
             className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end"
           >
             <div className="flex items-center justify-end gap-2">
-              <span
-                className={cn(
-                  "h-2 w-2 rounded-full",
-                  elevated ? "bg-orange" : "bg-ok",
-                )}
-              />
-              <span
-                className={cn(
-                  "font-mono text-sm font-semibold",
-                  elevated ? "text-orange" : "text-ok",
-                )}
-              >
+              <span className={cn("h-2 w-2 rounded-full", tone.dot)} />
+              <span className={cn("font-mono text-sm font-semibold", tone.text)}>
                 {riskLevel}
               </span>
             </div>
@@ -139,24 +185,22 @@ export function BridgeConsole() {
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
           <HudPanel
-            testId="radar-panel"
-            title={t.bridge.situational}
+            testId={picture.testId}
+            title={picture.title}
             extra={
               <span className="font-mono text-[10px] text-bridge-dim">
-                {showNewContact ? t.bridge.contacts5 : t.bridge.contacts4}
+                {picture.extra}
               </span>
             }
           >
-            <BridgeRadar showNewContact={showNewContact} />
+            {picture.view}
           </HudPanel>
 
           <div className="flex flex-col gap-4">
             <HudPanel title={t.bridge.riskLevel}>
               <ul className="space-y-2">
                 {RISK_KEYS.map((key, index) => {
-                  const active =
-                    (key === "NORMAL" && !elevated) ||
-                    (key === "ELEVATED" && elevated);
+                  const active = key === riskLevel;
                   return (
                     <li key={key} className="flex items-center gap-3">
                       <span
@@ -205,11 +249,16 @@ export function BridgeConsole() {
             </HudPanel>
 
             <HudPanel testId="recommended-action-panel" title={t.bridge.recommended}>
-              <span className="inline-block border border-orange px-2 py-0.5 font-mono text-[10px] tracking-wider text-orange">
+              <span
+                className={cn(
+                  "inline-block border px-2 py-0.5 font-mono text-[10px] tracking-wider",
+                  tone.chip,
+                )}
+              >
                 {riskLevel}
               </span>
               <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
-                {elevated ? t.bridge.elevatedAdvice : t.bridge.normalAdvice}
+                {actionText ?? t.bridge.normalAdvice}
               </p>
             </HudPanel>
           </div>
@@ -218,29 +267,43 @@ export function BridgeConsole() {
         <HudPanel
           title={t.bridge.eventLog}
           extra={
-            <div className="flex flex-wrap items-center justify-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-2">
               <span className="flex items-center gap-1.5 text-ok">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
                 {t.bridge.live}
               </span>
-              {elevated ? (
-                <button
-                  type="button"
-                  onClick={resolveReset}
-                  className="border border-bridge-text/40 px-3 py-1 font-ui text-xs text-bridge-text hover:border-bridge-text"
-                >
-                  {t.bridge.resolve}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  data-testid="simulate-alert"
-                  onClick={simulateAlert}
-                  className="bg-orange px-3 py-1 font-ui text-xs font-medium text-white hover:bg-orange/90"
-                >
-                  {t.bridge.simulate}
-                </button>
-              )}
+              <label htmlFor="scenario-select" className="sr-only">
+                Scenario
+              </label>
+              <select
+                id="scenario-select"
+                data-testid="scenario-select"
+                value={selectedId}
+                onChange={(event) => {
+                  const next = SCENARIOS.find((item) => item.id === event.target.value);
+                  if (next) applyScenario(next);
+                }}
+                className="max-w-[16rem] border border-bridge-line bg-bridge-panel px-2 py-1 font-ui text-xs text-bridge-text outline-none focus:border-orange"
+              >
+                <option value="">Select a scenario…</option>
+                {SCENARIO_CATEGORIES.map((category) => (
+                  <optgroup key={category} label={category}>
+                    {SCENARIOS.filter((item) => item.category === category).map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <button
+                type="button"
+                data-testid="reset-normal"
+                onClick={resetToNormal}
+                className="border border-bridge-text/40 px-3 py-1 font-ui text-xs text-bridge-text hover:border-bridge-text"
+              >
+                Reset to Normal
+              </button>
             </div>
           }
         >

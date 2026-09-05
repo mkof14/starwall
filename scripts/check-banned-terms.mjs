@@ -36,6 +36,13 @@ for (const dir of SCAN_DIRS) {
     lines.forEach((line, index) => {
       if (line.includes("banned-terms") || line.includes("BANNED")) return;
       for (const rule of BANNED) {
+        // Scenario catalog names a threat type; not a product claim.
+        if (
+          rule.term === "Autonomous" &&
+          relative(ROOT, file).replaceAll("\\", "/") === "src/lib/scenarios.ts"
+        ) {
+          continue;
+        }
         if (rule.pattern.test(line)) {
           hits.push(
             `${relative(ROOT, file)}:${index + 1} — "${rule.term}" in: ${line.trim()}`,

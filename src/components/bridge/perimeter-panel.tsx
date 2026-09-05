@@ -10,17 +10,8 @@ const SENSORS = [
   { x: 600, y: 250, alert: true },
 ] as const;
 
-export function PerimeterPanel() {
+export function PerimeterView() {
   return (
-    <HudPanel
-      testId="perimeter-panel"
-      title="PERIMETER"
-      extra={
-        <span className="font-mono text-[10px] text-bridge-dim">
-          5 SENSORS · 1 ALERT
-        </span>
-      }
-    >
       <div className="relative overflow-hidden bg-[#0A0F14]">
         <svg viewBox="0 0 680 428" className="h-auto w-full">
           <rect
@@ -123,6 +114,21 @@ export function PerimeterPanel() {
           )}
         </svg>
       </div>
+  );
+}
+
+export function PerimeterPanel() {
+  return (
+    <HudPanel
+      testId="perimeter-panel"
+      title="PERIMETER"
+      extra={
+        <span className="font-mono text-[10px] text-bridge-dim">
+          5 SENSORS · 1 ALERT
+        </span>
+      }
+    >
+      <PerimeterView />
     </HudPanel>
   );
 }

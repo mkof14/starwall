@@ -2,17 +2,8 @@ import { HudPanel } from "@/components/bridge/hud-panel";
 
 const MONO = "var(--font-jetbrains), ui-monospace, monospace";
 
-export function SonarPanel() {
+export function SonarView() {
   return (
-    <HudPanel
-      testId="sonar-panel"
-      title="UNDERWATER PICTURE"
-      extra={
-        <span className="font-mono text-[10px] text-bridge-dim">
-          RANGE 1.0 NM · SONAR ACTIVE
-        </span>
-      }
-    >
       <div className="relative overflow-hidden bg-[radial-gradient(circle_at_center,#0C1820_0%,#0A0F14_72%)]">
         <svg viewBox="0 0 680 428" className="h-auto w-full">
           <circle cx="340" cy="214" r="168" fill="none" stroke="#182229" strokeWidth="1" />
@@ -47,6 +38,21 @@ export function SonarPanel() {
           </g>
         </svg>
       </div>
+  );
+}
+
+export function SonarPanel() {
+  return (
+    <HudPanel
+      testId="sonar-panel"
+      title="UNDERWATER PICTURE"
+      extra={
+        <span className="font-mono text-[10px] text-bridge-dim">
+          RANGE 1.0 NM · SONAR ACTIVE
+        </span>
+      }
+    >
+      <SonarView />
     </HudPanel>
   );
 }

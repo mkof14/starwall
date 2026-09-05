@@ -61,7 +61,7 @@ async function main() {
     path: path.join(OUT, "radar-normal.png"),
   });
 
-  await page.getByTestId("simulate-alert").click();
+  await page.getByTestId("scenario-select").selectOption("converging-vessel");
   await page.waitForTimeout(500);
 
   await scrollTargetIntoView(page, "risk-badge");
