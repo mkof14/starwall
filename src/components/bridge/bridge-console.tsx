@@ -93,7 +93,10 @@ export function BridgeConsole() {
               {t.bridge.subtitle}
             </p>
           </div>
-          <div className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end">
+          <div
+            data-testid="risk-badge"
+            className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end"
+          >
             <div className="flex items-center justify-end gap-2">
               <span
                 className={cn(
@@ -137,6 +140,7 @@ export function BridgeConsole() {
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
           <HudPanel
+            testId="radar-panel"
             title={t.bridge.situational}
             extra={
               <span className="font-mono text-[10px] text-bridge-dim">
@@ -201,7 +205,7 @@ export function BridgeConsole() {
               </ul>
             </HudPanel>
 
-            <HudPanel title={t.bridge.recommended}>
+            <HudPanel testId="recommended-action-panel" title={t.bridge.recommended}>
               <span className="inline-block border border-orange px-2 py-0.5 font-mono text-[10px] tracking-wider text-orange">
                 {riskLevel}
               </span>
@@ -231,6 +235,7 @@ export function BridgeConsole() {
               ) : (
                 <button
                   type="button"
+                  data-testid="simulate-alert"
                   onClick={simulateAlert}
                   className="bg-orange px-3 py-1 font-ui text-xs font-medium text-white hover:bg-orange/90"
                 >
@@ -244,6 +249,7 @@ export function BridgeConsole() {
             {logEntries.map((entry, index) => (
               <li
                 key={`${entry.time}-${index}`}
+                data-testid={index === 0 ? "event-log-newest-row" : undefined}
                 className="grid grid-cols-[auto_auto_1fr] items-start gap-3 font-mono text-xs"
               >
                 <span className="text-bridge-dim">{entry.time}</span>

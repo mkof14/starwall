@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 3000",
     "lint": "next lint && npm run lint:copy",
-    "lint:copy": "node scripts/check-banned-terms.mjs"
+    "lint:copy": "node scripts/check-banned-terms.mjs",
+    "capture:scenario": "node scripts/capture-scenario.js"
   },
   "dependencies": {
     "framer-motion": "^13.2.0",
@@ -21,6 +22,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^14.2.35",
+    "playwright": "^1.63.0",
     "postcss": "^8",
     "prettier": "^3.9.6",
     "tailwindcss": "^3.4.1",

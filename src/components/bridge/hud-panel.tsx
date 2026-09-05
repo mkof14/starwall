@@ -6,11 +6,19 @@ type HudPanelProps = {
   extra?: ReactNode;
   children: ReactNode;
   className?: string;
+  testId?: string;
 };
 
-export function HudPanel({ title, extra, children, className }: HudPanelProps) {
+export function HudPanel({
+  title,
+  extra,
+  children,
+  className,
+  testId,
+}: HudPanelProps) {
   return (
     <section
+      data-testid={testId}
       className={cn(
         "relative border border-bridge-line bg-bridge-panel p-4",
         className,

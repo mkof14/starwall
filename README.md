@@ -19,7 +19,7 @@ Dev server: `http://127.0.0.1:3000`
 
 ## PDF overview
 
-Place the file at `public/starwall-overview.pdf` (project root `public/`, not inside `src/`). Next.js serves it at `/starwall-overview.pdf` — that is the homepage “Download overview (PDF)” link.
+The homepage “Download overview (PDF)” button uses the one-page leaflet in `public/overview-leaflet.jpg` as a thumbnail and serves `public/starwall-overview.pdf`.
 
 Bridge walkthrough stills go in `public/bridge/`:
 
