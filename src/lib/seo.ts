@@ -34,6 +34,16 @@ export const pageMeta = {
     description:
       "A self-contained detection, analysis, and response platform — deployable by land, sea, or fixed site. Detection runs on StarWall.",
   },
+  containersDetection: {
+    title: "Detection Suite — AGRON Containers",
+    description:
+      "AESA radar, acoustic radar, spectral analyzer, multi-spectrum cameras, and acoustic sonar on the AGRON container.",
+  },
+  containersSpecs: {
+    title: "Container Specifications — AGRON Containers",
+    description:
+      "ISO dimensions, weight, power, operating temperature, and autonomy for the AGRON security container.",
+  },
   contact: {
     title: "Contact — StarWall by AGRON",
     description:

@@ -11,6 +11,7 @@ const zones = [
   {
     title: "Detection suite",
     body: "Radar, acoustic sensors, EO/IR & multi-spectrum cameras, sonar",
+    href: "/containers/detection",
   },
   {
     title: "Countermeasure bay",
@@ -53,14 +54,29 @@ export default function ContainersPage() {
         </header>
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {zones.map((zone) => (
-            <article key={zone.title} className="border border-gray-200 bg-white p-5">
-              <h2 className="font-heading text-xl font-bold text-navyText">
-                {zone.title}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-grey">{zone.body}</p>
-            </article>
-          ))}
+          {zones.map((zone) => {
+            const inner = (
+              <>
+                <h2 className="font-heading text-xl font-bold text-navyText">
+                  {zone.title}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-grey">{zone.body}</p>
+              </>
+            );
+            return zone.href ? (
+              <Link
+                key={zone.title}
+                href={zone.href}
+                className="border border-gray-200 bg-white p-5 hover:border-orange"
+              >
+                {inner}
+              </Link>
+            ) : (
+              <article key={zone.title} className="border border-gray-200 bg-white p-5">
+                {inner}
+              </article>
+            );
+          })}
         </section>
 
         <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
