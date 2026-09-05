@@ -15,9 +15,13 @@ export function SiteHeader() {
   const { t } = usePreferences();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-stroke bg-header">
-      <div className="flex items-center justify-between gap-3 px-4 py-3 md:px-6">
-        <Link href="/" className="shrink-0" onClick={() => setOpen(false)}>
+    <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header">
+      <div className="flex h-full items-center justify-between gap-3 px-4 md:px-6">
+        <Link
+          href="/"
+          className="flex h-full shrink-0 items-center"
+          onClick={() => setOpen(false)}
+        >
           <BrandLogo priority />
         </Link>
 

@@ -11,10 +11,10 @@ export function BrandLogo({ className, priority = false }: BrandLogoProps) {
     <Image
       src="/SW3.png"
       alt="StarWall"
-      width={2135}
-      height={736}
+      width={2086}
+      height={316}
       priority={priority}
-      className={cn("h-8 w-auto sm:h-9", className)}
+      className={cn("h-[52px] w-auto sm:h-14", className)}
     />
   );
 }

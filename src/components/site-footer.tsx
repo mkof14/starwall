@@ -14,7 +14,7 @@ export function SiteFooter() {
     <footer className="w-full bg-navy">
       <div className="flex flex-col gap-4 px-4 py-6 text-[13px] text-sand/70 md:px-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <BrandLogo className="h-7 sm:h-8" />
+          <BrandLogo className="h-10 sm:h-11" />
           <div className="flex items-center gap-1">
             <ThemeToggle className="text-sand/80 hover:text-sand" />
             <LanguageSwitcher tone="on-dark" />
