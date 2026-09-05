@@ -15,7 +15,7 @@ export function SiteHeader() {
   const { t } = usePreferences();
 
   return (
-    <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header">
+    <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header print:hidden">
       <div className="flex h-full items-center justify-between gap-3 px-4 md:px-6">
         <Link
           href="/"

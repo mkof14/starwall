@@ -116,3 +116,33 @@ body {
   transform-origin: center bottom;
   animation: rf-noise 1.8s ease-in-out infinite;
 }
+
+@media print {
+  header,
+  footer,
+  .session-report-chrome {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #session-report,
+  #session-report * {
+    visibility: visible;
+  }
+
+  #session-report {
+    position: absolute;
+    inset: 0;
+    background: white;
+    overflow: visible;
+  }
+
+  .session-report-page {
+    box-shadow: none;
+    max-width: none;
+    padding: 0;
+  }
+}

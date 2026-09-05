@@ -12,6 +12,14 @@ export type Scenario = {
   actionText: string;
 };
 
+export type SessionEvent = {
+  timestamp: string;
+  name: string;
+  category: string;
+  riskLevel: RiskLevel;
+  actionText: string;
+};
+
 export const SCENARIO_CATEGORIES = [
   "Air",
   "Surface",

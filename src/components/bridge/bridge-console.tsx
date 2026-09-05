@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
+import { SessionReport } from "@/components/bridge/session-report";
 import { SonarView } from "@/components/bridge/sonar-panel";
 import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
@@ -17,6 +18,7 @@ import {
   type PanelType,
   type RiskLevel,
   type Scenario,
+  type SessionEvent,
 } from "@/lib/scenarios";
 
 type LogEntry = {
@@ -95,6 +97,9 @@ export function BridgeConsole() {
   ]);
   const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
   const [showNewContact, setShowNewContact] = useState(false);
+  const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportAt, setReportAt] = useState<Date | null>(null);
 
   const systems = t.bridge.systems.map((name, index) => ({
     name,
@@ -115,9 +120,20 @@ export function BridgeConsole() {
     setPanelType(scenario.panelType);
     setActionText(scenario.actionText);
     setShowNewContact(scenario.panelType === "radar");
+    const stamp = nowStamp();
     setLogEntries((entries) => [
-      { time: nowStamp(), level: scenario.riskLevel, text: scenario.logText },
+      { time: stamp, level: scenario.riskLevel, text: scenario.logText },
       ...entries,
+    ]);
+    setSessionEvents((events) => [
+      ...events,
+      {
+        timestamp: stamp,
+        name: scenario.name,
+        category: scenario.category,
+        riskLevel: scenario.riskLevel,
+        actionText: scenario.actionText,
+      },
     ]);
   }
 
@@ -304,6 +320,17 @@ export function BridgeConsole() {
               >
                 Reset to Normal
               </button>
+              <button
+                type="button"
+                data-testid="generate-report"
+                onClick={() => {
+                  setReportAt(new Date());
+                  setReportOpen(true);
+                }}
+                className="bg-orange px-3 py-1 font-ui text-xs font-medium text-white hover:bg-orange/90"
+              >
+                Generate report
+              </button>
             </div>
           }
         >
@@ -326,6 +353,13 @@ export function BridgeConsole() {
 
         <p className="font-mono text-[11px] text-bridge-dim">{t.bridge.disclaimer}</p>
       </div>
+      {reportOpen && reportAt ? (
+        <SessionReport
+          events={sessionEvents}
+          generatedAt={reportAt}
+          onBack={() => setReportOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
