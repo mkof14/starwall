@@ -57,12 +57,20 @@ export default function OverviewPage() {
               </li>
             ))}
           </ul>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
-          >
-            Contact AGRON Maritime
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
+            >
+              Contact AGRON Maritime
+            </Link>
+            <a
+              href="/starwall-overview.pdf"
+              className="inline-flex items-center justify-center border border-navyText px-4 py-2.5 text-sm font-medium text-navyText hover:border-orange hover:text-orange"
+            >
+              Download overview (PDF)
+            </a>
+          </div>
         </div>
         <HeroRadar />
       </section>

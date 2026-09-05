@@ -15,11 +15,15 @@ npm install
 npm run dev
 ```
 
-Dev server: `http://127.0.0.1:43180`
+Dev server: `http://127.0.0.1:3000`
+
+## PDF overview
+
+Place the file at `public/starwall-overview.pdf` (project root `public/`, not inside `src/`). Next.js serves it at `/starwall-overview.pdf` — that is the homepage “Download overview (PDF)” link.
 
 ## Routes
 
-Shared sticky header and footer wrap every route via the root layout. The homepage is the short entry point (hero + four handoff cards). Other pages are still placeholder `<h1>`s until later content tasks.
+Shared sticky header and footer wrap every route via the root layout.
 
 | Path | Heading |
 |---|---|
