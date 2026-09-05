@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 0.0.0.0 -p 43180",
+    "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
-    "start": "next start -H 0.0.0.0 -p 43180",
+    "start": "next start -H 0.0.0.0 -p 3000",
     "lint": "next lint && npm run lint:copy",
     "lint:copy": "node scripts/check-banned-terms.mjs"
   },
