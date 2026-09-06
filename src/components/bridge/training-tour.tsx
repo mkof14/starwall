@@ -42,7 +42,7 @@ const STEPS: Step[] = [
   },
   {
     target: null,
-    text: "That's the basics. Open the SELECT SCENARIO block and pick a case to see it in action.",
+    text: "That's the basics. Open SELECT SCENARIO — use Show library if it is folded — and pick a case to see it in action.",
   },
   // Adaptive Learning sits below the watch console and is left out of this tour on purpose.
 ];
