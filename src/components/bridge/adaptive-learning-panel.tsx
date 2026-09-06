@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { cn } from "@/lib/cn";
+import { useCrisisMode } from "@/lib/crisis-mode";
 
 const MONO = "var(--font-jetbrains), ui-monospace, monospace";
 
@@ -35,7 +36,9 @@ const DAYS = [
 export function AdaptiveLearningPanel() {
   const [day, setDay] = useState<(typeof DAYS)[number]["id"]>("1");
   const [expanded, setExpanded] = useState(true);
+  const { crisis } = useCrisisMode();
   const current = DAYS.find((item) => item.id === day) ?? DAYS[0];
+  if (crisis) return null;
 
   return (
     <div className="dark bg-bridge-bg px-4 pb-10 md:px-6">

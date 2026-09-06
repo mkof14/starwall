@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
+import { CrisisBanner } from "@/components/bridge/crisis-banner";
+import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
@@ -12,6 +14,8 @@ import { TrainingTour } from "@/components/bridge/training-tour";
 import { SonarView } from "@/components/bridge/sonar-panel";
 import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
+import { CRISIS_PROTOCOLS, FALLBACK_CRISIS_STEPS } from "@/lib/crisis-protocols";
+import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
 import { cn } from "@/lib/cn";
 import {
@@ -87,6 +91,7 @@ function pictureFor(panelType: PanelType, showNewContact: boolean, situational: 
 
 export function BridgeConsole() {
   const { t } = usePreferences();
+  const { setCrisis } = useCrisisMode();
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
   const [panelType, setPanelType] = useState<PanelType>("radar");
   const [actionText, setActionText] = useState<string | null>(null);
@@ -94,6 +99,7 @@ export function BridgeConsole() {
     null,
   );
   const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [logSeed] = useState(() => [
     { time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0] },
     { time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1] },
@@ -122,19 +128,28 @@ export function BridgeConsole() {
   );
 
   function applyScenario(scenario: Scenario) {
+    const critical = scenario.riskLevel === "CRITICAL";
     setSelectedId(scenario.id);
+    setSelectedName(scenario.name);
     setRiskLevel(scenario.riskLevel);
     setPanelType(scenario.panelType);
     setActionText(scenario.actionText);
-    setActionOptions(
-      scenario.riskLevel === "CRITICAL" ? null : scenario.options ?? null,
-    );
+    setActionOptions(critical ? null : scenario.options ?? null);
     setShowNewContact(scenario.panelType === "radar");
+    setCrisis(critical);
+    if (critical) setTraining(false);
     const stamp = nowStamp();
-    setLogEntries((entries) => [
+    const nextRows: LogEntry[] = [
       { time: stamp, level: scenario.riskLevel, text: scenario.logText },
-      ...entries,
-    ]);
+    ];
+    if (critical) {
+      nextRows.unshift({
+        time: stamp,
+        level: "CRITICAL",
+        text: `CRISIS MODE ACTIVATED — ${scenario.name}`,
+      });
+    }
+    setLogEntries((entries) => [...nextRows, ...entries]);
     setSessionEvents((events) => [
       ...events,
       {
@@ -149,19 +164,44 @@ export function BridgeConsole() {
 
   function resetToNormal() {
     setSelectedId("");
+    setSelectedName("");
     setRiskLevel("NORMAL");
     setPanelType("radar");
     setActionText(null);
     setActionOptions(null);
     setShowNewContact(false);
+    setCrisis(false);
     setLogEntries((entries) => [
       { time: nowStamp(), level: "NORMAL", text: RESET_LOG },
       ...entries,
     ]);
   }
 
+  function logSupportEscalation() {
+    setLogEntries((entries) => [
+      {
+        time: nowStamp(),
+        level: "CRITICAL",
+        text: "Escalated to Support Center — connection established",
+      },
+      ...entries,
+    ]);
+  }
+
+  const crisis = riskLevel === "CRITICAL" && selectedId !== "";
+  const crisisSteps = CRISIS_PROTOCOLS[selectedId] ?? FALLBACK_CRISIS_STEPS;
+
   return (
-    <div className="bg-bridge-bg font-ui text-bridge-text">
+    <div
+      data-testid="bridge-console"
+      className={cn(
+        "bg-bridge-bg font-ui text-bridge-text",
+        crisis && "border-4 border-crit",
+      )}
+    >
+      {crisis ? (
+        <CrisisBanner scenarioName={selectedName} onExit={resetToNormal} />
+      ) : null}
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-6 md:px-6">
         <p className="hidden max-[599px]:block border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
           {t.bridge.mobileNotice}
@@ -177,6 +217,7 @@ export function BridgeConsole() {
           </div>
           <div className="flex flex-wrap items-start justify-end gap-3">
             <FullscreenButton />
+            {crisis ? null : (
             <button
               type="button"
               data-testid="training-toggle"
@@ -195,6 +236,8 @@ export function BridgeConsole() {
             >
               Training Mode
             </button>
+            )}
+          {crisis ? null : (
           <div
             data-testid="risk-badge"
             className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end"
@@ -209,6 +252,7 @@ export function BridgeConsole() {
               {t.bridge.riskLevel}
             </p>
           </div>
+          )}
           </div>
         </div>
 
@@ -250,6 +294,13 @@ export function BridgeConsole() {
           </div>
 
           <div className="flex flex-col gap-4">
+            {crisis ? (
+              <CrisisProtocolPanel
+                steps={crisisSteps}
+                onEscalated={logSupportEscalation}
+              />
+            ) : (
+              <>
             <HudPanel testId="risk-level-panel" title={t.bridge.riskLevel}>
               <ul className="space-y-2">
                 {RISK_KEYS.map((key, index) => {
@@ -318,9 +369,12 @@ export function BridgeConsole() {
                 </p>
               )}
             </HudPanel>
+              </>
+            )}
           </div>
         </div>
 
+        <div className={crisis ? "hidden" : undefined}>
         <ScenarioLibrary
           selectedId={selectedId}
           onSelect={applyScenario}
@@ -331,6 +385,7 @@ export function BridgeConsole() {
             setReportOpen(true);
           }}
         />
+        </div>
 
         <HudPanel
           testId="event-log-panel"

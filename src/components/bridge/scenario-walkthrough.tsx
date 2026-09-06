@@ -1,6 +1,7 @@
 "use client";
 
 import { ScenarioStill } from "@/components/bridge/scenario-still";
+import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
 
 const files = [
@@ -12,6 +13,8 @@ const files = [
 
 export function ScenarioWalkthrough() {
   const { t } = usePreferences();
+  const { crisis } = useCrisisMode();
+  if (crisis) return null;
 
   return (
     <section className="bg-bridge-bg px-4 pb-4 pt-10 text-bridge-text md:px-6">
