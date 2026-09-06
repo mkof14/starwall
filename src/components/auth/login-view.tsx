@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { TaskList } from "@/components/auth/task-list";
 import { LiveModeBanner } from "@/components/live-mode-banner";
@@ -10,14 +10,13 @@ import { safeNextPath, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAppMode } from "@/lib/mode";
 
-export function LoginView() {
+export function LoginView({ next }: { next?: string | null }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { live } = useAppMode();
   const { t } = usePreferences();
   const { ready, session, error, signIn, signOut, clearError } = useAuthSession();
   const copy = t.auth;
-  const nextPath = safeNextPath(searchParams.get("next"));
+  const nextPath = safeNextPath(next);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,16 +56,6 @@ export function LoginView() {
     router.push(safeNextPath(pendingNext ?? nextPath));
   }
 
-  if (!ready) {
-    return (
-      <div className="bg-page text-ink" data-testid="auth-loading">
-        <div className="mx-auto max-w-xl px-4 py-16">
-          <p className="font-mono text-xs text-muted">{copy.loading}</p>
-        </div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="bg-page text-ink" data-testid="auth-error">
@@ -103,9 +92,18 @@ export function LoginView() {
           <ModeToggle />
         </header>
 
-        <p className="mt-6 border border-stroke bg-panel px-3 py-2 font-mono text-[11px] text-muted">
-          {live ? copy.sessionNoticeLive : copy.sessionNotice}
-        </p>
+        {!ready ? (
+          <p
+            data-testid="auth-loading"
+            className="mt-6 border border-stroke bg-panel px-3 py-2 font-mono text-[11px] text-muted"
+          >
+            {copy.loading}
+          </p>
+        ) : (
+          <p className="mt-6 border border-stroke bg-panel px-3 py-2 font-mono text-[11px] text-muted">
+            {live ? copy.sessionNoticeLive : copy.sessionNotice}
+          </p>
+        )}
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[22rem_1fr]">
           <section
