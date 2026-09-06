@@ -11,7 +11,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export function databaseConfigured() {
-  return Boolean(resolveDatabaseUrl());
+  return /^postgres(ql)?:\/\//i.test(resolveDatabaseUrl());
 }
 
 export function getPrisma() {

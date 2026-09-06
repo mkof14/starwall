@@ -115,9 +115,8 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
    - `NEXTAUTH_URL` — same production origin.
    - `NEXTAUTH_SECRET` — random secret for session tokens.
    - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from the Google Cloud OAuth client. Without them the Google button is visible but sign-in cannot complete.
-   - `DATABASE_URL` — Neon **pooled** Postgres URL (add `?sslmode=require` if it is missing).
-   - `DIRECT_URL` — Neon **direct** Postgres URL (used by `prisma migrate deploy` during `npm run build`). Locally both can be the same URL.
-3. Deploy. `vercel.json` pins the framework and a single region (`iad1`). `npm run build` runs `prisma generate`, `prisma migrate deploy`, then `next build`.
+   - `DATABASE_URL` — Neon / Vercel Postgres URL (add `?sslmode=require` if it is missing). Use the pooled connection string. The build runs `prisma migrate deploy` only when this is a hosted Postgres URL, so a missing database does not fail the Vercel deploy.
+3. Deploy. `vercel.json` pins the framework and a single region (`iad1`). `npm run build` generates the Prisma client, applies migrations when a hosted `DATABASE_URL` is set, then runs `next build`.
 
 ## Postgres on Vercel (required)
 
@@ -129,19 +128,17 @@ Do this in the Vercel dashboard (you have to click these — the agent cannot pr
 
 1. Open the StarWall project in [Vercel](https://vercel.com).
 2. Go to **Storage → Create Database → Postgres** (Neon). Create it in the same region as the app (`iad1` if you keep the default).
-3. Open the new database → **.env** or **Connect**. Copy two URIs:
-   - **Pooled** connection string → `DATABASE_URL` (Prisma at runtime).
-   - **Direct** connection string → `DIRECT_URL` (migrations).
-4. If either URI is missing `sslmode=require`, append `?sslmode=require` (or `&sslmode=require` if the query string already exists).
-5. Go to **Settings → Environment Variables** and set both `DATABASE_URL` and `DIRECT_URL` for **Production** and **Preview**.
-6. Redeploy. The build command runs `npx prisma migrate deploy`, which creates `User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`, `Equipment`, `NotificationRoute`, `AuditLog`, and `Integration`.
+3. Open the new database → **.env** or **Connect**. Copy the connection string into `DATABASE_URL` (the direct URI is safer for `prisma migrate deploy`; pooled also works at runtime).
+4. If the URI is missing `sslmode=require`, append `?sslmode=require` (or `&sslmode=require` if the query string already exists).
+5. Go to **Settings → Environment Variables** and set `DATABASE_URL` for **Production** and **Preview**.
+6. Redeploy. When `DATABASE_URL` is a hosted Postgres URL, the build runs `npx prisma migrate deploy` and creates `User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`, `Equipment`, `NotificationRoute`, `AuditLog`, and `Integration`.
 7. After the first successful deploy, sign in with a demo account from `/login` or create one on `/signup`. Seed accounts are created on first backend request when the database is empty.
 
 Local development:
 
 ```bash
 # Example local server (user/password/db all "starwall")
-# DATABASE_URL and DIRECT_URL in .env.local:
+# DATABASE_URL in .env.local:
 # postgresql://starwall:starwall@127.0.0.1:5432/starwall
 
 npx prisma generate

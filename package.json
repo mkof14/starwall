@@ -4,14 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "node scripts/prisma-generate.mjs && node scripts/migrate-if-hosted.mjs && next build",
     "start": "next start -H 0.0.0.0 -p 3000",
     "test": "vitest run",
     "lint": "next lint && npm run lint:copy",
     "lint:copy": "node scripts/check-banned-terms.mjs",
     "capture:scenario": "node scripts/capture-scenario.js",
-    "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
+    "postinstall": "node scripts/prisma-generate.mjs",
+    "db:generate": "node scripts/prisma-generate.mjs",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate deploy"
   },
