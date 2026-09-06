@@ -5,6 +5,7 @@ import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
+import { RankedActionList } from "@/components/bridge/ranked-action-list";
 import { ScenarioLibrary } from "@/components/bridge/scenario-library";
 import { SessionReport } from "@/components/bridge/session-report";
 import { TrainingTour } from "@/components/bridge/training-tour";
@@ -19,6 +20,7 @@ import {
   type PanelType,
   type RiskLevel,
   type Scenario,
+  type ScenarioOption,
   type SessionEvent,
 } from "@/lib/scenarios";
 
@@ -88,6 +90,9 @@ export function BridgeConsole() {
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
   const [panelType, setPanelType] = useState<PanelType>("radar");
   const [actionText, setActionText] = useState<string | null>(null);
+  const [actionOptions, setActionOptions] = useState<ScenarioOption[] | null>(
+    null,
+  );
   const [selectedId, setSelectedId] = useState("");
   const [logSeed] = useState(() => [
     { time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0] },
@@ -121,6 +126,9 @@ export function BridgeConsole() {
     setRiskLevel(scenario.riskLevel);
     setPanelType(scenario.panelType);
     setActionText(scenario.actionText);
+    setActionOptions(
+      scenario.riskLevel === "CRITICAL" ? null : scenario.options ?? null,
+    );
     setShowNewContact(scenario.panelType === "radar");
     const stamp = nowStamp();
     setLogEntries((entries) => [
@@ -144,6 +152,7 @@ export function BridgeConsole() {
     setRiskLevel("NORMAL");
     setPanelType("radar");
     setActionText(null);
+    setActionOptions(null);
     setShowNewContact(false);
     setLogEntries((entries) => [
       { time: nowStamp(), level: "NORMAL", text: RESET_LOG },
@@ -301,9 +310,13 @@ export function BridgeConsole() {
               >
                 {riskLevel}
               </span>
-              <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
-                {actionText ?? t.bridge.normalAdvice}
-              </p>
+              {actionOptions ? (
+                <RankedActionList options={actionOptions} />
+              ) : (
+                <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
+                  {actionText ?? t.bridge.normalAdvice}
+                </p>
+              )}
             </HudPanel>
           </div>
         </div>

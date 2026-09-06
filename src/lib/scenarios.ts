@@ -2,6 +2,12 @@ export type RiskLevel = "NORMAL" | "ATTENTION" | "ELEVATED" | "CRITICAL";
 
 export type PanelType = "radar" | "sonar" | "spectrum" | "perimeter";
 
+export type ScenarioOption = {
+  label: string;
+  detail: string;
+  recommended: boolean;
+};
+
 export type Scenario = {
   id: string;
   category: string;
@@ -10,6 +16,7 @@ export type Scenario = {
   panelType: PanelType;
   logText: string;
   actionText: string;
+  options?: ScenarioOption[];
 };
 
 export type SessionEvent = {
@@ -39,7 +46,26 @@ export const SCENARIOS: Scenario[] = [
     logText:
       "Unidentified UAV holding position 200m off starboard beam, camera-equipped, no registered operator signal.",
     actionText:
-      "Maintain visual track. If it enters the 100m exclusion zone, hail via loudspeaker and log for the incident report.",
+      "Hold visual track. Keep it in sight and log the pass; challenge only if it enters the 100m exclusion zone.",
+    options: [
+      {
+        label: "Hold visual track",
+        detail:
+          "Keep it in sight and log the pass; challenge only if it enters the 100m exclusion zone.",
+        recommended: true,
+      },
+      {
+        label: "Hail via loudspeaker now",
+        detail:
+          "Faster challenge if an operator is nearby, but you have announced that you noticed it.",
+        recommended: false,
+      },
+      {
+        label: "Ask Support Center to identify",
+        detail: "Useful if it stays on station, slower than a local visual watch.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "payload-drone",
@@ -71,7 +97,26 @@ export const SCENARIOS: Scenario[] = [
     panelType: "radar",
     logText: "UAV holding fixed position for 14 minutes, altitude 80m, bearing 270.",
     actionText:
-      "Log position and duration. Reassess if loiter time exceeds 30 minutes or altitude decreases.",
+      "Log position and keep watch. Record bearing, altitude, and duration; reassess after 30 minutes or if it descends.",
+    options: [
+      {
+        label: "Log position and keep watch",
+        detail:
+          "Record bearing, altitude, and duration; reassess after 30 minutes or if it descends.",
+        recommended: true,
+      },
+      {
+        label: "Challenge on loudspeaker",
+        detail: "May end the loiter sooner, at the cost of revealing the watch.",
+        recommended: false,
+      },
+      {
+        label: "Widen RF and camera coverage",
+        detail:
+          "Better chance of finding a nearby operator, extra attention for a still contact.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "converging-vessel",
@@ -82,7 +127,26 @@ export const SCENARIOS: Scenario[] = [
     logText:
       "Unidentified contact closing at 8 kn on an intercept-like bearing, no AIS response after two attempts.",
     actionText:
-      "Recommend hailing on VHF ch.16, increase watch, prepare to alter course if range closes below 1.0 NM.",
+      "Hail on VHF ch.16. Direct contact, fastest resolution if the vessel is monitoring radio.",
+    options: [
+      {
+        label: "Hail on VHF ch.16",
+        detail:
+          "Direct contact, fastest resolution if the vessel is monitoring radio.",
+        recommended: true,
+      },
+      {
+        label: "Increase watch only",
+        detail:
+          "Lower disruption, but delays identification if the contact doesn't respond to other cues.",
+        recommended: false,
+      },
+      {
+        label: "Alter course preemptively",
+        detail: "Removes the risk immediately, at the cost of the planned route.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "vessel-no-ais",
@@ -91,7 +155,27 @@ export const SCENARIOS: Scenario[] = [
     riskLevel: "ATTENTION",
     panelType: "radar",
     logText: "Vessel in anchorage zone for 40 minutes, no AIS transponder detected.",
-    actionText: "Monitor. Request identification via VHF if the vessel remains beyond one hour.",
+    actionText:
+      "Continue monitoring. Static contacts without AIS are common in an anchorage; wait one hour before escalating.",
+    options: [
+      {
+        label: "Continue monitoring",
+        detail:
+          "Static contacts without AIS are common in an anchorage; wait one hour before escalating.",
+        recommended: true,
+      },
+      {
+        label: "Hail via VHF now",
+        detail:
+          "Faster identification, but occupies the watch for a vessel that is not moving.",
+        recommended: false,
+      },
+      {
+        label: "Dispatch tender to investigate",
+        detail: "Confirms identity at the cost of a boat, crew, and time.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "usv-swarm",
@@ -131,7 +215,27 @@ export const SCENARIOS: Scenario[] = [
     logText:
       "Weak acoustic contact, bearing 200, classification uncertain — possible UUV, low confidence.",
     actionText:
-      "Continue passive monitoring. Avoid active sonar unless the contact confirms hostile behavior.",
+      "Continue passive monitoring. Avoids lighting up the water column until the contact is confirmed.",
+    options: [
+      {
+        label: "Continue passive monitoring",
+        detail:
+          "Avoids lighting up the water column until the contact is confirmed.",
+        recommended: true,
+      },
+      {
+        label: "Go active on sonar",
+        detail:
+          "Better classification, but announces your sensors and can mask other contacts.",
+        recommended: false,
+      },
+      {
+        label: "Stand by the security team",
+        detail:
+          "Ready if it closes the hull, pulls people from other duties for a weak contact.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "diver-near-hull",
@@ -141,7 +245,27 @@ export const SCENARIOS: Scenario[] = [
     panelType: "sonar",
     logText: "Sonar contact consistent with a swimmer, 15m from hull, depth 3m.",
     actionText:
-      "Alert the security team. Do not start engines or thrusters until the contact is identified.",
+      "Alert security and freeze thrusters. A swimmer this close can be killed by a prop — stop machinery until identified.",
+    options: [
+      {
+        label: "Alert security and freeze thrusters",
+        detail:
+          "A swimmer this close can be killed by a prop — stop machinery until identified.",
+        recommended: true,
+      },
+      {
+        label: "Illuminate and hail from deck",
+        detail:
+          "May identify a known diver, but does not remove the machinery risk.",
+        recommended: false,
+      },
+      {
+        label: "Launch a tender to intercept",
+        detail:
+          "Puts eyes on the swimmer, takes time and puts a small boat in the water.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "uuv-payload",
@@ -162,7 +286,25 @@ export const SCENARIOS: Scenario[] = [
     panelType: "spectrum",
     logText: "Reported GPS position inconsistent with radar-derived position by 340m.",
     actionText:
-      "Cross-check position with radar and visual references. Do not rely on GPS-only navigation until resolved.",
+      "Cross-check radar and visual. Do not steer on GPS-only until the 340m offset is explained.",
+    options: [
+      {
+        label: "Cross-check radar and visual",
+        detail: "Do not steer on GPS-only until the 340m offset is explained.",
+        recommended: true,
+      },
+      {
+        label: "Switch to backup position source",
+        detail:
+          "Isolates a bad feed, and may drop some chart overlays until you switch back.",
+        recommended: false,
+      },
+      {
+        label: "Reduce speed until positions agree",
+        detail: "Buys time to sort the fix, at the cost of the passage plan.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "comms-jamming",
@@ -183,7 +325,26 @@ export const SCENARIOS: Scenario[] = [
     panelType: "spectrum",
     logText: "Unclassified RF emission detected, bearing 150, intermittent.",
     actionText:
-      "Log signal characteristics. No immediate action required unless the pattern repeats or strengthens.",
+      "Log the emission and wait. A single intermittent burst is often benign; you have a record if it repeats.",
+    options: [
+      {
+        label: "Log the emission and wait",
+        detail:
+          "A single intermittent burst is often benign; you have a record if it repeats.",
+        recommended: true,
+      },
+      {
+        label: "Widen the spectrum scan",
+        detail:
+          "Catches a second burst sooner, at the cost of operator attention.",
+        recommended: false,
+      },
+      {
+        label: "Compare with nearby traffic",
+        detail: "May explain the burst as a known ship, or waste time on a one-off.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "network-intrusion",
@@ -193,7 +354,27 @@ export const SCENARIOS: Scenario[] = [
     panelType: "spectrum",
     logText:
       "Unusual authentication attempts detected on the vessel network from an unrecognized device.",
-    actionText: "Isolate the affected network segment. Notify IT / Support Center.",
+    actionText:
+      "Isolate the affected segment. Stops spread while IT / Support Center reviews the unrecognized device.",
+    options: [
+      {
+        label: "Isolate the affected segment",
+        detail:
+          "Stops spread while IT / Support Center reviews the unrecognized device.",
+        recommended: true,
+      },
+      {
+        label: "Block all new device joins",
+        detail: "Stops the attacker and also blocks a legitimate spare laptop.",
+        recommended: false,
+      },
+      {
+        label: "Remove only the suspect device",
+        detail:
+          "Smaller disruption if you already know which device — risky if you guess wrong.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "perimeter-breach",
@@ -203,7 +384,26 @@ export const SCENARIOS: Scenario[] = [
     panelType: "perimeter",
     logText:
       "Motion sensor triggered, fence line sector 4, no authorized personnel logged in the area.",
-    actionText: "Dispatch the nearest security patrol. Activate area cameras.",
+    actionText:
+      "Dispatch nearest patrol, open cameras. Get eyes on sector 4 before anyone walks the fence line blind.",
+    options: [
+      {
+        label: "Dispatch nearest patrol, open cameras",
+        detail: "Get eyes on sector 4 before anyone walks the fence line blind.",
+        recommended: true,
+      },
+      {
+        label: "Lock the adjacent gates only",
+        detail:
+          "Contains the sector, and may trap a legitimate worker on the wrong side.",
+        recommended: false,
+      },
+      {
+        label: "Hold all site movement",
+        detail: "Maximum control for a single fence hit, high disruption to normal work.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "unauthorized-vehicle",
@@ -212,7 +412,26 @@ export const SCENARIOS: Scenario[] = [
     riskLevel: "ATTENTION",
     panelType: "perimeter",
     logText: "Vehicle at gate 2 without a registered access credential.",
-    actionText: "Hold at checkpoint, verify identity before granting access.",
+    actionText:
+      "Hold at the checkpoint and verify. No entry until the driver and vehicle are identified.",
+    options: [
+      {
+        label: "Hold at the checkpoint and verify",
+        detail: "No entry until the driver and vehicle are identified.",
+        recommended: true,
+      },
+      {
+        label: "Deny and turn the vehicle away",
+        detail:
+          "Fastest close-out if they have no business here, wrong if they are an expected guest.",
+        recommended: false,
+      },
+      {
+        label: "Call the listed sponsor first",
+        detail: "Helps when they claim an appointment, adds a delay at the gate.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "tailgating",
@@ -221,7 +440,26 @@ export const SCENARIOS: Scenario[] = [
     riskLevel: "ATTENTION",
     panelType: "perimeter",
     logText: "Two persons detected passing a single-badge access point.",
-    actionText: "Review camera footage, confirm the second person's authorization.",
+    actionText:
+      "Review camera, confirm the second person. Most tailgates are guests or colleagues — check before a hard stop.",
+    options: [
+      {
+        label: "Review camera, confirm the second person",
+        detail: "Most tailgates are guests or colleagues — check before a hard stop.",
+        recommended: true,
+      },
+      {
+        label: "Challenge both persons now",
+        detail:
+          "Immediate control, and can embarrass someone who was authorized.",
+        recommended: false,
+      },
+      {
+        label: "Hold the door cycle",
+        detail: "Stops a third entry, but queues everyone behind that access point.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "unattended-object",
@@ -230,7 +468,26 @@ export const SCENARIOS: Scenario[] = [
     riskLevel: "ATTENTION",
     panelType: "perimeter",
     logText: "Object detected in a controlled zone for over 20 minutes, no associated personnel.",
-    actionText: "Do not approach directly. Notify the security lead for assessment.",
+    actionText:
+      "Notify the security lead, do not approach. Keep people clear until someone qualified looks at it.",
+    options: [
+      {
+        label: "Notify the security lead, do not approach",
+        detail: "Keep people clear until someone qualified looks at it.",
+        recommended: true,
+      },
+      {
+        label: "Isolate the zone and wait",
+        detail:
+          "Same caution with a wider cordon — more disruption if it is forgotten kit.",
+        recommended: false,
+      },
+      {
+        label: "Ask nearby staff if they left it",
+        detail: "Fast resolution when it is theirs, wrong if it is not.",
+        recommended: false,
+      },
+    ],
   },
   {
     id: "multi-domain-event",
@@ -262,7 +519,27 @@ export const SCENARIOS: Scenario[] = [
     logText:
       "Special Event Mode active — temporary risk profile adjustment for elevated guest presence.",
     actionText:
-      "Baseline sensitivity increased. Review all Attention-level contacts manually during this period.",
+      "Review Attention contacts by hand. Sensitivity is already raised; a human check avoids a false move during the event.",
+    options: [
+      {
+        label: "Review Attention contacts by hand",
+        detail:
+          "Sensitivity is already raised; a human check avoids a false move during the event.",
+        recommended: true,
+      },
+      {
+        label: "Tighten the exclusion zone",
+        detail:
+          "Safer for guests, more false alerts and more friction at the perimeter.",
+        recommended: false,
+      },
+      {
+        label: "Add a second watchstander",
+        detail:
+          "Better coverage for the event, at the cost of one more person on the watch.",
+        recommended: false,
+      },
+    ],
   },
 ];
 
