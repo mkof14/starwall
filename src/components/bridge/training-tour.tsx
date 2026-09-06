@@ -34,7 +34,7 @@ const STEPS: Step[] = [
   },
   {
     target: "scenario-picker",
-    text: "For training purposes, you can select any scenario here to see how StarWall responds — this is how new crew practice recognizing each situation type.",
+    text: "This is the scenario library — six visible sections, twenty-three situations. Pick any case to see how StarWall responds. Training Mode stays on so you can walk the rest of the console against that situation.",
   },
   {
     target: "event-log-panel",
@@ -42,7 +42,7 @@ const STEPS: Step[] = [
   },
   {
     target: null,
-    text: "That's the basics. Try selecting a scenario from the dropdown now to see it in action.",
+    text: "That's the basics. Open the SELECT SCENARIO block and pick a case to see it in action.",
   },
   // Adaptive Learning sits below the watch console and is left out of this tour on purpose.
 ];

@@ -71,8 +71,8 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
 
         {events.length === 0 ? (
           <p className="mt-8 text-base text-[#6B7280]">
-            No events yet this session — try a scenario from the dropdown, then
-            generate a report.
+            No events yet this session — pick a case from the SELECT SCENARIO
+            block, then generate a report.
           </p>
         ) : (
           <>

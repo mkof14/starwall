@@ -5,6 +5,7 @@ import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
+import { ScenarioLibrary } from "@/components/bridge/scenario-library";
 import { SessionReport } from "@/components/bridge/session-report";
 import { TrainingTour } from "@/components/bridge/training-tour";
 import { SonarView } from "@/components/bridge/sonar-panel";
@@ -15,8 +16,6 @@ import { cn } from "@/lib/cn";
 import {
   PANEL_CHROME,
   RESET_LOG,
-  SCENARIO_CATEGORIES,
-  SCENARIOS,
   type PanelType,
   type RiskLevel,
   type Scenario,
@@ -309,62 +308,25 @@ export function BridgeConsole() {
           </div>
         </div>
 
+        <ScenarioLibrary
+          selectedId={selectedId}
+          onSelect={applyScenario}
+          onReset={resetToNormal}
+          onReport={() => {
+            setTraining(false);
+            setReportAt(new Date());
+            setReportOpen(true);
+          }}
+        />
+
         <HudPanel
           testId="event-log-panel"
           title={t.bridge.eventLog}
           extra={
-            <div className="flex flex-wrap items-center justify-end gap-2">
-              <span className="flex items-center gap-1.5 text-ok">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
-                {t.bridge.live}
-              </span>
-              <div data-testid="scenario-picker" className="w-full min-w-[12rem] sm:w-auto">
-              <label htmlFor="scenario-select" className="sr-only">
-                Scenario
-              </label>
-              <select
-                id="scenario-select"
-                data-testid="scenario-select"
-                value={selectedId}
-                onChange={(event) => {
-                  const next = SCENARIOS.find((item) => item.id === event.target.value);
-                  if (next) applyScenario(next);
-                }}
-                className="w-full max-w-full border border-bridge-line bg-bridge-panel px-2 py-1 font-ui text-xs text-bridge-text outline-none focus:border-orange sm:max-w-[16rem]"
-              >
-                <option value="">Select a scenario…</option>
-                {SCENARIO_CATEGORIES.map((category) => (
-                  <optgroup key={category} label={category}>
-                    {SCENARIOS.filter((item) => item.category === category).map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-              </div>
-              <button
-                type="button"
-                data-testid="reset-normal"
-                onClick={resetToNormal}
-                className="border border-bridge-text/40 px-3 py-1 font-ui text-xs text-bridge-text hover:border-bridge-text"
-              >
-                Reset to Normal
-              </button>
-              <button
-                type="button"
-                data-testid="generate-report"
-                onClick={() => {
-                  setTraining(false);
-                  setReportAt(new Date());
-                  setReportOpen(true);
-                }}
-                className="bg-orange px-3 py-1 font-ui text-xs font-medium text-white hover:bg-orange/90"
-              >
-                Generate report
-              </button>
-            </div>
+            <span className="flex items-center gap-1.5 text-ok">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
+              {t.bridge.live}
+            </span>
           }
         >
           <ul className="max-h-56 space-y-2 overflow-y-auto pe-1">
