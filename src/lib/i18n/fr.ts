@@ -24,6 +24,8 @@ export const fr: Messages = {
     themeToLight: "Passer au thème clair",
     themeToDark: "Passer au thème sombre",
     language: "Langue",
+    privacy: "Politique de confidentialité",
+    terms: "Conditions d'utilisation",
   },
   seo: {
     home: "StarWall by AGRON — renseignement de sécurité maritime",
@@ -45,6 +47,25 @@ export const fr: Messages = {
     signup: "Créer un compte — StarWall by AGRON",
     forgotPassword: "Mot de passe oublié — StarWall by AGRON",
     tasks: "Toutes les tâches — StarWall by AGRON",
+    privacy: "Confidentialité — StarWall by AGRON",
+    terms: "Conditions d'utilisation — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "Données et confidentialité",
+    termsTitle: "Conditions d'utilisation",
+    storesTitle: "Ce que StarWall conserve",
+    storesBody:
+      "Journaux d'événements, enregistrements de session et conversations Helm sur le Bridge. Les actions d'administration sont tenues dans un journal d'audit distinct.",
+    whereTitle: "Où c'est stocké",
+    whereBody:
+      "Les enregistrements sont d'abord écrits en local, puis synchronisés vers le cloud — le même chemin Black Box que sur le Bridge et le Backend. Rien ne quitte le compte pour un entraînement de modèle.",
+    whoTitle: "Qui peut y accéder",
+    whoBody:
+      "L'accès suit la hiérarchie des rôles du Backend : Super Admin, Admin, Operator et Viewer ne voient que ce que leur rôle autorise.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "Ces pages décrivent un déploiement illustratif de StarWall. L'usage du Bridge, du Backend et de Helm est soumis à un accord écrit avec AGRON. Les équipements spécialisés et toute capacité de réponse restent sous autorisation humaine et droit local.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGIE",
@@ -171,6 +192,29 @@ export const fr: Messages = {
     secondsAgo: "secondes",
     minuteAgo: "il y a 1 minute",
     minutesAgo: "minutes",
+    plan: "Offre et fonctions",
+    objects: "Vue multi-objets",
+    notify: "Routage des alertes",
+    privacy: "Données et confidentialité",
+    planTitle: "OFFRE ET FONCTIONS",
+    planCurrent: "Abonnement actuel",
+    planUpgrade: "Débloquer en montant de niveau",
+    objectsTitle: "VUE MULTI-OBJETS",
+    objectsNote:
+      "Illustratif uniquement — le basculement multi-objets complet est disponible conceptuellement au niveau Premium / Custom.",
+    objectsSwitch:
+      "Basculement vers {name}... (basculement multi-objets complet disponible au niveau Premium/Custom)",
+    notifyTitle: "ROUTAGE DES ALERTES",
+    notifyNote:
+      "Configuration illustrative — la livraison réelle exige de connecter un prestataire (p. ex. Twilio pour appels/SMS) avant la mise en service.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "Email",
+    notifySms: "SMS",
+    notifyPhone: "Appel",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "Contact du destinataire",
   },
   auth: {
     kicker: "AUTORISATION",

@@ -23,6 +23,9 @@ import {
 } from "@/lib/admin";
 import { useBlackBox } from "@/lib/black-box";
 import { cn } from "@/lib/cn";
+import { NotifyPanel } from "@/components/backend/notify-panel";
+import { ObjectsPanel } from "@/components/backend/objects-panel";
+import { PlanPanel } from "@/components/backend/plan-panel";
 import { EQUIPMENT } from "@/lib/equipment";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAppMode } from "@/lib/mode";
@@ -39,6 +42,9 @@ const SECTIONS = [
   "blackbox",
   "integrations",
   "audit",
+  "plan",
+  "objects",
+  "notify",
 ] as const;
 
 type SectionId = (typeof SECTIONS)[number];
@@ -127,6 +133,9 @@ export function BackendView() {
     blackbox: copy.blackbox,
     integrations: copy.integrations,
     audit: copy.audit,
+    plan: copy.plan,
+    objects: copy.objects,
+    notify: copy.notify,
   };
 
   const roleDetails: Record<AdminRole, { name: string; detail: string }> = {
@@ -434,6 +443,13 @@ export function BackendView() {
                 {sectionLabels[item]}
               </button>
             ))}
+            <Link
+              href="/backend/privacy"
+              data-testid="backend-privacy-link"
+              className="border border-bridge-line px-3 py-2 text-start font-mono text-[11px] tracking-wider text-bridge-dim hover:text-bridge-text"
+            >
+              {copy.privacy}
+            </Link>
           </nav>
 
           <div className="space-y-4">
@@ -980,6 +996,10 @@ export function BackendView() {
                 </div>
               </HudPanel>
             ) : null}
+
+            {section === "plan" ? <PlanPanel /> : null}
+            {section === "objects" ? <ObjectsPanel /> : null}
+            {section === "notify" ? <NotifyPanel /> : null}
 
             {section === "audit" ? (
               <HudPanel testId="backend-audit" title={copy.auditTitle}>

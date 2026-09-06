@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function LoginPage({
   searchParams,
 }: {
-  searchParams: { next?: string };
+  searchParams: { next?: string; callbackUrl?: string };
 }) {
-  return <LoginView next={searchParams.next ?? null} />;
+  return <LoginView next={searchParams.next ?? searchParams.callbackUrl ?? null} />;
 }

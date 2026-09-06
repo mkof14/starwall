@@ -91,4 +91,13 @@ export const pageMeta = {
     description:
       "Every administration surface and site workstream, listed as openable tasks.",
   },
+  privacy: {
+    title: "Privacy — StarWall by AGRON",
+    description:
+      "What StarWall stores, where records are kept, and who can access them.",
+  },
+  terms: {
+    title: "Terms of Service — StarWall by AGRON",
+    description: "Terms for using StarWall, the Bridge, Backend, and Helm.",
+  },
 } as const;

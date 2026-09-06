@@ -22,6 +22,8 @@ export type Messages = {
     themeToLight: string;
     themeToDark: string;
     language: string;
+    privacy: string;
+    terms: string;
   };
   seo: {
     home: string;
@@ -43,6 +45,20 @@ export type Messages = {
     tasks: string;
     signup: string;
     forgotPassword: string;
+    privacy: string;
+    terms: string;
+  };
+  legal: {
+    privacyTitle: string;
+    termsTitle: string;
+    storesTitle: string;
+    storesBody: string;
+    whereTitle: string;
+    whereBody: string;
+    whoTitle: string;
+    whoBody: string;
+    gdpr: string;
+    termsBody: string;
   };
   surface: {
     connectionsKicker: string;
@@ -162,6 +178,26 @@ export type Messages = {
     secondsAgo: string;
     minuteAgo: string;
     minutesAgo: string;
+    plan: string;
+    objects: string;
+    notify: string;
+    privacy: string;
+    planTitle: string;
+    planCurrent: string;
+    planUpgrade: string;
+    objectsTitle: string;
+    objectsNote: string;
+    objectsSwitch: string;
+    notifyTitle: string;
+    notifyNote: string;
+    notifyAttention: string;
+    notifyElevated: string;
+    notifyCritical: string;
+    notifyEmail: string;
+    notifySms: string;
+    notifyPhone: string;
+    notifyChat: string;
+    notifyRecipient: string;
   };
   auth: {
     kicker: string;
@@ -454,6 +490,8 @@ export const en: Messages = {
     themeToLight: "Switch to light theme",
     themeToDark: "Switch to dark theme",
     language: "Language",
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
   },
   seo: {
     home: "StarWall by AGRON — Maritime Security Intelligence",
@@ -475,6 +513,25 @@ export const en: Messages = {
     tasks: "All tasks — StarWall by AGRON",
     signup: "Sign up — StarWall by AGRON",
     forgotPassword: "Forgot password — StarWall by AGRON",
+    privacy: "Privacy — StarWall by AGRON",
+    terms: "Terms of Service — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "Data & Privacy",
+    termsTitle: "Terms of Service",
+    storesTitle: "What StarWall stores",
+    storesBody:
+      "Event logs, session recordings, and Helm conversations written on the Bridge. Administration actions are kept in a separate audit log.",
+    whereTitle: "Where it is stored",
+    whereBody:
+      "Records are written locally first, then synced to cloud storage — the same Black Box path shown on the Bridge and in Backend. Nothing leaves this account for model training.",
+    whoTitle: "Who can access it",
+    whoBody:
+      "Access follows the role hierarchy already defined in Backend: Super Admin, Admin, Operator, and Viewer each see only what their role allows.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "These pages describe an illustrative StarWall deployment. Use of the Bridge, Backend, and Helm is subject to a written agreement with AGRON. Specialized equipment and any response capability remain under human authorization and local law.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGY",
@@ -601,6 +658,29 @@ export const en: Messages = {
     secondsAgo: "seconds ago",
     minuteAgo: "1 minute ago",
     minutesAgo: "minutes ago",
+    plan: "Plan & Features",
+    objects: "Multi-Object View",
+    notify: "Notification Routing",
+    privacy: "Data & Privacy",
+    planTitle: "PLAN & FEATURES",
+    planCurrent: "Current subscription",
+    planUpgrade: "Upgrade to unlock",
+    objectsTitle: "MULTI-OBJECT VIEW",
+    objectsNote:
+      "Illustrative only — full multi-object switching is available conceptually at Premium / Custom tier.",
+    objectsSwitch:
+      "Switching to {name}... (full multi-object switching available at Premium/Custom tier)",
+    notifyTitle: "NOTIFICATION ROUTING",
+    notifyNote:
+      "Illustrative configuration — actual notification delivery requires connecting a provider (e.g. Twilio for calls/SMS) before going live.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "Email",
+    notifySms: "SMS",
+    notifyPhone: "Phone call",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "Recipient contact",
   },
   auth: {
     kicker: "AUTHORIZATION",

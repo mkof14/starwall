@@ -24,6 +24,8 @@ export const ja: Messages = {
     themeToLight: "ライトテーマに切り替え",
     themeToDark: "ダークテーマに切り替え",
     language: "言語",
+    privacy: "プライバシーポリシー",
+    terms: "利用規約",
   },
   seo: {
     home: "StarWall by AGRON — 海上セキュリティインテリジェンス",
@@ -45,6 +47,25 @@ export const ja: Messages = {
     signup: "アカウント作成 — StarWall by AGRON",
     forgotPassword: "パスワードを忘れた — StarWall by AGRON",
     tasks: "すべてのタスク — StarWall by AGRON",
+    privacy: "プライバシー — StarWall by AGRON",
+    terms: "利用規約 — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "データとプライバシー",
+    termsTitle: "利用規約",
+    storesTitle: "StarWall が保存するもの",
+    storesBody:
+      "イベントログ、セッション記録、Bridge 上の Helm 会話。管理操作は別の監査ログに残します。",
+    whereTitle: "保存場所",
+    whereBody:
+      "記録はまずローカルに書き、その後クラウドへ同期します。Bridge と Backend の Black Box と同じ経路です。モデル学習のためにアカウント外へは出しません。",
+    whoTitle: "誰がアクセスできるか",
+    whoBody:
+      "アクセスは Backend の役割階層に従います。Super Admin、Admin、Operator、Viewer はそれぞれの役割が許す範囲だけを見ます。",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "これらのページは StarWall の説明用展開を述べます。Bridge、Backend、Helm の利用は AGRON との書面契約に従います。専用機器とあらゆる対応能力は、人間の許可と現地法の下にあります。",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · トポロジ",
@@ -171,6 +192,29 @@ export const ja: Messages = {
     secondsAgo: "秒前",
     minuteAgo: "1 分前",
     minutesAgo: "分前",
+    plan: "プランと機能",
+    objects: "複数オブジェクト",
+    notify: "通知ルーティング",
+    privacy: "データとプライバシー",
+    planTitle: "プランと機能",
+    planCurrent: "現在の契約",
+    planUpgrade: "アップグレードで解除",
+    objectsTitle: "複数オブジェクト",
+    objectsNote:
+      "説明用です。オブジェクト間の完全な切替は概念上 Premium / Custom で利用できます。",
+    objectsSwitch:
+      "{name} に切替中...（オブジェクト間の完全な切替は Premium/Custom で利用できます）",
+    notifyTitle: "通知ルーティング",
+    notifyNote:
+      "説明用の設定です。実配信には、稼働前に事業者（通話/SMS なら Twilio など）の接続が必要です。",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "メール",
+    notifySms: "SMS",
+    notifyPhone: "電話",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "宛先連絡先",
   },
   auth: {
     kicker: "認可",

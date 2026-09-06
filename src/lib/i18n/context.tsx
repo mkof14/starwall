@@ -50,6 +50,9 @@ const titleByPath: Record<string, keyof Messages["seo"]> = {
   "/tasks": "tasks",
   "/signup": "signup",
   "/forgot-password": "forgotPassword",
+  "/privacy": "privacy",
+  "/terms": "terms",
+  "/backend/privacy": "privacy",
 };
 
 function applyDocument(locale: Locale, theme: Theme) {

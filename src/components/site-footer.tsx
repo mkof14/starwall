@@ -40,6 +40,14 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
+        <nav className="flex flex-wrap gap-x-4 gap-y-2">
+          <Link href="/privacy" className="hover:text-sand">
+            {t.chrome.privacy}
+          </Link>
+          <Link href="/privacy#terms" className="hover:text-sand">
+            {t.chrome.terms}
+          </Link>
+        </nav>
         <p>{t.chrome.rights}</p>
       </div>
     </footer>

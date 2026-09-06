@@ -24,6 +24,8 @@ export const zh: Messages = {
     themeToLight: "切换到浅色主题",
     themeToDark: "切换到深色主题",
     language: "语言",
+    privacy: "隐私政策",
+    terms: "服务条款",
   },
   seo: {
     home: "StarWall by AGRON — 海上安全情报",
@@ -45,6 +47,25 @@ export const zh: Messages = {
     signup: "注册 — StarWall by AGRON",
     forgotPassword: "忘记密码 — StarWall by AGRON",
     tasks: "全部任务 — StarWall by AGRON",
+    privacy: "隐私 — StarWall by AGRON",
+    terms: "服务条款 — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "数据与隐私",
+    termsTitle: "服务条款",
+    storesTitle: "StarWall 保存什么",
+    storesBody:
+      "事件日志、会话记录，以及 Bridge 上的 Helm 对话。管理操作记在单独的审计日志中。",
+    whereTitle: "存储位置",
+    whereBody:
+      "记录先写在本地，再同步到云端 — 与 Bridge 和 Backend 上的 Black Box 路径相同。数据不会离开账户用于模型训练。",
+    whoTitle: "谁可以访问",
+    whoBody:
+      "访问遵循 Backend 的角色层级：Super Admin、Admin、Operator 与 Viewer 只能看到其角色允许的内容。",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "这些页面描述的是示意性 StarWall 部署。使用 Bridge、Backend 和 Helm 须以与 AGRON 的书面协议为准。专用设备与任何响应能力始终处于人工授权与当地法律之下。",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · 拓扑",
@@ -171,6 +192,29 @@ export const zh: Messages = {
     secondsAgo: "秒前",
     minuteAgo: "1 分钟前",
     minutesAgo: "分钟前",
+    plan: "方案与功能",
+    objects: "多对象视图",
+    notify: "通知路由",
+    privacy: "数据与隐私",
+    planTitle: "方案与功能",
+    planCurrent: "当前订阅",
+    planUpgrade: "升级以解锁",
+    objectsTitle: "多对象视图",
+    objectsNote:
+      "仅作示意 — 完整的多对象切换在概念上属于 Premium / Custom 级别。",
+    objectsSwitch:
+      "正在切换到 {name}...（完整多对象切换在 Premium/Custom 级别可用）",
+    notifyTitle: "通知路由",
+    notifyNote:
+      "示意配置 — 实际上线前需要接入服务商（例如用 Twilio 发送电话/短信）。",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "电子邮件",
+    notifySms: "短信",
+    notifyPhone: "电话",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "接收人联系方式",
   },
   auth: {
     kicker: "授权",

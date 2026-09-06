@@ -24,6 +24,8 @@ export const de: Messages = {
     themeToLight: "Zum hellen Thema wechseln",
     themeToDark: "Zum dunklen Thema wechseln",
     language: "Sprache",
+    privacy: "Datenschutz",
+    terms: "Nutzungsbedingungen",
   },
   seo: {
     home: "StarWall by AGRON — maritime Sicherheitslage",
@@ -45,6 +47,25 @@ export const de: Messages = {
     signup: "Konto erstellen — StarWall by AGRON",
     forgotPassword: "Passwort vergessen — StarWall by AGRON",
     tasks: "Alle Aufgaben — StarWall by AGRON",
+    privacy: "Datenschutz — StarWall by AGRON",
+    terms: "Nutzungsbedingungen — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "Daten und Datenschutz",
+    termsTitle: "Nutzungsbedingungen",
+    storesTitle: "Was StarWall speichert",
+    storesBody:
+      "Ereignisprotokolle, Sitzungsaufzeichnungen und Helm-Gespräche auf der Bridge. Administrative Aktionen stehen in einem eigenen Prüfprotokoll.",
+    whereTitle: "Wo es gespeichert wird",
+    whereBody:
+      "Aufzeichnungen werden zuerst lokal geschrieben und dann in die Cloud synchronisiert — derselbe Black-Box-Pfad wie auf Bridge und Backend. Nichts verlässt das Konto für Modelltraining.",
+    whoTitle: "Wer Zugriff hat",
+    whoBody:
+      "Der Zugriff folgt der Rollenhierarchie im Backend: Super Admin, Admin, Operator und Viewer sehen nur das, was ihre Rolle erlaubt.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "Diese Seiten beschreiben eine illustrative StarWall-Installation. Die Nutzung von Bridge, Backend und Helm unterliegt einer schriftlichen Vereinbarung mit AGRON. Spezialausrüstung und jede Reaktionsfähigkeit bleiben unter menschlicher Freigabe und lokalem Recht.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGIE",
@@ -171,6 +192,29 @@ export const de: Messages = {
     secondsAgo: "Sekunden zuvor",
     minuteAgo: "vor 1 Minute",
     minutesAgo: "Minuten zuvor",
+    plan: "Tarif und Funktionen",
+    objects: "Mehrere Objekte",
+    notify: "Benachrichtigungswege",
+    privacy: "Daten und Datenschutz",
+    planTitle: "TARIF UND FUNKTIONEN",
+    planCurrent: "Aktuelles Abo",
+    planUpgrade: "Freischalten durch Upgrade",
+    objectsTitle: "MEHRERE OBJEKTE",
+    objectsNote:
+      "Nur zur Illustration — vollständiges Umschalten zwischen Objekten ist konzeptionell auf Premium / Custom verfügbar.",
+    objectsSwitch:
+      "Wechsel zu {name}... (vollständiges Umschalten zwischen Objekten auf Premium/Custom)",
+    notifyTitle: "BENACHRICHTIGUNGSWEGE",
+    notifyNote:
+      "Illustrative Konfiguration — echte Zustellung erfordert vor dem Live-Betrieb einen Anbieter (z. B. Twilio für Anrufe/SMS).",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "E-Mail",
+    notifySms: "SMS",
+    notifyPhone: "Anruf",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "Empfängerkontakt",
   },
   auth: {
     kicker: "AUTORISIERUNG",

@@ -24,6 +24,8 @@ export const ru: Messages = {
     themeToLight: "Включить светлую тему",
     themeToDark: "Включить тёмную тему",
     language: "Язык",
+    privacy: "Политика конфиденциальности",
+    terms: "Условия использования",
   },
   seo: {
     home: "StarWall by AGRON — морская охранная разведка",
@@ -45,6 +47,25 @@ export const ru: Messages = {
     signup: "Регистрация — StarWall by AGRON",
     forgotPassword: "Сброс пароля — StarWall by AGRON",
     tasks: "Все задания — StarWall by AGRON",
+    privacy: "Конфиденциальность — StarWall by AGRON",
+    terms: "Условия использования — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "Данные и конфиденциальность",
+    termsTitle: "Условия использования",
+    storesTitle: "Что хранит StarWall",
+    storesBody:
+      "Журналы событий, записи сессий и разговоры Helm на Bridge. Административные действия ведутся в отдельном журнале аудита.",
+    whereTitle: "Где хранится",
+    whereBody:
+      "Записи сначала пишутся локально, затем синхронизируются в облако — тот же путь Black Box, что на Bridge и в Backend. Данные не уходят из аккаунта на обучение моделей.",
+    whoTitle: "Кто имеет доступ",
+    whoBody:
+      "Доступ следует иерархии ролей Backend: Super Admin, Admin, Operator и Viewer видят только то, что позволяет роль.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "Эти страницы описывают иллюстративное развёртывание StarWall. Использование Bridge, Backend и Helm регулируется письменным договором с AGRON. Специальное оборудование и любое реагирование остаются под человеческим разрешением и местным правом.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · ТОПОЛОГИЯ",
@@ -171,6 +192,29 @@ export const ru: Messages = {
     secondsAgo: "сек. назад",
     minuteAgo: "1 минуту назад",
     minutesAgo: "мин. назад",
+    plan: "План и функции",
+    objects: "Несколько объектов",
+    notify: "Маршрутизация уведомлений",
+    privacy: "Данные и конфиденциальность",
+    planTitle: "ПЛАН И ФУНКЦИИ",
+    planCurrent: "Текущая подписка",
+    planUpgrade: "Открыть повышением",
+    objectsTitle: "НЕСКОЛЬКО ОБЪЕКТОВ",
+    objectsNote:
+      "Только иллюстрация — полное переключение между объектами концептуально доступно на уровне Premium / Custom.",
+    objectsSwitch:
+      "Переключение на {name}... (полное переключение между объектами доступно на уровне Premium/Custom)",
+    notifyTitle: "МАРШРУТИЗАЦИЯ УВЕДОМЛЕНИЙ",
+    notifyNote:
+      "Иллюстративная настройка — реальная доставка требует подключения провайдера (например Twilio для звонков и SMS) перед запуском.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "Email",
+    notifySms: "SMS",
+    notifyPhone: "Звонок",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "Контакт получателя",
   },
   auth: {
     kicker: "АВТОРИЗАЦИЯ",

@@ -24,6 +24,8 @@ export const uk: Messages = {
     themeToLight: "Увімкнути світлу тему",
     themeToDark: "Увімкнути темну тему",
     language: "Мова",
+    privacy: "Політика конфіденційності",
+    terms: "Умови використання",
   },
   seo: {
     home: "StarWall by AGRON — морська охоронна розвідка",
@@ -45,6 +47,25 @@ export const uk: Messages = {
     signup: "Реєстрація — StarWall by AGRON",
     forgotPassword: "Скидання пароля — StarWall by AGRON",
     tasks: "Усі завдання — StarWall by AGRON",
+    privacy: "Конфіденційність — StarWall by AGRON",
+    terms: "Умови використання — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "Дані та конфіденційність",
+    termsTitle: "Умови використання",
+    storesTitle: "Що зберігає StarWall",
+    storesBody:
+      "Журнали подій, записи сесій і розмови Helm на Bridge. Адміністративні дії ведуться в окремому журналі аудиту.",
+    whereTitle: "Де зберігається",
+    whereBody:
+      "Записи спочатку пишуться локально, потім синхронізуються в хмару — той самий шлях Black Box, що на Bridge і в Backend. Дані не йдуть з облікового запису на навчання моделей.",
+    whoTitle: "Хто має доступ",
+    whoBody:
+      "Доступ відповідає ієрархії ролей Backend: Super Admin, Admin, Operator і Viewer бачать лише те, що дозволяє роль.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "Ці сторінки описують ілюстративне розгортання StarWall. Використання Bridge, Backend і Helm регулюється письмовою угодою з AGRON. Спеціальне обладнання та будь-яке реагування залишаються під людським дозволом і місцевим правом.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · ТОПОЛОГІЯ",
@@ -171,6 +192,29 @@ export const uk: Messages = {
     secondsAgo: "сек. тому",
     minuteAgo: "1 хвилину тому",
     minutesAgo: "хв. тому",
+    plan: "План і функції",
+    objects: "Кілька об'єктів",
+    notify: "Маршрутизація сповіщень",
+    privacy: "Дані та конфіденційність",
+    planTitle: "ПЛАН І ФУНКЦІЇ",
+    planCurrent: "Поточна підписка",
+    planUpgrade: "Відкрити підвищенням",
+    objectsTitle: "КІЛЬКА ОБ'ЄКТІВ",
+    objectsNote:
+      "Лише ілюстрація — повне перемикання між об'єктами концептуально доступне на рівні Premium / Custom.",
+    objectsSwitch:
+      "Перемикання на {name}... (повне перемикання між об'єктами доступне на рівні Premium/Custom)",
+    notifyTitle: "МАРШРУТИЗАЦІЯ СПОВІЩЕНЬ",
+    notifyNote:
+      "Ілюстративне налаштування — реальна доставка потребує підключення провайдера (наприклад Twilio для дзвінків і SMS) перед запуском.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "Email",
+    notifySms: "SMS",
+    notifyPhone: "Дзвінок",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "Контакт отримувача",
   },
   auth: {
     kicker: "АВТОРИЗАЦІЯ",

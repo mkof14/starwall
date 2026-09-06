@@ -24,6 +24,8 @@ export const ar: Messages = {
     themeToLight: "التبديل إلى المظهر الفاتح",
     themeToDark: "التبديل إلى المظهر الداكن",
     language: "اللغة",
+    privacy: "سياسة الخصوصية",
+    terms: "شروط الخدمة",
   },
   seo: {
     home: "StarWall by AGRON — استخبارات الأمن البحري",
@@ -45,6 +47,25 @@ export const ar: Messages = {
     signup: "إنشاء حساب — StarWall by AGRON",
     forgotPassword: "نسيت كلمة المرور — StarWall by AGRON",
     tasks: "كل المهام — StarWall by AGRON",
+    privacy: "الخصوصية — StarWall by AGRON",
+    terms: "شروط الخدمة — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "البيانات والخصوصية",
+    termsTitle: "شروط الخدمة",
+    storesTitle: "ما يخزّنه StarWall",
+    storesBody:
+      "سجلات الأحداث وتسجيلات الجلسات ومحادثات Helm على Bridge. تُحفظ الإجراءات الإدارية في سجل تدقيق منفصل.",
+    whereTitle: "أين تُحفظ",
+    whereBody:
+      "تُكتب السجلات أولاً محلياً ثم تُزامَن إلى السحابة — نفس مسار Black Box في Bridge وBackend. لا تغادر البيانات الحساب لتدريب النماذج.",
+    whoTitle: "من يصل إليها",
+    whoBody:
+      "يتبع الوصول تسلسل الأدوار في Backend: Super Admin وAdmin وOperator وViewer يرى كلٌّ منهم ما يسمح به دوره فقط.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "تصف هذه الصفحات نشراً توضيحياً لـ StarWall. يخضع استخدام Bridge وBackend وHelm لاتفاق مكتوب مع AGRON. تبقى المعدات المتخصصة وأي قدرة على الاستجابة تحت تفويض بشري والقانون المحلي.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · الطوبولوجيا",
@@ -171,6 +192,29 @@ export const ar: Messages = {
     secondsAgo: "ثوانٍ مضت",
     minuteAgo: "قبل دقيقة",
     minutesAgo: "دقائق مضت",
+    plan: "الخطة والميزات",
+    objects: "عرض متعدد الأجسام",
+    notify: "توجيه الإشعارات",
+    privacy: "البيانات والخصوصية",
+    planTitle: "الخطة والميزات",
+    planCurrent: "الاشتراك الحالي",
+    planUpgrade: "الترقية للفتح",
+    objectsTitle: "عرض متعدد الأجسام",
+    objectsNote:
+      "للتوضيح فقط — التبديل الكامل بين الأجسام متاح مفهومياً في مستوى Premium / Custom.",
+    objectsSwitch:
+      "التبديل إلى {name}... (التبديل الكامل بين الأجسام متاح في مستوى Premium/Custom)",
+    notifyTitle: "توجيه الإشعارات",
+    notifyNote:
+      "إعداد توضيحي — التسليم الفعلي يتطلب ربط مزوّد (مثل Twilio للمكالمات والرسائل) قبل التشغيل الحي.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "البريد",
+    notifySms: "SMS",
+    notifyPhone: "مكالمة",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "جهة المستلم",
   },
   auth: {
     kicker: "تفويض",

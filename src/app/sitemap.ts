@@ -21,6 +21,8 @@ const PATHS = [
   "/signup",
   "/forgot-password",
   "/tasks",
+  "/privacy",
+  "/terms",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

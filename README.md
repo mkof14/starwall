@@ -57,6 +57,9 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/forgot-password` | Password reset request |
 | `/tasks` | All tasks (gated; sign in first) |
 | `/backend` | StarWall Backend (gated) |
+| `/backend/privacy` | Data & Privacy (gated) |
+| `/privacy` | Privacy Policy (public) |
+| `/terms` | Terms of Service (public) |
 
 ## Brand, theme, and language
 

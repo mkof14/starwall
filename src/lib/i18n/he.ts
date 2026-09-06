@@ -24,6 +24,8 @@ export const he: Messages = {
     themeToLight: "מעבר לערכת נושא בהירה",
     themeToDark: "מעבר לערכת נושא כהה",
     language: "שפה",
+    privacy: "מדיניות פרטיות",
+    terms: "תנאי שימוש",
   },
   seo: {
     home: "StarWall by AGRON — מודיעין אבטחה ימי",
@@ -45,6 +47,25 @@ export const he: Messages = {
     signup: "הרשמה — StarWall by AGRON",
     forgotPassword: "שכחתי סיסמה — StarWall by AGRON",
     tasks: "כל המשימות — StarWall by AGRON",
+    privacy: "פרטיות — StarWall by AGRON",
+    terms: "תנאי שימוש — StarWall by AGRON",
+  },
+  legal: {
+    privacyTitle: "נתונים ופרטיות",
+    termsTitle: "תנאי שימוש",
+    storesTitle: "מה StarWall שומר",
+    storesBody:
+      "יומני אירועים, הקלטות סשן ושיחות Helm ב־Bridge. פעולות ניהול נשמרות ביומן ביקורת נפרד.",
+    whereTitle: "איפה זה נשמר",
+    whereBody:
+      "הרשומות נכתבות קודם מקומית ואז מסונכרנות לענן — אותו נתיב Black Box כמו ב־Bridge וב־Backend. שום דבר לא יוצא מהחשבון לאימון מודלים.",
+    whoTitle: "מי יכול לגשת",
+    whoBody:
+      "הגישה לפי היררכיית התפקידים ב־Backend: Super Admin, Admin, Operator ו־Viewer רואים רק מה שהתפקיד מתיר.",
+    gdpr:
+      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
+    termsBody:
+      "הדפים האלה מתארים פריסת StarWall להמחשה. שימוש ב־Bridge, Backend ו־Helm כפוף להסכם כתוב עם AGRON. ציוד ייעודי וכל יכולת תגובה נשארים תחת אישור אנושי והחוק המקומי.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · טופולוגיה",
@@ -171,6 +192,29 @@ export const he: Messages = {
     secondsAgo: "שניות",
     minuteAgo: "לפני דקה",
     minutesAgo: "דקות",
+    plan: "תוכנית ויכולות",
+    objects: "תצוגת כמה עצמים",
+    notify: "ניתוב התראות",
+    privacy: "נתונים ופרטיות",
+    planTitle: "תוכנית ויכולות",
+    planCurrent: "המנוי הנוכחי",
+    planUpgrade: "שדרוג לפתיחה",
+    objectsTitle: "תצוגת כמה עצמים",
+    objectsNote:
+      "להמחשה בלבד — מעבר מלא בין עצמים זמין מושגית בדרגת Premium / Custom.",
+    objectsSwitch:
+      "עוברים אל {name}... (מעבר מלא בין עצמים זמין בדרגת Premium/Custom)",
+    notifyTitle: "ניתוב התראות",
+    notifyNote:
+      "הגדרה להמחשה — מסירה בפועל דורשת חיבור ספק (למשל Twilio לשיחות/SMS) לפני עלייה לאוויר.",
+    notifyAttention: "Attention",
+    notifyElevated: "Elevated",
+    notifyCritical: "Critical",
+    notifyEmail: "דוא״ל",
+    notifySms: "SMS",
+    notifyPhone: "שיחה",
+    notifyChat: "WhatsApp / Messenger",
+    notifyRecipient: "פרטי הנמען",
   },
   auth: {
     kicker: "הרשאה",

@@ -28,8 +28,19 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function safeNextPath(value: string | null | undefined): string {
   if (!value) return "/interface";
-  if (!value.startsWith("/") || value.startsWith("//")) return "/interface";
-  return value;
+  let path = value;
+  if (path.startsWith("http")) {
+    try {
+      const url = new URL(path);
+      path = `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+      return "/interface";
+    }
+  }
+  if (!path.startsWith("/") || path.startsWith("//") || path.startsWith("/login")) {
+    return "/interface";
+  }
+  return path;
 }
 
 export function isAuthRoute(pathname: string | null | undefined) {
