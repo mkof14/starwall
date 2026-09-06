@@ -5,6 +5,11 @@ import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
 import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
 import { DegradedBanner } from "@/components/bridge/degraded-banner";
+import {
+  EventToasts,
+  type EventToast,
+  type ToastKind,
+} from "@/components/bridge/event-toasts";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
@@ -37,12 +42,7 @@ import {
   type SessionEvent,
 } from "@/lib/scenarios";
 
-type LogEntry = {
-  time: string;
-  level: RiskLevel;
-  text: string;
-  auto?: boolean;
-};
+type LogEntry = EventToast;
 
 function GearMark() {
   return (
@@ -137,13 +137,15 @@ export function BridgeConsole() {
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [logSeed] = useState(() => [
-    { time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0] },
-    { time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1] },
-    { time: "13:55:12", level: "ATTENTION" as const, text: t.bridge.log[2] },
-    { time: "13:40:03", level: "NORMAL" as const, text: t.bridge.log[3] },
-    { time: "13:12:58", level: "NORMAL" as const, text: t.bridge.log[4] },
+    { id: "seed-1", time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0], kind: "watch" as const },
+    { id: "seed-2", time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1], kind: "watch" as const },
+    { id: "seed-3", time: "13:55:12", level: "ATTENTION" as const, text: t.bridge.log[2], kind: "watch" as const },
+    { id: "seed-4", time: "13:40:03", level: "NORMAL" as const, text: t.bridge.log[3], kind: "watch" as const },
+    { id: "seed-5", time: "13:12:58", level: "NORMAL" as const, text: t.bridge.log[4], kind: "watch" as const },
   ]);
   const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
+  const [toasts, setToasts] = useState<EventToast[]>([]);
+  const [flashId, setFlashId] = useState<string | null>(null);
   const [showNewContact, setShowNewContact] = useState(false);
   const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
   const [reportOpen, setReportOpen] = useState(false);
@@ -151,6 +153,9 @@ export function BridgeConsole() {
   const [training, setTraining] = useState(false);
   const [faultId, setFaultId] = useState<EquipmentId | null>(null);
   const autoTimer = useRef<number | null>(null);
+  const toastTimers = useRef<Map<string, number>>(new Map());
+  const flashTimer = useRef<number | null>(null);
+  const logSeq = useRef(0);
 
   function clearAutoTimer() {
     if (autoTimer.current !== null) {
@@ -159,7 +164,59 @@ export function BridgeConsole() {
     }
   }
 
-  useEffect(() => () => clearAutoTimer(), []);
+  function dismissToast(id: string) {
+    const timer = toastTimers.current.get(id);
+    if (timer !== undefined) {
+      window.clearTimeout(timer);
+      toastTimers.current.delete(id);
+    }
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }
+
+  function pushLogs(
+    rows: { level: RiskLevel; text: string; kind: ToastKind; auto?: boolean }[],
+  ) {
+    const stamped: LogEntry[] = rows.map((row) => {
+      logSeq.current += 1;
+      return {
+        id: `log-${logSeq.current}`,
+        time: nowStamp(),
+        level: row.level,
+        text: row.text,
+        kind: row.kind,
+        auto: row.auto,
+      };
+    });
+    setLogEntries((entries) => [...stamped, ...entries]);
+    setToasts((current) => [...stamped, ...current]);
+    for (const entry of stamped) {
+      const ms = entry.level === "CRITICAL" ? 9000 : 5000;
+      const timer = window.setTimeout(() => dismissToast(entry.id), ms);
+      toastTimers.current.set(entry.id, timer);
+    }
+    return stamped;
+  }
+
+  function openLogRow(id: string) {
+    const row = document.querySelector<HTMLElement>(`[data-log-row="${id}"]`);
+    (row ?? document.getElementById("event-log-panel"))?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+    setFlashId(id);
+    if (flashTimer.current !== null) window.clearTimeout(flashTimer.current);
+    flashTimer.current = window.setTimeout(() => setFlashId(null), 1400);
+  }
+
+  useEffect(
+    () => () => {
+      clearAutoTimer();
+      toastTimers.current.forEach((timer) => window.clearTimeout(timer));
+      toastTimers.current.clear();
+      if (flashTimer.current !== null) window.clearTimeout(flashTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     setSession({
@@ -210,17 +267,17 @@ export function BridgeConsole() {
     setCrisis(critical);
     if (critical) setTraining(false);
     const stamp = nowStamp();
-    const nextRows: LogEntry[] = [
-      { time: stamp, level: scenario.riskLevel, text: scenario.logText },
+    const nextRows: { level: RiskLevel; text: string; kind: ToastKind }[] = [
+      { level: scenario.riskLevel, text: scenario.logText, kind: "scenario" },
     ];
     if (critical) {
       nextRows.unshift({
-        time: stamp,
         level: "CRITICAL",
         text: `CRISIS MODE ACTIVATED — ${scenario.name}`,
+        kind: "crisis",
       });
     }
-    setLogEntries((entries) => [...nextRows, ...entries]);
+    pushLogs(nextRows);
     setSessionEvents((events) => [
       ...events,
       {
@@ -244,16 +301,14 @@ export function BridgeConsole() {
     const autoRows = !critical ? AUTOMATED_ACTIONS[scenario.id] : undefined;
     if (autoRows?.length) {
       autoTimer.current = window.setTimeout(() => {
-        const autoStamp = nowStamp();
-        setLogEntries((entries) => [
-          ...autoRows.map((text) => ({
-            time: autoStamp,
+        pushLogs(
+          autoRows.map((text) => ({
             level: "NORMAL" as const,
             text: `AUTO — ${text}`,
             auto: true,
+            kind: "auto" as const,
           })),
-          ...entries,
-        ]);
+        );
       }, 1000);
     }
   }
@@ -269,22 +324,20 @@ export function BridgeConsole() {
     setShowNewContact(false);
     setCrisis(false);
     setFaultId(null);
-    setLogEntries((entries) => [
-      { time: nowStamp(), level: "NORMAL", text: RESET_LOG },
-      ...entries,
-    ]);
+    pushLogs([{ level: "NORMAL", text: RESET_LOG, kind: "reset" }]);
   }
 
-  function logRow(level: RiskLevel, text: string) {
-    setLogEntries((entries) => [
-      { time: nowStamp(), level, text },
-      ...entries,
-    ]);
+  function logRow(level: RiskLevel, text: string, kind: ToastKind) {
+    pushLogs([{ level, text, kind }]);
   }
 
   function restoreFault(id: EquipmentId) {
     setFaultId(null);
-    logRow("NORMAL", `${equipmentName(id)} connection restored — full capability resumed`);
+    logRow(
+      "NORMAL",
+      `${equipmentName(id)} connection restored — full capability resumed`,
+      "restore",
+    );
   }
 
   function simulateFault(id: EquipmentId) {
@@ -293,23 +346,24 @@ export function BridgeConsole() {
       logRow(
         "NORMAL",
         `${equipmentName(faultId)} connection restored — full capability resumed`,
+        "restore",
       );
     }
     setFaultId(id);
     logRow(
       "ATTENTION",
       `${equipmentName(id)} connection lost — switching to degraded mode`,
+      "fault",
     );
   }
 
   function logSupportEscalation() {
-    setLogEntries((entries) => [
+    pushLogs([
       {
-        time: nowStamp(),
         level: "CRITICAL",
         text: "Escalated to Support Center — connection established",
+        kind: "escalate",
       },
-      ...entries,
     ]);
   }
 
@@ -575,6 +629,7 @@ export function BridgeConsole() {
         </div>
 
         <HudPanel
+          id="event-log-panel"
           testId="event-log-panel"
           title={t.bridge.eventLog}
           extra={
@@ -600,7 +655,8 @@ export function BridgeConsole() {
           <ul className="max-h-56 space-y-2 overflow-y-auto pe-1">
             {logEntries.map((entry, index) => (
               <li
-                key={`${entry.time}-${index}`}
+                key={entry.id}
+                data-log-row={entry.id}
                 data-testid={
                   entry.auto
                     ? `auto-log-row-${index}`
@@ -611,6 +667,10 @@ export function BridgeConsole() {
                 className={cn(
                   "grid grid-cols-[auto_auto_auto_1fr] items-start gap-3 font-mono text-xs",
                   entry.auto && "border-l-2 border-ok bg-ok/10 py-1.5 ps-2",
+                  flashId === entry.id &&
+                    (entry.level === "CRITICAL"
+                      ? "event-log-flash-crit"
+                      : "event-log-flash"),
                 )}
               >
                 <span className="mt-0.5 flex w-3.5 justify-center">
@@ -658,6 +718,11 @@ export function BridgeConsole() {
           onBack={() => setReportOpen(false)}
         />
       ) : null}
+      <EventToasts
+        toasts={toasts}
+        onDismiss={dismissToast}
+        onOpen={openLogRow}
+      />
     </div>
   );
 }

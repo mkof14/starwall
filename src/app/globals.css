@@ -131,6 +131,53 @@ body {
   animation: crisis-pulse 1s ease-in-out infinite;
 }
 
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-slide-in {
+  animation: toast-slide-in 0.28s ease-out;
+}
+
+.toast-crit-glow {
+  box-shadow:
+    0 0 0 1px rgb(255 71 87 / 0.55),
+    0 10px 28px rgb(255 71 87 / 0.2);
+}
+
+@keyframes event-log-flash {
+  0% {
+    background-color: rgb(241 90 0 / 0.34);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes event-log-flash-crit {
+  0% {
+    background-color: rgb(255 71 87 / 0.34);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.event-log-flash {
+  animation: event-log-flash 1.25s ease-out;
+}
+
+.event-log-flash-crit {
+  animation: event-log-flash-crit 1.25s ease-out;
+}
+
 @keyframes assistant-listen {
   0%,
   100% {
