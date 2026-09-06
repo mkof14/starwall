@@ -190,7 +190,7 @@ export function BridgeConsole() {
     setLogEntries((entries) => [...stamped, ...entries]);
     setToasts((current) => [...stamped, ...current]);
     for (const entry of stamped) {
-      const ms = entry.level === "CRITICAL" ? 9000 : 5000;
+      const ms = entry.level === "CRITICAL" ? 10000 : 5000;
       const timer = window.setTimeout(() => dismissToast(entry.id), ms);
       toastTimers.current.set(entry.id, timer);
     }
