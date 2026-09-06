@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
 import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
@@ -14,6 +14,7 @@ import { TrainingTour } from "@/components/bridge/training-tour";
 import { SonarView } from "@/components/bridge/sonar-panel";
 import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
+import { AUTOMATED_ACTIONS } from "@/lib/automated-actions";
 import { CRISIS_PROTOCOLS, FALLBACK_CRISIS_STEPS } from "@/lib/crisis-protocols";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
@@ -32,7 +33,23 @@ type LogEntry = {
   time: string;
   level: RiskLevel;
   text: string;
+  auto?: boolean;
 };
+
+function GearMark() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      className="h-3.5 w-3.5 text-ok"
+      aria-hidden
+    >
+      <path
+        fill="currentColor"
+        d="M6.4 1.2h3.2l.3 1.6a5 5 0 0 1 1.4.8l1.5-.6 1.6 2.8-1.2 1.1c.1.4.2.8.2 1.1s-.1.8-.2 1.1l1.2 1.1-1.6 2.8-1.5-.6a5 5 0 0 1-1.4.8l-.3 1.6H6.4l-.3-1.6a5 5 0 0 1-1.4-.8l-1.5.6L1.6 10l1.2-1.1A5 5 0 0 1 2.6 8c0-.4.1-.8.2-1.1L1.6 5.8 3.2 3l1.5.6a5 5 0 0 1 1.4-.8l.3-1.6ZM8 6.2A1.8 1.8 0 1 0 8 9.8 1.8 1.8 0 0 0 8 6.2Z"
+      />
+    </svg>
+  );
+}
 
 const TELEMETRY_VALUES = [
   "M/Y AURELIA",
@@ -113,6 +130,16 @@ export function BridgeConsole() {
   const [reportOpen, setReportOpen] = useState(false);
   const [reportAt, setReportAt] = useState<Date | null>(null);
   const [training, setTraining] = useState(false);
+  const autoTimer = useRef<number | null>(null);
+
+  function clearAutoTimer() {
+    if (autoTimer.current !== null) {
+      window.clearTimeout(autoTimer.current);
+      autoTimer.current = null;
+    }
+  }
+
+  useEffect(() => () => clearAutoTimer(), []);
 
   const systems = t.bridge.systems.map((name, index) => ({
     name,
@@ -128,6 +155,7 @@ export function BridgeConsole() {
   );
 
   function applyScenario(scenario: Scenario) {
+    clearAutoTimer();
     const critical = scenario.riskLevel === "CRITICAL";
     setSelectedId(scenario.id);
     setSelectedName(scenario.name);
@@ -160,9 +188,25 @@ export function BridgeConsole() {
         actionText: scenario.actionText,
       },
     ]);
+    const autoRows = !critical ? AUTOMATED_ACTIONS[scenario.id] : undefined;
+    if (autoRows?.length) {
+      autoTimer.current = window.setTimeout(() => {
+        const autoStamp = nowStamp();
+        setLogEntries((entries) => [
+          ...autoRows.map((text) => ({
+            time: autoStamp,
+            level: "NORMAL" as const,
+            text: `AUTO — ${text}`,
+            auto: true,
+          })),
+          ...entries,
+        ]);
+      }, 1000);
+    }
   }
 
   function resetToNormal() {
+    clearAutoTimer();
     setSelectedId("");
     setSelectedName("");
     setRiskLevel("NORMAL");
@@ -397,18 +441,65 @@ export function BridgeConsole() {
             </span>
           }
         >
+          <p
+            data-testid="event-log-legend"
+            className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-bridge-dim"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-2 w-2 bg-orange" />
+              Human decision required
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-ok">
+              <GearMark />
+              Automated (procedural only)
+            </span>
+          </p>
           <ul className="max-h-56 space-y-2 overflow-y-auto pe-1">
             {logEntries.map((entry, index) => (
               <li
                 key={`${entry.time}-${index}`}
-                data-testid={index === 0 ? "event-log-newest-row" : undefined}
-                className="grid grid-cols-[auto_auto_1fr] items-start gap-3 font-mono text-xs"
+                data-testid={
+                  entry.auto
+                    ? `auto-log-row-${index}`
+                    : index === 0
+                      ? "event-log-newest-row"
+                      : undefined
+                }
+                className={cn(
+                  "grid grid-cols-[auto_auto_auto_1fr] items-start gap-3 font-mono text-xs",
+                  entry.auto && "border-l-2 border-ok bg-ok/10 py-1.5 ps-2",
+                )}
               >
-                <span className="text-bridge-dim">{entry.time}</span>
-                <span className={cn("border px-1.5 py-0.5", levelClass(entry.level))}>
-                  {entry.level}
+                <span className="mt-0.5 flex w-3.5 justify-center">
+                  {entry.auto ? (
+                    <GearMark />
+                  ) : (
+                    <span
+                      className={cn(
+                        "mt-1 block h-2 w-2",
+                        entry.level === "CRITICAL"
+                          ? "bg-crit"
+                          : entry.level === "ELEVATED"
+                            ? "bg-orange"
+                            : entry.level === "ATTENTION"
+                              ? "bg-attn"
+                              : "bg-bridge-line",
+                      )}
+                    />
+                  )}
                 </span>
-                <span className="text-bridge-text">{entry.text}</span>
+                <span className="text-bridge-dim">{entry.time}</span>
+                <span
+                  className={cn(
+                    "border px-1.5 py-0.5",
+                    entry.auto ? "border-ok text-ok" : levelClass(entry.level),
+                  )}
+                >
+                  {entry.auto ? "AUTO" : entry.level}
+                </span>
+                <span className={entry.auto ? "text-ok" : "text-bridge-text"}>
+                  {entry.text}
+                </span>
               </li>
             ))}
           </ul>
