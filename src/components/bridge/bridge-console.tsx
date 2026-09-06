@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
 import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
+import { DegradedBanner } from "@/components/bridge/degraded-banner";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
@@ -16,6 +17,11 @@ import { SpectrumView } from "@/components/bridge/spectrum-panel";
 import { UtcClock } from "@/components/bridge/utc-clock";
 import { AUTOMATED_ACTIONS } from "@/lib/automated-actions";
 import { CRISIS_PROTOCOLS, FALLBACK_CRISIS_STEPS } from "@/lib/crisis-protocols";
+import {
+  EQUIPMENT,
+  equipmentName,
+  type EquipmentId,
+} from "@/lib/equipment";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
 import { cn } from "@/lib/cn";
@@ -81,13 +87,22 @@ function riskTone(level: RiskLevel) {
   return { dot: "bg-ok", text: "text-ok", chip: "border-ok text-ok" };
 }
 
-function pictureFor(panelType: PanelType, showNewContact: boolean, situational: string, contacts4: string, contacts5: string) {
+function pictureFor(
+  panelType: PanelType,
+  showNewContact: boolean,
+  situational: string,
+  contacts4: string,
+  contacts5: string,
+  pictureFault: "radar" | "ais" | null,
+) {
   if (panelType === "radar") {
     return {
       testId: "radar-panel",
       title: situational,
       extra: showNewContact ? contacts5 : contacts4,
-      view: <BridgeRadar showNewContact={showNewContact} />,
+      view: (
+        <BridgeRadar showNewContact={showNewContact} degraded={pictureFault} />
+      ),
     };
   }
   const chrome = PANEL_CHROME[panelType];
@@ -130,6 +145,7 @@ export function BridgeConsole() {
   const [reportOpen, setReportOpen] = useState(false);
   const [reportAt, setReportAt] = useState<Date | null>(null);
   const [training, setTraining] = useState(false);
+  const [faultId, setFaultId] = useState<EquipmentId | null>(null);
   const autoTimer = useRef<number | null>(null);
 
   function clearAutoTimer() {
@@ -141,18 +157,33 @@ export function BridgeConsole() {
 
   useEffect(() => () => clearAutoTimer(), []);
 
-  const systems = t.bridge.systems.map((name, index) => ({
-    name,
-    online: index !== 4,
-  }));
+  const systems = t.bridge.systems.map((name, index) => {
+    const id = EQUIPMENT[index]?.id;
+    const faulted = id === faultId;
+    return {
+      id,
+      name,
+      faulted,
+      online: faulted ? false : index !== 4,
+    };
+  });
   const tone = riskTone(riskLevel);
+  const pictureFault =
+    faultId === "radar" || faultId === "ais" ? faultId : null;
   const picture = pictureFor(
     panelType,
     showNewContact,
     t.bridge.situational,
     t.bridge.contacts4,
     t.bridge.contacts5,
+    pictureFault,
   );
+  const pictureOverlay =
+    faultId === "radar"
+      ? "Radar offline — showing AIS/last known positions only"
+      : faultId === "ais"
+        ? "AIS offline — showing radar tracks only"
+        : null;
 
   function applyScenario(scenario: Scenario) {
     clearAutoTimer();
@@ -215,10 +246,38 @@ export function BridgeConsole() {
     setActionOptions(null);
     setShowNewContact(false);
     setCrisis(false);
+    setFaultId(null);
     setLogEntries((entries) => [
       { time: nowStamp(), level: "NORMAL", text: RESET_LOG },
       ...entries,
     ]);
+  }
+
+  function logRow(level: RiskLevel, text: string) {
+    setLogEntries((entries) => [
+      { time: nowStamp(), level, text },
+      ...entries,
+    ]);
+  }
+
+  function restoreFault(id: EquipmentId) {
+    setFaultId(null);
+    logRow("NORMAL", `${equipmentName(id)} connection restored — full capability resumed`);
+  }
+
+  function simulateFault(id: EquipmentId) {
+    if (faultId === id) return;
+    if (faultId) {
+      logRow(
+        "NORMAL",
+        `${equipmentName(faultId)} connection restored — full capability resumed`,
+      );
+    }
+    setFaultId(id);
+    logRow(
+      "ATTENTION",
+      `${equipmentName(id)} connection lost — switching to degraded mode`,
+    );
   }
 
   function logSupportEscalation() {
@@ -322,6 +381,13 @@ export function BridgeConsole() {
           </div>
         </div>
 
+        {faultId ? (
+          <DegradedBanner
+            faultId={faultId}
+            onRestore={() => restoreFault(faultId)}
+          />
+        ) : null}
+
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
           <div data-testid="situational-panel">
           <HudPanel
@@ -333,7 +399,17 @@ export function BridgeConsole() {
               </span>
             }
           >
-            {picture.view}
+            <div className="relative">
+              {picture.view}
+              {pictureOverlay ? (
+                <p
+                  data-testid="picture-degraded-overlay"
+                  className="pointer-events-none absolute inset-x-2 bottom-2 border border-attn/60 bg-attn/20 px-2 py-1.5 font-mono text-[11px] text-attn"
+                >
+                  {pictureOverlay}
+                </p>
+              ) : null}
+            </div>
           </HudPanel>
           </div>
 
@@ -374,22 +450,67 @@ export function BridgeConsole() {
               </ul>
             </HudPanel>
 
-            <HudPanel testId="connected-systems-panel" title={t.bridge.connected}>
+            <HudPanel
+              testId="connected-systems-panel"
+              title={t.bridge.connected}
+              extra={
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <label className="sr-only" htmlFor="simulate-fault">
+                    Simulate equipment fault
+                  </label>
+                  <select
+                    id="simulate-fault"
+                    data-testid="simulate-fault"
+                    value=""
+                    onChange={(event) => {
+                      const next = event.target.value as EquipmentId;
+                      if (next) simulateFault(next);
+                    }}
+                    className="max-w-[11rem] border border-bridge-line bg-bridge-bg px-2 py-1 font-ui text-[11px] text-bridge-text"
+                  >
+                    <option value="">Simulate equipment fault</option>
+                    {EQUIPMENT.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              }
+            >
               <ul className="space-y-1.5">
                 {systems.map((system) => (
                   <li
                     key={system.name}
+                    data-testid={system.id ? `system-row-${system.id}` : undefined}
                     className="flex items-center justify-between gap-3 font-mono text-xs"
                   >
                     <span className="text-bridge-text">{system.name}</span>
-                    <span className="flex items-center gap-2 text-bridge-dim">
+                    <span
+                      className={cn(
+                        "flex items-center gap-2",
+                        system.faulted
+                          ? "text-crit"
+                          : system.online
+                            ? "text-bridge-dim"
+                            : "text-bridge-dim",
+                      )}
+                    >
                       <span
                         className={cn(
                           "h-1.5 w-1.5 rounded-full",
-                          system.online ? "bg-ok" : "bg-bridge-dim",
+                          system.faulted
+                            ? "bg-crit"
+                            : system.online
+                              ? "bg-ok"
+                              : "bg-bridge-dim",
                         )}
                       />
-                      {system.online ? t.bridge.online : t.bridge.standby}
+                      {system.faulted
+                        ? "Offline"
+                        : system.online
+                          ? t.bridge.online
+                          : t.bridge.standby}
                     </span>
                   </li>
                 ))}

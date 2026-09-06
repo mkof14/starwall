@@ -13,9 +13,10 @@ type Tooltip = {
 
 type BridgeRadarProps = {
   showNewContact: boolean;
+  degraded?: "radar" | "ais" | null;
 };
 
-export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
+export function BridgeRadar({ showNewContact, degraded }: BridgeRadarProps) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
 
   useEffect(() => {
@@ -142,9 +143,11 @@ export function BridgeRadar({ showNewContact }: BridgeRadarProps) {
           strokeWidth="1"
           strokeDasharray="2 4"
         />
+        {degraded === "radar" ? null : (
         <g className="bridge-sweep" style={{ pointerEvents: "none" }}>
           <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
         </g>
+        )}
         <defs>
           <linearGradient id="sweepGrad" x1="0" y1="1" x2="1" y2="0">
             <stop offset="0%" stopColor="#33D3A6" stopOpacity="0" />
