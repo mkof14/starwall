@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ContainerConnectionDiagram } from "@/components/container-connection-diagram";
 import { usePreferences } from "@/lib/i18n/context";
 
 const zoneHrefs = [
@@ -72,12 +73,15 @@ export function ContainersView() {
           ))}
         </section>
 
-        <p className="text-sm text-muted">
-          {t.containers.detectionLink}{" "}
-          <Link href="/how-it-works" className="text-orange hover:underline">
-            {t.containers.howLink}
-          </Link>
-        </p>
+        <section className="space-y-5" data-testid="container-connection">
+          <p className="text-sm text-muted">
+            {t.containers.detectionLink}{" "}
+            <Link href="/how-it-works" className="text-orange hover:underline">
+              {t.containers.howLink}
+            </Link>
+          </p>
+          <ContainerConnectionDiagram />
+        </section>
 
         <Link
           href="/contact"
