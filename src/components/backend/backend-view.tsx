@@ -43,6 +43,19 @@ const SECTIONS = [
 
 type SectionId = (typeof SECTIONS)[number];
 
+function isSectionId(value: string | null | undefined): value is SectionId {
+  return Boolean(value && (SECTIONS as readonly string[]).includes(value));
+}
+
+function sectionFromLocation(): SectionId {
+  if (typeof window === "undefined") return "health";
+  const hash = window.location.hash.replace(/^#/, "");
+  if (isSectionId(hash)) return hash;
+  const query = new URLSearchParams(window.location.search).get("section");
+  if (isSectionId(query)) return query;
+  return "health";
+}
+
 function statusDot(status: EquipStatus) {
   if (status === "OK") return "bg-ok";
   if (status === "Warning") return "bg-attn";
@@ -69,6 +82,23 @@ export function BackendView() {
   const { records } = useBlackBox();
   const copy = t.backend;
   const [section, setSection] = useState<SectionId>("health");
+
+  useEffect(() => {
+    setSection(sectionFromLocation());
+    function onHash() {
+      setSection(sectionFromLocation());
+    }
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  function selectSection(item: SectionId) {
+    setSection(item);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("section");
+    url.hash = item;
+    window.history.replaceState(null, "", `${url.pathname}${url.search}#${item}`);
+  }
   const [online, setOnline] = useState(true);
   const [syncedFor, setSyncedFor] = useState(12);
   const [localFor, setLocalFor] = useState(40);
@@ -393,7 +423,7 @@ export function BackendView() {
               <button
                 key={item}
                 type="button"
-                onClick={() => setSection(item)}
+                onClick={() => selectSection(item)}
                 className={cn(
                   "border px-3 py-2 text-start font-mono text-[11px] tracking-wider",
                   section === item

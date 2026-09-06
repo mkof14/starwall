@@ -15,3 +15,13 @@ export const adminNavItem = {
   href: "/backend",
   key: "backend",
 } as const;
+
+export const authNavItem = {
+  href: "/login",
+  key: "auth",
+} as const;
+
+export const tasksNavItem = {
+  href: "/tasks",
+  key: "tasks",
+} as const;

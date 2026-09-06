@@ -13,6 +13,7 @@ import { Helm } from "@/components/bridge/starwall-assistant";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeScript } from "@/components/theme-script";
+import { AuthSessionProvider } from "@/lib/auth-session";
 import { BlackBoxProvider } from "@/lib/black-box";
 import { BridgeSessionProvider } from "@/lib/bridge-session";
 import { PreferencesProvider } from "@/lib/i18n/context";
@@ -109,14 +110,16 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         <ModeProvider>
           <PreferencesProvider>
-            <BridgeSessionProvider>
-              <BlackBoxProvider>
-                <SiteHeader />
-                <main className="flex-1">{children}</main>
-                <SiteFooter />
-                <Helm />
-              </BlackBoxProvider>
-            </BridgeSessionProvider>
+            <AuthSessionProvider>
+              <BridgeSessionProvider>
+                <BlackBoxProvider>
+                  <SiteHeader />
+                  <main className="flex-1">{children}</main>
+                  <SiteFooter />
+                  <Helm />
+                </BlackBoxProvider>
+              </BridgeSessionProvider>
+            </AuthSessionProvider>
           </PreferencesProvider>
         </ModeProvider>
       </body>

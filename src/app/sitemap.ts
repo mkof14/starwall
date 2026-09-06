@@ -17,6 +17,8 @@ const PATHS = [
   "/containers/deployment",
   "/contact",
   "/backend",
+  "/login",
+  "/tasks",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

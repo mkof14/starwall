@@ -52,7 +52,9 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/specs` | Specifications |
 | `/containers/deployment` | Deployment |
 | `/contact` | Contact |
-| `/backend` | StarWall Backend (live admin actions + honest LIVE mode) |
+| `/login` | Authorization — local browser session + full task list |
+| `/tasks` | All tasks (gated; sign in on `/login` first) |
+| `/backend` | StarWall Backend (gated; live admin actions + honest LIVE mode) |
 
 ## Brand, theme, and language
 
@@ -62,9 +64,11 @@ Header and footer include a sun/moon theme switch (light/dark, stored in the bro
 
 Helm, the watch advisor, sits as a living icon at the bottom-right of every page. Speech/type languages fold into a dropdown inside the panel.
 
-`/interface` and `/backend` also carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
+`/interface`, `/backend`, `/login`, and `/tasks` also carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
 
-Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, and `/backend`. Arabic and Hebrew also load Noto Sans for body and headings.
+`/login` starts a **local browser session** (name + role, optional email — no password database). DEMO can prefill illustrative accounts. LIVE shows no accounts until you add one on the form. `/backend` and `/tasks` redirect to `/login` until that session exists. This is not production authentication.
+
+Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, `/backend`, `/login`, and `/tasks`. Arabic and Hebrew also load Noto Sans for body and headings.
 
 Still English: the Bridge HUD itself (scenario library, Crisis Mode, instrument skins — forced `dir="ltr"` so RTL languages do not break the watch picture), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).
 

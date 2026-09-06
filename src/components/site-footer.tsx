@@ -5,7 +5,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePreferences } from "@/lib/i18n/context";
-import { adminNavItem, navItems } from "@/lib/nav";
+import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
 
 export function SiteFooter() {
   const { t } = usePreferences();
@@ -26,12 +26,15 @@ export function SiteFooter() {
               {t.nav[item.key]}
             </Link>
           ))}
-          <Link
-            href={adminNavItem.href}
-            className="font-mono text-[11px] uppercase tracking-wider text-sand/80 hover:text-sand"
-          >
-            {t.nav[adminNavItem.key]}
-          </Link>
+          {[authNavItem, tasksNavItem, adminNavItem].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="font-mono text-[11px] uppercase tracking-wider text-sand/80 hover:text-sand"
+            >
+              {t.nav[item.key]}
+            </Link>
+          ))}
         </nav>
         <p>{t.chrome.rights}</p>
       </div>

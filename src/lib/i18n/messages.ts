@@ -9,6 +9,8 @@ export type Messages = {
     containers: string;
     contact: string;
     backend: string;
+    auth: string;
+    tasks: string;
     openMenu: string;
     closeMenu: string;
     primary: string;
@@ -37,6 +39,8 @@ export type Messages = {
     contact: string;
     backend: string;
     connections: string;
+    login: string;
+    tasks: string;
   };
   surface: {
     connectionsKicker: string;
@@ -156,6 +160,59 @@ export type Messages = {
     secondsAgo: string;
     minuteAgo: string;
     minutesAgo: string;
+  };
+  auth: {
+    kicker: string;
+    title: string;
+    lead: string;
+    leadLive: string;
+    nameLabel: string;
+    emailLabel: string;
+    roleLabel: string;
+    namePlaceholder: string;
+    emailPlaceholder: string;
+    signIn: string;
+    signOut: string;
+    signedInAs: string;
+    demoAccounts: string;
+    liveEmptyAccounts: string;
+    sessionNotice: string;
+    sessionNoticeLive: string;
+    nameRequired: string;
+    emailInvalid: string;
+    loading: string;
+    error: string;
+    retry: string;
+    redirecting: string;
+    gateTitle: string;
+    gateLead: string;
+    tasksKicker: string;
+    tasksTitle: string;
+    tasksLead: string;
+    tasksLeadLive: string;
+    tasksEmpty: string;
+    groupBackend: string;
+    groupSite: string;
+    openTask: string;
+    lockedHint: string;
+    useAccount: string;
+    bodies: {
+      health: string;
+      equipment: string;
+      access: string;
+      blackbox: string;
+      integrations: string;
+      audit: string;
+      overview: string;
+      how: string;
+      bridge: string;
+      connections: string;
+      levels: string;
+      technology: string;
+      faq: string;
+      containers: string;
+      contact: string;
+    };
   };
   home: {
     kicker: string;
@@ -382,6 +439,8 @@ export const en: Messages = {
     containers: "Containers",
     contact: "Contact",
     backend: "Backend",
+    auth: "Auth",
+    tasks: "Tasks",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     primary: "Primary",
@@ -410,6 +469,8 @@ export const en: Messages = {
     contact: "Contact — StarWall by AGRON",
     backend: "StarWall Backend — System administration — StarWall by AGRON",
     connections: "System Connections Map — StarWall by AGRON",
+    login: "Authorization — StarWall by AGRON",
+    tasks: "All tasks — StarWall by AGRON",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGY",
@@ -536,6 +597,65 @@ export const en: Messages = {
     secondsAgo: "seconds ago",
     minuteAgo: "1 minute ago",
     minutesAgo: "minutes ago",
+  },
+  auth: {
+    kicker: "AUTHORIZATION",
+    title: "Sign in to StarWall",
+    lead:
+      "Local session for this browser — name and role only. No password store. DEMO accounts are illustrative; they are not production identities.",
+    leadLive:
+      "LIVE mode: this deployment has no provisioned accounts yet. Enter a name and role to start a local browser session. Nothing is sent to a production identity service.",
+    nameLabel: "Name",
+    emailLabel: "Email (optional)",
+    roleLabel: "Role",
+    namePlaceholder: "Your name",
+    emailPlaceholder: "name@example.com",
+    signIn: "Sign in",
+    signOut: "Sign out",
+    signedInAs: "Signed in as",
+    demoAccounts: "Illustrative DEMO accounts",
+    liveEmptyAccounts: "No accounts on this deployment yet.",
+    sessionNotice:
+      "This is a local browser session for the administration surfaces. It is not production authentication.",
+    sessionNoticeLive:
+      "LIVE session stays on this browser only. No remote accounts are connected.",
+    nameRequired: "Enter a name to continue.",
+    emailInvalid: "Enter a valid email, or leave it blank.",
+    loading: "Loading session…",
+    error: "The saved session could not be read.",
+    retry: "Clear and retry",
+    redirecting: "Opening the requested surface…",
+    gateTitle: "Authorization required",
+    gateLead: "Sign in first to open administration and the task list.",
+    tasksKicker: "TASKS",
+    tasksTitle: "All tasks",
+    tasksLead:
+      "Every administration surface and site workstream — open the working page from here.",
+    tasksLeadLive:
+      "Same task list. LIVE surfaces stay empty until equipment and accounts are connected.",
+    tasksEmpty: "No tasks to show.",
+    groupBackend: "Administration",
+    groupSite: "Site workstreams",
+    openTask: "Open",
+    lockedHint: "Sign in to open this surface.",
+    useAccount: "Use this account",
+    bodies: {
+      health: "Heartbeat, links, and backup paths for this deployment.",
+      equipment: "Diagnostics and self-checks for connected equipment.",
+      access: "Roles and local accounts for the administration surfaces.",
+      blackbox: "Session records written on the Bridge and kept in this browser.",
+      integrations: "Registry of feeds — radar, AIS, cameras, satcom.",
+      audit: "Administrative actions, separate from the Bridge event log.",
+      overview: "Marketing overview and entry cards for the public site.",
+      how: "Connect, understand, decide — architecture and capabilities.",
+      bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
+      connections: "Radial map of Core, sensors, Bridge, and Support Center.",
+      levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
+      technology: "Equipment categories and how StarWall sits on existing systems.",
+      faq: "Answers on responsibility, connectivity, data, and specialized modules.",
+      containers: "Deployable AGRON container hardware running StarWall.",
+      contact: "Request a briefing with AGRON Maritime.",
+    },
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

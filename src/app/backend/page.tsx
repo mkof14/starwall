@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AuthGate } from "@/components/auth/auth-gate";
 import { BackendView } from "@/components/backend/backend-view";
 import { pageMeta } from "@/lib/seo";
 
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function BackendPage() {
-  return <BackendView />;
+  return (
+    <AuthGate next="/backend">
+      <BackendView />
+    </AuthGate>
+  );
 }

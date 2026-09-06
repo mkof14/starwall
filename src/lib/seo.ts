@@ -74,4 +74,14 @@ export const pageMeta = {
     description:
       "Illustrative system administration view: connectivity, equipment health, access control, and monitoring.",
   },
+  login: {
+    title: "Authorization — StarWall by AGRON",
+    description:
+      "Local browser sign-in for StarWall administration and the full task list. DEMO accounts are illustrative; LIVE has no provisioned accounts.",
+  },
+  tasks: {
+    title: "All tasks — StarWall by AGRON",
+    description:
+      "Every administration surface and site workstream, listed as openable tasks.",
+  },
 } as const;
