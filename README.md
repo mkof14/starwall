@@ -17,6 +17,8 @@ npm run dev
 
 Dev server: `http://127.0.0.1:3000`
 
+The Bridge assistant on `/interface` calls Anthropic from `src/app/api/assistant/route.ts`. Copy `.env.local.example` to `.env.local` and set `ANTHROPIC_API_KEY`. `.env*.local` is gitignored. Without the key the panel still opens; sending a message returns a configuration error instead of a reply.
+
 ## PDF overview
 
 The homepage “Download overview (PDF)” button uses the one-page leaflet in `public/overview-leaflet.jpg` as a thumbnail and serves `public/starwall-overview.pdf`.

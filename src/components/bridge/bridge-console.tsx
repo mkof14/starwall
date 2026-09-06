@@ -22,6 +22,7 @@ import {
   equipmentName,
   type EquipmentId,
 } from "@/lib/equipment";
+import { useBridgeSession } from "@/lib/bridge-session";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
 import { cn } from "@/lib/cn";
@@ -124,6 +125,7 @@ function pictureFor(
 export function BridgeConsole() {
   const { t } = usePreferences();
   const { setCrisis } = useCrisisMode();
+  const { setSession } = useBridgeSession();
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
   const [panelType, setPanelType] = useState<PanelType>("radar");
   const [actionText, setActionText] = useState<string | null>(null);
@@ -156,6 +158,14 @@ export function BridgeConsole() {
   }
 
   useEffect(() => () => clearAutoTimer(), []);
+
+  useEffect(() => {
+    setSession({
+      scenarioName: selectedName || "Normal watch",
+      riskLevel,
+      vessel: "M/Y AURELIA",
+    });
+  }, [selectedName, riskLevel, setSession]);
 
   const systems = t.bridge.systems.map((name, index) => {
     const id = EQUIPMENT[index]?.id;
