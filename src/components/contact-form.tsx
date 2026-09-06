@@ -182,6 +182,7 @@ export function ContactForm({ initialMessage = "" }: { initialMessage?: string }
         </label>
         <textarea
           id="contact-message"
+          data-testid="contact-message"
           name="message"
           rows={5}
           placeholder={t.contact.messagePlaceholder}

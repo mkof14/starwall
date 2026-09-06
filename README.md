@@ -43,7 +43,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/interface` | Interface (scenario-linked Situational Picture) |
 | `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
-| `/pricing` | Pricing (illustrative monthly + one-time equipment) |
+| `/pricing` | Pricing configurator (object, software, container, extras) |
 | `/technology` | Technology |
 | `/faq` | FAQ |
 | `/containers` | AGRON Containers |
@@ -141,5 +141,7 @@ npx tsc --noEmit
 npm run build
 npm start
 ```
+
+`/pricing` is a live configurator: object type, StarWall tier, AGRON Container hardware, and extras. Monthly software and one-time equipment stay as two totals. CUSTOM / Exclusive show “Contact us for pricing” for that part. **Request exact quote** opens `/contact` with the configuration pre-filled.
 
 `/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/backend` writes through `/api/equipment`, `/api/notifications`, `/api/audit`, `/api/integrations`, and `/api/users`. Unauthorized writes return 403.

@@ -399,6 +399,51 @@ export type Messages = {
     faq3a: string;
     interestMessage: string;
     levelsCta: string;
+    config: {
+      stepObject: string;
+      stepSoftware: string;
+      stepContainer: string;
+      stepAddons: string;
+      yourConfig: string;
+      monthlyLabel: string;
+      oneTimeLabel: string;
+      oneTimeShort: string;
+      perMonth: string;
+      contactPricing: string;
+      customQuote: string;
+      requestQuote: string;
+      summaryNote: string;
+      showSummary: string;
+      hideSummary: string;
+      quoteMessage: string;
+      objects: {
+        yacht: { name: string; detail: string };
+        marina: { name: string; detail: string };
+        port: { name: string; detail: string };
+        island: { name: string; detail: string };
+        event: { name: string; detail: string };
+      };
+      software: {
+        LIGHT: { name: string; detail: string };
+        ADVANCED: { name: string; detail: string };
+        INTELLIGENCE: { name: string; detail: string };
+        CUSTOM: { name: string; detail: string };
+      };
+      containers: {
+        none: { name: string; detail: string };
+        basic: { name: string; detail: string };
+        business: { name: string; detail: string };
+        premium: { name: string; detail: string };
+        exclusive: { name: string; detail: string };
+      };
+      addons: {
+        camera: { name: string };
+        radar: { name: string };
+        sonar: { name: string };
+        rf: { name: string };
+        seat: { name: string };
+      };
+    };
   };
   tech: {
     kicker: string;
@@ -819,7 +864,7 @@ export const en: Messages = {
       bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
       connections: "Radial map of Core, sensors, Bridge, and Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
-      pricing: "Illustrative monthly pricing and one-time equipment cost by tier.",
+      pricing: "Configure illustrative monthly pricing and one-time equipment by object and tier.",
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",
@@ -1020,8 +1065,8 @@ export const en: Messages = {
   },
   pricing: {
     kicker: "Pricing",
-    title: "Illustrative monthly pricing",
-    lead: "Compare LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — then request a quote for your vessel or site.",
+    title: "Configure your deployment",
+    lead: "Choose the object, StarWall tier, AGRON Container hardware, and extras. The estimate on the right updates as you configure — monthly software and one-time equipment stay separate.",
     mostPopular: "Most popular",
     perMonth: "/mo",
     equipmentPrefix: "+",
@@ -1045,7 +1090,96 @@ export const en: Messages = {
     faq3a:
       "Standard terms are month-to-month after an initial onboarding period — ask us for specifics for your situation.",
     interestMessage: "I'm interested in the {tier} plan",
-    levelsCta: "See illustrative monthly pricing",
+    levelsCta: "Configure illustrative pricing",
+    config: {
+      stepObject: "Object type",
+      stepSoftware: "StarWall software",
+      stepContainer: "AGRON Container hardware",
+      stepAddons: "Additional equipment",
+      yourConfig: "Your configuration",
+      monthlyLabel: "Monthly",
+      oneTimeLabel: "One-time equipment",
+      oneTimeShort: "one-time",
+      perMonth: "/mo",
+      contactPricing: "Contact us for pricing",
+      customQuote: "Contact AGRON for a custom quote",
+      requestQuote: "Request exact quote",
+      summaryNote:
+        "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
+      showSummary: "Details",
+      hideSummary: "Hide",
+      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      objects: {
+        yacht: {
+          name: "Yacht / Superyacht",
+          detail: "A single vessel — the baseline configuration.",
+        },
+        marina: {
+          name: "Marina",
+          detail: "Multiple berths and a shared shoreline picture.",
+        },
+        port: {
+          name: "Port",
+          detail: "High-throughput waterfront with overlapping sensors.",
+        },
+        island: {
+          name: "Private Island / Estate",
+          detail: "Perimeter plus approaches over water and land.",
+        },
+        event: {
+          name: "Special Event",
+          detail: "Temporary deployment for a defined window.",
+        },
+      },
+      software: {
+        LIGHT: {
+          name: "LIGHT",
+          detail: "Essential monitoring, unified picture",
+        },
+        ADVANCED: {
+          name: "ADVANCED",
+          detail: "Risk engine, 24/7 Support Center",
+        },
+        INTELLIGENCE: {
+          name: "INTELLIGENCE",
+          detail: "Adaptive AI, anomaly detection",
+        },
+        CUSTOM: {
+          name: "CUSTOM",
+          detail: "Fully bespoke",
+        },
+      },
+      containers: {
+        none: {
+          name: "None — software only",
+          detail: "StarWall on equipment you already have.",
+        },
+        basic: {
+          name: "Basic",
+          detail: "Detection suite + StarWall analysis only",
+        },
+        business: {
+          name: "Business",
+          detail: "+ extended sensor range, Support Center connection",
+        },
+        premium: {
+          name: "Premium",
+          detail: "+ countermeasure bay (non-kinetic: electronic warfare)",
+        },
+        exclusive: {
+          name: "Exclusive",
+          detail:
+            "Full custom build, authorized government/defense end-users only, subject to export control and end-user certification",
+        },
+      },
+      addons: {
+        camera: { name: "Extended camera set" },
+        radar: { name: "Extended radar range" },
+        sonar: { name: "Underwater sonar module" },
+        rf: { name: "RF / electronic warfare detection" },
+        seat: { name: "Additional monitoring seat for Support Center" },
+      },
+    },
   },
   tech: {
     kicker: "Technology",

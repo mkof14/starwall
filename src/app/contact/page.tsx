@@ -10,7 +10,21 @@ export const metadata: Metadata = {
 export default function ContactPage({
   searchParams,
 }: {
-  searchParams: { plan?: string };
+  searchParams: {
+    plan?: string;
+    object?: string;
+    software?: string;
+    container?: string;
+    addons?: string;
+  };
 }) {
-  return <ContactView plan={searchParams.plan} />;
+  return (
+    <ContactView
+      plan={searchParams.plan}
+      object={searchParams.object}
+      software={searchParams.software}
+      container={searchParams.container}
+      addons={searchParams.addons}
+    />
+  );
 }

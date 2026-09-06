@@ -526,6 +526,95 @@ export const fr: Messages = {
       "Les conditions standard sont mensuelles après une période initiale de mise en service — demandez-nous les précisions pour votre situation.",
     interestMessage: "Je suis intéressé par le plan {tier}",
     levelsCta: "Voir les tarifs mensuels indicatifs",
+    config: {
+      stepObject: "Type d'objet",
+      stepSoftware: "Logiciel StarWall",
+      stepContainer: "Materiel AGRON Container",
+      stepAddons: "Equipement supplementaire",
+      yourConfig: "Votre configuration",
+      monthlyLabel: "Mensuel",
+      oneTimeLabel: "Equipement, paiement unique",
+      oneTimeShort: "unique",
+      perMonth: "/mois",
+      contactPricing: "Nous contacter pour le tarif",
+      customQuote: "Contactez AGRON pour un devis sur mesure",
+      requestQuote: "Demander un devis exact",
+      summaryNote:
+        "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
+      showSummary: "Details",
+      hideSummary: "Masquer",
+      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      objects: {
+        yacht: {
+          name: "Yacht / Superyacht",
+          detail: "A single vessel — the baseline configuration.",
+        },
+        marina: {
+          name: "Marina",
+          detail: "Multiple berths and a shared shoreline picture.",
+        },
+        port: {
+          name: "Port",
+          detail: "High-throughput waterfront with overlapping sensors.",
+        },
+        island: {
+          name: "Private Island / Estate",
+          detail: "Perimeter plus approaches over water and land.",
+        },
+        event: {
+          name: "Special Event",
+          detail: "Temporary deployment for a defined window.",
+        },
+      },
+      software: {
+        LIGHT: {
+          name: "LIGHT",
+          detail: "Essential monitoring, unified picture",
+        },
+        ADVANCED: {
+          name: "ADVANCED",
+          detail: "Risk engine, 24/7 Support Center",
+        },
+        INTELLIGENCE: {
+          name: "INTELLIGENCE",
+          detail: "Adaptive AI, anomaly detection",
+        },
+        CUSTOM: {
+          name: "CUSTOM",
+          detail: "Fully bespoke",
+        },
+      },
+      containers: {
+        none: {
+          name: "None — software only",
+          detail: "StarWall on equipment you already have.",
+        },
+        basic: {
+          name: "Basic",
+          detail: "Detection suite + StarWall analysis only",
+        },
+        business: {
+          name: "Business",
+          detail: "+ extended sensor range, Support Center connection",
+        },
+        premium: {
+          name: "Premium",
+          detail: "+ countermeasure bay (non-kinetic: electronic warfare)",
+        },
+        exclusive: {
+          name: "Exclusive",
+          detail:
+            "Full custom build, authorized government/defense end-users only, subject to export control and end-user certification",
+        },
+      },
+      addons: {
+        camera: { name: "Extended camera set" },
+        radar: { name: "Extended radar range" },
+        sonar: { name: "Underwater sonar module" },
+        rf: { name: "RF / electronic warfare detection" },
+        seat: { name: "Additional monitoring seat for Support Center" },
+      },
+    },
   },
   tech: {
     kicker: "Technologie",
