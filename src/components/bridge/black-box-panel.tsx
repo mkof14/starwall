@@ -91,7 +91,7 @@ export function BlackBoxPanel() {
   }
 
   return (
-    <div className="bg-bridge-bg px-4 pb-10 md:px-6">
+    <div className="bg-bridge-bg px-4 pb-28 md:px-6 lg:pe-[26rem]">
       <section
         data-testid="black-box-panel"
         className="relative mx-auto max-w-6xl border border-bridge-line bg-bridge-panel p-4 text-bridge-text"
