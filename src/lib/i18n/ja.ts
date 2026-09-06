@@ -98,7 +98,7 @@ export const ja: Messages = {
     lead:
       "接続、機器の健全性、アクセス制御、監視 — AGRON コンテナ機器を含む。Bridge より密度が高い：一目の当直ではなく管理者向け。",
     demoNotice:
-      "説明用のシステム管理画面 — 運用層の構造と能力を示すものであり、本番の管理パネルではありません。",
+      "プレパイロットの管理 — 役割、機器点検、通知ルーティング、監査ログはローカルデータベースに書き込まれます。物理センサーはまだ接続されていません。",
     sectionsNav: "バックエンド区画",
     health: "システム健全性",
     equipment: "機器",
@@ -208,7 +208,7 @@ export const ja: Messages = {
       "{name} に切替中...（オブジェクト間の完全な切替は Premium/Custom で利用できます）",
     notifyTitle: "通知ルーティング",
     notifyNote:
-      "説明用の設定です。実配信には、稼働前に事業者（通話/SMS なら Twilio など）の接続が必要です。",
+      "保存した経路はデータベースに残ります。実配信には、稼働前に事業者（通話/SMS なら Twilio など）の接続が必要です。",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -288,7 +288,7 @@ export const ja: Messages = {
     bodies: {
       health: "サービスの心拍、回線、バックアップ経路。",
       equipment: "接続機器の診断と自己点検。",
-      access: "管理画面の役割とローカルアカウント。",
+      access: "役割階層。Super Admin がユーザーを管理します。",
       blackbox: "このブラウザに残る Bridge セッション記録。",
       integrations: "フィード登録 — レーダー、AIS、カメラ、satcom。",
       audit: "管理操作。Bridge のイベントログとは別です。",
@@ -297,7 +297,7 @@ export const ja: Messages = {
       bridge: "AGRON Bridge — 状況図とシナリオ。",
       connections: "コア、センサー、Bridge、Support Center の地図。",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM と、今使える範囲。",
-      pricing: "ティアごとの目安月額と、機器の一時費用。",
+      pricing: "対象、ソフトウェア、コンテナ、追加装備で月額と一時費用を構成します。",
       technology: "機器カテゴリと、既存システム上での StarWall の位置。",
       faq: "責任、接続、データ、専用モジュールについての回答。",
       containers: "StarWall を動かす AGRON の展開用コンテナ機器。",
@@ -498,8 +498,8 @@ export const ja: Messages = {
   },
   pricing: {
     kicker: "料金",
-    title: "目安の月額料金",
-    lead: "LIGHT、ADVANCED、INTELLIGENCE、CUSTOM を比較し、船舶またはサイトの見積もりを依頼してください。",
+    title: "配備を構成する",
+    lead: "対象、StarWall ティア、AGRON Container ハードウェア、追加装備を選びます。右側の見積もりは構成に合わせて更新され、月額ソフトウェアと一時費用は分けて表示されます。",
     mostPopular: "最も選ばれています",
     perMonth: "/月",
     equipmentPrefix: "+",
@@ -523,7 +523,7 @@ export const ja: Messages = {
     faq3a:
       "標準条件は初期導入期間のあと月単位です。ご状況に応じた詳細はお問い合わせください。",
     interestMessage: "{tier} プランに興味があります",
-    levelsCta: "目安の月額料金を見る",
+    levelsCta: "導入内容を構成する",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",

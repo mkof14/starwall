@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Assistant is not configured. Add ANTHROPIC_API_KEY to .env.local and restart the server.",
+          "Helm is not configured. Add ANTHROPIC_API_KEY to .env.local and restart the server.",
       },
       { status: 503 },
     );
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
 
     if (!raw) {
       return NextResponse.json(
-        { error: "The assistant returned an empty reply." },
+        { error: "Helm returned an empty reply." },
         { status: 502 },
       );
     }
@@ -82,12 +82,12 @@ export async function POST(request: Request) {
     return NextResponse.json(parseLangTag(raw));
   } catch (error) {
     const detail =
-      error instanceof Error ? error.message : "Assistant request failed.";
+      error instanceof Error ? error.message : "Helm request failed.";
     const rateLimited = /rate.?limit|429/i.test(detail);
     return NextResponse.json(
       {
         error: rateLimited
-          ? "The assistant is rate-limited. Wait a moment and try again."
+          ? "Helm is rate-limited. Wait a moment and try again."
           : detail,
       },
       { status: rateLimited ? 429 : 502 },

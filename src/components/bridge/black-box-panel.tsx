@@ -120,7 +120,7 @@ export function BlackBoxPanel() {
           <p className="font-mono text-xs text-bridge-dim">
             {live
               ? "No records yet."
-              : "No records yet this session — run a scenario or talk to the assistant."}
+              : "No records yet this session — run a scenario or talk to Helm."}
           </p>
         ) : (
           <ul className="space-y-2">

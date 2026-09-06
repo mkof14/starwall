@@ -98,7 +98,7 @@ export const de: Messages = {
     lead:
       "Konnektivität, Gerätezustand, Zugriffskontrolle und Überwachung — einschließlich AGRON-Container-Hardware. Dichter als die Bridge: für Administratoren, nicht für einen Blick.",
     demoNotice:
-      "Illustrative Systemverwaltung — zeigt Struktur und Fähigkeiten der Betriebsschicht, kein Produktions-Adminpanel.",
+      "Pre-Pilot-Verwaltung — Rollen, Geräteprüfungen, Benachrichtigungswege und das Audit-Protokoll schreiben in die lokale Datenbank. Es sind noch keine physischen Sensoren verbunden.",
     sectionsNav: "Backend-Bereiche",
     health: "Systemzustand",
     equipment: "Geräte",
@@ -208,7 +208,7 @@ export const de: Messages = {
       "Wechsel zu {name}... (vollständiges Umschalten zwischen Objekten auf Premium/Custom)",
     notifyTitle: "BENACHRICHTIGUNGSWEGE",
     notifyNote:
-      "Illustrative Konfiguration — echte Zustellung erfordert vor dem Live-Betrieb einen Anbieter (z. B. Twilio für Anrufe/SMS).",
+      "Gespeicherte Wege liegen in der Datenbank. Die echte Zustellung braucht vor dem Live-Betrieb weiterhin einen Anbieter (z. B. Twilio für Anrufe/SMS).",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -290,7 +290,7 @@ export const de: Messages = {
     bodies: {
       health: "Diensttakt, Verbindungen und Sicherungspfade.",
       equipment: "Diagnosen und Selbstprüfungen der verbundenen Ausrüstung.",
-      access: "Rollen und lokale Konten der Administrationsflächen.",
+      access: "Rollenhierarchie. Super Admin verwaltet Benutzer.",
       blackbox: "Bridge-Sitzungsaufzeichnungen in diesem Browser.",
       integrations: "Register der Feeds — Radar, AIS, Kameras, Satcom.",
       audit: "Administrative Aktionen, getrennt vom Ereignisprotokoll der Bridge.",
@@ -299,7 +299,7 @@ export const de: Messages = {
       bridge: "AGRON Bridge — Lagebild und Szenarien.",
       connections: "Karte von Kern, Sensoren, Bridge und Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM und was jetzt verfügbar ist.",
-      pricing: "Illustrative Monatspreise und einmalige Ausrüstungskosten je Stufe.",
+      pricing: "Monatliche und einmalige Kosten nach Objekt, Software, Container und Extras konfigurieren.",
       technology: "Ausrüstungskategorien und wie StarWall auf bestehenden Systemen aufsetzt.",
       faq: "Antworten zu Verantwortung, Konnektivität, Daten und spezialisierten Modulen.",
       containers: "Einsatzfähige AGRON-Containerhardware mit StarWall.",
@@ -500,8 +500,8 @@ export const de: Messages = {
   },
   pricing: {
     kicker: "Preise",
-    title: "Illustrative Monatspreise",
-    lead: "Vergleichen Sie LIGHT, ADVANCED, INTELLIGENCE und CUSTOM — und fordern Sie ein Angebot für Ihr Schiff oder Ihren Standort an.",
+    title: "Konfigurieren Sie Ihre Ausstattung",
+    lead: "Wählen Sie Objekt, StarWall-Stufe, AGRON-Container-Hardware und Extras. Die Schätzung rechts aktualisiert sich — monatliche Software und einmalige Ausrüstung bleiben getrennt.",
     mostPopular: "Am häufigsten gewählt",
     perMonth: "/Monat",
     equipmentPrefix: "+",
@@ -525,7 +525,7 @@ export const de: Messages = {
     faq3a:
       "Die Standardbedingungen sind monatlich kündbar nach einer ersten Einführungsphase — fragen Sie uns nach den Details für Ihre Situation.",
     interestMessage: "Ich interessiere mich für den Tarif {tier}",
-    levelsCta: "Illustrative Monatspreise ansehen",
+    levelsCta: "Konfigurieren Sie Ihren Einsatz",
     config: {
       stepObject: "Objekttyp",
       stepSoftware: "StarWall-Software",

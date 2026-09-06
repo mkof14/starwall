@@ -5,14 +5,20 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePathname } from "next/navigation";
-import { isAuthRoute } from "@/lib/auth-session";
+import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
 
 export function SiteFooter() {
   const { t } = usePreferences();
+  const { session } = useAuthSession();
   const pathname = usePathname();
   if (isAuthRoute(pathname)) return null;
+  const workItems = [
+    ...(session ? [] : [authNavItem]),
+    tasksNavItem,
+    adminNavItem,
+  ];
 
   return (
     <footer className="w-full bg-navy print:hidden">
@@ -30,7 +36,7 @@ export function SiteFooter() {
               {t.nav[item.key]}
             </Link>
           ))}
-          {[authNavItem, tasksNavItem, adminNavItem].map((item) => (
+          {workItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -44,7 +50,7 @@ export function SiteFooter() {
           <Link href="/privacy" className="hover:text-sand">
             {t.chrome.privacy}
           </Link>
-          <Link href="/privacy#terms" className="hover:text-sand">
+          <Link href="/terms" className="hover:text-sand">
             {t.chrome.terms}
           </Link>
         </nav>

@@ -8,7 +8,6 @@ import { PlanPanel } from "@/components/backend/plan-panel";
 import { EventToasts, type EventToast } from "@/components/bridge/event-toasts";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { LiveModeBanner } from "@/components/live-mode-banner";
-import { ModeToggle } from "@/components/mode-toggle";
 import { clockStamp, getAdminHeartbeat, postAdmin, type Heartbeat } from "@/lib/admin";
 import { useAuthSession } from "@/lib/auth-session";
 import { useBlackBox } from "@/lib/black-box";
@@ -420,7 +419,6 @@ export function BackendView() {
             <p className="font-mono text-[10px] tracking-[0.24em] text-bridge-dim">
               {copy.kicker}
             </p>
-            <ModeToggle />
           </div>
           <h1 className="mt-1 font-ui text-3xl font-bold tracking-wide">
             {copy.title}

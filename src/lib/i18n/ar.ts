@@ -98,7 +98,7 @@ export const ar: Messages = {
     lead:
       "الاتصال وصحة المعدات والتحكم بالوصول والمراقبة — بما في ذلك عتاد حاويات AGRON. أكثف من Bridge: للمسؤولين لا لنظرة سريعة.",
     demoNotice:
-      "عرض إداري توضيحي — يبيّن بنية الطبقة التشغيلية وقدراتها، وليس لوحة إنتاج حيّة.",
+      "إدارة ما قبل التشغيل — تُكتب الأدوار وفحوصات المعدات وتوجيه الإشعارات وسجل التدقيق في قاعدة البيانات المحلية. لم تُوصَل بعد أي حساسات مادية.",
     sectionsNav: "أقسام الخلفية",
     health: "صحة النظام",
     equipment: "المعدات",
@@ -208,7 +208,7 @@ export const ar: Messages = {
       "التبديل إلى {name}... (التبديل الكامل بين الأجسام متاح في مستوى Premium/Custom)",
     notifyTitle: "توجيه الإشعارات",
     notifyNote:
-      "إعداد توضيحي — التسليم الفعلي يتطلب ربط مزوّد (مثل Twilio للمكالمات والرسائل) قبل التشغيل الحي.",
+      "تُحفظ المسارات في قاعدة البيانات. التسليم الفعلي ما زال يحتاج مزوّداً (مثل Twilio للمكالمات والرسائل) قبل التشغيل الحي.",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -290,7 +290,7 @@ export const ar: Messages = {
     bodies: {
       health: "نبض الخدمة والروابط ومسارات النسخ الاحتياطي.",
       equipment: "التشخيص والفحص الذاتي للمعدات المتصلة.",
-      access: "الأدوار والحسابات المحلية لأسطح الإدارة.",
+      access: "تسلسل الأدوار. Super Admin يدير المستخدمين.",
       blackbox: "سجلات جلسة Bridge المحفوظة في هذا المتصفح.",
       integrations: "سجل التدفقات — رادار، AIS، كاميرات، satcom.",
       audit: "إجراءات إدارية، منفصلة عن سجل أحداث Bridge.",
@@ -299,7 +299,7 @@ export const ar: Messages = {
       bridge: "AGRON Bridge — الصورة الموقفية والسيناريوهات.",
       connections: "خريطة النواة والمستشعرات وBridge وSupport Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM وما هو متاح الآن.",
-      pricing: "أسعار شهرية إرشادية وتكلفة المعدات لمرة واحدة حسب المستوى.",
+      pricing: "اضبط التكلفة الشهرية والدفعة الواحدة حسب الجسم والبرمجيات والحاوية والإضافات.",
       technology: "فئات المعدات وكيف يستند StarWall إلى الأنظمة القائمة.",
       faq: "إجابات عن المسؤولية والاتصال والبيانات والوحدات المتخصصة.",
       containers: "عتاد حاويات AGRON القابل للنشر ويعمل عليه StarWall.",
@@ -500,8 +500,8 @@ export const ar: Messages = {
   },
   pricing: {
     kicker: "الأسعار",
-    title: "أسعار شهرية إرشادية",
-    lead: "قارن LIGHT وADVANCED وINTELLIGENCE وCUSTOM — ثم اطلب عرض سعر لسفينتك أو موقعك.",
+    title: "اضبطوا النشر",
+    lead: "اختاروا الغرض ومستوى StarWall وعتاد AGRON Container والإضافات. يتحدّث التقدير على اليمين — الاشتراك الشهري والمعدات لمرة واحدة يبقيان منفصلين.",
     mostPopular: "الأكثر اختياراً",
     perMonth: "/شهر",
     equipmentPrefix: "+",
@@ -525,7 +525,7 @@ export const ar: Messages = {
     faq3a:
       "الشروط القياسية شهرية بعد فترة إعداد أولية — اسألنا عن التفاصيل لحالتك.",
     interestMessage: "أنا مهتم بخطة {tier}",
-    levelsCta: "عرض الأسعار الشهرية الإرشادية",
+    levelsCta: "كوّن نشرك",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",

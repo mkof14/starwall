@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { TaskList } from "@/components/auth/task-list";
 import { LiveModeBanner } from "@/components/live-mode-banner";
-import { ModeToggle } from "@/components/mode-toggle";
 import { useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAppMode } from "@/lib/mode";
@@ -30,12 +29,11 @@ export function TasksView() {
             </p>
             {session ? (
               <p className="mt-3 font-mono text-[11px] text-muted">
-                {copy.signedInAs} {session.name}
+                {copy.signedInAs} {session.name} · {session.role}
               </p>
             ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <ModeToggle />
             <button
               type="button"
               data-testid="tasks-sign-out"

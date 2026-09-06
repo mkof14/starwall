@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { ContainersBackLink } from "@/components/containers-back-link";
 import { usePreferences } from "@/lib/i18n/context";
@@ -45,6 +46,12 @@ export function ContainersTiersView() {
             );
           })}
         </section>
+
+        <p className="max-w-3xl text-sm leading-relaxed">
+          <Link href="/pricing" className="font-medium text-orange underline-offset-2 hover:underline">
+            {t.pricing.levelsCta}
+          </Link>
+        </p>
       </div>
     </div>
   );

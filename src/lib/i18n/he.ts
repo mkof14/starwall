@@ -98,7 +98,7 @@ export const he: Messages = {
     lead:
       "קישוריות, בריאות ציוד, בקרת גישה וניטור — כולל חומרת מכולות AGRON. צפוף יותר מ־Bridge: למנהלים, לא למבט חטוף.",
     demoNotice:
-      "תצוגת ניהול להמחשה — מציגה את מבנה שכבת התפעול ואת יכולותיה, לא לוח ייצור חי.",
+      "ניהול טרום-פיילוט — תפקידים, בדיקות ציוד, ניתוב התראות ויומן הביקורת נכתבים למסד המקומי. עדיין אין חיישנים פיזיים מחוברים.",
     sectionsNav: "מדורי ה־backend",
     health: "בריאות המערכת",
     equipment: "ציוד",
@@ -208,7 +208,7 @@ export const he: Messages = {
       "עוברים אל {name}... (מעבר מלא בין עצמים זמין בדרגת Premium/Custom)",
     notifyTitle: "ניתוב התראות",
     notifyNote:
-      "הגדרה להמחשה — מסירה בפועל דורשת חיבור ספק (למשל Twilio לשיחות/SMS) לפני עלייה לאוויר.",
+      "מסלולים שמורים נשמרים במסד. מסירה בפועל עדיין דורשת חיבור ספק (למשל Twilio לשיחות/SMS) לפני עלייה לאוויר.",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -288,7 +288,7 @@ export const he: Messages = {
     bodies: {
       health: "פעימת השירות, קישורי תקשורת ונתיבי גיבוי.",
       equipment: "אבחון ובדיקות עצמיות לציוד המחובר.",
-      access: "תפקידים וחשבונות מקומיים למשטחי הניהול.",
+      access: "היררכיית תפקידים. Super Admin מנהל משתמשים.",
       blackbox: "רשומות הפעלה של Bridge השמורות בדפדפן זה.",
       integrations: "רישום הזנות — מכ״ם, AIS, מצלמות, satcom.",
       audit: "פעולות ניהול, נפרדות מיומן האירועים של Bridge.",
@@ -297,7 +297,7 @@ export const he: Messages = {
       bridge: "AGRON Bridge — תמונת מצב ותרחישים.",
       connections: "מפת הליבה, החיישנים, Bridge ו־Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM ומה זמין כעת.",
-      pricing: "תמחור חודשי להמחשה ועלות ציוד חד־פעמית לפי רמה.",
+      pricing: "הגדירו עלות חודשית וחד־פעמית לפי אובייקט, תוכנה, מכולה ותוספות.",
       technology: "קטגוריות ציוד וכיצד StarWall יושב על מערכות קיימות.",
       faq: "תשובות על אחריות, קישוריות, נתונים ומודולים ייעודיים.",
       containers: "חומרת מכולה פריסה של AGRON שמריצה את StarWall.",
@@ -498,8 +498,8 @@ export const he: Messages = {
   },
   pricing: {
     kicker: "מחירים",
-    title: "תמחור חודשי להמחשה",
-    lead: "השוו LIGHT, ADVANCED, INTELLIGENCE ו־CUSTOM — ואז בקשו הצעת מחיר לכלי השיט או לאתר שלכם.",
+    title: "הגדירו את הפריסה",
+    lead: "בחרו את האובייקט, רמת StarWall, חומרת AGRON Container ואת התוספות. ההערכה מימין מתעדכנת — התוכנה החודשית והציוד החד־פעמי נשארים נפרדים.",
     mostPopular: "הנבחר ביותר",
     perMonth: "/חודש",
     equipmentPrefix: "+",
@@ -523,7 +523,7 @@ export const he: Messages = {
     faq3a:
       "התנאים הסטנדרטיים הם חודש־בחודש לאחר תקופת הטמעה ראשונית — שאלו אותנו לפרטים למצבכם.",
     interestMessage: "אני מעוניין בתוכנית {tier}",
-    levelsCta: "לראות תמחור חודשי להמחשה",
+    levelsCta: "הגדירו את הפריסה",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",

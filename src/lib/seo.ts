@@ -77,7 +77,7 @@ export const pageMeta = {
   backend: {
     title: "StarWall Backend — System administration — StarWall by AGRON",
     description:
-      "Illustrative system administration view: connectivity, equipment health, access control, and monitoring.",
+      "Pre-pilot StarWall administration: connectivity, equipment health, access control, notification routing, and the audit log.",
   },
   login: {
     title: "Sign in — StarWall by AGRON",

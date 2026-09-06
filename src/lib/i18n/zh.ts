@@ -98,7 +98,7 @@ export const zh: Messages = {
     lead:
       "连通性、设备健康、访问控制与监控 — 包括 AGRON 集装箱硬件。比 Bridge 更密：面向管理员，而非一瞥值守。",
     demoNotice:
-      "示意性系统管理视图 — 展示运营层的结构与能力，不是生产管理面板。",
+      "试运行管理 — 角色、设备检查、通知路由和审计日志写入本地数据库。尚未接入实体传感器。",
     sectionsNav: "后台分区",
     health: "系统健康",
     equipment: "设备",
@@ -208,7 +208,7 @@ export const zh: Messages = {
       "正在切换到 {name}...（完整多对象切换在 Premium/Custom 级别可用）",
     notifyTitle: "通知路由",
     notifyNote:
-      "示意配置 — 实际上线前需要接入服务商（例如用 Twilio 发送电话/短信）。",
+      "已保存的路由写入数据库。实际上线前仍需接入服务商（例如用 Twilio 发送电话/短信）。",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -288,7 +288,7 @@ export const zh: Messages = {
     bodies: {
       health: "服务心跳、链路与备份路径。",
       equipment: "已连接设备的诊断与自检。",
-      access: "管理界面的角色与本地账户。",
+      access: "角色层级。Super Admin 管理用户。",
       blackbox: "保存在本浏览器的 Bridge 会话记录。",
       integrations: "数据流登记 — 雷达、AIS、摄像、卫通。",
       audit: "管理操作，独立于 Bridge 事件日志。",
@@ -297,7 +297,7 @@ export const zh: Messages = {
       bridge: "AGRON Bridge — 态势图与场景。",
       connections: "核心、传感器、Bridge 与 Support Center 的地图。",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM 以及当前可用项。",
-      pricing: "各层级的示意月费与一次性设备费用。",
+      pricing: "按对象、软件、集装箱与附加项配置月费和一次性费用。",
       technology: "设备类别，以及 StarWall 如何叠在现有系统上。",
       faq: "关于责任、连通、数据与专用模块的说明。",
       containers: "运行 StarWall 的 AGRON 可部署集装箱设备。",
@@ -498,8 +498,8 @@ export const zh: Messages = {
   },
   pricing: {
     kicker: "价格",
-    title: "示意月费",
-    lead: "对比 LIGHT、ADVANCED、INTELLIGENCE 与 CUSTOM — 再为您的船舶或场地申请报价。",
+    title: "配置您的部署",
+    lead: "选择对象、StarWall 层级、AGRON Container 硬件和附加项。右侧估价随配置更新 — 月度软件与一次性设备费用分开显示。",
     mostPopular: "最常选择",
     perMonth: "/月",
     equipmentPrefix: "+",
@@ -523,7 +523,7 @@ export const zh: Messages = {
     faq3a:
       "标准条款是在初始接入期之后按月计费 — 请向我们询问您情况的具体安排。",
     interestMessage: "我对 {tier} 方案感兴趣",
-    levelsCta: "查看示意月费",
+    levelsCta: "配置您的部署",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",

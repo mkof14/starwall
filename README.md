@@ -71,7 +71,7 @@ Header and footer include a sun/moon theme switch (light/dark, stored in the bro
 
 Helm, the watch advisor, sits as a living icon at the bottom-right of every page. Speech/type languages fold into a dropdown inside the panel.
 
-`/interface`, `/backend`, and `/tasks` carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
+`/interface`, `/backend`, and `/tasks` carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. Helm stays available in both modes.
 
 ## Authentication
 
@@ -99,9 +99,9 @@ Generate `NEXTAUTH_SECRET` with `openssl rand -base64 32`. After a successful si
 
 `/backend` and `/tasks` still require a signed-in session.
 
-Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, `/backend`, `/login`, and `/tasks`. Arabic and Hebrew also load Noto Sans for body and headings.
+Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, `/backend`, and `/tasks`. Arabic and Hebrew also load Noto Sans for body and headings.
 
-Still English: the Bridge HUD itself (scenario library, Crisis Mode, instrument skins — forced `dir="ltr"` so RTL languages do not break the watch picture), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).
+Still English: sign-in / sign-up / forgot-password forms (credentials and role names stay as printed), the Bridge HUD itself (scenario library, Crisis Mode, instrument skins — forced `dir="ltr"` so RTL languages do not break the watch picture), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).
 
 ## Deploy on Vercel
 

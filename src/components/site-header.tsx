@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AccountMenu } from "@/components/auth/account-menu";
-import { isAuthRoute } from "@/lib/auth-session";
+import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
 
@@ -16,11 +16,16 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { t } = usePreferences();
+  const { session } = useAuthSession();
   const showMode =
     pathname.startsWith("/interface") ||
     pathname.startsWith("/backend") ||
     pathname.startsWith("/tasks");
-  const workItems = [authNavItem, tasksNavItem, adminNavItem];
+  const workItems = [
+    ...(session ? [] : [authNavItem]),
+    tasksNavItem,
+    adminNavItem,
+  ];
 
   if (isAuthRoute(pathname)) return null;
 

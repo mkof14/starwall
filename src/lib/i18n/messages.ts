@@ -815,9 +815,9 @@ export const en: Messages = {
     kicker: "AUTHORIZATION",
     title: "Sign in to StarWall",
     lead:
-      "Local session for this browser — name and role only. No password store. DEMO accounts are illustrative; they are not production identities.",
+      "Sign in with email and password, or Google. Pre-pilot role accounts are listed on the login page. New accounts start as Operator.",
     leadLive:
-      "LIVE mode: this deployment has no provisioned accounts yet. Enter a name and role to start a local browser session. Nothing is sent to a production identity service.",
+      "Sign in with the same accounts in LIVE. No sensors are connected yet; administration still uses this signed-in session.",
     nameLabel: "Name",
     emailLabel: "Email (optional)",
     roleLabel: "Role",
@@ -826,12 +826,12 @@ export const en: Messages = {
     signIn: "Sign in",
     signOut: "Sign out",
     signedInAs: "Signed in as",
-    demoAccounts: "Illustrative DEMO accounts",
+    demoAccounts: "Pre-pilot role accounts",
     liveEmptyAccounts: "No accounts on this deployment yet.",
     sessionNotice:
-      "This is a local browser session for the administration surfaces. It is not production authentication.",
+      "Signed-in session for Bridge and Backend. Roles are enforced on write actions.",
     sessionNoticeLive:
-      "LIVE session stays on this browser only. No remote accounts are connected.",
+      "Same accounts as DEMO. LIVE still has no connected sensors.",
     nameRequired: "Enter a name to continue.",
     emailInvalid: "Enter a valid email, or leave it blank.",
     loading: "Loading session…",
@@ -855,7 +855,7 @@ export const en: Messages = {
     bodies: {
       health: "Heartbeat, links, and backup paths for this deployment.",
       equipment: "Diagnostics and self-checks for connected equipment.",
-      access: "Roles and local accounts for the administration surfaces.",
+      access: "Role hierarchy. Super Admin manages users.",
       blackbox: "Session records written on the Bridge and kept in this browser.",
       integrations: "Registry of feeds — radar, AIS, cameras, satcom.",
       audit: "Administrative actions, separate from the Bridge event log.",
@@ -864,7 +864,7 @@ export const en: Messages = {
       bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
       connections: "Radial map of Core, sensors, Bridge, and Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
-      pricing: "Configure illustrative monthly pricing and one-time equipment by object and tier.",
+      pricing: "Configure monthly and one-time cost by object, software, container, and extras.",
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",
@@ -1090,7 +1090,7 @@ export const en: Messages = {
     faq3a:
       "Standard terms are month-to-month after an initial onboarding period — ask us for specifics for your situation.",
     interestMessage: "I'm interested in the {tier} plan",
-    levelsCta: "Configure illustrative pricing",
+    levelsCta: "Configure your deployment",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",
@@ -1316,7 +1316,7 @@ export const en: Messages = {
       },
       {
         title: "Operator workspace",
-        body: "On-site or fully remote command",
+        body: "On-site or fully remote watch",
       },
     ],
     subpages: ["Tiers", "Specifications", "Countermeasures", "Deployment"],
@@ -1373,7 +1373,7 @@ export const en: Messages = {
       },
       {
         name: "Exclusive",
-        body: "Full custom build, up to authorized government/defense configurations, subject to export control and end-user certification",
+        body: "Full custom build, authorized government/defense end-users only, subject to export control and end-user certification",
       },
     ],
     deployTitle: "Deployment",
