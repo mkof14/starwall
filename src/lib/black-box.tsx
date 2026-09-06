@@ -6,37 +6,35 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
+import type { BlackBoxRecord, BlackBoxType, StorageLocation } from "@/lib/black-box-types";
+import { useBridgeSession } from "@/lib/bridge-session";
+import { syncBlackBoxToCloud } from "@/lib/cloud-sync";
+import { listBlackBox, markBlackBoxLocation, putBlackBox } from "@/lib/local-db";
+import { useAppMode } from "@/lib/mode";
 
-export type BlackBoxType = "conversation" | "scenario";
-export type StorageLocation = "local" | "cloud" | "both";
-
-export type BlackBoxRecord = {
-  id: string;
-  timestamp: string;
-  type: BlackBoxType;
-  summary: string;
-  fullContent: string;
-  storageLocation: StorageLocation;
-  pdfEnabled: boolean;
-};
+export type { BlackBoxRecord, BlackBoxType, StorageLocation };
 
 type BlackBoxContextValue = {
   records: BlackBoxRecord[];
+  ready: boolean;
   recordConversation: (input: { summary: string; fullContent: string }) => void;
   recordScenario: (input: { summary: string; fullContent: string }) => void;
 };
 
 const BlackBoxContext = createContext<BlackBoxContextValue>({
   records: [],
+  ready: false,
   recordConversation: () => {},
   recordScenario: () => {},
 });
 
 function newId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return `bb-${crypto.randomUUID()}`;
+  }
   return `bb-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
@@ -45,62 +43,80 @@ function stamp() {
 }
 
 export function BlackBoxProvider({ children }: { children: ReactNode }) {
+  const { vessel } = useBridgeSession();
+  const { live } = useAppMode();
   const [records, setRecords] = useState<BlackBoxRecord[]>([]);
-  const syncTimers = useRef<number[]>([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timers = syncTimers.current;
+    let cancelled = false;
+    void listBlackBox()
+      .then((rows) => {
+        if (!cancelled) setRecords(rows);
+      })
+      .catch(() => {
+        if (!cancelled) setRecords([]);
+      })
+      .finally(() => {
+        if (!cancelled) setReady(true);
+      });
     return () => {
-      timers.forEach((id) => window.clearTimeout(id));
+      cancelled = true;
     };
   }, []);
 
-  const append = useCallback((record: BlackBoxRecord) => {
-    setRecords((current) => [record, ...current]);
-  }, []);
+  const persistAndSync = useCallback(
+    (record: BlackBoxRecord) => {
+      void putBlackBox(record).catch(() => undefined);
+      void syncBlackBoxToCloud(record, vessel || (live ? "Unconnected deployment" : "M/Y AURELIA")).then(
+        (result) => {
+          if (!result.ok) return;
+          setRecords((current) =>
+            current.map((item) =>
+              item.id === record.id ? { ...item, storageLocation: "both" } : item,
+            ),
+          );
+          void markBlackBoxLocation(record.id, "both").catch(() => undefined);
+        },
+      );
+    },
+    [live, vessel],
+  );
+
+  const append = useCallback(
+    (type: BlackBoxType, input: { summary: string; fullContent: string }) => {
+      const record: BlackBoxRecord = {
+        id: newId(),
+        timestamp: stamp(),
+        type,
+        summary: input.summary,
+        fullContent: input.fullContent,
+        storageLocation: "local",
+        pdfEnabled: true,
+      };
+      setRecords((current) => [record, ...current]);
+      persistAndSync(record);
+    },
+    [persistAndSync],
+  );
 
   const recordConversation = useCallback(
     (input: { summary: string; fullContent: string }) => {
-      append({
-        id: newId(),
-        timestamp: stamp(),
-        type: "conversation",
-        summary: input.summary,
-        fullContent: input.fullContent,
-        storageLocation: "both",
-        pdfEnabled: true,
-      });
+      append("conversation", input);
     },
     [append],
   );
 
   const recordScenario = useCallback(
     (input: { summary: string; fullContent: string }) => {
-      const id = newId();
-      append({
-        id,
-        timestamp: stamp(),
-        type: "scenario",
-        summary: input.summary,
-        fullContent: input.fullContent,
-        storageLocation: "local",
-        pdfEnabled: true,
-      });
-      const timer = window.setTimeout(() => {
-        setRecords((current) =>
-          current.map((item) =>
-            item.id === id ? { ...item, storageLocation: "both" } : item,
-          ),
-        );
-      }, 1400);
-      syncTimers.current.push(timer);
+      append("scenario", input);
     },
     [append],
   );
 
   const value = useMemo(
-    () => ({ records, recordConversation, recordScenario }),
-    [records, recordConversation, recordScenario],
+    () => ({ records, ready, recordConversation, recordScenario }),
+    [records, ready, recordConversation, recordScenario],
   );
 
   return (

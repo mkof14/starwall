@@ -8,6 +8,7 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
+  serverExternalPackages: ["@prisma/client"],
   experimental: {
     optimizePackageImports: ["framer-motion"],
   },

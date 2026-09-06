@@ -8,11 +8,16 @@
     "start": "next start -H 0.0.0.0 -p 3000",
     "lint": "next lint && npm run lint:copy",
     "lint:copy": "node scripts/check-banned-terms.mjs",
-    "capture:scenario": "node scripts/capture-scenario.js"
+    "capture:scenario": "node scripts/capture-scenario.js",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",
+    "@prisma/client": "^6.19.3",
     "framer-motion": "^13.2.0",
+    "idb": "^8.0.3",
     "next": "^14.2.35",
     "next-auth": "^4.24.11",
     "react": "^18",
@@ -28,6 +33,7 @@
     "playwright": "^1.63.0",
     "postcss": "^8",
     "prettier": "^3.9.6",
+    "prisma": "^6.19.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

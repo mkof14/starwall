@@ -32,6 +32,8 @@ import {
 } from "@/lib/equipment";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { cloudVesselName, syncEventToCloud } from "@/lib/cloud-sync";
+import { listEvents, putEvents, putSessionReport, type StoredEvent } from "@/lib/local-db";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAppMode } from "@/lib/mode";
@@ -153,6 +155,7 @@ export function BridgeConsole() {
   const { setCrisis } = useCrisisMode();
   const { setSession } = useBridgeSession();
   const { recordScenario } = useBlackBox();
+  const [storageReady, setStorageReady] = useState(false);
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
   const [panelType, setPanelType] = useState<PanelType>("radar");
   const [actionText, setActionText] = useState<string | null>(null);
@@ -197,8 +200,66 @@ export function BridgeConsole() {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }
 
+  function restoreSessionEvents(rows: StoredEvent[]) {
+    const next = rows
+      .filter((row) => row.kind === "scenario" && row.scenarioId)
+      .sort((a, b) => a.timestamp.localeCompare(b.timestamp))
+      .map((row) => ({
+        timestamp: row.time,
+        name: SCENARIOS.find((item) => item.id === row.scenarioId)?.name ?? row.scenarioId ?? row.text,
+        category: row.category ?? "",
+        riskLevel: row.level,
+        actionText: row.actionText ?? "",
+      }));
+    setSessionEvents(next);
+  }
+
+  function applyStoredLog(rows: StoredEvent[]) {
+    const entries = rows.map((row) => ({
+      id: row.id,
+      time: row.time,
+      level: row.level,
+      text: row.text,
+      kind: row.kind,
+      auto: row.auto,
+    }));
+    setLogEntries(entries);
+    const maxSeq = rows.reduce((max, row) => {
+      const match = /^log-(\d+)$/.exec(row.id);
+      return match ? Math.max(max, Number(match[1])) : max;
+    }, 0);
+    logSeq.current = maxSeq;
+    restoreSessionEvents(rows);
+  }
+
+  function persistLogs(
+    stamped: LogEntry[],
+    extras: Array<{ scenarioId?: string; category?: string; actionText?: string }>,
+  ) {
+    const stored: StoredEvent[] = stamped.map((entry, index) => ({
+      ...entry,
+      timestamp: new Date().toISOString(),
+      scenarioId: extras[index]?.scenarioId,
+      category: extras[index]?.category,
+      actionText: extras[index]?.actionText,
+    }));
+    void putEvents(stored).catch(() => undefined);
+    const vessel = cloudVesselName(live);
+    stored.forEach((event) => {
+      void syncEventToCloud(event, vessel).catch(() => undefined);
+    });
+  }
+
   function pushLogs(
-    rows: { level: RiskLevel; text: string; kind: ToastKind; auto?: boolean }[],
+    rows: {
+      level: RiskLevel;
+      text: string;
+      kind: ToastKind;
+      auto?: boolean;
+      scenarioId?: string;
+      category?: string;
+      actionText?: string;
+    }[],
   ) {
     if (live) return [];
     const stamped: LogEntry[] = rows.map((row) => {
@@ -219,6 +280,14 @@ export function BridgeConsole() {
       const timer = window.setTimeout(() => dismissToast(entry.id), ms);
       toastTimers.current.set(entry.id, timer);
     }
+    persistLogs(
+      stamped,
+      rows.map((row) => ({
+        scenarioId: row.scenarioId,
+        category: row.category,
+        actionText: row.actionText,
+      })),
+    );
     return stamped;
   }
 
@@ -244,38 +313,52 @@ export function BridgeConsole() {
   );
 
   useEffect(() => {
-    if (!live) {
-      setLogEntries(logSeed);
-      setToasts([]);
+    let cancelled = false;
+    void listEvents()
+      .then((rows) => {
+        if (cancelled) return;
+        if (rows.length) applyStoredLog(rows);
+        setStorageReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) setStorageReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // First paint hydrates the Event Log from IndexedDB.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!storageReady) return;
+    if (live) {
+      clearAutoTimer();
+      setCrisis(false);
       setSelectedId("");
       setSelectedName("");
       setRiskLevel("NORMAL");
       setPanelType("radar");
       setActionText(null);
       setActionOptions(null);
-      setCrisis(false);
       setFaultId(null);
       setTraining(false);
+      setLogEntries([]);
+      setToasts([]);
       setSessionEvents([]);
+      setReportOpen(false);
       return;
     }
-    clearAutoTimer();
-    setCrisis(false);
-    setSelectedId("");
-    setSelectedName("");
-    setRiskLevel("NORMAL");
-    setPanelType("radar");
-    setActionText(null);
-    setActionOptions(null);
-    setFaultId(null);
-    setTraining(false);
-    setLogEntries([]);
-    setToasts([]);
-    setSessionEvents([]);
-    setReportOpen(false);
+    void listEvents()
+      .then((rows) => {
+        if (rows.length) applyStoredLog(rows);
+        else setLogEntries(logSeed);
+        setToasts([]);
+      })
+      .catch(() => undefined);
     // Switching into LIVE clears the illustrative simulation only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [live]);
+  }, [live, storageReady]);
 
   useEffect(() => {
     if (live) {
@@ -334,8 +417,22 @@ export function BridgeConsole() {
     setCrisis(critical);
     if (critical) setTraining(false);
     const stamp = nowStamp();
-    const nextRows: { level: RiskLevel; text: string; kind: ToastKind }[] = [
-      { level: scenario.riskLevel, text: scenario.logText, kind: "scenario" },
+    const nextRows: {
+      level: RiskLevel;
+      text: string;
+      kind: ToastKind;
+      scenarioId?: string;
+      category?: string;
+      actionText?: string;
+    }[] = [
+      {
+        level: scenario.riskLevel,
+        text: scenario.logText,
+        kind: "scenario",
+        scenarioId: scenario.id,
+        category: scenario.category,
+        actionText: scenario.actionText,
+      },
     ];
     if (critical) {
       nextRows.unshift({
@@ -747,9 +844,17 @@ export function BridgeConsole() {
           onSelect={applyScenario}
           onReset={resetToNormal}
           onReport={() => {
+            const generatedAt = new Date();
             setTraining(false);
-            setReportAt(new Date());
+            setReportAt(generatedAt);
             setReportOpen(true);
+            void putSessionReport({
+              id: `rpt-${generatedAt.toISOString()}`,
+              timestamp: generatedAt.toISOString(),
+              generatedAt: generatedAt.toISOString(),
+              vesselName: "M/Y AURELIA",
+              events: sessionEvents,
+            }).catch(() => undefined);
           }}
         />
         </div>

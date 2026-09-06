@@ -88,6 +88,7 @@ NEXTAUTH_URL=
 NEXTAUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+DATABASE_URL=
 ```
 
 Generate `NEXTAUTH_SECRET` with `openssl rand -base64 32`. After a successful sign-in the site opens `/interface` and the header shows an initial avatar with **Sign out**.
@@ -111,7 +112,21 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
    - `NEXTAUTH_URL` — same production origin.
    - `NEXTAUTH_SECRET` — random secret for session tokens.
    - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from the Google Cloud OAuth client. Without them the Google button is visible but sign-in cannot complete.
+   - `DATABASE_URL` — Vercel Postgres connection string. Without it the site still runs: IndexedDB keeps the Event Log, Helm, and Black Box locally. Cloud sync (`/api/events`, `/api/conversations`, `/api/blackbox`) returns 503 until this is set and you run `npx prisma db push`.
 3. Deploy. `vercel.json` pins the framework and a single region (`iad1`).
+
+## Persistent storage
+
+Two layers, local first:
+
+- **IndexedDB** (via `idb`) in the browser — `events`, `conversations`, `sessionReports`, plus a local Black Box index. A refresh during a DEMO session restores the Event Log, Helm history, and Black Box list.
+- **PostgreSQL via Prisma** — cloud copy for a signed-in user. A record is written locally first (`Local`), then the badge becomes `Local + Cloud` only after `/api/blackbox` confirms the write. If the database is missing or the request fails, the local copy stays.
+
+Schema: `prisma/schema.prisma` (`User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`). After you add `DATABASE_URL`:
+
+```bash
+npx prisma db push
+```
 
 Production checks locally before a deploy:
 

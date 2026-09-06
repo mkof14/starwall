@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { authenticateUser } from "@/lib/user-store";
 
-// TODO: replace with a real database (e.g. Postgres via Prisma) before production use.
+// Credentials still use the local JSON user store. Cloud watch data uses Prisma when DATABASE_URL is set.
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "starwall-dev-secret-not-for-production",
@@ -38,12 +38,16 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user?.name) token.name = user.name;
-      if (user?.email) token.email = user.email;
+      if (user) {
+        token.sub = user.id ?? token.sub;
+        if (user.name) token.name = user.name;
+        if (user.email) token.email = user.email;
+      }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
+        session.user.id = typeof token.sub === "string" ? token.sub : "";
         session.user.name = typeof token.name === "string" ? token.name : session.user.name;
         session.user.email =
           typeof token.email === "string" ? token.email : session.user.email;

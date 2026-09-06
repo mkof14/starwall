@@ -5,6 +5,8 @@ import { FlagIcon } from "@/components/flag-icon";
 import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { syncConversationToCloud } from "@/lib/cloud-sync";
+import { listConversations, putConversation, type StoredConversation } from "@/lib/local-db";
 import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
@@ -14,10 +16,17 @@ import { usePathname } from "next/navigation";
 type MicState = "idle" | "listening" | "processing" | "speaking";
 
 type ChatMessage = {
-  id: number;
+  id: string;
   role: "user" | "assistant" | "error";
   text: string;
 };
+
+function messageId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return `helm-${crypto.randomUUID()}`;
+  }
+  return `helm-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+}
 
 const SPEAK_LANG: Record<string, string> = {
   en: "en-US",
@@ -59,11 +68,10 @@ export function Helm() {
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typed, setTyped] = useState("");
-  const [typingId, setTypingId] = useState<number | null>(null);
+  const [typingId, setTypingId] = useState<string | null>(null);
   const [micError, setMicError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const langRef = useRef<HTMLDivElement | null>(null);
-  const nextId = useRef(1);
   const streamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -74,6 +82,32 @@ export function Helm() {
     if (!listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
   }, [messages, typed, open]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void listConversations()
+      .then((rows) => {
+        if (cancelled || !rows.length) return;
+        setMessages(
+          rows.map((row) => ({
+            id: row.id,
+            role: row.role,
+            text: row.content,
+          })),
+        );
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  function persistChat(row: StoredConversation) {
+    void putConversation(row).catch(() => undefined);
+    if (row.role !== "error") {
+      void syncConversationToCloud(row, session.vessel).catch(() => undefined);
+    }
+  }
 
   useEffect(() => {
     if (typingId === null) return;
@@ -231,11 +265,19 @@ export function Helm() {
     const clean = text.trim();
     if (!clean) return;
     stopListening(true);
-    const userId = nextId.current++;
+    const userId = messageId();
+    const userAt = new Date().toISOString();
     setMessages((current) => [
       ...current,
       { id: userId, role: "user", text: clean },
     ]);
+    persistChat({
+      id: userId,
+      timestamp: userAt,
+      role: "user",
+      content: clean,
+      langCode: recogLang,
+    });
     setDraft("");
     setMic("processing");
 
@@ -260,11 +302,18 @@ export function Helm() {
       };
       if (!response.ok || !data.reply) {
         const errorText = data.error ?? "Helm could not reply.";
-        const errorId = nextId.current++;
+        const errorId = messageId();
         setMessages((current) => [
           ...current,
           { id: errorId, role: "error", text: errorText },
         ]);
+        persistChat({
+          id: errorId,
+          timestamp: new Date().toISOString(),
+          role: "error",
+          content: errorText,
+          langCode: recogLang,
+        });
         recordConversation({
           summary: `Helm exchange — ${clean.slice(0, 72)}`,
           fullContent: `Officer: ${clean}\n\nHelm: ${errorText}`,
@@ -272,11 +321,18 @@ export function Helm() {
         setMic("idle");
         return;
       }
-      const assistantId = nextId.current++;
+      const assistantId = messageId();
       setMessages((current) => [
         ...current,
         { id: assistantId, role: "assistant", text: data.reply ?? "" },
       ]);
+      persistChat({
+        id: assistantId,
+        timestamp: new Date().toISOString(),
+        role: "assistant",
+        content: data.reply ?? "",
+        langCode: data.langCode ?? recogLang,
+      });
       recordConversation({
         summary: `Helm exchange — ${clean.slice(0, 72)}`,
         fullContent: `Officer: ${clean}\n\nHelm: ${data.reply}`,
@@ -284,11 +340,18 @@ export function Helm() {
       setTypingId(assistantId);
       speakReply(data.reply, data.langCode ?? "en");
     } catch {
-      const errorId = nextId.current++;
+      const errorId = messageId();
       setMessages((current) => [
         ...current,
         { id: errorId, role: "error", text: "Network error — try again." },
       ]);
+      persistChat({
+        id: errorId,
+        timestamp: new Date().toISOString(),
+        role: "error",
+        content: "Network error — try again.",
+        langCode: recogLang,
+      });
       recordConversation({
         summary: `Helm exchange — ${clean.slice(0, 72)}`,
         fullContent: `Officer: ${clean}\n\nHelm: Network error — try again.`,
