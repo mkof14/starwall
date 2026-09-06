@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { HELM_STATE_EVENT, openHelm } from "@/lib/helm-events";
@@ -200,6 +200,7 @@ export function JumpNav() {
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState("picture");
   const expanded = pinned || hovered;
+  const lockUntil = useRef(0);
 
   const visible = useMemo(
     () =>
@@ -223,12 +224,14 @@ export function JumpNav() {
   const jump = useCallback((item: JumpItem) => {
     if (item.kind === "link" && item.href) return;
     if (item.kind === "helm") {
+      lockUntil.current = Date.now() + 1200;
       openHelm();
       setActive(item.id);
       return;
     }
     const target = item.targetId ? document.getElementById(item.targetId) : null;
     if (!target) return;
+    lockUntil.current = Date.now() + 1200;
     setActive(item.id);
     const top = target.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
@@ -256,6 +259,7 @@ export function JumpNav() {
 
     const io = new IntersectionObserver(
       (entries) => {
+        if (Date.now() < lockUntil.current) return;
         const hit = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
