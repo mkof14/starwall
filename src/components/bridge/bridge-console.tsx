@@ -646,7 +646,7 @@ export function BridgeConsole() {
         ) : null}
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-          <div data-testid="situational-panel">
+          <div id="situational-picture" data-testid="situational-panel" className="scroll-mt-20">
           <div
             data-testid="picture-scenario-banner"
             className="mb-2 border border-bridge-line bg-bridge-panel px-3 py-2"
@@ -705,7 +705,7 @@ export function BridgeConsole() {
               />
             ) : (
               <>
-            <HudPanel testId="risk-level-panel" title={t.bridge.riskLevel}>
+            <HudPanel id="risk-level-panel" testId="risk-level-panel" className="scroll-mt-20" title={t.bridge.riskLevel}>
               <ul className="space-y-2">
                 {RISK_KEYS.map((key, index) => {
                   const active = !live && key === riskLevel;
@@ -735,7 +735,9 @@ export function BridgeConsole() {
             </HudPanel>
 
             <HudPanel
+              id="connected-systems-panel"
               testId="connected-systems-panel"
+              className="scroll-mt-20"
               title={t.bridge.connected}
               extra={
                 <div className="flex flex-wrap items-center justify-end gap-2">
@@ -811,7 +813,7 @@ export function BridgeConsole() {
               </ul>
             </HudPanel>
 
-            <HudPanel testId="recommended-action-panel" title={t.bridge.recommended}>
+            <HudPanel id="recommended-action-panel" testId="recommended-action-panel" className="scroll-mt-20" title={t.bridge.recommended}>
               <span
                 className={cn(
                   "inline-block border px-2 py-0.5 font-mono text-[10px] tracking-wider",
@@ -862,6 +864,7 @@ export function BridgeConsole() {
         <HudPanel
           id="event-log-panel"
           testId="event-log-panel"
+          className="scroll-mt-20"
           title={t.bridge.eventLog}
           extra={
             live ? (

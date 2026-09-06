@@ -50,9 +50,10 @@ export function ScenarioLibrary({
 
   return (
     <section
+      id="scenario-library"
       data-testid="scenario-picker"
       data-open={open ? "true" : "false"}
-      className="relative overflow-hidden border-2 border-bridge-line bg-bridge-panel"
+      className="relative scroll-mt-20 overflow-hidden border-2 border-bridge-line bg-bridge-panel"
     >
       <header className="bg-navy px-4 py-4 text-sand sm:px-6 sm:py-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

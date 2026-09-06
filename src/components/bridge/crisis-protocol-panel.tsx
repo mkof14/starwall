@@ -42,9 +42,10 @@ export function CrisisProtocolPanel({
 
   return (
     <HudPanel
+      id="crisis-protocol-panel"
       testId="crisis-protocol-panel"
       title="CRISIS PROTOCOL"
-      className="border-crit"
+      className="scroll-mt-20 border-crit"
     >
       <ol className="space-y-2">
         {steps.map((step, index) => {

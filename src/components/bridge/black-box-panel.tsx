@@ -100,7 +100,7 @@ export function BlackBoxPanel() {
       <section
         id="black-box-panel"
         data-testid="black-box-panel"
-        className="relative mx-auto max-w-6xl border border-bridge-line bg-bridge-panel p-4 text-bridge-text"
+        className="relative mx-auto max-w-6xl scroll-mt-20 border border-bridge-line bg-bridge-panel p-4 text-bridge-text"
       >
         <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-orange" />
         <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-orange" />

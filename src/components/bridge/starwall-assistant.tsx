@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
 import { syncConversationToCloud } from "@/lib/cloud-sync";
+import { HELM_OPEN_EVENT, publishHelmState } from "@/lib/helm-events";
 import { listConversations, putConversation, type StoredConversation } from "@/lib/local-db";
 import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
@@ -82,6 +83,18 @@ export function Helm() {
     if (!listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
   }, [messages, typed, open]);
+
+  useEffect(() => {
+    function onOpen() {
+      setOpen(true);
+    }
+    window.addEventListener(HELM_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(HELM_OPEN_EVENT, onOpen);
+  }, []);
+
+  useEffect(() => {
+    publishHelmState(open);
+  }, [open]);
 
   useEffect(() => {
     let cancelled = false;

@@ -48,7 +48,9 @@ export function AdaptiveLearningPanel() {
     <div className="dark bg-bridge-bg px-4 pb-10 md:px-6">
       <div className="mx-auto max-w-6xl">
         <HudPanel
+          id="adaptive-learning-panel"
           testId="adaptive-learning-panel"
+          className="scroll-mt-20"
           title="OBJECT PROFILE — LEARNING OVER TIME"
           extra={
             <div className="flex items-center gap-3">
