@@ -5,6 +5,7 @@ import { FlagIcon } from "@/components/flag-icon";
 import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { usePreferences } from "@/lib/i18n/context";
 import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
 import { useAppMode } from "@/lib/mode";
 
@@ -44,7 +45,9 @@ function SpeechEngine() {
 export function Helm() {
   const session = useBridgeSession();
   const { live } = useAppMode();
+  const { t } = usePreferences();
   const { recordConversation } = useBlackBox();
+  const surface = t.surface;
   const [open, setOpen] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
   const [mic, setMic] = useState<MicState>("idle");
@@ -297,10 +300,10 @@ export function Helm() {
       className="fixed bottom-4 right-4 z-[70] font-ui"
     >
       {open ? (
-        <section className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden border border-[#2A3A48] bg-[#111820] shadow-[0_12px_40px_rgb(0_0_0/0.45)]">
-          <header className="flex items-center justify-between gap-2 border-b border-[#2A3A48] bg-[#0A0F14] px-3 py-2">
+        <section className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden border border-stroke bg-panel text-ink shadow-[0_12px_40px_rgb(15_25_34/0.18)]">
+          <header className="flex items-center justify-between gap-2 border-b border-stroke bg-header px-3 py-2">
             <div className="min-w-0">
-              <p className="flex items-center gap-2 font-ui text-sm font-semibold text-[#E7ECEF]">
+              <p className="flex items-center gap-2 font-ui text-sm font-semibold text-ink">
                 <span
                   className={cn(
                     "h-1.5 w-1.5 rounded-full",
@@ -311,12 +314,12 @@ export function Helm() {
                         : "bg-orange helm-idle-led",
                   )}
                 />
-                Helm
+                {surface.helmTitle}
               </p>
-              <p className="truncate font-mono text-[10px] text-[#7C8894]">
+              <p className="truncate font-mono text-[10px] text-muted">
                 {live
-                  ? "WATCH ADVISOR · LIVE · no sensors"
-                  : `WATCH ADVISOR · ${session.vessel} · ${session.riskLevel}`}
+                  ? surface.helmLive
+                  : `${surface.helmAdvisor} · ${session.vessel} · ${session.riskLevel}`}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -327,7 +330,7 @@ export function Helm() {
                   aria-expanded={langsOpen}
                   aria-controls={menuId}
                   onClick={() => setLangsOpen((value) => !value)}
-                  className="inline-flex items-center gap-1.5 border border-[#2A3A48] px-2 py-1 font-mono text-[10px] text-[#E7ECEF] hover:border-orange"
+                  className="inline-flex items-center gap-1.5 border border-stroke px-2 py-1 font-mono text-[10px] text-ink hover:border-orange"
                 >
                   <FlagIcon locale={recogLang} />
                   {recogLang.toUpperCase()}
@@ -336,7 +339,7 @@ export function Helm() {
                 {langsOpen ? (
                   <ul
                     id={menuId}
-                    className="absolute end-0 z-20 mt-1 max-h-64 min-w-[11rem] overflow-auto border border-[#2A3A48] bg-[#0A0F14] py-1 shadow-lg"
+                    className="absolute end-0 z-20 mt-1 max-h-64 min-w-[11rem] overflow-auto border border-stroke bg-panel py-1 shadow-lg"
                   >
                     {locales.map((code) => (
                       <li key={code}>
@@ -346,7 +349,7 @@ export function Helm() {
                             "flex w-full items-center gap-2 px-2.5 py-1.5 text-start text-xs",
                             code === recogLang
                               ? "text-orange"
-                              : "text-[#E7ECEF] hover:bg-white/5",
+                              : "text-ink hover:bg-page",
                           )}
                           onClick={() => {
                             setRecogLang(code);
@@ -365,9 +368,9 @@ export function Helm() {
                 type="button"
                 data-testid="assistant-toggle"
                 onClick={() => setOpen(false)}
-                className="border border-[#2A3A48] px-2 py-1 font-mono text-[10px] text-[#7C8894] hover:text-[#E7ECEF]"
+                className="border border-stroke px-2 py-1 font-mono text-[10px] text-muted hover:text-ink"
               >
-                Hide
+                {surface.helmHide}
               </button>
             </div>
           </header>
@@ -378,10 +381,7 @@ export function Helm() {
             className="h-56 space-y-2 overflow-y-auto px-3 py-2"
           >
             {messages.length === 0 ? (
-              <p className="text-xs text-[#7C8894]">
-                Helm is on watch. Ask about the picture — speak or type. Advice
-                only; you decide.
-              </p>
+              <p className="text-xs text-muted">{surface.helmEmpty}</p>
             ) : null}
             {messages.map((item) => {
               const showing =
@@ -397,7 +397,7 @@ export function Helm() {
                       ? "ms-auto bg-orange text-white"
                       : item.role === "error"
                         ? "border border-attn text-attn"
-                        : "bg-[#0A0F14] text-[#E7ECEF]",
+                        : "bg-page text-ink",
                   )}
                 >
                   {showing}
@@ -406,7 +406,7 @@ export function Helm() {
             })}
           </div>
 
-          <div className="border-t border-[#2A3A48] px-3 py-2">
+          <div className="border-t border-stroke px-3 py-2">
             <div className="mb-2 flex items-center gap-2">
               <button
                 type="button"
@@ -414,7 +414,7 @@ export function Helm() {
                 onClick={() => void toggleMic()}
                 className={cn(
                   "flex h-9 w-9 items-center justify-center border",
-                  mic === "idle" && "border-[#2A3A48] text-[#7C8894]",
+                  mic === "idle" && "border-stroke text-muted",
                   mic === "listening" && "assistant-mic-listen border-ok text-ok",
                   mic === "processing" && "border-attn text-attn",
                   mic === "speaking" && "assistant-mic-speak border-orange text-orange",
@@ -456,7 +456,7 @@ export function Helm() {
                   />
                 ))}
               </div>
-              <span className="w-16 text-end font-mono text-[10px] uppercase text-[#7C8894]">
+              <span className="w-16 text-end font-mono text-[10px] uppercase text-muted">
                 {mic}
               </span>
             </div>
@@ -474,15 +474,15 @@ export function Helm() {
                 data-testid="assistant-input"
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="Ask Helm…"
-                className="min-w-0 flex-1 border border-[#2A3A48] bg-[#0A0F14] px-2 py-1.5 font-ui text-sm text-[#E7ECEF] outline-none focus:border-orange"
+                placeholder={surface.helmAsk}
+                className="min-w-0 flex-1 border border-stroke bg-page px-2 py-1.5 font-ui text-sm text-ink outline-none focus:border-orange"
               />
               <button
                 type="submit"
                 data-testid="assistant-send"
                 className="bg-orange px-3 py-1.5 font-ui text-xs font-medium text-white hover:bg-orange/90"
               >
-                Send
+                {surface.helmSend}
               </button>
             </form>
           </div>
@@ -492,8 +492,8 @@ export function Helm() {
           type="button"
           data-testid="assistant-toggle"
           onClick={() => setOpen(true)}
-          aria-label="Open Helm"
-          className="helm-fab relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-orange bg-[#0A0F14] text-orange"
+          aria-label={surface.helmOpen}
+          className="helm-fab relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-orange bg-navy text-orange"
         >
           <span
             className="helm-fab-sweep pointer-events-none absolute inset-1 rounded-full"

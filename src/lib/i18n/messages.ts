@@ -36,6 +36,126 @@ export type Messages = {
     containersDeployment: string;
     contact: string;
     backend: string;
+    connections: string;
+  };
+  surface: {
+    connectionsKicker: string;
+    connectionsTitle: string;
+    connectionsLead: string;
+    connectionsLeadLive: string;
+    connectionsBack: string;
+    connectionsIn: string;
+    connectionsOut: string;
+    connectionsOff: string;
+    helmTitle: string;
+    helmAdvisor: string;
+    helmAsk: string;
+    helmSend: string;
+    helmHide: string;
+    helmOpen: string;
+    helmEmpty: string;
+    helmLive: string;
+    liveBanner: string;
+  };
+  backend: {
+    kicker: string;
+    title: string;
+    lead: string;
+    demoNotice: string;
+    sectionsNav: string;
+    health: string;
+    equipment: string;
+    access: string;
+    blackbox: string;
+    integrations: string;
+    audit: string;
+    healthTitle: string;
+    internet: string;
+    localNet: string;
+    cloudBackup: string;
+    localBackup: string;
+    connected: string;
+    offline: string;
+    online: string;
+    notReported: string;
+    lastSynced: string;
+    notConfigured: string;
+    notConfiguredDeploy: string;
+    noSensor: string;
+    cloudPath: string;
+    localPath: string;
+    sensors: string;
+    core: string;
+    cloudStorage: string;
+    localStorageLabel: string;
+    mapLink: string;
+    runCloudBackup: string;
+    runLocalBackup: string;
+    backingUp: string;
+    backupDone: string;
+    requestConfig: string;
+    heartbeat: string;
+    heartbeatOk: string;
+    heartbeatFail: string;
+    helmReady: string;
+    helmMissing: string;
+    equipmentTitle: string;
+    colEquipment: string;
+    colStatus: string;
+    colCheck: string;
+    colDiagnostic: string;
+    notConnected: string;
+    runDiagnostic: string;
+    scanning: string;
+    acknowledge: string;
+    acknowledged: string;
+    accessTitle: string;
+    roleHierarchy: string;
+    accounts: string;
+    colName: string;
+    colRole: string;
+    colLast: string;
+    colActions: string;
+    addUser: string;
+    userPlaceholder: string;
+    disable: string;
+    enable: string;
+    disabled: string;
+    noUsers: string;
+    roleSuper: string;
+    roleAdmin: string;
+    roleOperator: string;
+    roleViewer: string;
+    roleSuperDetail: string;
+    roleAdminDetail: string;
+    roleOperatorDetail: string;
+    roleViewerDetail: string;
+    blackboxTitle: string;
+    blackboxLead: string;
+    blackboxLeadLive: string;
+    blackboxEmpty: string;
+    blackboxOpen: string;
+    conversation: string;
+    scenarioRun: string;
+    integrationsTitle: string;
+    colIntegration: string;
+    colNotes: string;
+    colLastData: string;
+    testConnection: string;
+    testing: string;
+    enableInt: string;
+    disableInt: string;
+    notIntegrated: string;
+    testOk: string;
+    testFail: string;
+    auditTitle: string;
+    auditLead: string;
+    noAudit: string;
+    exportAudit: string;
+    justNow: string;
+    secondsAgo: string;
+    minuteAgo: string;
+    minutesAgo: string;
   };
   home: {
     kicker: string;
@@ -289,6 +409,133 @@ export const en: Messages = {
     containersDeployment: "Deployment — AGRON Containers",
     contact: "Contact — StarWall by AGRON",
     backend: "StarWall Backend — System administration — StarWall by AGRON",
+    connections: "System Connections Map — StarWall by AGRON",
+  },
+  surface: {
+    connectionsKicker: "AGRON BRIDGE · TOPOLOGY",
+    connectionsTitle: "System Connections Map",
+    connectionsLead:
+      "Live topology of the training picture: sensors feed StarWall Core; Core pushes the same picture to AGRON Bridge and Support Center.",
+    connectionsLeadLive:
+      "Same layout as the working picture — every unit is waiting for installation. No live sensors are connected yet.",
+    connectionsBack: "← Back to Bridge",
+    connectionsIn: "Data in (sensors → core)",
+    connectionsOut: "Information out (core → Bridge / Support)",
+    connectionsOff: "Not connected",
+    helmTitle: "Helm",
+    helmAdvisor: "WATCH ADVISOR",
+    helmAsk: "Ask Helm…",
+    helmSend: "Send",
+    helmHide: "Hide",
+    helmOpen: "Open Helm",
+    helmEmpty:
+      "Helm is on watch. Ask about the picture — speak or type. Advice only; you decide.",
+    helmLive: "WATCH ADVISOR · LIVE · no sensors",
+    liveBanner:
+      "LIVE MODE — showing the real current state of this deployment. No equipment is connected yet. Switch to DEMO to see StarWall's full capability with simulated data.",
+  },
+  backend: {
+    kicker: "STARWALL BACKEND",
+    title: "System administration",
+    lead:
+      "Connectivity, equipment health, access control, and monitoring — including AGRON Container hardware. Denser than the Bridge: built for administrators, not a glance watch.",
+    demoNotice:
+      "Illustrative system administration view — demonstrates the operational layer's structure and capabilities, not a live production admin panel.",
+    sectionsNav: "Backend sections",
+    health: "System Health",
+    equipment: "Equipment",
+    access: "Access Control",
+    blackbox: "Black Box",
+    integrations: "Integrations",
+    audit: "Audit Log",
+    healthTitle: "SYSTEM HEALTH & CONNECTIVITY",
+    internet: "Internet / Satellite link",
+    localNet: "Local network",
+    cloudBackup: "Cloud backup sync",
+    localBackup: "Local backup",
+    connected: "Connected",
+    offline: "Offline",
+    online: "Online",
+    notReported: "Not reported",
+    lastSynced: "Last synced",
+    notConfigured: "not yet configured",
+    notConfiguredDeploy: "not yet configured for this deployment",
+    noSensor: "No sensor path yet — waiting for equipment installation.",
+    cloudPath: "CLOUD PATH",
+    localPath: "LOCAL PATH",
+    sensors: "Sensors",
+    core: "StarWall Core",
+    cloudStorage: "Cloud Storage",
+    localStorageLabel: "Local Storage",
+    mapLink: "View full connections map →",
+    runCloudBackup: "Run cloud backup",
+    runLocalBackup: "Run local backup",
+    backingUp: "Backing up…",
+    backupDone: "Backup complete",
+    requestConfig: "Request configuration",
+    heartbeat: "Admin service",
+    heartbeatOk: "Reachable",
+    heartbeatFail: "Unreachable",
+    helmReady: "Helm API configured",
+    helmMissing: "Helm API key not set",
+    equipmentTitle: "EQUIPMENT MONITORING",
+    colEquipment: "Equipment",
+    colStatus: "Status",
+    colCheck: "Last self-check",
+    colDiagnostic: "Diagnostic",
+    notConnected: "Not connected — awaiting installation",
+    runDiagnostic: "Run diagnostic",
+    scanning: "Scanning...",
+    acknowledge: "Acknowledge",
+    acknowledged: "Acknowledged",
+    accessTitle: "ACCESS CONTROL",
+    roleHierarchy: "ROLE HIERARCHY",
+    accounts: "ACCOUNTS",
+    colName: "Name",
+    colRole: "Role",
+    colLast: "Last active",
+    colActions: "Actions",
+    addUser: "Add account",
+    userPlaceholder: "Name",
+    disable: "Disable",
+    enable: "Enable",
+    disabled: "Disabled",
+    noUsers: "No user accounts provisioned yet.",
+    roleSuper: "Super Admin",
+    roleAdmin: "Admin",
+    roleOperator: "Operator",
+    roleViewer: "Viewer",
+    roleSuperDetail: "Full system plus user management.",
+    roleAdminDetail: "Configure equipment and view all data.",
+    roleOperatorDetail: "Day-to-day monitoring and scenario response.",
+    roleViewerDetail: "Read-only access to reports.",
+    blackboxTitle: "BLACK BOX",
+    blackboxLead:
+      "Session records from this browser — Helm conversations and scenario runs — written on the Bridge and retained locally.",
+    blackboxLeadLive: "No records yet from this deployment.",
+    blackboxEmpty: "No records yet.",
+    blackboxOpen: "Open recorder on the Bridge →",
+    conversation: "Conversation",
+    scenarioRun: "Scenario",
+    integrationsTitle: "INTEGRATIONS REGISTRY",
+    colIntegration: "Integration",
+    colNotes: "Notes",
+    colLastData: "Last data",
+    testConnection: "Test connection",
+    testing: "Testing…",
+    enableInt: "Enable",
+    disableInt: "Disable",
+    notIntegrated: "Not integrated",
+    testOk: "Handshake OK",
+    testFail: "No feed",
+    auditTitle: "AUDIT LOG",
+    auditLead: "Administrative actions — distinct from the Bridge Event Log.",
+    noAudit: "No administrative actions recorded yet.",
+    exportAudit: "Export log",
+    justNow: "just now",
+    secondsAgo: "seconds ago",
+    minuteAgo: "1 minute ago",
+    minutesAgo: "minutes ago",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

@@ -37,12 +37,14 @@ const config: Config = {
         heading: [
           "var(--font-cormorant)",
           "var(--font-arabic)",
+          "var(--font-hebrew)",
           "Georgia",
           "serif",
         ],
         ui: [
           "var(--font-space-grotesk)",
           "var(--font-arabic)",
+          "var(--font-hebrew)",
           "system-ui",
           "sans-serif",
         ],
@@ -50,6 +52,7 @@ const config: Config = {
         body: [
           "var(--font-inter)",
           "var(--font-arabic)",
+          "var(--font-hebrew)",
           "system-ui",
           "sans-serif",
         ],

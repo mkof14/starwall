@@ -17,7 +17,9 @@ npm run dev
 
 Dev server: `http://127.0.0.1:3000`
 
-The Bridge assistant on `/interface` calls Anthropic from `src/app/api/assistant/route.ts`. Copy `.env.local.example` to `.env.local` and set `ANTHROPIC_API_KEY`. `.env*.local` is gitignored. Without the key the panel still opens; sending a message returns a configuration error instead of a reply.
+Helm (the watch advisor) calls Anthropic from `src/app/api/assistant/route.ts`. Copy `.env.local.example` to `.env.local` and set `ANTHROPIC_API_KEY`. `.env*.local` is gitignored. Without the key the panel still opens; sending a message returns a configuration error instead of a reply.
+
+`NEXT_PUBLIC_SITE_URL` is used for canonical metadata, Open Graph, `robots.txt`, and `sitemap.xml`. Locally it defaults to `http://127.0.0.1:3000`. On Vercel it falls back to `https://$VERCEL_URL` if you leave it blank.
 
 ## PDF overview
 
@@ -50,7 +52,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/specs` | Specifications |
 | `/containers/deployment` | Deployment |
 | `/contact` | Contact |
-| `/backend` | StarWall Backend (illustrative admin) |
+| `/backend` | StarWall Backend (live admin actions + honest LIVE mode) |
 
 ## Brand, theme, and language
 
@@ -62,6 +64,27 @@ Helm, the watch advisor, sits as a living icon at the bottom-right of every page
 
 `/interface` and `/backend` also carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
 
-Translated now: marketing chrome (nav, footer) plus `/`, `/how-it-works`, `/levels`, `/faq`, `/technology`, `/contact`, and the AGRON Containers pages.
+Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, and `/backend`. Arabic and Hebrew also load Noto Sans for body and headings.
 
-Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, Helm chrome, Connections Map — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).
+Still English: the Bridge HUD itself (scenario library, Crisis Mode, instrument skins — forced `dir="ltr"` so RTL languages do not break the watch picture), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).
+
+## Deploy on Vercel
+
+This is a standard Next.js 14 App Router app. Do **not** set `output: "standalone"`.
+
+1. Import the Git repository in Vercel (Framework Preset: Next.js).
+2. Set environment variables:
+   - `ANTHROPIC_API_KEY` — required for Helm replies. Without it Helm still opens and returns a configuration error.
+   - `NEXT_PUBLIC_SITE_URL` — production origin, e.g. `https://your-project.vercel.app`.
+3. Deploy. `vercel.json` pins the framework and a single region (`iad1`).
+
+Production checks locally before a deploy:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+npm start
+```
+
+`/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/api/admin` is the live administration service used by `/backend`: heartbeat, backups, diagnostics, access changes, integration tests, and audit export.

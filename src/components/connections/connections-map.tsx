@@ -471,7 +471,7 @@ export function ConnectionsMap() {
       {tipAt && (hovered || showContainerTip) ? (
         <div
           className={cn(
-            "absolute z-10 max-w-xs border border-bridge-line bg-[#111820] px-3 py-2 text-sm text-sand shadow-lg",
+            "absolute z-10 max-w-xs border border-bridge-line bg-navy px-3 py-2 text-sm text-sand shadow-lg",
             showContainerTip ? "pointer-events-auto" : "pointer-events-none",
           )}
           style={{

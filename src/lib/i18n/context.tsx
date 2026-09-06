@@ -45,6 +45,7 @@ const titleByPath: Record<string, keyof Messages["seo"]> = {
   "/containers/deployment": "containersDeployment",
   "/contact": "contact",
   "/backend": "backend",
+  "/interface/connections": "connections",
 };
 
 function applyDocument(locale: Locale, theme: Theme) {
@@ -76,10 +77,6 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   }, [locale, theme]);
 
   useEffect(() => {
-    if (pathname === "/interface/connections") {
-      document.title = "System Connections Map — StarWall by AGRON";
-      return;
-    }
     const key = titleByPath[pathname] ?? "home";
     document.title = dictionaries[locale].seo[key];
   }, [locale, pathname]);

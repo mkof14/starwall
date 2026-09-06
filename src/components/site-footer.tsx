@@ -33,14 +33,7 @@ export function SiteFooter() {
             {t.nav[adminNavItem.key]}
           </Link>
         </nav>
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <p>{t.chrome.rights}</p>
-          <p>
-            <a href="https://agron1.com" className="hover:text-sand">
-              agron1.com
-            </a>
-          </p>
-        </div>
+        <p>{t.chrome.rights}</p>
       </div>
     </footer>
   );

@@ -552,7 +552,7 @@ export function BridgeConsole() {
           <div data-testid="situational-panel">
           <div
             data-testid="picture-scenario-banner"
-            className="mb-2 border border-bridge-line bg-[#0A0F14] px-3 py-2"
+            className="mb-2 border border-bridge-line bg-bridge-panel px-3 py-2"
           >
             <p className="font-mono text-[10px] tracking-[0.22em] text-orange">
               {activeScenario

@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/site-url";
 import {
   Cormorant_Garamond,
   Inter,
   JetBrains_Mono,
   Noto_Sans_Arabic,
+  Noto_Sans_Hebrew,
   Space_Grotesk,
 } from "next/font/google";
 import { Helm } from "@/components/bridge/starwall-assistant";
@@ -52,7 +54,15 @@ const notoArabic = Noto_Sans_Arabic({
   display: "swap",
 });
 
+const notoHebrew = Noto_Sans_Hebrew({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hebrew",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "StarWall by AGRON — Maritime Security Intelligence",
     template: "%s",
@@ -63,6 +73,23 @@ export const metadata: Metadata = {
     icon: "/SW3.png",
     apple: "/SW3.png",
   },
+  openGraph: {
+    title: "StarWall by AGRON — Maritime Security Intelligence",
+    description:
+      "Intelligence, integration, and decision support for yacht, marina, port, and private island security.",
+    type: "website",
+    url: siteUrl(),
+    siteName: "StarWall by AGRON",
+    images: [{ url: "/SW3.png", alt: "StarWall" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StarWall by AGRON — Maritime Security Intelligence",
+    description:
+      "Intelligence, integration, and decision support for yacht, marina, port, and private island security.",
+    images: ["/SW3.png"],
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -74,7 +101,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${spaceGrotesk.variable} ${jetbrains.variable} ${inter.variable} ${notoArabic.variable}`}
+      className={`${cormorant.variable} ${spaceGrotesk.variable} ${jetbrains.variable} ${inter.variable} ${notoArabic.variable} ${notoHebrew.variable}`}
     >
       <head>
         <ThemeScript />

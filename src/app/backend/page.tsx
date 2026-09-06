@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   description: pageMeta.backend.description,
 };
 
-// Illustrative system administration view — demonstrates the operational
-// layer's structure and capabilities, not a live production admin panel.
 export default function BackendPage() {
   return <BackendView />;
 }

@@ -1,12 +1,16 @@
+"use client";
+
+import { usePreferences } from "@/lib/i18n/context";
+
 export function LiveModeBanner() {
+  const { t } = usePreferences();
+
   return (
     <p
       data-testid="live-mode-banner"
-      className="border-b border-[#2A3A48] bg-[#1B2A3A] px-4 py-2.5 font-mono text-[11px] leading-relaxed text-sand/85 md:px-6"
+      className="border-b border-attn/35 bg-callout px-4 py-2.5 font-mono text-[11px] leading-relaxed text-ink md:px-6"
     >
-      LIVE MODE — showing the real current state of this deployment. No
-      equipment is connected yet. Switch to DEMO to see StarWall&apos;s full
-      capability with simulated data.
+      {t.surface.liveBanner}
     </p>
   );
 }
