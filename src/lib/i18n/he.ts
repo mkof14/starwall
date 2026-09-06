@@ -41,7 +41,9 @@ export const he: Messages = {
     contact: "יצירת קשר — StarWall by AGRON",
     backend: "StarWall Backend — ניהול מערכת — StarWall by AGRON",
     connections: "מפת חיבורים — StarWall by AGRON",
-    login: "הרשאה — StarWall by AGRON",
+    login: "כניסה — StarWall by AGRON",
+    signup: "הרשמה — StarWall by AGRON",
+    forgotPassword: "שכחתי סיסמה — StarWall by AGRON",
     tasks: "כל המשימות — StarWall by AGRON",
   },
   surface: {

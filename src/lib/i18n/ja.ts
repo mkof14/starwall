@@ -41,7 +41,9 @@ export const ja: Messages = {
     contact: "お問い合わせ — StarWall by AGRON",
     backend: "StarWall Backend — システム管理 — StarWall by AGRON",
     connections: "接続マップ — StarWall by AGRON",
-    login: "認可 — StarWall by AGRON",
+    login: "サインイン — StarWall by AGRON",
+    signup: "アカウント作成 — StarWall by AGRON",
+    forgotPassword: "パスワードを忘れた — StarWall by AGRON",
     tasks: "すべてのタスク — StarWall by AGRON",
   },
   surface: {

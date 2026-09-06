@@ -7,7 +7,8 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useAuthSession } from "@/lib/auth-session";
+import { AccountMenu } from "@/components/auth/account-menu";
+import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
 
@@ -15,13 +16,13 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { t } = usePreferences();
-  const { session } = useAuthSession();
   const showMode =
     pathname.startsWith("/interface") ||
     pathname.startsWith("/backend") ||
-    pathname.startsWith("/login") ||
     pathname.startsWith("/tasks");
   const workItems = [authNavItem, tasksNavItem, adminNavItem];
+
+  if (isAuthRoute(pathname)) return null;
 
   return (
     <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header print:hidden">
@@ -69,14 +70,10 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          {session ? (
-            <span className="hidden font-mono text-[10px] text-muted xl:inline">
-              {session.name}
-            </span>
-          ) : null}
         </nav>
 
         <div className="flex items-center gap-2">
+          <AccountMenu />
           {showMode ? <ModeToggle /> : null}
           <div className="hidden lg:flex lg:items-center">
             <ThemeToggle />
@@ -130,6 +127,7 @@ export function SiteHeader() {
             ))}
           </ul>
           <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+            <AccountMenu />
             {showMode ? <ModeToggle /> : null}
             <ThemeToggle />
             <LanguageSwitcher align="end" />

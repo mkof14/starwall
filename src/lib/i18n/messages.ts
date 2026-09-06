@@ -41,6 +41,8 @@ export type Messages = {
     connections: string;
     login: string;
     tasks: string;
+    signup: string;
+    forgotPassword: string;
   };
   surface: {
     connectionsKicker: string;
@@ -469,8 +471,10 @@ export const en: Messages = {
     contact: "Contact — StarWall by AGRON",
     backend: "StarWall Backend — System administration — StarWall by AGRON",
     connections: "System Connections Map — StarWall by AGRON",
-    login: "Authorization — StarWall by AGRON",
+    login: "Sign in — StarWall by AGRON",
     tasks: "All tasks — StarWall by AGRON",
+    signup: "Sign up — StarWall by AGRON",
+    forgotPassword: "Forgot password — StarWall by AGRON",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGY",

@@ -41,7 +41,9 @@ export const de: Messages = {
     contact: "Kontakt — StarWall by AGRON",
     backend: "StarWall Backend — Systemverwaltung — StarWall by AGRON",
     connections: "Verbindungskarte — StarWall by AGRON",
-    login: "Autorisierung — StarWall by AGRON",
+    login: "Anmelden — StarWall by AGRON",
+    signup: "Konto erstellen — StarWall by AGRON",
+    forgotPassword: "Passwort vergessen — StarWall by AGRON",
     tasks: "Alle Aufgaben — StarWall by AGRON",
   },
   surface: {

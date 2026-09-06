@@ -52,9 +52,11 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/specs` | Specifications |
 | `/containers/deployment` | Deployment |
 | `/contact` | Contact |
-| `/login` | Authorization — local browser session + full task list |
-| `/tasks` | All tasks (gated; sign in on `/login` first) |
-| `/backend` | StarWall Backend (gated; live admin actions + honest LIVE mode) |
+| `/login` | Sign in (email/password or Google) |
+| `/signup` | Create an account |
+| `/forgot-password` | Password reset request |
+| `/tasks` | All tasks (gated; sign in first) |
+| `/backend` | StarWall Backend (gated) |
 
 ## Brand, theme, and language
 
@@ -64,9 +66,31 @@ Header and footer include a sun/moon theme switch (light/dark, stored in the bro
 
 Helm, the watch advisor, sits as a living icon at the bottom-right of every page. Speech/type languages fold into a dropdown inside the panel.
 
-`/interface`, `/backend`, `/login`, and `/tasks` also carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
+`/interface`, `/backend`, and `/tasks` carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
 
-`/login` starts a **local browser session** (name + role, optional email — no password database). DEMO can prefill illustrative accounts. LIVE shows no accounts until you add one on the form. `/backend` and `/tasks` redirect to `/login` until that session exists. This is not production authentication.
+## Authentication
+
+Sign-in is NextAuth.js (Auth.js) at `/api/auth/[...nextauth]`:
+
+- **Credentials** — email + password, stored in a local JSON file (`data/users.json`, or `/tmp` on Vercel). This is a demo store. Replace it with a real database (e.g. Postgres via Prisma) before production.
+- **Google** — “Continue with Google”. This needs a real OAuth client that only you can create.
+
+Create a Google Cloud OAuth app: **Google Cloud Console → APIs & Services → Credentials → Create credentials → OAuth client ID** (Web application). Add authorized redirect URI `https://YOUR_DOMAIN/api/auth/callback/google` (and `http://127.0.0.1:3000/api/auth/callback/google` for local). Copy the client ID and secret into `.env.local`. These values cannot be generated here.
+
+Environment placeholders (see `.env.local.example`):
+
+```
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+Generate `NEXTAUTH_SECRET` with `openssl rand -base64 32`. After a successful sign-in the site opens `/interface` and the header shows an initial avatar with **Sign out**.
+
+`/signup` creates a credentials account. `/forgot-password` shows a standard confirmation without revealing whether the email exists. Reset mail is not wired yet (Resend or similar before launch).
+
+`/backend` and `/tasks` still require a signed-in session.
 
 Translated now: marketing chrome (nav, footer), all public pages, Helm chrome, the Connections Map legend, the LIVE banner, `/backend`, `/login`, and `/tasks`. Arabic and Hebrew also load Noto Sans for body and headings.
 
@@ -80,6 +104,9 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
 2. Set environment variables:
    - `ANTHROPIC_API_KEY` — required for Helm replies. Without it Helm still opens and returns a configuration error.
    - `NEXT_PUBLIC_SITE_URL` — production origin, e.g. `https://your-project.vercel.app`.
+   - `NEXTAUTH_URL` — same production origin.
+   - `NEXTAUTH_SECRET` — random secret for session tokens.
+   - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from the Google Cloud OAuth client. Without them the Google button is visible but sign-in cannot complete.
 3. Deploy. `vercel.json` pins the framework and a single region (`iad1`).
 
 Production checks locally before a deploy:

@@ -4,11 +4,15 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { usePathname } from "next/navigation";
+import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
 
 export function SiteFooter() {
   const { t } = usePreferences();
+  const pathname = usePathname();
+  if (isAuthRoute(pathname)) return null;
 
   return (
     <footer className="w-full bg-navy print:hidden">

@@ -41,7 +41,9 @@ export const zh: Messages = {
     contact: "联系 — StarWall by AGRON",
     backend: "StarWall Backend — 系统管理 — StarWall by AGRON",
     connections: "系统连接图 — StarWall by AGRON",
-    login: "授权 — StarWall by AGRON",
+    login: "登录 — StarWall by AGRON",
+    signup: "注册 — StarWall by AGRON",
+    forgotPassword: "忘记密码 — StarWall by AGRON",
     tasks: "全部任务 — StarWall by AGRON",
   },
   surface: {

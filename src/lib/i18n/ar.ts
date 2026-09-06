@@ -41,7 +41,9 @@ export const ar: Messages = {
     contact: "تواصل — StarWall by AGRON",
     backend: "StarWall Backend — إدارة النظام — StarWall by AGRON",
     connections: "خريطة الاتصالات — StarWall by AGRON",
-    login: "التفويض — StarWall by AGRON",
+    login: "تسجيل الدخول — StarWall by AGRON",
+    signup: "إنشاء حساب — StarWall by AGRON",
+    forgotPassword: "نسيت كلمة المرور — StarWall by AGRON",
     tasks: "كل المهام — StarWall by AGRON",
   },
   surface: {

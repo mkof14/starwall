@@ -18,6 +18,8 @@ const PATHS = [
   "/contact",
   "/backend",
   "/login",
+  "/signup",
+  "/forgot-password",
   "/tasks",
 ];
 

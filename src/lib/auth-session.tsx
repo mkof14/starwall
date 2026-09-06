@@ -4,19 +4,15 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
-import { ADMIN_ROLES, type AdminRole } from "@/lib/admin";
-
-export const AUTH_KEY = "starwall-auth";
+import { SessionProvider, signOut, useSession } from "next-auth/react";
 
 export type AuthSession = {
   name: string;
   email: string;
-  role: AdminRole;
+  role: "Operator";
   at: string;
 };
 
@@ -24,92 +20,64 @@ type AuthContextValue = {
   ready: boolean;
   session: AuthSession | null;
   error: boolean;
-  signIn: (input: { name: string; email?: string; role: AdminRole }) => void;
   signOut: () => void;
   clearError: () => void;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function isRole(value: unknown): value is AdminRole {
-  return typeof value === "string" && ADMIN_ROLES.includes(value as AdminRole);
-}
-
-function parseSession(raw: string | null): {
-  session: AuthSession | null;
-  error: boolean;
-} {
-  if (!raw) return { session: null, error: false };
-  try {
-    const data = JSON.parse(raw) as Partial<AuthSession>;
-    if (typeof data.name !== "string" || !data.name.trim() || !isRole(data.role)) {
-      return { session: null, error: true };
-    }
-    return {
-      session: {
-        name: data.name.trim(),
-        email: typeof data.email === "string" ? data.email.trim() : "",
-        role: data.role,
-        at: typeof data.at === "string" ? data.at : new Date().toISOString(),
-      },
-      error: false,
-    };
-  } catch {
-    return { session: null, error: true };
-  }
-}
-
 export function safeNextPath(value: string | null | undefined): string {
-  if (!value) return "/tasks";
-  if (!value.startsWith("/") || value.startsWith("//")) return "/tasks";
+  if (!value) return "/interface";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/interface";
   return value;
 }
 
-export function AuthSessionProvider({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false);
-  const [session, setSession] = useState<AuthSession | null>(null);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const parsed = parseSession(window.sessionStorage.getItem(AUTH_KEY));
-    setSession(parsed.session);
-    setError(parsed.error);
-    setReady(true);
-  }, []);
-
-  const signIn = useCallback(
-    (input: { name: string; email?: string; role: AdminRole }) => {
-      const next: AuthSession = {
-        name: input.name.trim(),
-        email: (input.email ?? "").trim(),
-        role: input.role,
-        at: new Date().toISOString(),
-      };
-      window.sessionStorage.setItem(AUTH_KEY, JSON.stringify(next));
-      setSession(next);
-      setError(false);
-    },
-    [],
+export function isAuthRoute(pathname: string | null | undefined) {
+  return (
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/forgot-password"
   );
+}
 
-  const signOut = useCallback(() => {
-    window.sessionStorage.removeItem(AUTH_KEY);
-    setSession(null);
-    setError(false);
-  }, []);
+function AuthSessionInner({ children }: { children: ReactNode }) {
+  const { data, status } = useSession();
+  const ready = status !== "loading";
+  const session = useMemo<AuthSession | null>(() => {
+    if (!data?.user) return null;
+    const name = data.user.name?.trim() || data.user.email?.split("@")[0] || "Officer";
+    return {
+      name,
+      email: data.user.email?.trim() ?? "",
+      role: "Operator",
+      at: new Date().toISOString(),
+    };
+  }, [data]);
 
-  const clearError = useCallback(() => {
-    window.sessionStorage.removeItem(AUTH_KEY);
-    setSession(null);
-    setError(false);
+  const leave = useCallback(() => {
+    void signOut({ callbackUrl: "/" });
   }, []);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ ready, session, error, signIn, signOut, clearError }),
-    [ready, session, error, signIn, signOut, clearError],
+    () => ({
+      ready,
+      session,
+      error: false,
+      signOut: leave,
+      clearError: leave,
+    }),
+    [ready, session, leave],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function AuthSessionProvider({ children }: { children: ReactNode }) {
+  return (
+    <SessionProvider>
+      <AuthSessionInner>{children}</AuthSessionInner>
+    </SessionProvider>
+  );
 }
 
 export function useAuthSession() {

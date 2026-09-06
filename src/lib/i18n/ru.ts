@@ -41,7 +41,9 @@ export const ru: Messages = {
     contact: "Контакт — StarWall by AGRON",
     backend: "StarWall Backend — системное администрирование — StarWall by AGRON",
     connections: "Карта соединений — StarWall by AGRON",
-    login: "Авторизация — StarWall by AGRON",
+    login: "Вход — StarWall by AGRON",
+    signup: "Регистрация — StarWall by AGRON",
+    forgotPassword: "Сброс пароля — StarWall by AGRON",
     tasks: "Все задания — StarWall by AGRON",
   },
   surface: {

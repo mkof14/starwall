@@ -5,9 +5,11 @@ import { FlagIcon } from "@/components/flag-icon";
 import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
 import { useAppMode } from "@/lib/mode";
+import { usePathname } from "next/navigation";
 
 type MicState = "idle" | "listening" | "processing" | "speaking";
 
@@ -43,6 +45,7 @@ function SpeechEngine() {
 }
 
 export function Helm() {
+  const pathname = usePathname();
   const session = useBridgeSession();
   const { live } = useAppMode();
   const { t } = usePreferences();
@@ -293,6 +296,8 @@ export function Helm() {
       setMic("idle");
     }
   }
+
+  if (isAuthRoute(pathname)) return null;
 
   return (
     <div
