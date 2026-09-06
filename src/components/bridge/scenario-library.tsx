@@ -14,6 +14,7 @@ type ScenarioLibraryProps = {
   onSelect: (scenario: Scenario) => void;
   onReset: () => void;
   onReport: () => void;
+  disabled?: boolean;
 };
 
 const SECTION_SHORT: Record<string, string> = {
@@ -31,11 +32,14 @@ function riskChip(level: Exclude<RiskLevel, "NORMAL">) {
   return "text-crit border-crit/60 bg-crit/10";
 }
 
+const LIVE_TIP = "Scenario simulation is a DEMO mode feature.";
+
 export function ScenarioLibrary({
   selectedId,
   onSelect,
   onReset,
   onReport,
+  disabled = false,
 }: ScenarioLibraryProps) {
   const [open, setOpen] = useState(true);
   const selected = SCENARIOS.find((item) => item.id === selectedId);
@@ -84,8 +88,10 @@ export function ScenarioLibrary({
             <button
               type="button"
               data-testid="reset-normal"
+              disabled={disabled}
+              title={disabled ? LIVE_TIP : undefined}
               onClick={onReset}
-              className="border border-sand/40 bg-transparent px-3 py-1.5 font-ui text-xs font-medium text-sand hover:border-sand hover:bg-white/5"
+              className="border border-sand/40 bg-transparent px-3 py-1.5 font-ui text-xs font-medium text-sand hover:border-sand hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Reset to Normal
             </button>
@@ -146,6 +152,7 @@ export function ScenarioLibrary({
         id="scenario-select"
         data-testid="scenario-select"
         value={selectedId}
+        disabled={disabled}
         onChange={(event) => {
           const next = SCENARIOS.find((item) => item.id === event.target.value);
           if (next) onSelect(next);
@@ -200,12 +207,15 @@ export function ScenarioLibrary({
                         <button
                           type="button"
                           data-testid={`scenario-${item.id}`}
+                          disabled={disabled}
+                          title={disabled ? LIVE_TIP : undefined}
                           onClick={() => onSelect(item)}
                           className={cn(
                             "flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left font-ui text-sm",
                             active
                               ? "bg-orange font-semibold text-white"
                               : "border border-bridge-line bg-bridge-panel text-bridge-text hover:border-[#8B4A28] hover:text-[#8B4A28]",
+                            disabled && "cursor-not-allowed opacity-45 hover:border-bridge-line hover:text-bridge-text",
                           )}
                         >
                           <span>{item.name}</span>

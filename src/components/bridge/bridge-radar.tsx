@@ -14,9 +14,10 @@ type Tooltip = {
 type BridgeRadarProps = {
   showNewContact: boolean;
   degraded?: "radar" | "ais" | null;
+  empty?: boolean;
 };
 
-export function BridgeRadar({ showNewContact, degraded }: BridgeRadarProps) {
+export function BridgeRadar({ showNewContact, degraded, empty }: BridgeRadarProps) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
 
   useEffect(() => {
@@ -143,7 +144,7 @@ export function BridgeRadar({ showNewContact, degraded }: BridgeRadarProps) {
           strokeWidth="1"
           strokeDasharray="2 4"
         />
-        {degraded === "radar" ? null : (
+        {degraded === "radar" || empty ? null : (
         <g className="bridge-sweep" style={{ pointerEvents: "none" }}>
           <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
         </g>
@@ -156,10 +157,14 @@ export function BridgeRadar({ showNewContact, degraded }: BridgeRadarProps) {
         </defs>
         <g transform="translate(340,214)">
           <path d="M0,-11 L8,10 L0,6 L-8,10 Z" fill="#E7ECEF" />
+          {empty ? null : (
           <text x="12" y="16" fontFamily="monospace" fontSize="9" fill="#48545D">
             HDG 247° · 11.4KN
           </text>
+          )}
         </g>
+        {empty ? null : (
+        <>
         <g
           data-name="M/V KESTREL 2"
           data-type="Cargo · 4200t · AIS ok"
@@ -230,6 +235,8 @@ export function BridgeRadar({ showNewContact, degraded }: BridgeRadarProps) {
             </text>
           </g>
         ) : null}
+        </>
+        )}
       </svg>
       {tooltip && typeof document !== "undefined"
         ? createPortal(

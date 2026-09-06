@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { useBlackBox, type BlackBoxRecord, type StorageLocation } from "@/lib/black-box";
+import { useAppMode } from "@/lib/mode";
 
 function MicIcon() {
   return (
@@ -74,6 +75,10 @@ function downloadRecord(record: BlackBoxRecord) {
 
 export function BlackBoxPanel() {
   const { records } = useBlackBox();
+  const { live } = useAppMode();
+  const visible = live
+    ? records.filter((record) => record.type === "conversation")
+    : records;
   const [openId, setOpenId] = useState<string | null>(null);
   const [printRecord, setPrintRecord] = useState<BlackBoxRecord | null>(null);
   const [toast, setToast] = useState<string | null>(null);
@@ -111,14 +116,15 @@ export function BlackBoxPanel() {
           </p>
         </header>
 
-        {records.length === 0 ? (
+        {visible.length === 0 ? (
           <p className="font-mono text-xs text-bridge-dim">
-            No records yet this session — run a scenario or talk to the
-            assistant.
+            {live
+              ? "No records yet."
+              : "No records yet this session — run a scenario or talk to the assistant."}
           </p>
         ) : (
           <ul className="space-y-2">
-            {records.map((record) => {
+            {visible.map((record) => {
               const expanded = openId === record.id;
               return (
                 <li

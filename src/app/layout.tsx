@@ -8,6 +8,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import { PreferencesProvider } from "@/lib/i18n/context";
+import { ModeProvider } from "@/lib/mode";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeScript } from "@/components/theme-script";
@@ -76,11 +77,13 @@ export default function RootLayout({
         <ThemeScript />
       </head>
       <body className="flex min-h-screen flex-col">
-        <PreferencesProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </PreferencesProvider>
+        <ModeProvider>
+          <PreferencesProvider>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </PreferencesProvider>
+        </ModeProvider>
       </body>
     </html>
   );

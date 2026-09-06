@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { cn } from "@/lib/cn";
 import { useCrisisMode } from "@/lib/crisis-mode";
+import { useAppMode } from "@/lib/mode";
 
 const MONO = "var(--font-jetbrains), ui-monospace, monospace";
 
@@ -33,10 +34,13 @@ const DAYS = [
   },
 ] as const;
 
+const LIVE_LEARNING_TIP = "Day 30 and Day 90 require live operational data.";
+
 export function AdaptiveLearningPanel() {
   const [day, setDay] = useState<(typeof DAYS)[number]["id"]>("1");
   const [expanded, setExpanded] = useState(true);
   const { crisis } = useCrisisMode();
+  const { live } = useAppMode();
   const current = DAYS.find((item) => item.id === day) ?? DAYS[0];
   if (crisis) return null;
 
@@ -49,7 +53,7 @@ export function AdaptiveLearningPanel() {
           extra={
             <div className="flex items-center gap-3">
               <span className="hidden font-mono text-[10px] text-bridge-dim sm:inline">
-                ILLUSTRATIVE SIMULATION
+                {live ? "NO OPERATIONAL HISTORY" : "ILLUSTRATIVE SIMULATION"}
               </span>
               <button
                 type="button"
@@ -65,8 +69,17 @@ export function AdaptiveLearningPanel() {
           {expanded ? (
           <>
           <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Learning timeline">
+            {live ? (
+              <span
+                className="bg-orange px-3 py-1.5 font-ui text-xs text-white"
+                data-testid="learning-day-0"
+              >
+                Day 0
+              </span>
+            ) : null}
             {DAYS.map((item) => {
-              const active = item.id === day;
+              const locked = live && item.id !== "1";
+              const active = !live && item.id === day;
               return (
                 <button
                   key={item.id}
@@ -74,12 +87,18 @@ export function AdaptiveLearningPanel() {
                   role="tab"
                   aria-selected={active}
                   data-testid={`learning-day-${item.id}`}
-                  onClick={() => setDay(item.id)}
+                  disabled={locked}
+                  title={locked ? LIVE_LEARNING_TIP : undefined}
+                  onClick={() => {
+                    if (!locked) setDay(item.id);
+                  }}
                   className={cn(
                     "px-3 py-1.5 font-ui text-xs",
+                    live && item.id === "1" && "hidden",
                     active
                       ? "bg-orange text-white"
                       : "border border-bridge-line text-bridge-dim hover:border-orange hover:text-orange",
+                    locked && "cursor-not-allowed opacity-40 hover:border-bridge-line hover:text-bridge-dim",
                   )}
                 >
                   {item.label}
@@ -88,6 +107,15 @@ export function AdaptiveLearningPanel() {
             })}
           </div>
 
+          {live ? (
+            <p
+              data-testid="learning-live-empty"
+              className="border border-bridge-line bg-bridge-bg px-4 py-6 font-ui text-sm text-bridge-dim"
+            >
+              Day 0 — no operational history yet.
+            </p>
+          ) : (
+          <>
           <div className="relative overflow-hidden bg-[#0A0F14]">
             <svg viewBox="0 0 680 280" className="h-auto w-full">
               <rect x="40" y="24" width="600" height="232" fill="none" stroke="#223039" strokeWidth="1.4" />
@@ -192,6 +220,8 @@ export function AdaptiveLearningPanel() {
             Illustrative simulation of the learning process — actual timelines and accuracy
             depend on the object and available data.
           </p>
+          </>
+          )}
           </>
           ) : (
             <p className="font-mono text-[10px] text-bridge-dim">

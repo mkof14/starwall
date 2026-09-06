@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePreferences } from "@/lib/i18n/context";
 import { adminNavItem, navItems } from "@/lib/nav";
@@ -13,6 +14,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { t } = usePreferences();
+  const showMode =
+    pathname.startsWith("/interface") || pathname.startsWith("/backend");
 
   return (
     <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header print:hidden">
@@ -62,7 +65,8 @@ export function SiteHeader() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          {showMode ? <ModeToggle /> : null}
           <div className="hidden lg:flex lg:items-center">
             <ThemeToggle />
             <LanguageSwitcher />
@@ -112,7 +116,8 @@ export function SiteHeader() {
               </Link>
             </li>
           </ul>
-          <div className="flex items-center justify-between px-3 py-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+            {showMode ? <ModeToggle /> : null}
             <ThemeToggle />
             <LanguageSwitcher align="end" />
           </div>

@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HudPanel } from "@/components/bridge/hud-panel";
+import { LiveModeBanner } from "@/components/live-mode-banner";
+import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/cn";
 import { EQUIPMENT } from "@/lib/equipment";
+import { useAppMode } from "@/lib/mode";
 
 const SECTIONS = [
   { id: "health", label: "System Health" },
@@ -82,7 +85,9 @@ function statusDot(status: EquipStatus) {
 }
 
 export function BackendView() {
+  const { live } = useAppMode();
   const [section, setSection] = useState<(typeof SECTIONS)[number]["id"]>("health");
+  const [online, setOnline] = useState(true);
   const [syncedFor, setSyncedFor] = useState(12);
   const [checks, setChecks] = useState<Record<string, { status: EquipStatus; time: string; scan: ScanState }>>(
     () => {
@@ -100,11 +105,28 @@ export function BackendView() {
   );
 
   useEffect(() => {
+    setOnline(navigator.onLine);
+    function goOnline() {
+      setOnline(true);
+    }
+    function goOffline() {
+      setOnline(false);
+    }
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (live) return;
     const timer = window.setInterval(() => {
       setSyncedFor((value) => value + 1);
     }, 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [live]);
 
   function runDiagnostic(id: string) {
     setChecks((current) => ({
@@ -123,16 +145,22 @@ export function BackendView() {
 
   return (
     <div className="min-h-screen bg-bridge-bg font-ui text-bridge-text" dir="ltr" lang="en">
+      {live ? <LiveModeBanner /> : null}
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
+        {live ? null : (
         <p className="border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
           Illustrative system administration view — demonstrates the operational
           layer&apos;s structure and capabilities, not a live production admin
           panel.
         </p>
-        <header className="mt-6">
-          <p className="font-mono text-[10px] tracking-[0.24em] text-bridge-dim">
-            STARWALL BACKEND
-          </p>
+        )}
+        <header className={live ? "mt-2" : "mt-6"}>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <p className="font-mono text-[10px] tracking-[0.24em] text-bridge-dim">
+              STARWALL BACKEND
+            </p>
+            <ModeToggle />
+          </div>
           <h1 className="mt-1 font-ui text-3xl font-bold tracking-wide">
             System administration
           </h1>
@@ -172,37 +200,72 @@ export function BackendView() {
                   <li className="flex items-center justify-between gap-3">
                     <span>Internet / Satellite link</span>
                     <span className="flex items-center gap-2">
-                      <span className="flex items-end gap-0.5">
-                        <span className="h-1.5 w-1 bg-ok" />
-                        <span className="h-2.5 w-1 bg-ok" />
-                        <span className="h-3.5 w-1 bg-ok" />
-                        <span className="h-4 w-1 bg-ok/30" />
-                      </span>
-                      <span className="text-ok">Online</span>
+                      {live ? (
+                        <>
+                          <span
+                            className={cn(
+                              "h-1.5 w-1.5 rounded-full",
+                              online ? "bg-ok" : "bg-bridge-dim",
+                            )}
+                          />
+                          <span className={online ? "text-ok" : "text-bridge-dim"}>
+                            {online ? "Connected" : "Offline"}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="flex items-end gap-0.5">
+                            <span className="h-1.5 w-1 bg-ok" />
+                            <span className="h-2.5 w-1 bg-ok" />
+                            <span className="h-3.5 w-1 bg-ok" />
+                            <span className="h-4 w-1 bg-ok/30" />
+                          </span>
+                          <span className="text-ok">Online</span>
+                        </>
+                      )}
                     </span>
                   </li>
                   <li className="flex items-center justify-between gap-3">
                     <span>Local network</span>
+                    {live ? (
+                      <span className="text-bridge-dim">Not reported</span>
+                    ) : (
                     <span className="flex items-center gap-2 text-ok">
                       <span className="h-1.5 w-1.5 rounded-full bg-ok" />
                       Online
                     </span>
+                    )}
                   </li>
                   <li className="flex items-center justify-between gap-3">
                     <span>Cloud backup sync</span>
+                    {live ? (
+                      <span className="text-bridge-dim">
+                        not yet configured for this deployment
+                      </span>
+                    ) : (
                     <span className="text-ok">
                       Online · Last synced: {relativeLabel(syncedFor)}
                     </span>
+                    )}
                   </li>
                   <li className="flex items-center justify-between gap-3">
                     <span>Local backup</span>
+                    {live ? (
+                      <span className="text-bridge-dim">not yet configured</span>
+                    ) : (
                     <span className="flex items-center gap-2 text-ok">
                       <span className="h-1.5 w-1.5 rounded-full bg-ok" />
                       Online
                     </span>
+                    )}
                   </li>
                 </ul>
 
+                {live ? (
+                  <p className="mt-6 font-mono text-[11px] text-bridge-dim">
+                    No sensor path yet — waiting for equipment installation.
+                  </p>
+                ) : (
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   <FlowCard
                     title="CLOUD PATH"
@@ -213,6 +276,7 @@ export function BackendView() {
                     steps={["Sensors", "StarWall Core", "Local Storage"]}
                   />
                 </div>
+                )}
               </HudPanel>
             ) : null}
 
@@ -239,20 +303,29 @@ export function BackendView() {
                                 <span
                                   className={cn(
                                     "h-1.5 w-1.5 rounded-full",
-                                    statusDot(row.status),
+                                    live ? "bg-bridge-dim" : statusDot(row.status),
                                   )}
                                 />
-                                {row.status}
+                                {live
+                                  ? "Not connected — awaiting installation"
+                                  : row.status}
                               </span>
                             </td>
-                            <td className="py-2.5 pe-3 text-bridge-dim">{row.time}</td>
+                            <td className="py-2.5 pe-3 text-bridge-dim">
+                              {live ? "—" : row.time}
+                            </td>
                             <td className="py-2.5">
                               <button
                                 type="button"
                                 data-testid={`diagnostic-${item.id}`}
-                                disabled={row.scan === "scanning"}
+                                disabled={live || row.scan === "scanning"}
+                                title={
+                                  live
+                                    ? "No equipment to diagnose yet."
+                                    : undefined
+                                }
                                 onClick={() => runDiagnostic(item.id)}
-                                className="border border-bridge-line px-2 py-1 text-[11px] hover:border-orange disabled:opacity-60"
+                                className="border border-bridge-line px-2 py-1 text-[11px] hover:border-orange disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 {row.scan === "scanning"
                                   ? "Scanning..."
@@ -287,6 +360,12 @@ export function BackendView() {
                     </li>
                   ))}
                 </ol>
+                {live ? (
+                  <p className="mt-6 font-mono text-xs text-bridge-dim">
+                    No user accounts provisioned yet.
+                  </p>
+                ) : (
+                <>
                 <p className="mb-2 mt-6 font-mono text-[10px] tracking-wider text-bridge-dim">
                   ILLUSTRATIVE ACCOUNTS — FICTIONAL NAMES
                 </p>
@@ -310,16 +389,17 @@ export function BackendView() {
                     </tbody>
                   </table>
                 </div>
+                </>
+                )}
               </HudPanel>
             ) : null}
 
             {section === "blackbox" ? (
               <HudPanel testId="backend-blackbox" title="BLACK BOX">
                 <p className="text-sm leading-relaxed text-bridge-dim">
-                  Session records — assistant conversations and scenario runs —
-                  are written on the Bridge and retained locally, then synced to
-                  cloud storage. Open the live log on the captain console; this
-                  page does not duplicate the recorder.
+                  {live
+                    ? "No records yet."
+                    : "Session records — assistant conversations and scenario runs — are written on the Bridge and retained locally, then synced to cloud storage. Open the live log on the captain console; this page does not duplicate the recorder."}
                 </p>
                 <Link
                   href="/interface#black-box-panel"
@@ -348,12 +428,24 @@ export function BackendView() {
                           <td className="py-2.5 pe-3">{item.name}</td>
                           <td className="py-2.5 pe-3 text-bridge-dim">{item.note}</td>
                           <td className="py-2.5 pe-3">
-                            <span className="inline-flex items-center gap-2 text-ok">
-                              <span className="h-1.5 w-1.5 rounded-full bg-ok" />
-                              Online
+                            <span
+                              className={cn(
+                                "inline-flex items-center gap-2",
+                                live ? "text-bridge-dim" : "text-ok",
+                              )}
+                            >
+                              <span
+                                className={cn(
+                                  "h-1.5 w-1.5 rounded-full",
+                                  live ? "bg-bridge-dim" : "bg-ok",
+                                )}
+                              />
+                              {live ? "Not integrated" : "Online"}
                             </span>
                           </td>
-                          <td className="py-2.5 text-bridge-dim">{item.last}</td>
+                          <td className="py-2.5 text-bridge-dim">
+                            {live ? "—" : item.last}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -367,6 +459,11 @@ export function BackendView() {
                 <p className="mb-3 font-mono text-[10px] text-bridge-dim">
                   Administrative actions — distinct from the Bridge Event Log.
                 </p>
+                {live ? (
+                  <p className="font-mono text-xs text-bridge-dim">
+                    No administrative actions recorded yet.
+                  </p>
+                ) : (
                 <ul className="space-y-2 font-mono text-xs">
                   {AUDIT.map((line, index) => (
                     <li
@@ -380,6 +477,7 @@ export function BackendView() {
                     </li>
                   ))}
                 </ul>
+                )}
               </HudPanel>
             ) : null}
           </div>

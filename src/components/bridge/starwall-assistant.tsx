@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { useAppMode } from "@/lib/mode";
 
 type MicState = "idle" | "listening" | "processing" | "speaking";
 
@@ -45,6 +46,7 @@ function SpeechEngine() {
 
 export function StarWallAssistant() {
   const session = useBridgeSession();
+  const { live } = useAppMode();
   const { recordConversation } = useBlackBox();
   const [open, setOpen] = useState(true);
   const [mic, setMic] = useState<MicState>("idle");
@@ -230,6 +232,7 @@ export function StarWallAssistant() {
             scenarioName: session.scenarioName,
             riskLevel: session.riskLevel,
             vessel: session.vessel,
+            mode: live ? "live" : "demo",
           },
         }),
       });
@@ -294,7 +297,9 @@ export function StarWallAssistant() {
                 StarWall Assistant
               </p>
               <p className="font-mono text-[10px] text-bridge-dim">
-                {session.vessel} · {session.riskLevel} · {session.scenarioName}
+                {live
+                  ? "LIVE · no sensors connected"
+                  : `${session.vessel} · ${session.riskLevel} · ${session.scenarioName}`}
               </p>
             </div>
             <button

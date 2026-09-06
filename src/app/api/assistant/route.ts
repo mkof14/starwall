@@ -7,6 +7,7 @@ type AssistantBody = {
     scenarioName?: unknown;
     riskLevel?: unknown;
     vessel?: unknown;
+    mode?: unknown;
   };
 };
 
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
   const scenarioName = asText(body.context?.scenarioName, "Normal watch");
   const riskLevel = asText(body.context?.riskLevel, "NORMAL");
   const vessel = asText(body.context?.vessel, "M/Y AURELIA");
+  const live = body.context?.mode === "live";
 
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
   if (!apiKey) {
@@ -49,7 +51,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const system = `You are the StarWall Assistant, an experienced, calm, knowledgeable maritime security assistant built into the AGRON Bridge interface aboard ${vessel}. You help the captain or security officer understand the current situation and make fast decisions. You are not the decision-maker — you inform and advise, the human decides. Current situation: scenario is '${scenarioName}', risk level is '${riskLevel}'. Respond concisely — 2-4 sentences unless genuinely more detail is needed. IMPORTANT: Respond in the exact same language the user's message is written in, matching their language naturally. At the very start of your response, output a language code in this exact format on its own first line: [LANG:xx] where xx is the ISO 639-1 code of the language you're responding in (e.g. [LANG:en], [LANG:ru], [LANG:fr]) — then a newline, then your actual response.`;
+  const situation = live
+    ? "Current mode is LIVE. There is no live scenario or sensor data. This deployment is not connected to any radar, AIS, camera, or other equipment. If asked about current status, say you do not have live sensor data yet — this vessel is not connected to any equipment. They can ask about StarWall in general, or switch to DEMO mode to see a simulated scenario. Do not invent contacts, risk levels, equipment status, or events."
+    : `Current situation: scenario is '${scenarioName}', risk level is '${riskLevel}', aboard ${vessel}.`;
+
+  const system = `You are the StarWall Assistant, an experienced, calm, knowledgeable maritime security assistant built into the AGRON Bridge interface. You help the captain or security officer understand the current situation and make fast decisions. You are not the decision-maker — you inform and advise, the human decides. ${situation} Respond concisely — 2-4 sentences unless genuinely more detail is needed. IMPORTANT: Respond in the exact same language the user's message is written in, matching their language naturally. At the very start of your response, output a language code in this exact format on its own first line: [LANG:xx] where xx is the ISO 639-1 code of the language you're responding in (e.g. [LANG:en], [LANG:ru], [LANG:fr]) — then a newline, then your actual response.`;
 
   try {
     const client = new Anthropic({ apiKey });

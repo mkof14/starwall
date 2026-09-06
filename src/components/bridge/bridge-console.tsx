@@ -11,6 +11,7 @@ import {
   type ToastKind,
 } from "@/components/bridge/event-toasts";
 import { HudPanel } from "@/components/bridge/hud-panel";
+import { ModeToggle } from "@/components/mode-toggle";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
 import { FullscreenButton } from "@/components/bridge/fullscreen-button";
 import { RankedActionList } from "@/components/bridge/ranked-action-list";
@@ -31,6 +32,7 @@ import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
+import { useAppMode } from "@/lib/mode";
 import { cn } from "@/lib/cn";
 import {
   PANEL_CHROME,
@@ -96,14 +98,19 @@ function pictureFor(
   contacts4: string,
   contacts5: string,
   pictureFault: "radar" | "ais" | null,
+  empty?: boolean,
 ) {
-  if (panelType === "radar") {
+  if (empty || panelType === "radar") {
     return {
       testId: "radar-panel",
       title: situational,
-      extra: showNewContact ? contacts5 : contacts4,
+      extra: empty ? "NO SENSORS" : showNewContact ? contacts5 : contacts4,
       view: (
-        <BridgeRadar showNewContact={showNewContact} degraded={pictureFault} />
+        <BridgeRadar
+          showNewContact={empty ? false : showNewContact}
+          degraded={empty ? null : pictureFault}
+          empty={empty}
+        />
       ),
     };
   }
@@ -125,6 +132,7 @@ function pictureFor(
 
 export function BridgeConsole() {
   const { t } = usePreferences();
+  const { live } = useAppMode();
   const { setCrisis } = useCrisisMode();
   const { setSession } = useBridgeSession();
   const { recordScenario } = useBlackBox();
@@ -176,6 +184,7 @@ export function BridgeConsole() {
   function pushLogs(
     rows: { level: RiskLevel; text: string; kind: ToastKind; auto?: boolean }[],
   ) {
+    if (live) return [];
     const stamped: LogEntry[] = rows.map((row) => {
       logSeq.current += 1;
       return {
@@ -219,12 +228,56 @@ export function BridgeConsole() {
   );
 
   useEffect(() => {
+    if (!live) {
+      setLogEntries(logSeed);
+      setToasts([]);
+      setSelectedId("");
+      setSelectedName("");
+      setRiskLevel("NORMAL");
+      setPanelType("radar");
+      setActionText(null);
+      setActionOptions(null);
+      setShowNewContact(false);
+      setCrisis(false);
+      setFaultId(null);
+      setTraining(false);
+      setSessionEvents([]);
+      return;
+    }
+    clearAutoTimer();
+    setCrisis(false);
+    setSelectedId("");
+    setSelectedName("");
+    setRiskLevel("NORMAL");
+    setPanelType("radar");
+    setActionText(null);
+    setActionOptions(null);
+    setShowNewContact(false);
+    setFaultId(null);
+    setTraining(false);
+    setLogEntries([]);
+    setToasts([]);
+    setSessionEvents([]);
+    setReportOpen(false);
+    // Switching into LIVE clears the illustrative simulation only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live]);
+
+  useEffect(() => {
+    if (live) {
+      setSession({
+        scenarioName: "No live picture",
+        riskLevel: "NO DATA",
+        vessel: "Unconnected deployment",
+      });
+      return;
+    }
     setSession({
       scenarioName: selectedName || "Normal watch",
       riskLevel,
       vessel: "M/Y AURELIA",
     });
-  }, [selectedName, riskLevel, setSession]);
+  }, [live, selectedName, riskLevel, setSession]);
 
   const systems = t.bridge.systems.map((name, index) => {
     const id = EQUIPMENT[index]?.id;
@@ -246,6 +299,7 @@ export function BridgeConsole() {
     t.bridge.contacts4,
     t.bridge.contacts5,
     pictureFault,
+    live,
   );
   const pictureOverlay =
     faultId === "radar"
@@ -255,6 +309,7 @@ export function BridgeConsole() {
         : null;
 
   function applyScenario(scenario: Scenario) {
+    if (live) return;
     clearAutoTimer();
     const critical = scenario.riskLevel === "CRITICAL";
     setSelectedId(scenario.id);
@@ -395,8 +450,9 @@ export function BridgeConsole() {
             </p>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-3">
+            <ModeToggle />
             <FullscreenButton />
-            {crisis ? null : (
+            {crisis || live ? null : (
             <button
               type="button"
               data-testid="training-toggle"
@@ -422,9 +478,19 @@ export function BridgeConsole() {
             className="border border-bridge-line bg-bridge-panel px-3 py-2 text-end"
           >
             <div className="flex items-center justify-end gap-2">
-              <span className={cn("h-2 w-2 rounded-full", tone.dot)} />
-              <span className={cn("font-mono text-sm font-semibold", tone.text)}>
-                {riskLevel}
+              <span
+                className={cn(
+                  "h-2 w-2 rounded-full",
+                  live ? "bg-bridge-dim" : tone.dot,
+                )}
+              />
+              <span
+                className={cn(
+                  "font-mono text-sm font-semibold",
+                  live ? "text-bridge-dim" : tone.text,
+                )}
+              >
+                {live ? "NO DATA" : riskLevel}
               </span>
             </div>
             <p className="mt-1 font-mono text-[10px] text-bridge-dim">
@@ -445,7 +511,7 @@ export function BridgeConsole() {
                 {label}
               </p>
               <p className="font-mono text-sm text-bridge-text">
-                {TELEMETRY_VALUES[index]}
+                {live ? "—" : TELEMETRY_VALUES[index]}
               </p>
             </div>
           ))}
@@ -477,7 +543,16 @@ export function BridgeConsole() {
           >
             <div className="relative">
               {picture.view}
-              {pictureOverlay ? (
+              {live ? (
+                <p
+                  data-testid="live-picture-empty"
+                  className="pointer-events-none absolute inset-x-6 top-1/2 -translate-y-1/2 border border-bridge-line bg-bridge-panel/90 px-3 py-2.5 text-center font-ui text-xs leading-relaxed text-bridge-text"
+                >
+                  No live sensors connected — this view activates once
+                  radar/AIS/camera equipment is integrated.
+                </p>
+              ) : null}
+              {pictureOverlay && !live ? (
                 <p
                   data-testid="picture-degraded-overlay"
                   className="pointer-events-none absolute inset-x-2 bottom-2 border border-attn/60 bg-attn/20 px-2 py-1.5 font-mono text-[11px] text-attn"
@@ -500,7 +575,7 @@ export function BridgeConsole() {
             <HudPanel testId="risk-level-panel" title={t.bridge.riskLevel}>
               <ul className="space-y-2">
                 {RISK_KEYS.map((key, index) => {
-                  const active = key === riskLevel;
+                  const active = !live && key === riskLevel;
                   return (
                     <li key={key} className="flex items-center gap-3">
                       <span
@@ -538,11 +613,17 @@ export function BridgeConsole() {
                     id="simulate-fault"
                     data-testid="simulate-fault"
                     value=""
+                    disabled={live}
+                    title={
+                      live
+                        ? "Scenario simulation is a DEMO mode feature."
+                        : undefined
+                    }
                     onChange={(event) => {
                       const next = event.target.value as EquipmentId;
                       if (next) simulateFault(next);
                     }}
-                    className="max-w-[11rem] border border-bridge-line bg-bridge-bg px-2 py-1 font-ui text-[11px] text-bridge-text"
+                    className="max-w-[11rem] border border-bridge-line bg-bridge-bg px-2 py-1 font-ui text-[11px] text-bridge-text disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <option value="">Simulate equipment fault</option>
                     {EQUIPMENT.map((item) => (
@@ -565,28 +646,32 @@ export function BridgeConsole() {
                     <span
                       className={cn(
                         "flex items-center gap-2",
-                        system.faulted
-                          ? "text-crit"
-                          : system.online
-                            ? "text-bridge-dim"
+                        live
+                          ? "text-bridge-dim"
+                          : system.faulted
+                            ? "text-crit"
                             : "text-bridge-dim",
                       )}
                     >
                       <span
                         className={cn(
                           "h-1.5 w-1.5 rounded-full",
-                          system.faulted
-                            ? "bg-crit"
-                            : system.online
-                              ? "bg-ok"
-                              : "bg-bridge-dim",
+                          live
+                            ? "bg-bridge-dim"
+                            : system.faulted
+                              ? "bg-crit"
+                              : system.online
+                                ? "bg-ok"
+                                : "bg-bridge-dim",
                         )}
                       />
-                      {system.faulted
-                        ? "Offline"
-                        : system.online
-                          ? t.bridge.online
-                          : t.bridge.standby}
+                      {live
+                        ? "Not connected"
+                        : system.faulted
+                          ? "Offline"
+                          : system.online
+                            ? t.bridge.online
+                            : t.bridge.standby}
                     </span>
                   </li>
                 ))}
@@ -597,12 +682,16 @@ export function BridgeConsole() {
               <span
                 className={cn(
                   "inline-block border px-2 py-0.5 font-mono text-[10px] tracking-wider",
-                  tone.chip,
+                  live ? "border-bridge-line text-bridge-dim" : tone.chip,
                 )}
               >
-                {riskLevel}
+                {live ? "NO DATA" : riskLevel}
               </span>
-              {actionOptions ? (
+              {live ? (
+                <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
+                  No recommendation — waiting for equipment integration.
+                </p>
+              ) : actionOptions ? (
                 <RankedActionList options={actionOptions} />
               ) : (
                 <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
@@ -618,6 +707,7 @@ export function BridgeConsole() {
         <div className={crisis ? "hidden" : undefined}>
         <ScenarioLibrary
           selectedId={selectedId}
+          disabled={live}
           onSelect={applyScenario}
           onReset={resetToNormal}
           onReport={() => {
@@ -633,12 +723,25 @@ export function BridgeConsole() {
           testId="event-log-panel"
           title={t.bridge.eventLog}
           extra={
+            live ? (
+              <span className="font-mono text-[10px] text-bridge-dim">NO FEED</span>
+            ) : (
             <span className="flex items-center gap-1.5 text-ok">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
               {t.bridge.live}
             </span>
+            )
           }
         >
+          {live ? (
+            <p
+              data-testid="event-log-empty"
+              className="py-6 text-center font-ui text-sm text-bridge-dim"
+            >
+              No events — no equipment connected yet.
+            </p>
+          ) : (
+          <>
           <p
             data-testid="event-log-legend"
             className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-bridge-dim"
@@ -706,6 +809,8 @@ export function BridgeConsole() {
               </li>
             ))}
           </ul>
+          </>
+          )}
         </HudPanel>
 
         <p className="font-mono text-[11px] text-bridge-dim">{t.bridge.disclaimer}</p>
