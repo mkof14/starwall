@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -355,17 +356,9 @@ export function ConnectionsMap() {
           />
         </g>
         <g>
-          <image
-            href="/SW3.png"
-            x={CORE.x - 48}
-            y={CORE.y - 10}
-            width="96"
-            height="16"
-            preserveAspectRatio="xMidYMid meet"
-          />
           <text
             x={CORE.x}
-            y={CORE.y + 22}
+            y={CORE.y + 28}
             textAnchor="middle"
             fill="#9CA3AF"
             fontFamily="var(--font-jetbrains), ui-monospace, monospace"
@@ -462,6 +455,18 @@ export function ConnectionsMap() {
           );
         })}
       </svg>
+      <Image
+        src="/SW3.png"
+        alt="StarWall"
+        width={2086}
+        height={316}
+        data-testid="map-core-logo"
+        className="pointer-events-none absolute z-[1] h-auto w-[200px] -translate-x-1/2 -translate-y-[80%]"
+        style={{
+          left: `${(CORE.x / MAP_W) * 100}%`,
+          top: `${(CORE.y / MAP_H) * 100}%`,
+        }}
+      />
 
       {tipAt && (hovered || showContainerTip) ? (
         <div

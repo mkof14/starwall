@@ -14,7 +14,7 @@ export type MapEndpoint = {
 
 export const MAP_W = 1600;
 export const MAP_H = 980;
-export const CORE = { x: 820, y: 500, r: 58 };
+export const CORE = { x: 820, y: 500, r: 70 };
 
 export const CONTAINER_BOX = {
   id: "container",
