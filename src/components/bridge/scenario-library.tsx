@@ -48,7 +48,7 @@ export function ScenarioLibrary({
     <section
       data-testid="scenario-picker"
       data-open={open ? "true" : "false"}
-      className="relative overflow-hidden border-2 border-[#6B3D22] bg-bridge-panel"
+      className="relative overflow-hidden border-2 border-[#2A3A48] bg-bridge-panel"
     >
       <header className="bg-navy px-4 py-4 text-sand sm:px-6 sm:py-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -177,9 +177,9 @@ export function ScenarioLibrary({
               <section
                 key={category}
                 data-testid={`scenario-section-${index + 1}`}
-                className="flex flex-col border border-[#6B3D22]/45 bg-bridge-bg"
+                className="flex flex-col border border-[#2A3A48]/50 bg-bridge-bg"
               >
-                <h3 className="flex items-center justify-between gap-3 border-b border-[#3A2418] bg-[#3A2418]/10 px-3 py-2.5">
+                <h3 className="flex items-center justify-between gap-3 border-b border-[#2A3A48] bg-[#1B2A3A]/5 px-3 py-2.5">
                   <span className="flex min-w-0 items-center gap-2">
                     <span className="font-mono text-[11px] tabular-nums text-[#8B4A28]">
                       {String(index + 1).padStart(2, "0")}
