@@ -5,26 +5,20 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePathname } from "next/navigation";
-import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
+import { isAuthRoute } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
-import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
+import { footerWorkItems, navItems } from "@/lib/nav";
 
 export function SiteFooter() {
   const { t } = usePreferences();
-  const { session } = useAuthSession();
   const pathname = usePathname();
   if (isAuthRoute(pathname)) return null;
-  const workItems = [
-    ...(session ? [] : [authNavItem]),
-    tasksNavItem,
-    adminNavItem,
-  ];
 
   return (
     <footer className="w-full bg-navy print:hidden">
       <div className="flex flex-col gap-4 px-4 py-6 text-[13px] text-sand/70 md:px-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <BrandLogo className="h-10 sm:h-11" />
+          <BrandLogo className="h-8 sm:h-9" />
           <div className="flex items-center gap-1">
             <ThemeToggle className="text-sand/80 hover:text-sand" />
             <LanguageSwitcher tone="on-dark" />
@@ -36,7 +30,7 @@ export function SiteFooter() {
               {t.nav[item.key]}
             </Link>
           ))}
-          {workItems.map((item) => (
+          {footerWorkItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}

@@ -27,3 +27,7 @@ export const tasksNavItem = {
   href: "/tasks",
   key: "tasks",
 } as const;
+
+/** Header chip: AUTH only. Tasks and Backend live in the footer. */
+export const headerWorkItems = [authNavItem] as const;
+export const footerWorkItems = [tasksNavItem, adminNavItem] as const;

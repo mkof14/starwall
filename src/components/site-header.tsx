@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AccountMenu } from "@/components/auth/account-menu";
 import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
-import { adminNavItem, authNavItem, navItems, tasksNavItem } from "@/lib/nav";
+import { headerWorkItems, navItems } from "@/lib/nav";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -21,11 +21,7 @@ export function SiteHeader() {
     pathname.startsWith("/interface") ||
     pathname.startsWith("/backend") ||
     pathname.startsWith("/tasks");
-  const workItems = [
-    ...(session ? [] : [authNavItem]),
-    tasksNavItem,
-    adminNavItem,
-  ];
+  const workItems = session ? [] : [...headerWorkItems];
 
   if (isAuthRoute(pathname)) return null;
 
@@ -37,7 +33,7 @@ export function SiteHeader() {
           className="flex h-full min-w-0 items-center"
           onClick={() => setOpen(false)}
         >
-          <BrandLogo priority className="max-w-[10.5rem] sm:max-w-none" />
+          <BrandLogo priority className="max-w-[8.5rem] sm:max-w-[9.5rem]" />
         </Link>
 
         <nav
