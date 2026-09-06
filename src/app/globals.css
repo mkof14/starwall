@@ -227,6 +227,20 @@ body {
   animation: backend-flow 3.2s linear infinite;
 }
 
+@keyframes core-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.26;
+  }
+}
+
+.core-glow-ring {
+  animation: core-glow-pulse 2.8s ease-in-out infinite;
+}
+
 #bridge-root:fullscreen,
 #bridge-root:-webkit-full-screen {
   min-height: 100vh;

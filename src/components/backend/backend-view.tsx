@@ -277,6 +277,16 @@ export function BackendView() {
                   />
                 </div>
                 )}
+
+                <p className="mt-6">
+                  <Link
+                    href="/interface/connections"
+                    data-testid="backend-connections-link"
+                    className="font-mono text-[11px] text-orange hover:underline"
+                  >
+                    View full connections map →
+                  </Link>
+                </p>
               </HudPanel>
             ) : null}
 

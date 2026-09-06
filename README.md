@@ -39,6 +39,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/` | StarWall — Overview |
 | `/how-it-works` | How it works |
 | `/interface` | Interface |
+| `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
 | `/technology` | Technology |
 | `/faq` | FAQ |
@@ -61,4 +62,4 @@ Header and footer include a sun/moon theme switch (light/dark, stored in the bro
 
 Translated now: marketing chrome (nav, footer) plus `/`, `/how-it-works`, `/levels`, `/faq`, `/technology`, `/contact`, and the AGRON Containers pages.
 
-Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, assistant chrome — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and assistant replies (those follow the spoken/typed language when an API key is set).
+Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, assistant chrome, Connections Map — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and assistant replies (those follow the spoken/typed language when an API key is set).

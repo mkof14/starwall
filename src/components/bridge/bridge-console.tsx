@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
@@ -450,6 +451,13 @@ export function BridgeConsole() {
             </p>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-3">
+            <Link
+              href="/interface/connections"
+              data-testid="connections-map-link"
+              className="border border-bridge-text/40 px-3 py-1.5 font-ui text-xs text-bridge-text hover:border-orange hover:text-orange"
+            >
+              Connections Map
+            </Link>
             <ModeToggle />
             <FullscreenButton />
             {crisis || live ? null : (

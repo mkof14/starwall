@@ -14,6 +14,11 @@ export const pageMeta = {
     description:
       "Interactive AGRON Bridge demo: radar, telemetry, risk levels, and an event log with illustrative data.",
   },
+  connections: {
+    title: "System Connections Map — StarWall by AGRON",
+    description:
+      "Radial map of StarWall Core, the AGRON Container, standalone sensors, AGRON Bridge, and Support Center.",
+  },
   levels: {
     title: "Subscription Levels — StarWall by AGRON",
     description:

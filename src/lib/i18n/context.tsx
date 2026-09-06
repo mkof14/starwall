@@ -76,6 +76,10 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   }, [locale, theme]);
 
   useEffect(() => {
+    if (pathname === "/interface/connections") {
+      document.title = "System Connections Map — StarWall by AGRON";
+      return;
+    }
     const key = titleByPath[pathname] ?? "home";
     document.title = dictionaries[locale].seo[key];
   }, [locale, pathname]);
