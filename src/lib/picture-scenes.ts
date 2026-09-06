@@ -126,7 +126,7 @@ const RADAR: Record<string, RadarScene> = {
     heading: "HDG 247° · 11.4KN",
     contacts: [
       ...TRAFFIC,
-      uav("recon", "UAV", 90, 0.12, "attn", "orbit", {
+      uav("recon", "UAV", 90, 1.15, "attn", "orbit", {
         name: "Reconnaissance UAV",
         type: "Camera-equipped · no operator signal",
         dist: "200 m · starboard beam",
@@ -165,7 +165,7 @@ const RADAR: Record<string, RadarScene> = {
     heading: "HDG 247° · 11.4KN",
     contacts: [
       ...TRAFFIC,
-      uav("loiter", "UAV HOLD", 270, 0.08, "attn", "hold", {
+      uav("loiter", "UAV HOLD", 270, 1.05, "attn", "hold", {
         name: "Loitering UAV",
         type: "Fixed station · alt 80 m",
         dist: "80 m · brg 270° · 14 min",
@@ -301,7 +301,7 @@ const RADAR: Record<string, RadarScene> = {
         name: "Person in the water",
         type: "Port side · crew report",
         dist: "40 m · mark position",
-        ...polar(270, 0.06),
+        ...polar(270, 0.55),
         tone: "crit",
         shape: "mob",
         motion: "hold",
@@ -383,7 +383,7 @@ const SONAR: Record<string, SonarScene> = {
         name: "Diver near hull",
         type: "Swimmer signature · 15 m",
         dist: "Depth 3 m · port",
-        ...polar(250, 0.7),
+        ...polar(250, 1.05),
         tone: "attn",
         shape: "sonar",
         motion: "close",
