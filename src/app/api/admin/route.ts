@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireActor } from "@/lib/authz";
 
 const ACTIONS = [
   "heartbeat",
@@ -22,6 +23,10 @@ function isAction(value: unknown): value is AdminAction {
 }
 
 export async function GET() {
+  const ready = await requireActor();
+  if (!ready.ok) {
+    return NextResponse.json({ error: ready.error }, { status: ready.status });
+  }
   return NextResponse.json({
     ok: true,
     at: new Date().toISOString(),
@@ -32,6 +37,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const ready = await requireActor();
+  if (!ready.ok) {
+    return NextResponse.json({ error: ready.error }, { status: ready.status });
+  }
+
   let body: unknown;
   try {
     body = await request.json();

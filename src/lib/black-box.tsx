@@ -12,6 +12,7 @@ import {
 import type { BlackBoxRecord, BlackBoxType, StorageLocation } from "@/lib/black-box-types";
 import { useBridgeSession } from "@/lib/bridge-session";
 import { syncBlackBoxToCloud } from "@/lib/cloud-sync";
+import { DEMO_CLEARED_EVENT } from "@/lib/demo-storage";
 import { listBlackBox, markBlackBoxLocation, putBlackBox } from "@/lib/local-db";
 import { useAppMode } from "@/lib/mode";
 
@@ -52,7 +53,12 @@ export function BlackBoxProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     void listBlackBox()
       .then((rows) => {
-        if (!cancelled) setRecords(rows);
+        if (cancelled) return;
+        if (window.localStorage.getItem(MODE_KEY) === "live") {
+          setRecords([]);
+          return;
+        }
+        setRecords(rows);
       })
       .catch(() => {
         if (!cancelled) setRecords([]);
@@ -63,6 +69,18 @@ export function BlackBoxProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  useEffect(() => {
+    if (live) setRecords([]);
+  }, [live]);
+
+  useEffect(() => {
+    function onCleared() {
+      setRecords([]);
+    }
+    window.addEventListener(DEMO_CLEARED_EVENT, onCleared);
+    return () => window.removeEventListener(DEMO_CLEARED_EVENT, onCleared);
   }, []);
 
   const persistAndSync = useCallback(

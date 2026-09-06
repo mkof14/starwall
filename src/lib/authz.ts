@@ -15,16 +15,25 @@ export type AuthActor = {
   role: UserRole;
 };
 
+export function denyUnlessSignedIn(
+  session: { user?: { email?: string | null } | null } | null | undefined,
+): { ok: true; email: string } | { ok: false; status: 401; error: "signed_out" } {
+  const email = session?.user?.email?.trim().toLowerCase() ?? "";
+  if (!email || !session?.user) {
+    return { ok: false, status: 401, error: "signed_out" };
+  }
+  return { ok: true, email };
+}
+
 export async function requireActor(): Promise<
   | { ok: true; actor: AuthActor }
   | { ok: false; status: number; error: string }
 > {
   const auth = await getServerSession(authOptions);
-  const user = auth?.user;
-  const email = user?.email?.trim().toLowerCase() ?? "";
-  if (!email || !user) {
-    return { ok: false, status: 401, error: "signed_out" };
-  }
+  const signedIn = denyUnlessSignedIn(auth);
+  if (!signedIn.ok) return signedIn;
+  const user = auth!.user!;
+  const email = signedIn.email;
   const stored = await findUserByEmail(email);
   const role = stored?.role ?? (isUserRole(user.role) ? user.role : "Operator");
   const userId = stored?.id || user.id || email;

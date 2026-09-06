@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { requireActor } from "@/lib/authz";
 
 type AssistantBody = {
   message?: unknown;
@@ -23,6 +24,11 @@ function parseLangTag(raw: string) {
 }
 
 export async function POST(request: Request) {
+  const ready = await requireActor();
+  if (!ready.ok) {
+    return NextResponse.json({ error: ready.error }, { status: ready.status });
+  }
+
   let body: AssistantBody;
   try {
     body = (await request.json()) as AssistantBody;

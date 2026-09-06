@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start -H 0.0.0.0 -p 3000",
+    "test": "vitest run",
     "lint": "next lint && npm run lint:copy",
     "lint:copy": "node scripts/check-banned-terms.mjs",
     "capture:scenario": "node scripts/capture-scenario.js",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",
@@ -35,6 +37,7 @@
     "prettier": "^3.9.6",
     "prisma": "^6.19.3",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.1.9"
   }
 }

@@ -137,3 +137,18 @@ export async function markBlackBoxLocation(id: string, storageLocation: StorageL
   if (!current) return;
   await db.put("blackbox", { ...current, storageLocation });
 }
+
+export async function clearDemoLocalData() {
+  const db = await database();
+  const tx = db.transaction(
+    ["events", "conversations", "sessionReports", "blackbox"],
+    "readwrite",
+  );
+  await Promise.all([
+    tx.objectStore("events").clear(),
+    tx.objectStore("conversations").clear(),
+    tx.objectStore("sessionReports").clear(),
+    tx.objectStore("blackbox").clear(),
+  ]);
+  await tx.done;
+}

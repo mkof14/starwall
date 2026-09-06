@@ -39,6 +39,7 @@ import { usePreferences } from "@/lib/i18n/context";
 import { useAuthSession } from "@/lib/auth-session";
 import { useAppMode } from "@/lib/mode";
 import { canTriggerScenarios } from "@/lib/rbac";
+import { applyScenarioToWatch, liveWatchBaseline, resetWatchToNormal } from "@/lib/watch-state";
 import { cn } from "@/lib/cn";
 import {
   PANEL_CHROME,
@@ -338,15 +339,16 @@ export function BridgeConsole() {
     if (!storageReady) return;
     if (live) {
       clearAutoTimer();
-      setCrisis(false);
-      setSelectedId("");
-      setSelectedName("");
-      setRiskLevel("NORMAL");
-      setPanelType("radar");
-      setActionText(null);
-      setActionOptions(null);
-      setFaultId(null);
-      setTraining(false);
+      const baseline = liveWatchBaseline();
+      setCrisis(baseline.crisis);
+      setSelectedId(baseline.selectedId);
+      setSelectedName(baseline.selectedName);
+      setRiskLevel(baseline.riskLevel);
+      setPanelType(baseline.panelType);
+      setActionText(baseline.actionText);
+      setActionOptions(baseline.actionOptions);
+      setFaultId(baseline.faultId);
+      setTraining(baseline.training);
       setLogEntries([]);
       setToasts([]);
       setSessionEvents([]);
@@ -411,15 +413,15 @@ export function BridgeConsole() {
   function applyScenario(scenario: Scenario) {
     if (live || !canRunScenarios) return;
     clearAutoTimer();
-    const critical = scenario.riskLevel === "CRITICAL";
-    setSelectedId(scenario.id);
-    setSelectedName(scenario.name);
-    setRiskLevel(scenario.riskLevel);
-    setPanelType(scenario.panelType);
-    setActionText(scenario.actionText);
-    setActionOptions(critical ? null : scenario.options ?? null);
-    setCrisis(critical);
-    if (critical) setTraining(false);
+    const next = applyScenarioToWatch(scenario, { training, faultId });
+    setSelectedId(next.selectedId);
+    setSelectedName(next.selectedName);
+    setRiskLevel(next.riskLevel);
+    setPanelType(next.panelType);
+    setActionText(next.actionText);
+    setActionOptions(next.actionOptions);
+    setCrisis(next.crisis);
+    setTraining(next.training);
     const stamp = nowStamp();
     const nextRows: {
       level: RiskLevel;
@@ -438,7 +440,7 @@ export function BridgeConsole() {
         actionText: scenario.actionText,
       },
     ];
-    if (critical) {
+    if (next.crisis) {
       nextRows.unshift({
         level: "CRITICAL",
         text: `CRISIS MODE ACTIVATED — ${scenario.name}`,
@@ -466,7 +468,7 @@ export function BridgeConsole() {
         `Alert: ${scenario.logText}`,
       ].join("\n"),
     });
-    const autoRows = !critical ? AUTOMATED_ACTIONS[scenario.id] : undefined;
+    const autoRows = !next.crisis ? AUTOMATED_ACTIONS[scenario.id] : undefined;
     if (autoRows?.length) {
       autoTimer.current = window.setTimeout(() => {
         pushLogs(
@@ -483,14 +485,15 @@ export function BridgeConsole() {
 
   function resetToNormal() {
     clearAutoTimer();
-    setSelectedId("");
-    setSelectedName("");
-    setRiskLevel("NORMAL");
-    setPanelType("radar");
-    setActionText(null);
-    setActionOptions(null);
-    setCrisis(false);
-    setFaultId(null);
+    const next = resetWatchToNormal();
+    setSelectedId(next.selectedId);
+    setSelectedName(next.selectedName);
+    setRiskLevel(next.riskLevel);
+    setPanelType(next.panelType);
+    setActionText(next.actionText);
+    setActionOptions(next.actionOptions);
+    setCrisis(next.crisis);
+    setFaultId(next.faultId);
     pushLogs([{ level: "NORMAL", text: RESET_LOG, kind: "reset" }]);
   }
 

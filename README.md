@@ -79,7 +79,7 @@ Pilot, the watch advisor, sits as a living icon at the bottom-right of every pag
 Sign-in is NextAuth.js (Auth.js) at `/api/auth/[...nextauth]`:
 
 - **Credentials** — email + password, stored in Prisma (`User.role`, `passwordHash`, `lastSignInAt`). New sign-ups default to **Operator**.
-- Pre-pilot role accounts (local SQLite): `super@starwall.demo` / Super Admin, `admin@starwall.demo` / Admin, `operator@starwall.demo` / Operator, `viewer@starwall.demo` / Viewer. Passwords are listed on `/login`.
+- Pre-pilot role accounts (local Postgres seed): `super@starwall.demo` / Super Admin, `admin@starwall.demo` / Admin, `operator@starwall.demo` / Operator, `viewer@starwall.demo` / Viewer. Passwords are listed on `/login`.
 - **Google** — “Continue with Google”. This needs a real OAuth client that only you can create.
 
 Create a Google Cloud OAuth app: **Google Cloud Console → APIs & Services → Credentials → Create credentials → OAuth client ID** (Web application). Add authorized redirect URI `https://YOUR_DOMAIN/api/auth/callback/google` (and `http://127.0.0.1:3000/api/auth/callback/google` for local). Copy the client ID and secret into `.env.local`. These values cannot be generated here.
@@ -115,21 +115,52 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
    - `NEXTAUTH_URL` — same production origin.
    - `NEXTAUTH_SECRET` — random secret for session tokens.
    - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from the Google Cloud OAuth client. Without them the Google button is visible but sign-in cannot complete.
-   - `DATABASE_URL` — local default is SQLite (`file:./dev.db` next to `prisma/schema.prisma`). For production you can keep SQLite on the host or switch the Prisma datasource to PostgreSQL and point this at your connection string. After changing it, run `npx prisma db push`.
-3. Deploy. `vercel.json` pins the framework and a single region (`iad1`).
+   - `DATABASE_URL` — Neon **pooled** Postgres URL (add `?sslmode=require` if it is missing).
+   - `DIRECT_URL` — Neon **direct** Postgres URL (used by `prisma migrate deploy` during `npm run build`). Locally both can be the same URL.
+3. Deploy. `vercel.json` pins the framework and a single region (`iad1`). `npm run build` runs `prisma generate`, `prisma migrate deploy`, then `next build`.
+
+## Postgres on Vercel (required)
+
+SQLite (`file:./dev.db`) is not used. Serverless hosts cannot keep a local file, so accounts, audit rows, and cloud copies of Bridge records need a hosted Postgres database.
+
+**Use Neon via Vercel Storage.** That is the recommended production database for this project (Vercel’s current Postgres offering is Neon). A self-hosted Postgres or a generic “bring your own server” setup is more work than this site needs. Supabase works if you already have a project there, but Neon is the shorter path on Vercel.
+
+Do this in the Vercel dashboard (you have to click these — the agent cannot provision the database for you):
+
+1. Open the StarWall project in [Vercel](https://vercel.com).
+2. Go to **Storage → Create Database → Postgres** (Neon). Create it in the same region as the app (`iad1` if you keep the default).
+3. Open the new database → **.env** or **Connect**. Copy two URIs:
+   - **Pooled** connection string → `DATABASE_URL` (Prisma at runtime).
+   - **Direct** connection string → `DIRECT_URL` (migrations).
+4. If either URI is missing `sslmode=require`, append `?sslmode=require` (or `&sslmode=require` if the query string already exists).
+5. Go to **Settings → Environment Variables** and set both `DATABASE_URL` and `DIRECT_URL` for **Production** and **Preview**.
+6. Redeploy. The build command runs `npx prisma migrate deploy`, which creates `User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`, `Equipment`, `NotificationRoute`, `AuditLog`, and `Integration`.
+7. After the first successful deploy, sign in with a demo account from `/login` or create one on `/signup`. Seed accounts are created on first backend request when the database is empty.
+
+Local development:
+
+```bash
+# Example local server (user/password/db all "starwall")
+# DATABASE_URL and DIRECT_URL in .env.local:
+# postgresql://starwall:starwall@127.0.0.1:5432/starwall
+
+npx prisma generate
+npx prisma migrate deploy
+npm run dev
+```
 
 ## Persistent storage
 
 Two layers, local first:
 
-- **IndexedDB** (via `idb`) in the browser — `events`, `conversations`, `sessionReports`, plus a local Black Box index. A refresh during a DEMO session restores the Event Log, Pilot history, and Black Box list.
-- **Prisma** — local SQLite by default (`prisma/dev.db`), used for accounts, RBAC, equipment checks, notification routes, integrations, the audit log, and the optional cloud copy of Bridge records. A Bridge record is written locally first (`Local`), then the badge becomes `Local + Cloud` only after `/api/blackbox` confirms the write.
+- **IndexedDB** (via `idb`) in the browser — `events`, `conversations`, `sessionReports`, plus a local Black Box index. A refresh during a DEMO session restores the Event Log, Pilot history, and Black Box list. Switching to **LIVE** wipes those four stores so DEMO records cannot come back. The signed-in NextAuth session is left alone. Switching back to DEMO starts a fresh idle watch (seed Event Log lines only — not the previous scenario history) and an empty Black Box.
+- **Prisma / Postgres** — accounts, RBAC, equipment checks, notification routes, integrations, the audit log, and the optional cloud copy of Bridge records. A Bridge record is written locally first (`Local`), then the badge becomes `Local + Cloud` only after `/api/blackbox` confirms the write.
 
 Schema: `prisma/schema.prisma` (`User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`, `Equipment`, `NotificationRoute`, `AuditLog`, `Integration`).
 
 ```bash
 npx prisma generate
-npx prisma db push
+npx prisma migrate deploy
 ```
 
 `/backend` is a working pre-pilot admin: Super Admin only on `/backend/users`; Admin and above can run diagnostics and save notification routing; Operators can view and use the Bridge; Viewers see reports and the Black Box only. Equipment is checked every 30 seconds while `/backend` is open (simulated heartbeat until hardware is connected). DEMO/LIVE switches, role changes, diagnostics, and notify saves write real audit rows.

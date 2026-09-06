@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { wipeDemoLocalData } from "@/lib/demo-storage";
 
 export const modes = ["demo", "live"] as const;
 export type AppMode = (typeof modes)[number];
@@ -38,6 +39,7 @@ export function ModeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = window.localStorage.getItem(MODE_KEY);
     if (isAppMode(stored)) setModeState(stored);
+    if (stored === "live") void wipeDemoLocalData();
   }, []);
 
   useEffect(() => {
@@ -47,6 +49,9 @@ export function ModeProvider({ children }: { children: ReactNode }) {
   const setMode = useCallback((next: AppMode) => {
     setModeState((previous) => {
       if (next === previous) return previous;
+      if (next === "live") {
+        void wipeDemoLocalData();
+      }
       void fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

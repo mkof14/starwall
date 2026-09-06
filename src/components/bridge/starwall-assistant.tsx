@@ -7,6 +7,7 @@ import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
 import { syncConversationToCloud } from "@/lib/cloud-sync";
 import { HELM_OPEN_EVENT, publishHelmState } from "@/lib/helm-events";
+import { DEMO_CLEARED_EVENT } from "@/lib/demo-storage";
 import { listConversations, putConversation, type StoredConversation } from "@/lib/local-db";
 import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { canUseHelm } from "@/lib/rbac";
@@ -116,6 +117,24 @@ export function Helm() {
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  useEffect(() => {
+    if (live) {
+      setMessages([]);
+      setTyped("");
+      setTypingId(null);
+    }
+  }, [live]);
+
+  useEffect(() => {
+    function onCleared() {
+      setMessages([]);
+      setTyped("");
+      setTypingId(null);
+    }
+    window.addEventListener(DEMO_CLEARED_EVENT, onCleared);
+    return () => window.removeEventListener(DEMO_CLEARED_EVENT, onCleared);
   }, []);
 
   function persistChat(row: StoredConversation) {

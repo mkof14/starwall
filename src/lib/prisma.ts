@@ -1,13 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { ensureBackendSeed } from "@/lib/ensure-seed";
 
-const SQLITE_FALLBACK = "file:./dev.db";
-
 function resolveDatabaseUrl() {
-  const fromEnv = process.env.DATABASE_URL?.trim();
-  if (fromEnv) return fromEnv;
-  process.env.DATABASE_URL = SQLITE_FALLBACK;
-  return SQLITE_FALLBACK;
+  return process.env.DATABASE_URL?.trim() ?? "";
 }
 
 const globalForPrisma = globalThis as unknown as {
