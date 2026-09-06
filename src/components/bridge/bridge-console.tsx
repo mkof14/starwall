@@ -22,6 +22,7 @@ import {
   equipmentName,
   type EquipmentId,
 } from "@/lib/equipment";
+import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
@@ -126,6 +127,7 @@ export function BridgeConsole() {
   const { t } = usePreferences();
   const { setCrisis } = useCrisisMode();
   const { setSession } = useBridgeSession();
+  const { recordScenario } = useBlackBox();
   const [riskLevel, setRiskLevel] = useState<RiskLevel>("NORMAL");
   const [panelType, setPanelType] = useState<PanelType>("radar");
   const [actionText, setActionText] = useState<string | null>(null);
@@ -229,6 +231,16 @@ export function BridgeConsole() {
         actionText: scenario.actionText,
       },
     ]);
+    recordScenario({
+      summary: `${scenario.name} · ${scenario.riskLevel}`,
+      fullContent: [
+        `Scenario: ${scenario.name}`,
+        `Category: ${scenario.category}`,
+        `Risk: ${scenario.riskLevel}`,
+        `Recommendation: ${scenario.actionText}`,
+        `Alert: ${scenario.logText}`,
+      ].join("\n"),
+    });
     const autoRows = !critical ? AUTOMATED_ACTIONS[scenario.id] : undefined;
     if (autoRows?.length) {
       autoTimer.current = window.setTimeout(() => {

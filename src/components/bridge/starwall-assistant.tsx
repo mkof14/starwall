@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
 
 type MicState = "idle" | "listening" | "processing" | "speaking";
@@ -44,6 +45,7 @@ function SpeechEngine() {
 
 export function StarWallAssistant() {
   const session = useBridgeSession();
+  const { recordConversation } = useBlackBox();
   const [open, setOpen] = useState(true);
   const [mic, setMic] = useState<MicState>("idle");
   const [levels, setLevels] = useState<number[]>(() => Array(BAR_COUNT).fill(0));
@@ -237,15 +239,20 @@ export function StarWallAssistant() {
         error?: string;
       };
       if (!response.ok || !data.reply) {
+        const errorText = data.error ?? "The assistant could not reply.";
         const errorId = nextId.current++;
         setMessages((current) => [
           ...current,
           {
             id: errorId,
             role: "error",
-            text: data.error ?? "The assistant could not reply.",
+            text: errorText,
           },
         ]);
+        recordConversation({
+          summary: `Assistant exchange — ${clean.slice(0, 72)}`,
+          fullContent: `Officer: ${clean}\n\nAssistant: ${errorText}`,
+        });
         setMic("idle");
         return;
       }
@@ -254,6 +261,10 @@ export function StarWallAssistant() {
         ...current,
         { id: assistantId, role: "assistant", text: data.reply ?? "" },
       ]);
+      recordConversation({
+        summary: `Assistant exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nAssistant: ${data.reply}`,
+      });
       setTypingId(assistantId);
       speakReply(data.reply, data.langCode ?? "en");
     } catch {
@@ -262,6 +273,10 @@ export function StarWallAssistant() {
         ...current,
         { id: errorId, role: "error", text: "Network error — try again." },
       ]);
+      recordConversation({
+        summary: `Assistant exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nAssistant: Network error — try again.`,
+      });
       setMic("idle");
     }
   }

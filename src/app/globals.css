@@ -179,11 +179,14 @@ body {
   }
 
   #session-report,
-  #session-report * {
+  #session-report *,
+  #black-box-print,
+  #black-box-print * {
     visibility: visible;
   }
 
-  #session-report {
+  #session-report,
+  #black-box-print {
     position: absolute;
     inset: 0;
     background: white;
