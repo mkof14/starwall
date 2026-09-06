@@ -8,6 +8,7 @@ export type Messages = {
     technology: string;
     faq: string;
     containers: string;
+    about: string;
     contact: string;
     backend: string;
     auth: string;
@@ -40,6 +41,7 @@ export type Messages = {
     containersCountermeasures: string;
     containersTiers: string;
     containersDeployment: string;
+    about: string;
     contact: string;
     backend: string;
     connections: string;
@@ -278,6 +280,7 @@ export type Messages = {
       technology: string;
       faq: string;
       containers: string;
+      about: string;
       contact: string;
     };
   };
@@ -563,6 +566,27 @@ export type Messages = {
       { name: string; body: string },
     ];
   };
+  about: {
+    kicker: string;
+    title: string;
+    lead: string;
+    beliefsTitle: string;
+    beliefs: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+    ];
+    teamTitle: string;
+    teamBody: string;
+    agronTitle: string;
+    agronBefore: string;
+    agronLink: string;
+    agronAfter: string;
+    todayTitle: string;
+    todayBody: string;
+    todayCta: string;
+    contactCta: string;
+  };
 };
 
 export const en: Messages = {
@@ -575,6 +599,7 @@ export const en: Messages = {
     technology: "Technology",
     faq: "FAQ",
     containers: "Containers",
+    about: "About",
     contact: "Contact",
     backend: "Backend",
     auth: "Auth",
@@ -607,6 +632,7 @@ export const en: Messages = {
     containersCountermeasures: "Countermeasures — AGRON Containers",
     containersTiers: "Tiers — AGRON Containers",
     containersDeployment: "Deployment — AGRON Containers",
+    about: "Why StarWall — StarWall by AGRON",
     contact: "Contact — StarWall by AGRON",
     backend: "StarWall Backend — System administration — StarWall by AGRON",
     connections: "System Connections Map — StarWall by AGRON",
@@ -868,6 +894,7 @@ export const en: Messages = {
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",
+      about: "Who builds StarWall, what we believe, and how to discuss deployment.",
       contact: "Request a briefing with AGRON Maritime.",
     },
   },
@@ -1400,5 +1427,40 @@ export const en: Messages = {
         body: "Temporary deployment for high-profile gatherings, with rapid setup and teardown.",
       },
     ],
+  },
+  about: {
+    kicker: "About",
+    title: "Why StarWall",
+    lead:
+      "AGRON builds intelligence and integration systems for maritime and physical security. StarWall is the layer that connects the equipment on a yacht, marina, port, or private island — radar, cameras, navigation, sensors from any manufacturer — into one picture and one clear next step for the person in command.",
+    beliefsTitle: "What we believe",
+    beliefs: [
+      {
+        title: "The person stays in command",
+        body: "Technology should make a captain's judgment faster and better-informed — never replace it.",
+      },
+      {
+        title: "Honesty over hype",
+        body: "We build exactly what we say we've built. No system should ever claim more than it can deliver — least of all one meant to protect lives.",
+      },
+      {
+        title: "Built on what already works",
+        body: "StarWall connects to the equipment you already trust, rather than asking you to replace it.",
+      },
+    ],
+    teamTitle: "Team",
+    teamBody:
+      "StarWall is built by a team with over 30 years of experience in networking technology, satellite communications, fiber optics, and data infrastructure. We bring the same engineering discipline used to build critical communications infrastructure to the problem of protecting people at sea.",
+    agronTitle: "AGRON",
+    agronBefore:
+      "StarWall is developed by AGRON, working across maritime intelligence, security integration, and deployable protection systems. Learn more about AGRON's broader work at ",
+    agronLink: "agron1.com",
+    agronAfter: ".",
+    todayTitle: "StarWall today",
+    todayBody:
+      "StarWall is a complete, working system — built, tested, and ready for deployment.",
+    todayCta:
+      "Contact us to discuss deployment for your yacht, marina, port, or estate.",
+    contactCta: "Contact AGRON",
   },
 };

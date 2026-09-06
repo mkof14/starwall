@@ -10,6 +10,7 @@ export const ar: Messages = {
     technology: "التقنية",
     faq: "الأسئلة الشائعة",
     containers: "الحاويات",
+    about: "عن الشركة",
     contact: "تواصل",
     backend: "Backend",
     auth: "دخول",
@@ -42,6 +43,7 @@ export const ar: Messages = {
     containersCountermeasures: "الإجراءات المضادة — AGRON Containers",
     containersTiers: "المستويات — AGRON Containers",
     containersDeployment: "النشر — AGRON Containers",
+    about: "لماذا StarWall — StarWall by AGRON",
     contact: "تواصل — StarWall by AGRON",
     backend: "StarWall Backend — إدارة النظام — StarWall by AGRON",
     connections: "خريطة الاتصالات — StarWall by AGRON",
@@ -303,6 +305,7 @@ export const ar: Messages = {
       technology: "فئات المعدات وكيف يستند StarWall إلى الأنظمة القائمة.",
       faq: "إجابات عن المسؤولية والاتصال والبيانات والوحدات المتخصصة.",
       containers: "عتاد حاويات AGRON القابل للنشر ويعمل عليه StarWall.",
+      about: "من يبني StarWall، وما نؤمن به، وكيف نناقش النشر.",
       contact: "طلب إحاطة مع AGRON Maritime.",
     },
   },
@@ -835,5 +838,40 @@ export const ar: Messages = {
         body: "نشر مؤقت لتجمعات رفيعة المستوى، مع تركيب وتفكيك سريعين.",
       },
     ],
+  },
+  about: {
+    kicker: "عن الشركة",
+    title: "لماذا StarWall",
+    lead:
+      "تبني AGRON أنظمة الاستخبارات والتكامل للأمن البحري والمادي. StarWall هي الطبقة التي تربط المعدات على اليخت أو المرسى أو الميناء أو الجزيرة الخاصة — رادار وكاميرات وملاحة ومستشعرات من أي مصنع — في صورة واحدة وخطوة تالية واضحة لمن يتولى القرار.",
+    beliefsTitle: "ما نؤمن به",
+    beliefs: [
+      {
+        title: "الإنسان يبقى صاحب القرار",
+        body: "على التقنية أن تجعل حكم القبطان أسرع وأوضح — لا أن تحل محله.",
+      },
+      {
+        title: "الصدق قبل الضجيج",
+        body: "نبني تمامًا ما نقول إننا بنيناه. لا يجوز لأي نظام أن يدّعي أكثر مما يقدر عليه — وأقلّه نظام وُجد لحماية الأرواح.",
+      },
+      {
+        title: "على ما يعمل أصلًا",
+        body: "يتصل StarWall بالمعدات التي تثقون بها أصلًا، بدل أن يطلب استبدالها.",
+      },
+    ],
+    teamTitle: "الفريق",
+    teamBody:
+      "يبني StarWall فريق بخبرة تزيد على ثلاثين عامًا في الشبكات والاتصالات الفضائية والألياف الضوئية وبنية البيانات. نحمل إلى حماية الناس في البحر نفس الانضباط الهندسي المستخدم في بناء بنى الاتصالات الحرجة.",
+    agronTitle: "AGRON",
+    agronBefore:
+      "تطوّر AGRON نظام StarWall عبر الاستخبارات البحرية وتكامل الأمن وأنظمة الحماية القابلة للنشر. لمزيد عن عمل AGRON: ",
+    agronLink: "agron1.com",
+    agronAfter: ".",
+    todayTitle: "StarWall اليوم",
+    todayBody:
+      "StarWall نظام مكتمل يعمل — مبني ومُختبَر وجاهز للنشر.",
+    todayCta:
+      "تواصلوا معنا لمناقشة النشر على يختكم أو مرسىكم أو ميناءكم أو عقاركم.",
+    contactCta: "التواصل مع AGRON",
   },
 };

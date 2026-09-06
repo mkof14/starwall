@@ -69,6 +69,11 @@ export const pageMeta = {
     description:
       "Maritime, port, infrastructure, estate, and special-event deployment for AGRON security containers.",
   },
+  about: {
+    title: "Why StarWall — StarWall by AGRON",
+    description:
+      "AGRON builds intelligence and integration systems for maritime and physical security. StarWall connects existing equipment into one picture and one next step.",
+  },
   contact: {
     title: "Contact — StarWall by AGRON",
     description:

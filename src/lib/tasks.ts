@@ -16,6 +16,7 @@ export type TaskId =
   | "technology"
   | "faq"
   | "containers"
+  | "about"
   | "contact";
 
 export type TaskDef = {
@@ -41,6 +42,7 @@ export const TASKS: TaskDef[] = [
   { id: "technology", group: "site", href: "/technology", gated: false },
   { id: "faq", group: "site", href: "/faq", gated: false },
   { id: "containers", group: "site", href: "/containers", gated: false },
+  { id: "about", group: "site", href: "/about", gated: false },
   { id: "contact", group: "site", href: "/contact", gated: false },
 ];
 

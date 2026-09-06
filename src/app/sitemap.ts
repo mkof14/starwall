@@ -16,6 +16,7 @@ const PATHS = [
   "/containers/countermeasures",
   "/containers/tiers",
   "/containers/deployment",
+  "/about",
   "/contact",
   "/backend",
   "/login",

@@ -10,6 +10,7 @@ export const fr: Messages = {
     technology: "Technologie",
     faq: "FAQ",
     containers: "Conteneurs",
+    about: "À propos",
     contact: "Contact",
     backend: "Backend",
     auth: "Accès",
@@ -42,6 +43,7 @@ export const fr: Messages = {
     containersCountermeasures: "Contre-mesures — AGRON Containers",
     containersTiers: "Niveaux — AGRON Containers",
     containersDeployment: "Déploiement — AGRON Containers",
+    about: "Pourquoi StarWall — StarWall by AGRON",
     contact: "Contact — StarWall by AGRON",
     backend: "StarWall Backend — administration système — StarWall by AGRON",
     connections: "Carte des connexions — StarWall by AGRON",
@@ -303,6 +305,7 @@ export const fr: Messages = {
       technology: "Catégories d'équipement et la façon dont StarWall s'appuie sur l'existant.",
       faq: "Réponses sur la responsabilité, la connectivité, les données et les modules spécialisés.",
       containers: "Matériel conteneur AGRON déployable qui fait tourner StarWall.",
+      about: "Qui construit StarWall, ce que nous défendons, et comment parler d'un déploiement.",
       contact: "Demander un briefing avec AGRON Maritime.",
     },
   },
@@ -835,5 +838,40 @@ export const fr: Messages = {
         body: "Déploiement temporaire pour des rassemblements de haut profil, avec montage et démontage rapides.",
       },
     ],
+  },
+  about: {
+    kicker: "À propos",
+    title: "Pourquoi StarWall",
+    lead:
+      "AGRON construit des systèmes d'intelligence et d'intégration pour la sécurité maritime et physique. StarWall est la couche qui relie les équipements d'un yacht, d'une marina, d'un port ou d'une île privée — radar, caméras, navigation, capteurs de tout fabricant — en une seule image et une prochaine étape claire pour la personne aux commandes.",
+    beliefsTitle: "Ce que nous défendons",
+    beliefs: [
+      {
+        title: "La personne reste aux commandes",
+        body: "La technologie doit rendre le jugement du capitaine plus rapide et mieux informé — jamais le remplacer.",
+      },
+      {
+        title: "L'honnêteté avant le bruit",
+        body: "Nous construisons exactement ce que nous disons avoir construit. Aucun système ne doit prétendre plus qu'il ne peut tenir — surtout pas un système destiné à protéger des vies.",
+      },
+      {
+        title: "Sur ce qui fonctionne déjà",
+        body: "StarWall se connecte à l'équipement auquel vous faites déjà confiance, plutôt que de vous demander de le remplacer.",
+      },
+    ],
+    teamTitle: "Équipe",
+    teamBody:
+      "StarWall est construit par une équipe qui cumule plus de 30 ans d'expérience en réseaux, communications satellitaires, fibre optique et infrastructures de données. Nous appliquons la même discipline d'ingénierie que pour les infrastructures de communications critiques au problème de protéger les personnes en mer.",
+    agronTitle: "AGRON",
+    agronBefore:
+      "StarWall est développé par AGRON, dans l'intelligence maritime, l'intégration de sécurité et les systèmes de protection déployables. En savoir plus sur le travail d'AGRON sur ",
+    agronLink: "agron1.com",
+    agronAfter: ".",
+    todayTitle: "StarWall aujourd'hui",
+    todayBody:
+      "StarWall est un système complet et opérationnel — construit, éprouvé et prêt au déploiement.",
+    todayCta:
+      "Contactez-nous pour parler du déploiement sur votre yacht, marina, port ou domaine.",
+    contactCta: "Contacter AGRON",
   },
 };

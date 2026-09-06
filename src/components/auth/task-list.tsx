@@ -23,6 +23,7 @@ function taskTitle(task: TaskDef, t: Messages): string {
     technology: t.nav.technology,
     faq: t.nav.faq,
     containers: t.nav.containers,
+    about: t.nav.about,
     contact: t.nav.contact,
   };
   return titles[task.id];

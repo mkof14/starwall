@@ -10,6 +10,7 @@ export const zh: Messages = {
     technology: "技术",
     faq: "FAQ",
     containers: "集装箱",
+    about: "关于",
     contact: "联系",
     backend: "后台",
     auth: "登录",
@@ -42,6 +43,7 @@ export const zh: Messages = {
     containersCountermeasures: "反制措施 — AGRON Containers",
     containersTiers: "层级 — AGRON Containers",
     containersDeployment: "部署 — AGRON Containers",
+    about: "为何选择 StarWall — StarWall by AGRON",
     contact: "联系 — StarWall by AGRON",
     backend: "StarWall Backend — 系统管理 — StarWall by AGRON",
     connections: "系统连接图 — StarWall by AGRON",
@@ -301,6 +303,7 @@ export const zh: Messages = {
       technology: "设备类别，以及 StarWall 如何叠在现有系统上。",
       faq: "关于责任、连通、数据与专用模块的说明。",
       containers: "运行 StarWall 的 AGRON 可部署集装箱设备。",
+      about: "谁在构建 StarWall、我们坚持什么，以及如何讨论部署。",
       contact: "向 AGRON Maritime 申请简报。",
     },
   },
@@ -833,5 +836,38 @@ export const zh: Messages = {
         body: "为高规格集会临时部署，可快速架设与撤收。",
       },
     ],
+  },
+  about: {
+    kicker: "关于",
+    title: "为何选择 StarWall",
+    lead:
+      "AGRON 为海上与实体安全构建情报与集成系统。StarWall 把游艇、码头、港口或私人岛屿上的设备——雷达、摄像机、导航、任意厂商的传感器——连成同一幅态势，并给决策者一个明确的下一步。",
+    beliefsTitle: "我们坚持什么",
+    beliefs: [
+      {
+        title: "人仍是决策者",
+        body: "技术应让船长的判断更快、更充分——而不是取而代之。",
+      },
+      {
+        title: "诚实先于声量",
+        body: "我们只宣称已经建成的能力。任何系统都不该承诺超出自己能交付的范围——何况是用来保护生命的系统。",
+      },
+      {
+        title: "建立在已有基础之上",
+        body: "StarWall 接入你们已经信任的设备，而不是要求替换。",
+      },
+    ],
+    teamTitle: "团队",
+    teamBody:
+      "StarWall 由一支在网络技术、卫星通信、光纤与数据基础设施领域拥有三十多年经验的团队构建。我们把建设关键通信基础设施的工程纪律，用到海上人员防护这一课题上。",
+    agronTitle: "AGRON",
+    agronBefore:
+      "StarWall 由 AGRON 开发，覆盖海上情报、安全集成与可部署防护系统。了解 AGRON 的更广泛工作：",
+    agronLink: "agron1.com",
+    agronAfter: "。",
+    todayTitle: "StarWall 今天",
+    todayBody: "StarWall 是一套完整、可运行的系统——已建成、已验证，并已准备好部署。",
+    todayCta: "联系我们，讨论在您的游艇、码头、港口或庄园上的部署。",
+    contactCta: "联系 AGRON",
   },
 };

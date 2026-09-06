@@ -10,6 +10,7 @@ export const he: Messages = {
     technology: "טכנולוגיה",
     faq: "FAQ",
     containers: "מכולות",
+    about: "אודות",
     contact: "יצירת קשר",
     backend: "Backend",
     auth: "כניסה",
@@ -42,6 +43,7 @@ export const he: Messages = {
     containersCountermeasures: "אמצעי נגד — AGRON Containers",
     containersTiers: "רמות — AGRON Containers",
     containersDeployment: "פריסה — AGRON Containers",
+    about: "למה StarWall — StarWall by AGRON",
     contact: "יצירת קשר — StarWall by AGRON",
     backend: "StarWall Backend — ניהול מערכת — StarWall by AGRON",
     connections: "מפת חיבורים — StarWall by AGRON",
@@ -301,6 +303,7 @@ export const he: Messages = {
       technology: "קטגוריות ציוד וכיצד StarWall יושב על מערכות קיימות.",
       faq: "תשובות על אחריות, קישוריות, נתונים ומודולים ייעודיים.",
       containers: "חומרת מכולה פריסה של AGRON שמריצה את StarWall.",
+      about: "מי בונה את StarWall, במה אנחנו עומדים ואיך לדבר על פריסה.",
       contact: "לבקש תדריך עם AGRON Maritime.",
     },
   },
@@ -833,5 +836,40 @@ export const he: Messages = {
         body: "פריסה זמנית להתכנסויות בעלות פרופיל גבוה, עם הקמה ופירוק מהירים.",
       },
     ],
+  },
+  about: {
+    kicker: "אודות",
+    title: "למה StarWall",
+    lead:
+      "AGRON בונה מערכות מודיעין ואינטגרציה לביטחון ימי ופיזי. StarWall היא השכבה שמחברת את הציוד על יאכטה, מרינה, נמל או אי פרטי — מכ״ם, מצלמות, ניווט, חיישנים מכל יצרן — לתמונה אחת ולצעד הבא הברור למי שמקבל את ההחלטה.",
+    beliefsTitle: "במה אנחנו עומדים",
+    beliefs: [
+      {
+        title: "האדם נשאר מקבל ההחלטות",
+        body: "הטכנולוגיה צריכה להפוך את שיקול דעתו של הקברניט למהיר ומבוסס יותר — לא להחליף אותו.",
+      },
+      {
+        title: "יושר לפני רעש",
+        body: "אנחנו בונים בדיוק את מה שאנחנו אומרים שבנינו. שום מערכת לא צריכה לטעון יותר ממה שהיא יכולה לקיים — ובוודאי לא מערכת שנועדה להגן על חיים.",
+      },
+      {
+        title: "על מה שכבר עובד",
+        body: "StarWall מתחבר לציוד שכבר סומכים עליו, במקום לבקש להחליף אותו.",
+      },
+    ],
+    teamTitle: "צוות",
+    teamBody:
+      "את StarWall בונה צוות עם יותר מ־30 שנות ניסיון ברשתות, תקשורת לוויינית, סיבים אופטיים ותשתיות נתונים. אותה משמעת הנדסית שבה בונים תשתיות תקשורת קריטיות אנחנו מביאים להגנה על אנשים בים.",
+    agronTitle: "AGRON",
+    agronBefore:
+      "את StarWall מפתחת AGRON, בעבודה חוצת מודיעין ימי, אינטגרציית אבטחה ומערכות הגנה לפריסה. עוד על עבודת AGRON ב־",
+    agronLink: "agron1.com",
+    agronAfter: ".",
+    todayTitle: "StarWall היום",
+    todayBody:
+      "StarWall היא מערכת שלמה ועובדת — בנויה, נבחנה ומוכנה לפריסה.",
+    todayCta:
+      "צרו קשר כדי לדון בפריסה ליאכטה, למרינה, לנמל או לאחוזה שלכם.",
+    contactCta: "ליצור קשר עם AGRON",
   },
 };

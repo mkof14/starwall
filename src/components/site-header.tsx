@@ -41,7 +41,7 @@ export function SiteHeader() {
         </Link>
 
         <nav
-          className="hidden items-center gap-5 lg:flex"
+          className="hidden items-center gap-4 lg:flex xl:gap-5"
           aria-label={t.nav.primary}
         >
           {navItems.map((item) => {

@@ -52,6 +52,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/tiers` | Container Tiers |
 | `/containers/specs` | Specifications |
 | `/containers/deployment` | Deployment |
+| `/about` | Why StarWall — who builds it |
 | `/contact` | Contact |
 | `/login` | Sign in (email/password or Google) |
 | `/signup` | Create an account |

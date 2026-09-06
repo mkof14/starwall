@@ -10,6 +10,7 @@ export const ja: Messages = {
     technology: "技術",
     faq: "FAQ",
     containers: "コンテナ",
+    about: "私たちについて",
     contact: "お問い合わせ",
     backend: "バックエンド",
     auth: "認証",
@@ -42,6 +43,7 @@ export const ja: Messages = {
     containersCountermeasures: "対抗手段 — AGRON Containers",
     containersTiers: "ティア — AGRON Containers",
     containersDeployment: "展開 — AGRON Containers",
+    about: "なぜ StarWall か — StarWall by AGRON",
     contact: "お問い合わせ — StarWall by AGRON",
     backend: "StarWall Backend — システム管理 — StarWall by AGRON",
     connections: "接続マップ — StarWall by AGRON",
@@ -301,6 +303,7 @@ export const ja: Messages = {
       technology: "機器カテゴリと、既存システム上での StarWall の位置。",
       faq: "責任、接続、データ、専用モジュールについての回答。",
       containers: "StarWall を動かす AGRON の展開用コンテナ機器。",
+      about: "誰が StarWall を作り、何を守り、導入をどう話すか。",
       contact: "AGRON Maritime への説明依頼。",
     },
   },
@@ -833,5 +836,40 @@ export const ja: Messages = {
         body: "注目度の高い集まりへの一時展開。迅速な設置と撤収。",
       },
     ],
+  },
+  about: {
+    kicker: "私たちについて",
+    title: "なぜ StarWall か",
+    lead:
+      "AGRON は海上および物理セキュリティ向けのインテリジェンスと統合システムを構築しています。StarWall は、ヨット、マリーナ、港、私有島の装備 — レーダー、カメラ、航行、どのメーカーのセンサーでも — を一枚の絵と、判断する人のための明確な次の一手につなぐ層です。",
+    beliefsTitle: "私たちが守るもの",
+    beliefs: [
+      {
+        title: "判断は人の手に残す",
+        body: "技術は船長の判断をより速く、より十分な情報に基づくものにすべきです。置き換えてはなりません。",
+      },
+      {
+        title: "誇張より誠実さ",
+        body: "私たちは「作った」と言うものだけを作ります。命を守るためのシステムほど、できないことを名乗ってはなりません。",
+      },
+      {
+        title: "すでに動くものの上に",
+        body: "StarWall は、すでに信頼している装備に接続します。交換を求めません。",
+      },
+    ],
+    teamTitle: "チーム",
+    teamBody:
+      "StarWall は、ネットワーク技術、衛星通信、光ファイバー、データ基盤で30年以上の経験を持つチームが構築しています。重要な通信インフラを築いてきた同じ工学の規律を、海上の人を守る問題に当てています。",
+    agronTitle: "AGRON",
+    agronBefore:
+      "StarWall は AGRON が開発しています。海上インテリジェンス、セキュリティ統合、展開可能な防護システムにわたる取り組みです。AGRON のより広い仕事は ",
+    agronLink: "agron1.com",
+    agronAfter: " でご覧ください。",
+    todayTitle: "StarWall の現在",
+    todayBody:
+      "StarWall は完成し、稼働するシステムです。構築済み、検証済み、展開できる状態にあります。",
+    todayCta:
+      "ヨット、マリーナ、港、邸宅への展開について、ご相談ください。",
+    contactCta: "AGRON に連絡する",
   },
 };
