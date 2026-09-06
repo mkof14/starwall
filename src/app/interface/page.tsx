@@ -6,7 +6,7 @@ import { ScenarioWalkthrough } from "@/components/bridge/scenario-walkthrough";
 
 export default function InterfacePage() {
   return (
-    <div className="bg-bridge-bg">
+    <div id="bridge-root" className="min-h-screen bg-bridge-bg">
       <ScenarioWalkthrough />
       <BridgeConsole />
       <AdaptiveLearningPanel />

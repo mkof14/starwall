@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { PerimeterView } from "@/components/bridge/perimeter-panel";
+import { FullscreenButton } from "@/components/bridge/fullscreen-button";
 import { SessionReport } from "@/components/bridge/session-report";
 import { TrainingTour } from "@/components/bridge/training-tour";
 import { SonarView } from "@/components/bridge/sonar-panel";
@@ -167,6 +168,7 @@ export function BridgeConsole() {
             </p>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-3">
+            <FullscreenButton />
             <button
               type="button"
               data-testid="training-toggle"
