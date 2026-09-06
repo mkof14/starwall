@@ -248,7 +248,7 @@ export function BlackBoxPanel() {
       {printRecord ? (
         <div
           id="black-box-print"
-          data-testid="black-box-print"
+          data-testid="black-box-print-view"
           className="fixed inset-0 z-[80] overflow-y-auto bg-[#f7f5f0] text-navyText"
         >
           <div className="session-report-chrome mx-auto flex max-w-3xl justify-end gap-2 px-4 py-4">
