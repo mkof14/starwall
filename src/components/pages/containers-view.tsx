@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ContainerConnectionDiagram } from "@/components/container-connection-diagram";
+import { RtlAwareLabel } from "@/components/rtl-aware-label";
 import { usePreferences } from "@/lib/i18n/context";
 
 const zoneHrefs = [
@@ -77,7 +78,7 @@ export function ContainersView() {
           <p className="text-sm text-muted">
             {t.containers.detectionLink}{" "}
             <Link href="/how-it-works" className="text-orange hover:underline">
-              {t.containers.howLink}
+              <RtlAwareLabel text={t.containers.howLink} />
             </Link>
           </p>
           <ContainerConnectionDiagram />

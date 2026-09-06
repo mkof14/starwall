@@ -13,6 +13,11 @@ export const locales = [
 
 export type Locale = (typeof locales)[number];
 
+/** Languages offered in the public header/footer switcher. */
+export const siteLocales = ["en", "ru", "fr", "ar"] as const;
+
+export type SiteLocale = (typeof siteLocales)[number];
+
 export const defaultLocale: Locale = "en";
 
 export const rtlLocales = new Set<Locale>(["ar", "he"]);
@@ -35,4 +40,8 @@ export const localeMeta: Record<
 
 export function isLocale(value: string | null | undefined): value is Locale {
   return locales.includes(value as Locale);
+}
+
+export function isSiteLocale(value: string | null | undefined): value is SiteLocale {
+  return siteLocales.includes(value as SiteLocale);
 }

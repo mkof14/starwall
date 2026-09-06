@@ -4,6 +4,7 @@ import {
   Cormorant_Garamond,
   Inter,
   JetBrains_Mono,
+  Noto_Sans_Arabic,
   Space_Grotesk,
 } from "next/font/google";
 import { PreferencesProvider } from "@/lib/i18n/context";
@@ -40,6 +41,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const notoArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "StarWall by AGRON — Maritime Security Intelligence",
@@ -62,7 +70,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${spaceGrotesk.variable} ${jetbrains.variable} ${inter.variable}`}
+      className={`${cormorant.variable} ${spaceGrotesk.variable} ${jetbrains.variable} ${inter.variable} ${notoArabic.variable}`}
     >
       <head>
         <ThemeScript />

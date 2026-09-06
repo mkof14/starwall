@@ -1,6 +1,7 @@
 "use client";
 
 import { usePreferences } from "@/lib/i18n/context";
+import { rtlLocales } from "@/lib/i18n/locales";
 
 const BOX_W = 156;
 const BOX_H = 100;
@@ -8,8 +9,9 @@ const GAP = 36;
 const PAD = 8;
 
 export function ArchitectureDiagram() {
-  const { t } = usePreferences();
+  const { t, locale } = usePreferences();
   const stages = t.how.stages;
+  const rtl = rtlLocales.has(locale);
   const width = PAD * 2 + stages.length * BOX_W + (stages.length - 1) * GAP;
   const height = BOX_H + PAD * 2;
 
@@ -24,9 +26,11 @@ export function ArchitectureDiagram() {
       >
         <title>{t.how.architecture}</title>
         {stages.map((stage, index) => {
-          const x = PAD + index * (BOX_W + GAP);
+          const slot = rtl ? stages.length - 1 - index : index;
+          const x = PAD + slot * (BOX_W + GAP);
           const y = PAD;
           const midY = y + BOX_H / 2;
+          const arrowTowardNext = rtl ? slot > 0 : index < stages.length - 1;
 
           return (
             <g key={`${stage.name}-${index}`}>
@@ -36,7 +40,7 @@ export function ArchitectureDiagram() {
                 y={y + 32}
                 textAnchor="middle"
                 fill="#ffffff"
-                fontFamily="var(--font-cormorant), Georgia, serif"
+                fontFamily="var(--font-cormorant), var(--font-arabic), Georgia, serif"
                 fontSize="15"
                 fontWeight="700"
               >
@@ -47,7 +51,7 @@ export function ArchitectureDiagram() {
                 y={y + 56}
                 textAnchor="middle"
                 fill="#6B7280"
-                fontFamily="var(--font-inter), system-ui, sans-serif"
+                fontFamily="var(--font-inter), var(--font-arabic), system-ui, sans-serif"
                 fontSize="11"
               >
                 {stage.lines.map((line, lineIndex) => (
@@ -60,21 +64,38 @@ export function ArchitectureDiagram() {
                   </tspan>
                 ))}
               </text>
-              {index < stages.length - 1 ? (
-                <g>
-                  <line
-                    x1={x + BOX_W}
-                    y1={midY}
-                    x2={x + BOX_W + GAP - 8}
-                    y2={midY}
-                    stroke="#F15A00"
-                    strokeWidth="2"
-                  />
-                  <polygon
-                    points={`${x + BOX_W + GAP},${midY} ${x + BOX_W + GAP - 8},${midY - 5} ${x + BOX_W + GAP - 8},${midY + 5}`}
-                    fill="#F15A00"
-                  />
-                </g>
+              {arrowTowardNext ? (
+                rtl ? (
+                  <g>
+                    <line
+                      x1={x}
+                      y1={midY}
+                      x2={x - GAP + 8}
+                      y2={midY}
+                      stroke="#F15A00"
+                      strokeWidth="2"
+                    />
+                    <polygon
+                      points={`${x - GAP},${midY} ${x - GAP + 8},${midY - 5} ${x - GAP + 8},${midY + 5}`}
+                      fill="#F15A00"
+                    />
+                  </g>
+                ) : (
+                  <g>
+                    <line
+                      x1={x + BOX_W}
+                      y1={midY}
+                      x2={x + BOX_W + GAP - 8}
+                      y2={midY}
+                      stroke="#F15A00"
+                      strokeWidth="2"
+                    />
+                    <polygon
+                      points={`${x + BOX_W + GAP},${midY} ${x + BOX_W + GAP - 8},${midY - 5} ${x + BOX_W + GAP - 8},${midY + 5}`}
+                      fill="#F15A00"
+                    />
+                  </g>
+                )
               ) : null}
             </g>
           );

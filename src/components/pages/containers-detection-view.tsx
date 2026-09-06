@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ContainersBackLink } from "@/components/containers-back-link";
+import { RtlAwareLabel } from "@/components/rtl-aware-label";
 import { usePreferences } from "@/lib/i18n/context";
 
 export function ContainersDetectionView() {
@@ -47,7 +48,7 @@ export function ContainersDetectionView() {
         <p className="text-sm text-muted">
           {t.containers.detectionNote}{" "}
           <Link href="/how-it-works" className="text-orange hover:underline">
-            {t.containers.howLink}
+            <RtlAwareLabel text={t.containers.howLink} />
           </Link>
         </p>
       </div>

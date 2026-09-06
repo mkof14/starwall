@@ -41,8 +41,8 @@ export const fr: Messages = {
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "Une image. Toutes les sources. Une décision à laquelle on peut se fier.",
-    lead: "StarWall relie les équipements déjà présents sur votre yacht, marina, port ou île privée en une seule image actualisée en continu — et donne à la personne aux commandes une base claire pour chaque décision, en quelques secondes.",
+    title: "Une situation unique. Toutes les sources. Une décision fiable.",
+    lead: "StarWall relie les équipements déjà présents sur votre yacht, marina, port ou île privée en une seule image de situation, actualisée en continu — et donne à l'officier de quart une base claire pour chaque décision, en quelques secondes.",
     points: [
       "Fonctionne avec l'équipement que vous avez déjà — aucun remplacement requis",
       "Apprend votre navire ou votre site, et gagne en précision avec le temps",
@@ -65,15 +65,15 @@ export const fr: Messages = {
     steps: [
       {
         title: "Connecter",
-        body: "StarWall lit le radar, les caméras, l'AIS et les autres systèmes déjà installés — aucun remplacement d'équipement n'est requis.",
+        body: "StarWall lit le radar, les caméras, l'AIS et les autres systèmes déjà installés — il n'est pas nécessaire de les remplacer.",
       },
       {
         title: "Comprendre",
-        body: "Les signaux sont réunis sur une seule frise et une carte ; l'historique est conservé après la clôture de chaque alerte.",
+        body: "Les signaux sont réunis sur une seule chronologie et une carte. L'historique reste disponible après la clôture de chaque alerte.",
       },
       {
         title: "Décider",
-        body: "Un niveau de risque clair et explicable et, si besoin, une ligne directe vers le Security Support Center d'AGRON.",
+        body: "Un niveau de risque clair, avec les raisons visibles, et si besoin une ligne directe vers le Security Support Center d'AGRON.",
       },
     ],
     architecture: "Architecture",

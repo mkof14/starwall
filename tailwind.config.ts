@@ -34,10 +34,25 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["var(--font-cormorant)", "Georgia", "serif"],
-        ui: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        heading: [
+          "var(--font-cormorant)",
+          "var(--font-arabic)",
+          "Georgia",
+          "serif",
+        ],
+        ui: [
+          "var(--font-space-grotesk)",
+          "var(--font-arabic)",
+          "system-ui",
+          "sans-serif",
+        ],
         mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
-        body: ["var(--font-inter)", "system-ui", "sans-serif"],
+        body: [
+          "var(--font-inter)",
+          "var(--font-arabic)",
+          "system-ui",
+          "sans-serif",
+        ],
       },
     },
   },

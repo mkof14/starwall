@@ -11,7 +11,7 @@ import {
 import { usePathname } from "next/navigation";
 import {
   defaultLocale,
-  isLocale,
+  isSiteLocale,
   rtlLocales,
   type Locale,
 } from "@/lib/i18n/locales";
@@ -44,6 +44,7 @@ const titleByPath: Record<string, keyof Messages["seo"]> = {
   "/containers/tiers": "containersTiers",
   "/containers/deployment": "containersDeployment",
   "/contact": "contact",
+  "/backend": "backend",
 };
 
 function applyDocument(locale: Locale, theme: Theme) {
@@ -61,7 +62,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedLocale = window.localStorage.getItem(LOCALE_KEY);
     const storedTheme = window.localStorage.getItem(THEME_KEY);
-    const nextLocale = isLocale(storedLocale) ? storedLocale : defaultLocale;
+    const nextLocale = isSiteLocale(storedLocale) ? storedLocale : defaultLocale;
     const nextTheme = isTheme(storedTheme) ? storedTheme : "light";
     setLocaleState(nextLocale);
     setThemeState(nextTheme);

@@ -122,7 +122,7 @@ export function BackendView() {
   const equipmentRows = [...EQUIPMENT, ...EXTRA_EQUIPMENT];
 
   return (
-    <div className="min-h-screen bg-bridge-bg font-ui text-bridge-text">
+    <div className="min-h-screen bg-bridge-bg font-ui text-bridge-text" dir="ltr" lang="en">
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
         <p className="border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
           Illustrative system administration view — demonstrates the operational

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HeroRadar } from "@/components/hero-radar";
+import { RtlAwareLabel } from "@/components/rtl-aware-label";
 import { usePreferences } from "@/lib/i18n/context";
 
 const cardHrefs = ["/how-it-works", "/interface", "/levels", "/technology"] as const;
@@ -73,7 +74,7 @@ export function HomeView() {
 
       <p className="mx-auto max-w-6xl px-4 pb-16 text-sm text-muted md:px-6">
         <Link href="/containers" className="hover:text-ink">
-          {t.home.containersLink}
+          <RtlAwareLabel text={t.home.containersLink} />
         </Link>
       </p>
     </div>

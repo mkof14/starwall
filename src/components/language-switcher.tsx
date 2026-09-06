@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { FlagIcon } from "@/components/flag-icon";
 import { usePreferences } from "@/lib/i18n/context";
-import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
+import { localeMeta, siteLocales, type Locale } from "@/lib/i18n/locales";
 import { cn } from "@/lib/cn";
 
 export function LanguageSwitcher({
@@ -77,7 +77,7 @@ export function LanguageSwitcher({
               : "border-stroke bg-page text-ink",
           )}
         >
-          {locales.map((code) => (
+          {siteLocales.map((code) => (
             <li key={code}>
               <button
                 type="button"

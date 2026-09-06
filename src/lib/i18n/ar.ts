@@ -7,10 +7,10 @@ export const ar: Messages = {
     interface: "الواجهة",
     levels: "المستويات",
     technology: "التقنية",
-    faq: "FAQ",
+    faq: "الأسئلة الشائعة",
     containers: "الحاويات",
     contact: "تواصل",
-    backend: "الخلفية",
+    backend: "Backend",
     openMenu: "فتح القائمة",
     closeMenu: "إغلاق القائمة",
     primary: "التنقل الرئيسي",
@@ -29,7 +29,7 @@ export const ar: Messages = {
     interface: "AGRON Bridge — عرض تفاعلي — StarWall by AGRON",
     levels: "مستويات الاشتراك — StarWall by AGRON",
     technology: "المعدات والتكامل — StarWall by AGRON",
-    faq: "FAQ — StarWall by AGRON",
+    faq: "الأسئلة الشائعة — StarWall by AGRON",
     containers: "الحاويات — AGRON",
     containersDetection: "مجموعة الكشف — AGRON Containers",
     containersSpecs: "المواصفات — AGRON Containers",
@@ -42,7 +42,7 @@ export const ar: Messages = {
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",
     title: "صورة واحدة. كل المصادر. قرار يمكن الوثوق به.",
-    lead: "يربط StarWall المعدات الموجودة أصلاً على يختكم أو المرسى أو الميناء أو الجزيرة الخاصة في صورة واحدة تُحدَّث باستمرار — ويمنح المسؤول المناوب أساساً واضحاً لكل قرار خلال ثوانٍ.",
+    lead: "يجمع StarWall المعدات المركّبة أصلاً على اليخت أو في المرسى أو الميناء أو الجزيرة الخاصة في صورة موقف واحدة تُحدَّث باستمرار — ويمنح ضابط النوبة أساساً واضحاً لكل قرار خلال ثوانٍ.",
     points: [
       "يعمل مع المعدات التي لديكم أصلاً — لا حاجة للاستبدال",
       "يتعلم سفينتكم أو موقعكم ويزداد دقة كلما طال تشغيله",
@@ -65,15 +65,15 @@ export const ar: Messages = {
     steps: [
       {
         title: "توصيل",
-        body: "يقرأ StarWall الرادار والكاميرات وAIS وسائر الأنظمة المركّبة أصلاً — دون حاجة لاستبدال المعدات.",
+        body: "يستقبل StarWall بيانات الرادار والكاميرات وAIS وبقية الأنظمة المركّبة أصلاً — دون الحاجة إلى استبدال المعدات.",
       },
       {
         title: "فهم",
-        body: "تُجمع الإشارات في خط زمني واحد وخريطة، ويُحتفظ بالسجل بعد إغلاق كل تنبيه.",
+        body: "تُجمع الإشارات في خط زمني واحد وعلى خريطة واحدة، ويبقى السجل بعد إغلاق كل تنبيه.",
       },
       {
         title: "قرار",
-        body: "مستوى مخاطر واضح وقابل للتفسير، وعند الحاجة خط مباشر إلى Security Support Center التابع لـ AGRON.",
+        body: "مستوى مخاطر واضح مع أسباب ظاهرة، وعند الحاجة خط مباشر إلى Security Support Center التابع لـ AGRON.",
       },
     ],
     architecture: "العمارة",
@@ -290,7 +290,7 @@ export const ar: Messages = {
     ],
   },
   faq: {
-    kicker: "FAQ",
+    kicker: "الأسئلة الشائعة",
     title: "أسئلة نتوقعها أولاً",
     items: [
       {

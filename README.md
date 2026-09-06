@@ -55,4 +55,8 @@ Shared sticky header and footer wrap every route via the root layout.
 
 The only site logo is `public/SW3.png`. Do not substitute another mark.
 
-Header and footer include a sun/moon theme switch (light/dark, stored in the browser) and a language menu: English, Spanish, French, German, Russian, Ukrainian, Arabic, Chinese, Japanese, Hebrew. Arabic and Hebrew switch the page to RTL.
+Header and footer include a sun/moon theme switch (light/dark, stored in the browser) and a four-language menu: English, Russian, French, Arabic. The choice is stored in `localStorage` (`starwall-locale`) and survives navigation. Arabic sets `dir="rtl"` on the document and loads Noto Sans Arabic for body and headings.
+
+Translated now: marketing chrome (nav, footer) plus `/`, `/how-it-works`, `/levels`, `/faq`, `/technology`, `/contact`, and the AGRON Containers pages.
+
+Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, assistant chrome — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and assistant replies (those follow the spoken/typed language when an API key is set).

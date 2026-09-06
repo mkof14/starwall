@@ -14,7 +14,7 @@ export default function InterfacePage() {
     <CrisisModeProvider>
       <BridgeSessionProvider>
         <BlackBoxProvider>
-          <div id="bridge-root" className="min-h-screen bg-bridge-bg">
+          <div id="bridge-root" className="min-h-screen bg-bridge-bg" dir="ltr" lang="en">
             <ScenarioWalkthrough />
             <BridgeConsole />
             <AdaptiveLearningPanel />
