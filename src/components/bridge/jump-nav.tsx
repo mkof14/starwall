@@ -230,7 +230,8 @@ export function JumpNav() {
     const target = item.targetId ? document.getElementById(item.targetId) : null;
     if (!target) return;
     setActive(item.id);
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   }, []);
 
   useEffect(() => {
