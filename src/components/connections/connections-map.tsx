@@ -355,20 +355,17 @@ export function ConnectionsMap() {
           />
         </g>
         <g>
+          <image
+            href="/SW3.png"
+            x={CORE.x - 48}
+            y={CORE.y - 10}
+            width="96"
+            height="16"
+            preserveAspectRatio="xMidYMid meet"
+          />
           <text
             x={CORE.x}
-            y={CORE.y - 6}
-            textAnchor="middle"
-            fontFamily="var(--font-cormorant), Georgia, serif"
-            fontSize="20"
-            fontWeight="700"
-          >
-            <tspan fill="#E7ECEF">Star</tspan>
-            <tspan fill="#F15A00">Wall</tspan>
-          </text>
-          <text
-            x={CORE.x}
-            y={CORE.y + 16}
+            y={CORE.y + 22}
             textAnchor="middle"
             fill="#9CA3AF"
             fontFamily="var(--font-jetbrains), ui-monospace, monospace"
@@ -380,7 +377,7 @@ export function ConnectionsMap() {
           {live ? (
             <text
               x={CORE.x}
-              y={CORE.y + 32}
+              y={CORE.y + 36}
               textAnchor="middle"
               fill="#4B5760"
               fontFamily="var(--font-jetbrains), ui-monospace, monospace"

@@ -14,9 +14,9 @@ export const locales = [
 export type Locale = (typeof locales)[number];
 
 /** Languages offered in the public header/footer switcher. */
-export const siteLocales = ["en", "ru", "fr", "ar"] as const;
+export const siteLocales = locales;
 
-export type SiteLocale = (typeof siteLocales)[number];
+export type SiteLocale = Locale;
 
 export const defaultLocale: Locale = "en";
 
@@ -43,5 +43,5 @@ export function isLocale(value: string | null | undefined): value is Locale {
 }
 
 export function isSiteLocale(value: string | null | undefined): value is SiteLocale {
-  return siteLocales.includes(value as SiteLocale);
+  return isLocale(value);
 }

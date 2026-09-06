@@ -6,6 +6,7 @@ import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
 import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
 import { DegradedBanner } from "@/components/bridge/degraded-banner";
+import { ExpandablePicture } from "@/components/bridge/expandable-picture";
 import {
   EventToasts,
   type EventToast,
@@ -577,7 +578,7 @@ export function BridgeConsole() {
             }
           >
             <div className="relative">
-              {picture.view}
+              <ExpandablePicture>{picture.view}</ExpandablePicture>
               {live ? (
                 <p
                   data-testid="live-picture-empty"

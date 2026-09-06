@@ -11,7 +11,7 @@ import {
 import { usePathname } from "next/navigation";
 import {
   defaultLocale,
-  isSiteLocale,
+  isLocale,
   rtlLocales,
   type Locale,
 } from "@/lib/i18n/locales";
@@ -62,7 +62,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedLocale = window.localStorage.getItem(LOCALE_KEY);
     const storedTheme = window.localStorage.getItem(THEME_KEY);
-    const nextLocale = isSiteLocale(storedLocale) ? storedLocale : defaultLocale;
+    const nextLocale = isLocale(storedLocale) ? storedLocale : defaultLocale;
     const nextTheme = isTheme(storedTheme) ? storedTheme : "light";
     setLocaleState(nextLocale);
     setThemeState(nextTheme);

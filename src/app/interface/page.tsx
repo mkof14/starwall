@@ -4,10 +4,7 @@ import { AdaptiveLearningPanel } from "@/components/bridge/adaptive-learning-pan
 import { BlackBoxPanel } from "@/components/bridge/black-box-panel";
 import { BridgeConsole } from "@/components/bridge/bridge-console";
 import { ScenarioWalkthrough } from "@/components/bridge/scenario-walkthrough";
-import { StarWallAssistant } from "@/components/bridge/starwall-assistant";
 import { LiveModeBanner } from "@/components/live-mode-banner";
-import { BlackBoxProvider } from "@/lib/black-box";
-import { BridgeSessionProvider } from "@/lib/bridge-session";
 import { CrisisModeProvider } from "@/lib/crisis-mode";
 import { useAppMode } from "@/lib/mode";
 
@@ -20,7 +17,6 @@ function InterfaceBody() {
       <BridgeConsole />
       <AdaptiveLearningPanel />
       <BlackBoxPanel />
-      <StarWallAssistant />
     </div>
   );
 }
@@ -28,11 +24,7 @@ function InterfaceBody() {
 export default function InterfacePage() {
   return (
     <CrisisModeProvider>
-      <BridgeSessionProvider>
-        <BlackBoxProvider>
-          <InterfaceBody />
-        </BlackBoxProvider>
-      </BridgeSessionProvider>
+      <InterfaceBody />
     </CrisisModeProvider>
   );
 }

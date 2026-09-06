@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useId, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import {
@@ -84,6 +84,7 @@ export function BridgeRadar({
 }: BridgeRadarProps) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
   const scene = radarScene(scenarioId);
+  const uid = useId().replace(/:/g, "");
 
   function onContactEnter(
     event: MouseEvent<SVGGElement>,
@@ -106,39 +107,48 @@ export function BridgeRadar({
 
   return (
     <div
-      className="relative overflow-hidden bg-[radial-gradient(circle_at_center,#0D161C_0%,#0A0F14_70%)]"
+      className="instrument-radar relative overflow-hidden"
       data-testid="picture-scene"
       data-scene={scenarioId || "watch"}
     >
+      <div className="flex items-center justify-between border-b border-[#13432C] bg-[#07150E] px-3 py-1 font-mono text-[9px] tracking-[0.16em] text-[#7DCF9A]">
+        <span>S-BAND ARPA · RDR-6</span>
+        <span>GAIN 72 · SEA 18 · RAIN 0 · TRAILS 6M</span>
+      </div>
       <svg viewBox="0 0 680 428" className="h-auto w-full">
         <defs>
-          <linearGradient id="sweepGrad" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stopColor="#33D3A6" stopOpacity="0" />
-            <stop offset="100%" stopColor="#33D3A6" stopOpacity="0.20" />
+          <linearGradient id={`sweepGrad-${uid}`} x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stopColor="#2EE59A" stopOpacity="0" />
+            <stop offset="100%" stopColor="#2EE59A" stopOpacity="0.28" />
           </linearGradient>
+          <radialGradient id={`scopeGlow-${uid}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#0A2A18" />
+            <stop offset="100%" stopColor="#03140C" />
+          </radialGradient>
         </defs>
+        <rect width="680" height="428" fill={`url(#scopeGlow-${uid})`} />
         <path
           d="M0,50 L100,44 L156,84 L132,140 L66,152 L0,116 Z"
-          fill="#0D161C"
-          stroke="#182229"
+          fill="#062016"
+          stroke="#13432C"
           strokeWidth="1"
         />
         <path
           d="M630,380 L680,356 L680,428 L580,428 L568,398 Z"
-          fill="#0D161C"
-          stroke="#182229"
+          fill="#062016"
+          stroke="#13432C"
           strokeWidth="1"
         />
-        <circle cx="340" cy="214" r="168" fill="none" stroke="#182229" strokeWidth="1" />
-        <circle cx="340" cy="214" r="112" fill="none" stroke="#182229" strokeWidth="1" />
-        <circle cx="340" cy="214" r="56" fill="none" stroke="#182229" strokeWidth="1" />
-        <text x="345" y="207" fontFamily="monospace" fontSize="8.5" fill="#3C4750">
+        <circle cx="340" cy="214" r="168" fill="none" stroke="#1A5C3A" strokeWidth="1.2" />
+        <circle cx="340" cy="214" r="112" fill="none" stroke="#164E32" strokeWidth="1" />
+        <circle cx="340" cy="214" r="56" fill="none" stroke="#164E32" strokeWidth="1" />
+        <text x="345" y="207" fontFamily="monospace" fontSize="8.5" fill="#2F6B4A">
           6NM
         </text>
-        <text x="345" y="151" fontFamily="monospace" fontSize="8.5" fill="#3C4750">
+        <text x="345" y="151" fontFamily="monospace" fontSize="8.5" fill="#2F6B4A">
           4NM
         </text>
-        <text x="345" y="95" fontFamily="monospace" fontSize="8.5" fill="#3C4750">
+        <text x="345" y="95" fontFamily="monospace" fontSize="8.5" fill="#2F6B4A">
           2NM
         </text>
         {TICKS.map((deg) => {
@@ -152,21 +162,21 @@ export function BridgeRadar({
               y1={214 + inner * Math.sin(rad)}
               x2={340 + 168 * Math.cos(rad)}
               y2={214 + 168 * Math.sin(rad)}
-              stroke="#223039"
+              stroke="#1A5C3A"
               strokeWidth={longer ? 1.4 : 1}
             />
           );
         })}
-        <text x="340" y="34" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#7C8894" fontWeight="bold">
+        <text x="340" y="34" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#7DCF9A" fontWeight="bold">
           N
         </text>
-        <text x="340" y="402" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
+        <text x="340" y="402" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#3E7A58">
           S
         </text>
-        <text x="626" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
+        <text x="626" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#3E7A58">
           E
         </text>
-        <text x="54" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
+        <text x="54" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#3E7A58">
           W
         </text>
         <line
@@ -174,19 +184,19 @@ export function BridgeRadar({
           y1="214"
           x2="479"
           y2="45"
-          stroke="#3A4E56"
+          stroke="#2A6A48"
           strokeWidth="1"
           strokeDasharray="2 4"
         />
         {degraded === "radar" || empty ? null : (
           <g className="bridge-sweep">
-            <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
+            <path d={`M340,214 L340,46 A168,168 0 0,1 483,124 Z`} fill={`url(#sweepGrad-${uid})`} />
           </g>
         )}
         <g transform="translate(340,214)">
           <path d="M0,-11 L8,10 L0,6 L-8,10 Z" fill="#E7ECEF" />
           {empty ? null : (
-            <text x="12" y="16" fontFamily="monospace" fontSize="9" fill="#48545D">
+            <text x="12" y="16" fontFamily="monospace" fontSize="9" fill="#5A9A72">
               {scene.heading}
             </text>
           )}

@@ -13,15 +13,20 @@ export function SonarView({ scenarioId = "" }: { scenarioId?: string }) {
 
   return (
     <div
-      className="relative overflow-hidden bg-[radial-gradient(circle_at_center,#0C1820_0%,#0A0F14_72%)]"
+      className="instrument-sonar relative overflow-hidden"
       data-testid="picture-scene"
       data-scene={scenarioId || "watch"}
     >
+      <div className="flex items-center justify-between border-b border-[#0E4A55] bg-[#031418] px-3 py-1 font-mono text-[9px] tracking-[0.16em] text-[#6DE4F2]">
+        <span>HF SONAR · 200 kHz</span>
+        <span>PASSIVE / ACTIVE · DEPTH SCALE</span>
+      </div>
       <svg viewBox="0 0 680 428" className="h-auto w-full">
-        <circle cx="340" cy="214" r="168" fill="none" stroke="#182229" strokeWidth="1" />
-        <circle cx="340" cy="214" r="112" fill="none" stroke="#182229" strokeWidth="1" />
-        <circle cx="340" cy="214" r="56" fill="none" stroke="#182229" strokeWidth="1" />
-        <text x="348" y="95" fontFamily={MONO} fontSize="8.5" fill="#3C4750">
+        <rect width="680" height="428" fill="#02161C" />
+        <circle cx="340" cy="214" r="168" fill="none" stroke="#0E4A55" strokeWidth="1.2" />
+        <circle cx="340" cy="214" r="112" fill="none" stroke="#0A3A44" strokeWidth="1" />
+        <circle cx="340" cy="214" r="56" fill="none" stroke="#0A3A44" strokeWidth="1" />
+        <text x="348" y="95" fontFamily={MONO} fontSize="8.5" fill="#1A6A78">
           0-20M
         </text>
         <text x="348" y="151" fontFamily={MONO} fontSize="8.5" fill="#3C4750">

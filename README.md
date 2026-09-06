@@ -56,10 +56,12 @@ Shared sticky header and footer wrap every route via the root layout.
 
 The only site logo is `public/SW3.png`. Do not substitute another mark.
 
-Header and footer include a sun/moon theme switch (light/dark, stored in the browser) and a four-language menu: English, Russian, French, Arabic. The choice is stored in `localStorage` (`starwall-locale`) and survives navigation. Arabic sets `dir="rtl"` on the document and loads Noto Sans Arabic for body and headings.
+Header and footer include a sun/moon theme switch (light/dark, stored in the browser) and a ten-language menu: English, Spanish, French, German, Russian, Ukrainian, Arabic, Chinese, Japanese, Hebrew. The choice is stored in `localStorage` (`starwall-locale`) and survives navigation. Arabic and Hebrew set `dir="rtl"`; Arabic also loads Noto Sans Arabic for body and headings.
+
+Helm, the watch advisor, sits as a living icon at the bottom-right of every page. Speech/type languages fold into a dropdown inside the panel.
 
 `/interface` and `/backend` also carry a DEMO / LIVE mode switch (`localStorage` key `starwall-mode`, default DEMO). DEMO is the full illustrative simulation. LIVE is an honest empty deployment: no fake contacts, events, or equipment status. The assistant stays available in both modes.
 
 Translated now: marketing chrome (nav, footer) plus `/`, `/how-it-works`, `/levels`, `/faq`, `/technology`, `/contact`, and the AGRON Containers pages.
 
-Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, assistant chrome, Connections Map — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and assistant replies (those follow the spoken/typed language when an API key is set).
+Still English: `/interface` (Bridge console, scenario library, Crisis Mode, Black Box, Adaptive Learning, Helm chrome, Connections Map — the page is forced `dir="ltr"` so Arabic does not break the HUD), `/backend` (illustrative admin, also locked LTR), product names (StarWall, Bridge, Support Center, Helm, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Helm replies (those follow the spoken/typed language when an API key is set).

@@ -362,6 +362,85 @@ body {
   animation: map-ring-breathe 4.4s ease-in-out infinite;
 }
 
+.instrument-radar,
+.instrument-sonar,
+.instrument-spectrum,
+.instrument-perimeter {
+  position: relative;
+}
+
+.instrument-radar {
+  background: #03140c;
+  box-shadow: inset 0 0 48px rgb(16 90 48 / 0.28);
+}
+
+.instrument-sonar {
+  background: #02161c;
+  box-shadow: inset 0 0 48px rgb(8 90 110 / 0.28);
+}
+
+.instrument-spectrum {
+  background: #0c0a06;
+  box-shadow: inset 0 0 40px rgb(120 80 10 / 0.2);
+}
+
+.instrument-perimeter {
+  background: #0a0c10;
+  box-shadow: inset 0 0 36px rgb(80 40 16 / 0.22);
+}
+
+.instrument-radar::after,
+.instrument-perimeter::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgb(0 0 0 / 0.1) 3px
+  );
+}
+
+@keyframes helm-fab-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(241 90 0 / 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgb(241 90 0 / 0);
+  }
+}
+
+.helm-fab {
+  animation: helm-fab-pulse 2.2s ease-out infinite;
+}
+
+@keyframes helm-fab-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.helm-fab-sweep {
+  animation: helm-fab-sweep 4.8s linear infinite;
+}
+
+@keyframes helm-idle-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.helm-idle-led {
+  animation: helm-idle-glow 1.6s ease-in-out infinite;
+}
+
 #bridge-root:fullscreen,
 #bridge-root:-webkit-full-screen {
   min-height: 100vh;
@@ -373,7 +452,8 @@ body {
 @media print {
   header,
   footer,
-  .session-report-chrome {
+  .session-report-chrome,
+  [data-testid="starwall-assistant"] {
     display: none !important;
   }
 

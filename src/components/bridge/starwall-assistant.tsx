@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { FlagIcon } from "@/components/flag-icon";
 import { cn } from "@/lib/cn";
 import { useBlackBox } from "@/lib/black-box";
 import { useBridgeSession } from "@/lib/bridge-session";
+import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
 import { useAppMode } from "@/lib/mode";
 
 type MicState = "idle" | "listening" | "processing" | "speaking";
@@ -14,26 +16,21 @@ type ChatMessage = {
   text: string;
 };
 
-const RECOGNITION_LANGS = [
-  { id: "en-US", label: "EN", title: "English", flag: "🇬🇧" },
-  { id: "ru-RU", label: "RU", title: "Russian", flag: "🇷🇺" },
-  { id: "fr-FR", label: "FR", title: "French", flag: "🇫🇷" },
-  { id: "it-IT", label: "IT", title: "Italian", flag: "🇮🇹" },
-  { id: "ar-SA", label: "AR", title: "Arabic", flag: "🇸🇦" },
-] as const;
-
 const SPEAK_LANG: Record<string, string> = {
   en: "en-US",
-  ru: "ru-RU",
-  fr: "fr-FR",
-  it: "it-IT",
-  ar: "ar-SA",
-  de: "de-DE",
   es: "es-ES",
+  fr: "fr-FR",
+  de: "de-DE",
+  ru: "ru-RU",
+  uk: "uk-UA",
+  ar: "ar-SA",
+  zh: "zh-CN",
+  ja: "ja-JP",
+  he: "he-IL",
 };
 
 const BAR_COUNT = 8;
-const TYPE_MS = 35;
+const TYPE_MS = 28;
 
 function SpeechEngine() {
   if (typeof window === "undefined") return null;
@@ -44,27 +41,28 @@ function SpeechEngine() {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-export function StarWallAssistant() {
+export function Helm() {
   const session = useBridgeSession();
   const { live } = useAppMode();
   const { recordConversation } = useBlackBox();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [langsOpen, setLangsOpen] = useState(false);
   const [mic, setMic] = useState<MicState>("idle");
   const [levels, setLevels] = useState<number[]>(() => Array(BAR_COUNT).fill(0));
-  const [recogLang, setRecogLang] = useState<(typeof RECOGNITION_LANGS)[number]["id"]>(
-    "en-US",
-  );
+  const [recogLang, setRecogLang] = useState<Locale>("en");
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typed, setTyped] = useState("");
   const [typingId, setTypingId] = useState<number | null>(null);
   const [micError, setMicError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
+  const langRef = useRef<HTMLDivElement | null>(null);
   const nextId = useRef(1);
   const streamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
   const rafRef = useRef<number | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const menuId = useId();
 
   useEffect(() => {
     if (!listRef.current) return;
@@ -87,6 +85,19 @@ export function StarWallAssistant() {
     }, TYPE_MS);
     return () => window.clearInterval(timer);
   }, [typingId, messages]);
+
+  useEffect(() => {
+    function onPointer(event: MouseEvent) {
+      if (
+        event.target instanceof Element &&
+        !langRef.current?.contains(event.target)
+      ) {
+        setLangsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onPointer);
+    return () => document.removeEventListener("mousedown", onPointer);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -164,7 +175,7 @@ export function StarWallAssistant() {
       setMic("listening");
 
       const recognition = new Engine();
-      recognition.lang = recogLang;
+      recognition.lang = SPEAK_LANG[recogLang] ?? "en-US";
       recognition.interimResults = true;
       recognition.continuous = false;
       recognitionRef.current = recognition;
@@ -242,19 +253,15 @@ export function StarWallAssistant() {
         error?: string;
       };
       if (!response.ok || !data.reply) {
-        const errorText = data.error ?? "The assistant could not reply.";
+        const errorText = data.error ?? "Helm could not reply.";
         const errorId = nextId.current++;
         setMessages((current) => [
           ...current,
-          {
-            id: errorId,
-            role: "error",
-            text: errorText,
-          },
+          { id: errorId, role: "error", text: errorText },
         ]);
         recordConversation({
-          summary: `Assistant exchange — ${clean.slice(0, 72)}`,
-          fullContent: `Officer: ${clean}\n\nAssistant: ${errorText}`,
+          summary: `Helm exchange — ${clean.slice(0, 72)}`,
+          fullContent: `Officer: ${clean}\n\nHelm: ${errorText}`,
         });
         setMic("idle");
         return;
@@ -265,8 +272,8 @@ export function StarWallAssistant() {
         { id: assistantId, role: "assistant", text: data.reply ?? "" },
       ]);
       recordConversation({
-        summary: `Assistant exchange — ${clean.slice(0, 72)}`,
-        fullContent: `Officer: ${clean}\n\nAssistant: ${data.reply}`,
+        summary: `Helm exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nHelm: ${data.reply}`,
       });
       setTypingId(assistantId);
       speakReply(data.reply, data.langCode ?? "en");
@@ -277,8 +284,8 @@ export function StarWallAssistant() {
         { id: errorId, role: "error", text: "Network error — try again." },
       ]);
       recordConversation({
-        summary: `Assistant exchange — ${clean.slice(0, 72)}`,
-        fullContent: `Officer: ${clean}\n\nAssistant: Network error — try again.`,
+        summary: `Helm exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nHelm: Network error — try again.`,
       });
       setMic("idle");
     }
@@ -287,50 +294,83 @@ export function StarWallAssistant() {
   return (
     <div
       data-testid="starwall-assistant"
-      className="fixed bottom-4 right-4 z-[70] w-[min(24rem,calc(100vw-2rem))] font-ui"
+      className="fixed bottom-4 right-4 z-[70] font-ui"
     >
       {open ? (
-        <section className="border border-bridge-line bg-bridge-panel shadow-xl">
-          <header className="flex items-center justify-between gap-2 border-b border-bridge-line px-3 py-2">
-            <div>
-              <p className="font-ui text-sm font-semibold text-bridge-text">
-                StarWall Assistant
+        <section className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden border border-[#2A3A48] bg-[#111820] shadow-[0_12px_40px_rgb(0_0_0/0.45)]">
+          <header className="flex items-center justify-between gap-2 border-b border-[#2A3A48] bg-[#0A0F14] px-3 py-2">
+            <div className="min-w-0">
+              <p className="flex items-center gap-2 font-ui text-sm font-semibold text-[#E7ECEF]">
+                <span
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    mic === "listening"
+                      ? "bg-ok assistant-mic-listen"
+                      : mic === "speaking"
+                        ? "bg-orange assistant-mic-speak"
+                        : "bg-orange helm-idle-led",
+                  )}
+                />
+                Helm
               </p>
-              <p className="font-mono text-[10px] text-bridge-dim">
+              <p className="truncate font-mono text-[10px] text-[#7C8894]">
                 {live
-                  ? "LIVE · no sensors connected"
-                  : `${session.vessel} · ${session.riskLevel} · ${session.scenarioName}`}
+                  ? "WATCH ADVISOR · LIVE · no sensors"
+                  : `WATCH ADVISOR · ${session.vessel} · ${session.riskLevel}`}
               </p>
             </div>
-            <button
-              type="button"
-              data-testid="assistant-toggle"
-              onClick={() => setOpen(false)}
-              className="border border-bridge-line px-2 py-1 font-mono text-[10px] text-bridge-dim hover:text-bridge-text"
-            >
-              Hide
-            </button>
-          </header>
-
-          <div className="flex flex-wrap gap-1 px-3 py-2">
-            {RECOGNITION_LANGS.map((item) => (
+            <div className="flex items-center gap-2">
+              <div ref={langRef} className="relative">
+                <button
+                  type="button"
+                  data-testid="helm-lang-toggle"
+                  aria-expanded={langsOpen}
+                  aria-controls={menuId}
+                  onClick={() => setLangsOpen((value) => !value)}
+                  className="inline-flex items-center gap-1.5 border border-[#2A3A48] px-2 py-1 font-mono text-[10px] text-[#E7ECEF] hover:border-orange"
+                >
+                  <FlagIcon locale={recogLang} />
+                  {recogLang.toUpperCase()}
+                  <span aria-hidden>▾</span>
+                </button>
+                {langsOpen ? (
+                  <ul
+                    id={menuId}
+                    className="absolute end-0 z-20 mt-1 max-h-64 min-w-[11rem] overflow-auto border border-[#2A3A48] bg-[#0A0F14] py-1 shadow-lg"
+                  >
+                    {locales.map((code) => (
+                      <li key={code}>
+                        <button
+                          type="button"
+                          className={cn(
+                            "flex w-full items-center gap-2 px-2.5 py-1.5 text-start text-xs",
+                            code === recogLang
+                              ? "text-orange"
+                              : "text-[#E7ECEF] hover:bg-white/5",
+                          )}
+                          onClick={() => {
+                            setRecogLang(code);
+                            setLangsOpen(false);
+                          }}
+                        >
+                          <FlagIcon locale={code} />
+                          {localeMeta[code].native}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
               <button
-                key={item.id}
                 type="button"
-                title={item.title}
-                aria-pressed={recogLang === item.id}
-                onClick={() => setRecogLang(item.id)}
-                className={cn(
-                  "border px-1.5 py-0.5 font-mono text-[10px]",
-                  recogLang === item.id
-                    ? "border-ok bg-ok/15 text-ok"
-                    : "border-bridge-line text-bridge-dim hover:text-bridge-text",
-                )}
+                data-testid="assistant-toggle"
+                onClick={() => setOpen(false)}
+                className="border border-[#2A3A48] px-2 py-1 font-mono text-[10px] text-[#7C8894] hover:text-[#E7ECEF]"
               >
-                {item.flag} {item.label}
+                Hide
               </button>
-            ))}
-          </div>
+            </div>
+          </header>
 
           <div
             ref={listRef}
@@ -338,9 +378,9 @@ export function StarWallAssistant() {
             className="h-56 space-y-2 overflow-y-auto px-3 py-2"
           >
             {messages.length === 0 ? (
-              <p className="text-xs text-bridge-dim">
-                Ask about the current picture — speak or type. Advice only; you
-                decide.
+              <p className="text-xs text-[#7C8894]">
+                Helm is on watch. Ask about the picture — speak or type. Advice
+                only; you decide.
               </p>
             ) : null}
             {messages.map((item) => {
@@ -357,7 +397,7 @@ export function StarWallAssistant() {
                       ? "ms-auto bg-orange text-white"
                       : item.role === "error"
                         ? "border border-attn text-attn"
-                        : "bg-bridge-bg text-bridge-text",
+                        : "bg-[#0A0F14] text-[#E7ECEF]",
                   )}
                 >
                   {showing}
@@ -366,7 +406,7 @@ export function StarWallAssistant() {
             })}
           </div>
 
-          <div className="border-t border-bridge-line px-3 py-2">
+          <div className="border-t border-[#2A3A48] px-3 py-2">
             <div className="mb-2 flex items-center gap-2">
               <button
                 type="button"
@@ -374,7 +414,7 @@ export function StarWallAssistant() {
                 onClick={() => void toggleMic()}
                 className={cn(
                   "flex h-9 w-9 items-center justify-center border",
-                  mic === "idle" && "border-bridge-line text-bridge-dim",
+                  mic === "idle" && "border-[#2A3A48] text-[#7C8894]",
                   mic === "listening" && "assistant-mic-listen border-ok text-ok",
                   mic === "processing" && "border-attn text-attn",
                   mic === "speaking" && "assistant-mic-speak border-orange text-orange",
@@ -402,15 +442,21 @@ export function StarWallAssistant() {
                 {levels.map((level, index) => (
                   <span
                     key={index}
-                    className="flex-1 bg-ok"
+                    className={cn(
+                      "flex-1",
+                      mic === "speaking" ? "bg-orange" : "bg-ok",
+                    )}
                     style={{
-                      height: `${Math.max(12, level * 100)}%`,
-                      opacity: mic === "listening" ? Math.max(0.25, level) : 0.2,
+                      height: `${Math.max(12, (mic === "idle" ? 0.22 + (index % 3) * 0.08 : level) * 100)}%`,
+                      opacity:
+                        mic === "listening" || mic === "speaking"
+                          ? Math.max(0.25, level)
+                          : 0.28,
                     }}
                   />
                 ))}
               </div>
-              <span className="w-16 text-end font-mono text-[10px] uppercase text-bridge-dim">
+              <span className="w-16 text-end font-mono text-[10px] uppercase text-[#7C8894]">
                 {mic}
               </span>
             </div>
@@ -428,8 +474,8 @@ export function StarWallAssistant() {
                 data-testid="assistant-input"
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="Type a question…"
-                className="min-w-0 flex-1 border border-bridge-line bg-bridge-bg px-2 py-1.5 font-ui text-sm text-bridge-text outline-none focus:border-orange"
+                placeholder="Ask Helm…"
+                className="min-w-0 flex-1 border border-[#2A3A48] bg-[#0A0F14] px-2 py-1.5 font-ui text-sm text-[#E7ECEF] outline-none focus:border-orange"
               />
               <button
                 type="submit"
@@ -446,11 +492,30 @@ export function StarWallAssistant() {
           type="button"
           data-testid="assistant-toggle"
           onClick={() => setOpen(true)}
-          className="border border-bridge-line bg-bridge-panel px-3 py-2 font-ui text-sm text-bridge-text shadow-xl hover:border-orange"
+          aria-label="Open Helm"
+          className="helm-fab relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-orange bg-[#0A0F14] text-orange"
         >
-          StarWall Assistant
+          <span
+            className="helm-fab-sweep pointer-events-none absolute inset-1 rounded-full"
+            style={{
+              background:
+                "conic-gradient(from 200deg, transparent 0deg, transparent 300deg, rgb(241 90 0 / 0.5) 360deg)",
+            }}
+            aria-hidden
+          />
+          <svg viewBox="0 0 48 48" className="relative h-8 w-8" aria-hidden>
+            <polygon
+              points="24,5 41,14.5 41,33.5 24,43 7,33.5 7,14.5"
+              fill="#111820"
+              stroke="#F15A00"
+              strokeWidth="1.8"
+            />
+            <circle cx="24" cy="24" r="3.2" fill="#F15A00" className="helm-idle-led" />
+          </svg>
         </button>
       )}
     </div>
   );
 }
+
+export const StarWallAssistant = Helm;

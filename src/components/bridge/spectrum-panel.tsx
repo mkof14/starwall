@@ -41,11 +41,36 @@ export function SpectrumView({ scenarioId = "" }: { scenarioId?: string }) {
 
   return (
     <div
-      className="relative overflow-hidden bg-[#0A0F14]"
+      className="instrument-spectrum relative overflow-hidden"
       data-testid="picture-scene"
       data-scene={scenarioId || "watch"}
     >
+      <div className="flex items-center justify-between border-b border-[#5A3A10] bg-[#140E06] px-3 py-1 font-mono text-[9px] tracking-[0.16em] text-[#E8B23D]">
+        <span>SPECTRUM ANALYZER · SA-58</span>
+        <span>RBW 100 kHz · dBm</span>
+      </div>
       <svg viewBox="0 0 680 428" className="h-auto w-full">
+        <rect width="680" height="428" fill="#0C0A06" />
+        {[0, 1, 2, 3, 4].map((row) => (
+          <line
+            key={row}
+            x1={LEFT}
+            x2={RIGHT}
+            y1={80 + row * 64}
+            y2={80 + row * 64}
+            stroke="#3A2A10"
+            strokeWidth="0.7"
+          />
+        ))}
+        <text x="18" y="86" fontFamily={MONO} fontSize="8" fill="#8A7340">
+          0
+        </text>
+        <text x="12" y="214" fontFamily={MONO} fontSize="8" fill="#8A7340">
+          -40
+        </text>
+        <text x="12" y="348" fontFamily={MONO} fontSize="8" fill="#8A7340">
+          -80
+        </text>
         {NOISE_HEIGHTS.map((height, index) => {
           const jammed = scene.variant === "jam";
           const deadSatcom =

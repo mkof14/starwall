@@ -26,11 +26,19 @@ export function PerimeterView({ scenarioId = "" }: { scenarioId?: string }) {
 
   return (
     <div
-      className="relative overflow-hidden bg-[#0A0F14]"
+      className="instrument-perimeter relative overflow-hidden"
       data-testid="picture-scene"
       data-scene={scenarioId || "watch"}
     >
+      <div className="flex items-center justify-between border-b border-[#3A2418] bg-[#120C08] px-3 py-1 font-mono text-[9px] tracking-[0.16em] text-[#E8B48A]">
+        <span>SITE CCTV / IR</span>
+        <span className="flex items-center gap-2">
+          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-crit" />
+          REC · CAM 04
+        </span>
+      </div>
       <svg viewBox="0 0 680 428" className="h-auto w-full">
+        <rect width="680" height="428" fill="#0A0C10" />
         <rect
           x="48"
           y="32"
