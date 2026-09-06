@@ -4,6 +4,7 @@ export type Messages = {
     howItWorks: string;
     interface: string;
     levels: string;
+    pricing: string;
     technology: string;
     faq: string;
     containers: string;
@@ -30,6 +31,7 @@ export type Messages = {
     howItWorks: string;
     interface: string;
     levels: string;
+    pricing: string;
     technology: string;
     faq: string;
     containers: string;
@@ -246,6 +248,7 @@ export type Messages = {
       bridge: string;
       connections: string;
       levels: string;
+      pricing: string;
       technology: string;
       faq: string;
       containers: string;
@@ -345,6 +348,31 @@ export type Messages = {
     ];
     availableNow: [string, string, string, string, string];
     inDevelopment: [string, string, string, string, string];
+  };
+  pricing: {
+    kicker: string;
+    title: string;
+    lead: string;
+    mostPopular: string;
+    perMonth: string;
+    equipmentPrefix: string;
+    equipmentSuffix: string;
+    contactUs: string;
+    customNote: string;
+    getStarted: string;
+    contactAgron: string;
+    disclaimer: string;
+    faqTitle: string;
+    faq1q: string;
+    faq1aBefore: string;
+    faq1aLink: string;
+    faq1aAfter: string;
+    faq2q: string;
+    faq2a: string;
+    faq3q: string;
+    faq3a: string;
+    interestMessage: string;
+    levelsCta: string;
   };
   tech: {
     kicker: string;
@@ -472,6 +500,7 @@ export const en: Messages = {
     howItWorks: "How it works",
     interface: "Interface",
     levels: "Levels",
+    pricing: "Pricing",
     technology: "Technology",
     faq: "FAQ",
     containers: "Containers",
@@ -498,6 +527,7 @@ export const en: Messages = {
     howItWorks: "How StarWall Works — StarWall by AGRON",
     interface: "AGRON Bridge — Interactive Demo — StarWall by AGRON",
     levels: "Subscription Levels — StarWall by AGRON",
+    pricing: "Pricing — StarWall by AGRON",
     technology: "Equipment & Integration — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "Containers — AGRON",
@@ -735,6 +765,7 @@ export const en: Messages = {
       bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
       connections: "Radial map of Core, sensors, Bridge, and Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
+      pricing: "Illustrative monthly pricing and one-time equipment cost by tier.",
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",
@@ -932,6 +963,35 @@ export const en: Messages = {
       "Special Event / Crisis Mode",
       "Automated report generation",
     ],
+  },
+  pricing: {
+    kicker: "Pricing",
+    title: "Illustrative monthly pricing",
+    lead: "Compare LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — then request a quote for your vessel or site.",
+    mostPopular: "Most popular",
+    perMonth: "/mo",
+    equipmentPrefix: "+",
+    equipmentSuffix: "one-time equipment",
+    contactUs: "Contact us",
+    customNote: "Fully custom configuration",
+    getStarted: "Get started",
+    contactAgron: "Contact AGRON",
+    disclaimer:
+      "Illustrative pricing for planning purposes — final pricing depends on vessel/site size, equipment condition, and configuration. Contact us for an accurate quote.",
+    faqTitle: "Pricing questions",
+    faq1q: "What's included in the one-time equipment cost?",
+    faq1aBefore:
+      "The AGRON Security Gateway and installation for your object. AGRON Container hardware is priced separately — see",
+    faq1aLink: "/containers",
+    faq1aAfter: ".",
+    faq2q: "Can I change tiers later?",
+    faq2a:
+      "Yes — StarWall's architecture is designed so upgrading doesn't require reinstalling anything; the next tier unlocks on top of what's already collecting data.",
+    faq3q: "Is there a contract length?",
+    faq3a:
+      "Standard terms are month-to-month after an initial onboarding period — ask us for specifics for your situation.",
+    interestMessage: "I'm interested in the {tier} plan",
+    levelsCta: "See illustrative monthly pricing",
   },
   tech: {
     kicker: "Technology",

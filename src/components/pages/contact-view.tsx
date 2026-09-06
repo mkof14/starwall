@@ -3,8 +3,14 @@
 import { ContactForm } from "@/components/contact-form";
 import { usePreferences } from "@/lib/i18n/context";
 
-export function ContactView() {
+const PRICING_PLANS = new Set(["LIGHT", "ADVANCED", "INTELLIGENCE"]);
+
+export function ContactView({ plan }: { plan?: string }) {
   const { t } = usePreferences();
+  const tier = plan?.toUpperCase() ?? "";
+  const initialMessage = PRICING_PLANS.has(tier)
+    ? t.pricing.interestMessage.replace("{tier}", tier)
+    : "";
 
   return (
     <div className="bg-page text-ink">
@@ -18,7 +24,7 @@ export function ContactView() {
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted">{t.contact.lead}</p>
         </header>
-        <ContactForm />
+        <ContactForm initialMessage={initialMessage} />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ export const navItems: Array<{ href: string; key: keyof Messages["nav"] }> = [
   { href: "/how-it-works", key: "howItWorks" },
   { href: "/interface", key: "interface" },
   { href: "/levels", key: "levels" },
+  { href: "/pricing", key: "pricing" },
   { href: "/technology", key: "technology" },
   { href: "/faq", key: "faq" },
   { href: "/containers", key: "containers" },

@@ -43,6 +43,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/interface` | Interface (scenario-linked Situational Picture) |
 | `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
+| `/pricing` | Pricing (illustrative monthly + one-time equipment) |
 | `/technology` | Technology |
 | `/faq` | FAQ |
 | `/containers` | AGRON Containers |

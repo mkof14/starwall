@@ -24,6 +24,11 @@ export const pageMeta = {
     description:
       "LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — plus what is available now versus still in development.",
   },
+  pricing: {
+    title: "Pricing — StarWall by AGRON",
+    description:
+      "Illustrative monthly pricing for LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — plus one-time equipment cost.",
+  },
   technology: {
     title: "Equipment & Integration — StarWall by AGRON",
     description:

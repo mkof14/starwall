@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { usePreferences } from "@/lib/i18n/context";
 
@@ -67,6 +68,11 @@ export function LevelsView() {
         </section>
 
         <p className="max-w-3xl text-sm leading-relaxed text-muted">{t.levels.mapNote}</p>
+        <p className="max-w-3xl text-sm leading-relaxed">
+          <Link href="/pricing" className="font-medium text-orange underline-offset-2 hover:underline">
+            {t.pricing.levelsCta}
+          </Link>
+        </p>
 
         <section className="space-y-5" aria-labelledby="honesty-heading">
           <p className="text-sm italic text-muted">{t.levels.honesty}</p>

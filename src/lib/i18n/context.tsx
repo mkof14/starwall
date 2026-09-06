@@ -35,6 +35,7 @@ const titleByPath: Record<string, keyof Messages["seo"]> = {
   "/how-it-works": "howItWorks",
   "/interface": "interface",
   "/levels": "levels",
+  "/pricing": "pricing",
   "/technology": "technology",
   "/faq": "faq",
   "/containers": "containers",

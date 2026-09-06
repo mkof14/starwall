@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   description: pageMeta.contact.description,
 };
 
-export default function ContactPage() {
-  return <ContactView />;
+export default function ContactPage({
+  searchParams,
+}: {
+  searchParams: { plan?: string };
+}) {
+  return <ContactView plan={searchParams.plan} />;
 }

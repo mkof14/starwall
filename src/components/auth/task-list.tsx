@@ -19,6 +19,7 @@ function taskTitle(task: TaskDef, t: Messages): string {
     bridge: t.nav.interface,
     connections: t.surface.connectionsTitle,
     levels: t.nav.levels,
+    pricing: t.nav.pricing,
     technology: t.nav.technology,
     faq: t.nav.faq,
     containers: t.nav.containers,

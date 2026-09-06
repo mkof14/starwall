@@ -35,9 +35,9 @@ function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-export function ContactForm() {
+export function ContactForm({ initialMessage = "" }: { initialMessage?: string }) {
   const { t } = usePreferences();
-  const [values, setValues] = useState<Values>(empty);
+  const [values, setValues] = useState<Values>({ ...empty, message: initialMessage });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
 

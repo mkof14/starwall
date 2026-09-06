@@ -7,6 +7,7 @@ const PATHS = [
   "/interface",
   "/interface/connections",
   "/levels",
+  "/pricing",
   "/technology",
   "/faq",
   "/containers",
