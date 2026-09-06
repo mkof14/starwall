@@ -8,6 +8,7 @@ import {
   ENDPOINTS,
   MAP_H,
   MAP_W,
+  curvePath,
   pointOnLine,
   type MapEndpoint,
 } from "@/lib/connections";
@@ -143,7 +144,8 @@ function linePath(item: MapEndpoint) {
     item.flow === "in"
       ? pointOnLine(CORE, item, CORE.r + 4)
       : pointOnLine(item, CORE, R + 2);
-  return { start, end, d: `M ${start.x} ${start.y} L ${end.x} ${end.y}` };
+  const bend = 0.1 + ((item.x + item.y) % 17) / 90;
+  return { start, end, d: curvePath(start, end, item.flow === "out" ? -bend : bend) };
 }
 
 export function ConnectionsMap() {
@@ -167,15 +169,56 @@ export function ConnectionsMap() {
       >
         <defs>
           <filter id="core-glow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="10" result="blur" />
+            <feGaussianBlur stdDeviation="14" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <filter id="flow-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="2.4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#152028" strokeWidth="0.6" />
+          </pattern>
+          <radialGradient id="map-vignette" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stopColor="#0A0F14" stopOpacity="0" />
+            <stop offset="100%" stopColor="#05080C" stopOpacity="0.55" />
+          </radialGradient>
         </defs>
 
         <rect width={MAP_W} height={MAP_H} fill="#0A0F14" />
+        <rect width={MAP_W} height={MAP_H} fill="url(#map-grid)" />
+        <rect width={MAP_W} height={MAP_H} fill="url(#map-vignette)" />
+        {[210, 320, 430].map((r) => (
+          <circle
+            key={r}
+            cx={CORE.x}
+            cy={CORE.y}
+            r={r}
+            fill="none"
+            stroke={live ? "#1C2830" : "#1E3340"}
+            strokeWidth="1"
+            className={live ? undefined : "map-ring-breathe"}
+          />
+        ))}
+        {live ? null : (
+          <circle
+            className="core-orbit-ring"
+            cx={CORE.x}
+            cy={CORE.y}
+            r="118"
+            fill="none"
+            stroke="#F15A00"
+            strokeOpacity="0.28"
+            strokeWidth="1.2"
+            strokeDasharray="4 14"
+          />
+        )}
 
         {ENDPOINTS.map((item) => {
           const { d } = linePath(item);
@@ -185,6 +228,15 @@ export function ConnectionsMap() {
           const inbound = item.flow === "in";
           return (
             <g key={`link-${item.id}`}>
+              {live ? null : (
+                <path
+                  d={d}
+                  fill="none"
+                  stroke={inbound ? "#33D3A6" : "#F15A00"}
+                  strokeWidth={lit ? 10 : 7}
+                  opacity={lit ? 0.16 : 0.07}
+                />
+              )}
               <path
                 d={d}
                 fill="none"
@@ -197,28 +249,36 @@ export function ConnectionsMap() {
                         : "#F15A00"
                       : "#2A3A48"
                 }
-                strokeWidth={lit ? 2.6 : 1.5}
+                strokeWidth={lit ? 2.8 : 1.6}
                 strokeDasharray={live ? "7 7" : undefined}
                 className="transition-all duration-200"
               />
               {live ? null : (
-                <>
-                  <circle r="3.2" fill={inbound ? "#33D3A6" : "#F15A00"}>
+                <g filter="url(#flow-glow)">
+                  <circle r="4" fill={inbound ? "#33D3A6" : "#F15A00"}>
                     <animateMotion
-                      dur={`${2.8 + (item.x % 7) * 0.15}s`}
+                      dur={`${2.4 + (item.x % 7) * 0.12}s`}
                       repeatCount="indefinite"
                       path={d}
                     />
                   </circle>
-                  <circle r="2.2" fill={inbound ? "#33D3A6" : "#F15A00"} opacity="0.55">
+                  <circle r="2.6" fill={inbound ? "#33D3A6" : "#F15A00"} opacity="0.55">
                     <animateMotion
-                      dur={`${2.8 + (item.x % 7) * 0.15}s`}
-                      begin="1.3s"
+                      dur={`${2.4 + (item.x % 7) * 0.12}s`}
+                      begin="0.8s"
                       repeatCount="indefinite"
                       path={d}
                     />
                   </circle>
-                </>
+                  <circle r="2" fill="#E7ECEF" opacity="0.35">
+                    <animateMotion
+                      dur={`${2.4 + (item.x % 7) * 0.12}s`}
+                      begin="1.6s"
+                      repeatCount="indefinite"
+                      path={d}
+                    />
+                  </circle>
+                </g>
               )}
             </g>
           );
@@ -267,16 +327,23 @@ export function ConnectionsMap() {
           <circle
             cx={CORE.x}
             cy={CORE.y}
-            r="86"
+            r="108"
             fill="#F15A00"
             className={live ? "opacity-5" : "core-glow-ring"}
           />
           <circle
             cx={CORE.x}
             cy={CORE.y}
+            r="86"
+            fill="#F15A00"
+            opacity={live ? 0.05 : 0.14}
+          />
+          <circle
+            cx={CORE.x}
+            cy={CORE.y}
             r="70"
             fill="#F15A00"
-            opacity={live ? 0.06 : 0.16}
+            opacity={live ? 0.06 : 0.2}
           />
           <Hex
             cx={CORE.x}
@@ -367,6 +434,7 @@ export function ConnectionsMap() {
                 cx={18}
                 cy={-18}
                 r="4.2"
+                className={live ? undefined : "map-status-pulse"}
                 fill={live ? "#4B5760" : "#33D3A6"}
                 stroke="#0A0F14"
                 strokeWidth="1.4"

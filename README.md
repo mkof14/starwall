@@ -38,7 +38,7 @@ Shared sticky header and footer wrap every route via the root layout.
 |---|---|
 | `/` | StarWall — Overview |
 | `/how-it-works` | How it works |
-| `/interface` | Interface |
+| `/interface` | Interface (scenario-linked Situational Picture) |
 | `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
 | `/technology` | Technology |

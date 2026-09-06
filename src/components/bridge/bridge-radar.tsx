@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
+import { cn } from "@/lib/cn";
+import {
+  motionTowardOwnShip,
+  radarScene,
+  toneColor,
+  type ContactMotion,
+  type PictureContact,
+} from "@/lib/picture-scenes";
 
 type Tooltip = {
   x: number;
@@ -12,63 +20,103 @@ type Tooltip = {
 };
 
 type BridgeRadarProps = {
-  showNewContact: boolean;
+  scenarioId?: string;
   degraded?: "radar" | "ais" | null;
   empty?: boolean;
 };
 
-export function BridgeRadar({ showNewContact, degraded, empty }: BridgeRadarProps) {
+const TICKS = Array.from({ length: 36 }, (_, index) => index * 10);
+
+function motionClass(motion?: ContactMotion) {
+  if (motion === "close") return "contact-close";
+  if (motion === "inbound") return "contact-inbound";
+  if (motion === "orbit") return "contact-orbit";
+  if (motion === "hold") return "contact-hold";
+  return undefined;
+}
+
+function ContactMark({ contact }: { contact: PictureContact }) {
+  const color = toneColor(contact.tone);
+  const shape = contact.shape ?? "vessel";
+  if (shape === "uav") {
+    return (
+      <g fill="none" stroke={color} strokeWidth="1.3">
+        <circle className="hud-contact-pulse" r="14" />
+        <path d="M0,-7 L6,0 L0,7 L-6,0 Z" fill={color} stroke="none" />
+        <g className="uav-rotor">
+          <path d="M-10,0 H10 M0,-10 V10" />
+        </g>
+      </g>
+    );
+  }
+  if (shape === "usv") {
+    return (
+      <g fill="none" stroke={color} strokeWidth="1.3">
+        <circle className="hud-contact-pulse" r="13" />
+        <path d="M-8,4 L-5,-5 H5 L8,4 Z" fill={color} fillOpacity="0.85" />
+      </g>
+    );
+  }
+  if (shape === "mob") {
+    return (
+      <g fill="none" stroke={color} strokeWidth="1.5">
+        <circle className="hud-contact-pulse" r="16" />
+        <circle r="5" fill={color} stroke="none" />
+        <path d="M-7,8 L0,2 L7,8" />
+      </g>
+    );
+  }
+  return (
+    <g>
+      {contact.tone !== "ok" ? (
+        <circle className="hud-contact-pulse" r="14" fill="none" stroke={color} strokeWidth="1.2" />
+      ) : null}
+      <circle r="5" fill="none" stroke={color} strokeWidth="1.4" />
+      <circle r="3.5" fill={color} />
+    </g>
+  );
+}
+
+export function BridgeRadar({
+  scenarioId = "",
+  degraded,
+  empty,
+}: BridgeRadarProps) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
-
-  useEffect(() => {
-    const group = document.getElementById("ticks");
-    if (!group) return;
-    group.replaceChildren();
-
-    for (let deg = 0; deg < 360; deg += 10) {
-      const rad = ((deg - 90) * Math.PI) / 180;
-      const longer = deg % 30 === 0;
-      const inner = longer ? 158 : 164;
-      const x1 = 340 + inner * Math.cos(rad);
-      const y1 = 214 + inner * Math.sin(rad);
-      const x2 = 340 + 168 * Math.cos(rad);
-      const y2 = 214 + 168 * Math.sin(rad);
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", String(x1));
-      line.setAttribute("y1", String(y1));
-      line.setAttribute("x2", String(x2));
-      line.setAttribute("y2", String(y2));
-      line.setAttribute("stroke", "#223039");
-      line.setAttribute("stroke-width", longer ? "1.4" : "1");
-      group.appendChild(line);
-    }
-  }, []);
+  const scene = radarScene(scenarioId);
 
   function onContactEnter(
     event: MouseEvent<SVGGElement>,
-    fallback?: { name: string; type: string; dist: string },
+    contact: PictureContact,
   ) {
-    const target = event.currentTarget;
     setTooltip({
       x: event.clientX,
       y: event.clientY,
-      name: target.dataset.name ?? fallback?.name ?? "",
-      type: target.dataset.type ?? fallback?.type ?? "",
-      dist: target.dataset.dist ?? fallback?.dist ?? "",
+      name: contact.name,
+      type: contact.type,
+      dist: contact.dist,
     });
   }
 
   function onContactMove(event: MouseEvent<SVGGElement>) {
     setTooltip((current) =>
-      current
-        ? { ...current, x: event.clientX, y: event.clientY }
-        : current,
+      current ? { ...current, x: event.clientX, y: event.clientY } : current,
     );
   }
 
   return (
-    <div className="relative overflow-hidden bg-[radial-gradient(circle_at_center,#0D161C_0%,#0A0F14_70%)]">
+    <div
+      className="relative overflow-hidden bg-[radial-gradient(circle_at_center,#0D161C_0%,#0A0F14_70%)]"
+      data-testid="picture-scene"
+      data-scene={scenarioId || "watch"}
+    >
       <svg viewBox="0 0 680 428" className="h-auto w-full">
+        <defs>
+          <linearGradient id="sweepGrad" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stopColor="#33D3A6" stopOpacity="0" />
+            <stop offset="100%" stopColor="#33D3A6" stopOpacity="0.20" />
+          </linearGradient>
+        </defs>
         <path
           d="M0,50 L100,44 L156,84 L132,140 L66,152 L0,116 Z"
           fill="#0D161C"
@@ -93,46 +141,32 @@ export function BridgeRadar({ showNewContact, degraded, empty }: BridgeRadarProp
         <text x="345" y="95" fontFamily="monospace" fontSize="8.5" fill="#3C4750">
           2NM
         </text>
-        <g id="ticks" />
-        <text
-          x="340"
-          y="34"
-          textAnchor="middle"
-          fontFamily="monospace"
-          fontSize="11"
-          fill="#7C8894"
-          fontWeight="bold"
-        >
+        {TICKS.map((deg) => {
+          const rad = ((deg - 90) * Math.PI) / 180;
+          const longer = deg % 30 === 0;
+          const inner = longer ? 158 : 164;
+          return (
+            <line
+              key={deg}
+              x1={340 + inner * Math.cos(rad)}
+              y1={214 + inner * Math.sin(rad)}
+              x2={340 + 168 * Math.cos(rad)}
+              y2={214 + 168 * Math.sin(rad)}
+              stroke="#223039"
+              strokeWidth={longer ? 1.4 : 1}
+            />
+          );
+        })}
+        <text x="340" y="34" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#7C8894" fontWeight="bold">
           N
         </text>
-        <text
-          x="340"
-          y="402"
-          textAnchor="middle"
-          fontFamily="monospace"
-          fontSize="11"
-          fill="#4E5B65"
-        >
+        <text x="340" y="402" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
           S
         </text>
-        <text
-          x="626"
-          y="219"
-          textAnchor="middle"
-          fontFamily="monospace"
-          fontSize="11"
-          fill="#4E5B65"
-        >
+        <text x="626" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
           E
         </text>
-        <text
-          x="54"
-          y="219"
-          textAnchor="middle"
-          fontFamily="monospace"
-          fontSize="11"
-          fill="#4E5B65"
-        >
+        <text x="54" y="219" textAnchor="middle" fontFamily="monospace" fontSize="11" fill="#4E5B65">
           W
         </text>
         <line
@@ -145,98 +179,57 @@ export function BridgeRadar({ showNewContact, degraded, empty }: BridgeRadarProp
           strokeDasharray="2 4"
         />
         {degraded === "radar" || empty ? null : (
-        <g className="bridge-sweep" style={{ pointerEvents: "none" }}>
-          <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
-        </g>
+          <g className="bridge-sweep">
+            <path d="M340,214 L340,46 A168,168 0 0,1 483,124 Z" fill="url(#sweepGrad)" />
+          </g>
         )}
-        <defs>
-          <linearGradient id="sweepGrad" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stopColor="#33D3A6" stopOpacity="0" />
-            <stop offset="100%" stopColor="#33D3A6" stopOpacity="0.20" />
-          </linearGradient>
-        </defs>
         <g transform="translate(340,214)">
           <path d="M0,-11 L8,10 L0,6 L-8,10 Z" fill="#E7ECEF" />
           {empty ? null : (
-          <text x="12" y="16" fontFamily="monospace" fontSize="9" fill="#48545D">
-            HDG 247° · 11.4KN
-          </text>
+            <text x="12" y="16" fontFamily="monospace" fontSize="9" fill="#48545D">
+              {scene.heading}
+            </text>
           )}
         </g>
-        {empty ? null : (
-        <>
-        <g
-          data-name="M/V KESTREL 2"
-          data-type="Cargo · 4200t · AIS ok"
-          data-dist="3.1 NM · brg 318°"
-          transform="translate(214,126)"
-          style={{ cursor: "pointer" }}
-          onMouseEnter={onContactEnter}
-          onMouseMove={onContactMove}
-          onMouseLeave={() => setTooltip(null)}
-        >
-          <circle r="16" fill="transparent" />
-          <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
-          <circle r="3.5" fill="#33D3A6" />
-          <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
-            KESTREL 2
-          </text>
-        </g>
-        <g
-          data-name="Fishing vessel (unident.)"
-          data-type="No AIS signal"
-          data-dist="4.6 NM · brg 142°"
-          transform="translate(468,322)"
-          style={{ cursor: "pointer" }}
-          onMouseEnter={onContactEnter}
-          onMouseMove={onContactMove}
-          onMouseLeave={() => setTooltip(null)}
-        >
-          <circle r="16" fill="transparent" />
-          <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
-          <circle r="3.5" fill="#33D3A6" />
-          <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
-            UNIDENT.
-          </text>
-        </g>
-        <g
-          data-name="M/Y SIRENA"
-          data-type="Yacht · 38m · known"
-          data-dist="2.0 NM · brg 048°"
-          transform="translate(418,150)"
-          style={{ cursor: "pointer" }}
-          onMouseEnter={onContactEnter}
-          onMouseMove={onContactMove}
-          onMouseLeave={() => setTooltip(null)}
-        >
-          <circle r="16" fill="transparent" />
-          <circle r="5" fill="none" stroke="#33D3A6" strokeWidth="1.4" />
-          <circle r="3.5" fill="#33D3A6" />
-          <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#7C8894">
-            SIRENA
-          </text>
-        </g>
-        {showNewContact ? (
-          <g
-            data-name="NEW CONTACT"
-            data-type="Unidentified · no AIS"
-            data-dist="4.2 NM · closing 8 kn"
-            transform="translate(490,300)"
-            style={{ cursor: "pointer" }}
-            onMouseEnter={onContactEnter}
-            onMouseMove={onContactMove}
-            onMouseLeave={() => setTooltip(null)}
-          >
-            <circle r="16" fill="transparent" />
-            <circle r="5" fill="none" stroke="#F15A00" strokeWidth="1.4" />
-            <circle r="3.5" fill="#F15A00" />
-            <text x="9" y="4" fontFamily="monospace" fontSize="9.5" fill="#F15A00">
-              NEW CONTACT
-            </text>
-          </g>
-        ) : null}
-        </>
-        )}
+        {empty
+          ? null
+          : scene.contacts.map((contact) => {
+              const shift = motionTowardOwnShip(
+                contact.x,
+                contact.y,
+                contact.motion === "inbound" ? 36 : 18,
+              );
+              return (
+                <g
+                  key={contact.id}
+                  transform={`translate(${contact.x} ${contact.y})`}
+                  style={{ cursor: "pointer" }}
+                  onMouseEnter={(event) => onContactEnter(event, contact)}
+                  onMouseMove={onContactMove}
+                  onMouseLeave={() => setTooltip(null)}
+                >
+                  <g
+                    className={cn(motionClass(contact.motion))}
+                    style={{
+                      ["--mx" as string]: `${shift.mx}px`,
+                      ["--my" as string]: `${shift.my}px`,
+                    }}
+                  >
+                    <circle r="16" fill="transparent" />
+                    <ContactMark contact={contact} />
+                    <text
+                      x="12"
+                      y="4"
+                      fontFamily="monospace"
+                      fontSize="9.5"
+                      fill={toneColor(contact.tone)}
+                    >
+                      {contact.label}
+                    </text>
+                  </g>
+                </g>
+              );
+            })}
       </svg>
       {tooltip && typeof document !== "undefined"
         ? createPortal(

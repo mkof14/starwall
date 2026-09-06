@@ -29,7 +29,7 @@ export function ConnectionsView() {
             <p className="mt-2 max-w-2xl text-sm text-[#9CA3AF]">
               {live
                 ? "Same layout as the working picture — every unit is waiting for installation. No live sensors are connected yet."
-                : "How sensors, the AGRON Container, the Bridge, and Support Center meet at StarWall Core."}
+                : "Live topology of the training picture: sensors feed StarWall Core; Core pushes the same picture to AGRON Bridge and Support Center."}
             </p>
           </div>
           <Link

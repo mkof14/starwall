@@ -38,12 +38,19 @@ import { cn } from "@/lib/cn";
 import {
   PANEL_CHROME,
   RESET_LOG,
+  SCENARIOS,
   type PanelType,
   type RiskLevel,
   type Scenario,
   type ScenarioOption,
   type SessionEvent,
 } from "@/lib/scenarios";
+import {
+  perimeterScene,
+  radarScene,
+  sonarScene,
+  spectrumScene,
+} from "@/lib/picture-scenes";
 
 type LogEntry = EventToast;
 
@@ -94,21 +101,20 @@ function riskTone(level: RiskLevel) {
 
 function pictureFor(
   panelType: PanelType,
-  showNewContact: boolean,
+  scenarioId: string,
   situational: string,
-  contacts4: string,
-  contacts5: string,
   pictureFault: "radar" | "ais" | null,
   empty?: boolean,
 ) {
   if (empty || panelType === "radar") {
+    const scene = radarScene(empty ? "" : scenarioId);
     return {
       testId: "radar-panel",
       title: situational,
-      extra: empty ? "NO SENSORS" : showNewContact ? contacts5 : contacts4,
+      extra: empty ? "NO SENSORS" : scene.extra,
       view: (
         <BridgeRadar
-          showNewContact={empty ? false : showNewContact}
+          scenarioId={empty ? "" : scenarioId}
           degraded={empty ? null : pictureFault}
           empty={empty}
         />
@@ -116,18 +122,27 @@ function pictureFor(
     };
   }
   const chrome = PANEL_CHROME[panelType];
+  if (panelType === "sonar") {
+    return {
+      testId: chrome.testId,
+      title: chrome.title,
+      extra: sonarScene(scenarioId).extra,
+      view: <SonarView scenarioId={scenarioId} />,
+    };
+  }
+  if (panelType === "spectrum") {
+    return {
+      testId: chrome.testId,
+      title: chrome.title,
+      extra: spectrumScene(scenarioId).extra,
+      view: <SpectrumView scenarioId={scenarioId} />,
+    };
+  }
   return {
     testId: chrome.testId,
     title: chrome.title,
-    extra: chrome.extra,
-    view:
-      panelType === "sonar" ? (
-        <SonarView />
-      ) : panelType === "spectrum" ? (
-        <SpectrumView />
-      ) : (
-        <PerimeterView />
-      ),
+    extra: perimeterScene(scenarioId).extra,
+    view: <PerimeterView scenarioId={scenarioId} />,
   };
 }
 
@@ -155,7 +170,6 @@ export function BridgeConsole() {
   const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
   const [toasts, setToasts] = useState<EventToast[]>([]);
   const [flashId, setFlashId] = useState<string | null>(null);
-  const [showNewContact, setShowNewContact] = useState(false);
   const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportAt, setReportAt] = useState<Date | null>(null);
@@ -238,7 +252,6 @@ export function BridgeConsole() {
       setPanelType("radar");
       setActionText(null);
       setActionOptions(null);
-      setShowNewContact(false);
       setCrisis(false);
       setFaultId(null);
       setTraining(false);
@@ -253,7 +266,6 @@ export function BridgeConsole() {
     setPanelType("radar");
     setActionText(null);
     setActionOptions(null);
-    setShowNewContact(false);
     setFaultId(null);
     setTraining(false);
     setLogEntries([]);
@@ -295,13 +307,12 @@ export function BridgeConsole() {
     faultId === "radar" || faultId === "ais" ? faultId : null;
   const picture = pictureFor(
     panelType,
-    showNewContact,
+    selectedId,
     t.bridge.situational,
-    t.bridge.contacts4,
-    t.bridge.contacts5,
     pictureFault,
     live,
   );
+  const activeScenario = SCENARIOS.find((item) => item.id === selectedId);
   const pictureOverlay =
     faultId === "radar"
       ? "Radar offline — showing AIS/last known positions only"
@@ -319,7 +330,6 @@ export function BridgeConsole() {
     setPanelType(scenario.panelType);
     setActionText(scenario.actionText);
     setActionOptions(critical ? null : scenario.options ?? null);
-    setShowNewContact(scenario.panelType === "radar");
     setCrisis(critical);
     if (critical) setTraining(false);
     const stamp = nowStamp();
@@ -377,7 +387,6 @@ export function BridgeConsole() {
     setPanelType("radar");
     setActionText(null);
     setActionOptions(null);
-    setShowNewContact(false);
     setCrisis(false);
     setFaultId(null);
     pushLogs([{ level: "NORMAL", text: RESET_LOG, kind: "reset" }]);
@@ -540,6 +549,24 @@ export function BridgeConsole() {
 
         <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
           <div data-testid="situational-panel">
+          <div
+            data-testid="picture-scenario-banner"
+            className="mb-2 border border-bridge-line bg-[#0A0F14] px-3 py-2"
+          >
+            <p className="font-mono text-[10px] tracking-[0.22em] text-orange">
+              {activeScenario
+                ? "TRAINING LIBRARY · SELECT SCENARIO"
+                : "WATCH · SELECT SCENARIO"}
+            </p>
+            <p className="mt-0.5 font-ui text-lg font-bold tracking-wide text-bridge-text">
+              {activeScenario?.name ?? "Normal watch"}
+            </p>
+            <p className="font-mono text-[10px] text-bridge-dim">
+              {activeScenario
+                ? `${activeScenario.category} · ${activeScenario.riskLevel}`
+                : "Pick a case from the library to load its picture."}
+            </p>
+          </div>
           <HudPanel
             testId={picture.testId}
             title={picture.title}

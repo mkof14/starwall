@@ -137,3 +137,16 @@ export function pointOnLine(
     y: from.y + (dy / len) * inset,
   };
 }
+
+export function curvePath(
+  from: { x: number; y: number },
+  to: { x: number; y: number },
+  bend = 0.16,
+) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const mx = (from.x + to.x) / 2;
+  const my = (from.y + to.y) / 2;
+  return `M ${from.x} ${from.y} Q ${mx - (dy / len) * len * bend} ${my + (dx / len) * len * bend} ${to.x} ${to.y}`;
+}
