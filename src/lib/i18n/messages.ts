@@ -200,6 +200,32 @@ export type Messages = {
     notifyPhone: string;
     notifyChat: string;
     notifyRecipient: string;
+    signedInRole: string;
+    users: string;
+    usersTitle: string;
+    usersLead: string;
+    usersLink: string;
+    inviteUser: string;
+    inviteName: string;
+    invitePlaceholder: string;
+    invitationCreated: string;
+    colEmail: string;
+    colLastSignIn: string;
+    pendingInvite: string;
+    neverSignedIn: string;
+    saveNotify: string;
+    savingNotify: string;
+    notifySaved: string;
+    notifySaveFailed: string;
+    settingsLocked: string;
+    diagnosticLocked: string;
+    viewerLocked: string;
+    feedConnected: string;
+    feedStale: string;
+    feedDisconnected: string;
+    colVendor: string;
+    roleChanged: string;
+    forbidden: string;
   };
   auth: {
     kicker: string;
@@ -592,7 +618,7 @@ export const en: Messages = {
     lead:
       "Connectivity, equipment health, access control, and monitoring — including AGRON Container hardware. Denser than the Bridge: built for administrators, not a glance watch.",
     demoNotice:
-      "Illustrative system administration view — demonstrates the operational layer's structure and capabilities, not a live production admin panel.",
+      "Pre-pilot administration — roles, equipment checks, notification routing, and the audit log write to the local database. No physical sensors are connected yet.",
     sectionsNav: "Backend sections",
     health: "System Health",
     equipment: "Equipment",
@@ -658,9 +684,9 @@ export const en: Messages = {
     roleOperator: "Operator",
     roleViewer: "Viewer",
     roleSuperDetail: "Full system plus user management.",
-    roleAdminDetail: "Configure equipment and view all data.",
-    roleOperatorDetail: "Day-to-day monitoring and scenario response.",
-    roleViewerDetail: "Read-only access to reports.",
+    roleAdminDetail: "Equipment diagnostics and notification routing, plus everything an Operator can do.",
+    roleOperatorDetail: "View every surface, trigger scenarios, and use Helm. Cannot change settings.",
+    roleViewerDetail: "Reports and Black Box only — no scenario triggering, no settings.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
       "Session records from this browser — Helm conversations and scenario runs — written on the Bridge and retained locally.",
@@ -702,7 +728,7 @@ export const en: Messages = {
       "Switching to {name}... (full multi-object switching available at Premium/Custom tier)",
     notifyTitle: "NOTIFICATION ROUTING",
     notifyNote:
-      "Illustrative configuration — actual notification delivery requires connecting a provider (e.g. Twilio for calls/SMS) before going live.",
+      "Saved routes are stored in the database. Actual delivery still needs a provider (for example Twilio for calls/SMS) before going live.",
     notifyAttention: "Attention",
     notifyElevated: "Elevated",
     notifyCritical: "Critical",
@@ -711,6 +737,34 @@ export const en: Messages = {
     notifyPhone: "Phone call",
     notifyChat: "WhatsApp / Messenger",
     notifyRecipient: "Recipient contact",
+    signedInRole: "Signed in as {role}",
+    users: "User Management",
+    usersTitle: "USER MANAGEMENT",
+    usersLead:
+      "Live accounts from the user store. Role changes write immediately and appear in the audit log.",
+    usersLink: "Open User Management →",
+    inviteUser: "Invite by email",
+    inviteName: "Name",
+    invitePlaceholder: "officer@example.com",
+    invitationCreated:
+      "Invitation created — connect an email service to actually send it",
+    colEmail: "Email",
+    colLastSignIn: "Last sign-in",
+    pendingInvite: "Pending invite",
+    neverSignedIn: "Never",
+    saveNotify: "Save routing",
+    savingNotify: "Saving…",
+    notifySaved: "Routing saved",
+    notifySaveFailed: "Could not save routing",
+    settingsLocked: "Your role cannot change these settings.",
+    diagnosticLocked: "Diagnostics require Admin or Super Admin.",
+    viewerLocked: "Viewer role — reports and Black Box only.",
+    feedConnected: "Connected",
+    feedStale: "Stale",
+    feedDisconnected: "Disconnected",
+    colVendor: "Vendor",
+    roleChanged: "Role updated",
+    forbidden: "This page is Super Admin only.",
   },
   auth: {
     kicker: "AUTHORIZATION",

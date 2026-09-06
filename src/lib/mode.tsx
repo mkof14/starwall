@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -43,13 +44,28 @@ export function ModeProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(MODE_KEY, mode);
   }, [mode]);
 
+  const setMode = useCallback((next: AppMode) => {
+    setModeState((previous) => {
+      if (next === previous) return previous;
+      void fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "mode_switch",
+          details: `${previous.toUpperCase()} → ${next.toUpperCase()}`,
+        }),
+      }).catch(() => undefined);
+      return next;
+    });
+  }, []);
+
   const value = useMemo<ModeContextValue>(
     () => ({
       mode,
       live: mode === "live",
-      setMode: setModeState,
+      setMode,
     }),
-    [mode],
+    [mode, setMode],
   );
 
   return <ModeContext.Provider value={value}>{children}</ModeContext.Provider>;

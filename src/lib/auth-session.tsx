@@ -8,11 +8,12 @@ import {
   type ReactNode,
 } from "react";
 import { SessionProvider, signOut, useSession } from "next-auth/react";
+import { isUserRole, type UserRole } from "@/lib/rbac";
 
 export type AuthSession = {
   name: string;
   email: string;
-  role: "Operator";
+  role: UserRole;
   at: string;
 };
 
@@ -60,7 +61,7 @@ function AuthSessionInner({ children }: { children: ReactNode }) {
     return {
       name,
       email: data.user.email?.trim() ?? "",
-      role: "Operator",
+      role: isUserRole(data.user.role) ? data.user.role : "Operator",
       at: new Date().toISOString(),
     };
   }, [data]);

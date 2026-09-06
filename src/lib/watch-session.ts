@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
-import { databaseConfigured, getPrisma } from "@/lib/prisma";
+import { databaseConfigured, getPrisma, prismaReady } from "@/lib/prisma";
+import { defaultSignupRole } from "@/lib/rbac";
 
 export type CloudUser = {
   userId: string;
@@ -23,7 +24,7 @@ export async function requireCloudUser(): Promise<
   if (!databaseConfigured()) {
     return { ok: false, status: 503, error: "cloud_unavailable" };
   }
-  const prisma = getPrisma();
+  const prisma = await prismaReady();
   if (!prisma) {
     return { ok: false, status: 503, error: "cloud_unavailable" };
   }
@@ -39,7 +40,12 @@ export async function requireCloudUser(): Promise<
     await prisma.user.upsert({
       where: { email },
       update: { name },
-      create: { id: userId, email, name },
+      create: {
+        id: userId,
+        email,
+        name,
+        role: defaultSignupRole(),
+      },
     });
     const existing = await prisma.user.findUnique({ where: { email } });
     return {

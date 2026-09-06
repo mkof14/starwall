@@ -3,15 +3,22 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id       String    @id
-  email    String    @unique
-  name     String
-  sessions Session[]
+  id            String     @id
+  email         String     @unique
+  name          String
+  organization  String     @default("")
+  passwordHash  String     @default("")
+  role          String     @default("Operator")
+  pending       Boolean    @default(false)
+  lastSignInAt  DateTime?
+  createdAt     DateTime   @default(now())
+  sessions      Session[]
+  auditLogs     AuditLog[]
 }
 
 model Session {
@@ -64,4 +71,39 @@ model BlackBoxRecord {
   storageLocation String
 
   @@index([sessionId, timestamp])
+}
+
+model Equipment {
+  id          String    @id
+  name        String
+  category    String
+  lastCheckAt DateTime?
+  status      String    @default("ok")
+  addedAt     DateTime  @default(now())
+}
+
+model NotificationRoute {
+  id        String  @id
+  riskLevel String
+  method    String
+  contact   String  @default("")
+  enabled   Boolean @default(true)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  details   String
+  timestamp DateTime @default(now())
+
+  @@index([timestamp])
+}
+
+model Integration {
+  id         String    @id
+  name       String
+  vendor     String
+  lastPingAt DateTime?
 }

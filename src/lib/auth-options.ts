@@ -1,9 +1,13 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { authenticateUser } from "@/lib/user-store";
-
-// Credentials still use the local JSON user store. Cloud watch data uses Prisma when DATABASE_URL is set.
+import { isUserRole } from "@/lib/rbac";
+import {
+  authenticateUser,
+  findUserByEmail,
+  markSignIn,
+  upsertGoogleUser,
+} from "@/lib/user-store";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "starwall-dev-secret-not-for-production",
@@ -22,12 +26,14 @@ export const authOptions: NextAuthOptions = {
         const email = credentials?.email?.trim() ?? "";
         const password = credentials?.password ?? "";
         if (!email || !password) return null;
-        const user = authenticateUser(email, password);
+        const user = await authenticateUser(email, password);
         if (!user) return null;
+        await markSignIn(user.id);
         return {
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
         };
       },
     }),
@@ -37,11 +43,35 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        const stored = await upsertGoogleUser({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        });
+        if (stored) {
+          user.id = stored.id;
+          user.role = stored.role;
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id ?? token.sub;
         if (user.name) token.name = user.name;
         if (user.email) token.email = user.email;
+        if (isUserRole(user.role)) token.role = user.role;
+      }
+      const email = typeof token.email === "string" ? token.email : "";
+      if (email) {
+        const stored = await findUserByEmail(email);
+        if (stored) {
+          token.sub = stored.id;
+          token.role = stored.role;
+          token.name = stored.name;
+        }
       }
       return token;
     },
@@ -51,6 +81,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = typeof token.name === "string" ? token.name : session.user.name;
         session.user.email =
           typeof token.email === "string" ? token.email : session.user.email;
+        session.user.role = isUserRole(token.role) ? token.role : "Operator";
       }
       return session;
     },

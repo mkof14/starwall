@@ -36,7 +36,9 @@ import { cloudVesselName, syncEventToCloud } from "@/lib/cloud-sync";
 import { listEvents, putEvents, putSessionReport, type StoredEvent } from "@/lib/local-db";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { usePreferences } from "@/lib/i18n/context";
+import { useAuthSession } from "@/lib/auth-session";
 import { useAppMode } from "@/lib/mode";
+import { canTriggerScenarios } from "@/lib/rbac";
 import { cn } from "@/lib/cn";
 import {
   PANEL_CHROME,
@@ -152,6 +154,8 @@ function pictureFor(
 export function BridgeConsole() {
   const { t } = usePreferences();
   const { live } = useAppMode();
+  const { session } = useAuthSession();
+  const canRunScenarios = canTriggerScenarios(session?.role);
   const { setCrisis } = useCrisisMode();
   const { setSession } = useBridgeSession();
   const { recordScenario } = useBlackBox();
@@ -405,7 +409,7 @@ export function BridgeConsole() {
         : null;
 
   function applyScenario(scenario: Scenario) {
-    if (live) return;
+    if (live || !canRunScenarios) return;
     clearAutoTimer();
     const critical = scenario.riskLevel === "CRITICAL";
     setSelectedId(scenario.id);
@@ -842,7 +846,7 @@ export function BridgeConsole() {
         <div className={crisis ? "hidden" : undefined}>
         <ScenarioLibrary
           selectedId={selectedId}
-          disabled={live}
+          disabled={live || !canRunScenarios}
           onSelect={applyScenario}
           onReset={resetToNormal}
           onReport={() => {

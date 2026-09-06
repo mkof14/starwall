@@ -8,7 +8,8 @@ import { useBridgeSession } from "@/lib/bridge-session";
 import { syncConversationToCloud } from "@/lib/cloud-sync";
 import { HELM_OPEN_EVENT, publishHelmState } from "@/lib/helm-events";
 import { listConversations, putConversation, type StoredConversation } from "@/lib/local-db";
-import { isAuthRoute } from "@/lib/auth-session";
+import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
+import { canUseHelm } from "@/lib/rbac";
 import { usePreferences } from "@/lib/i18n/context";
 import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
 import { useAppMode } from "@/lib/mode";
@@ -57,6 +58,8 @@ function SpeechEngine() {
 export function Helm() {
   const pathname = usePathname();
   const session = useBridgeSession();
+  const { session: auth } = useAuthSession();
+  const helmAllowed = !auth || canUseHelm(auth.role);
   const { live } = useAppMode();
   const { t } = usePreferences();
   const { recordConversation } = useBlackBox();
@@ -373,7 +376,7 @@ export function Helm() {
     }
   }
 
-  if (isAuthRoute(pathname)) return null;
+  if (isAuthRoute(pathname) || !helmAllowed) return null;
 
   return (
     <div

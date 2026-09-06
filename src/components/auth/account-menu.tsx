@@ -55,6 +55,9 @@ export function AccountMenu() {
               {session.email}
             </p>
           ) : null}
+          <p className="px-3 pb-2 font-mono text-[10px] text-orange">
+            {session.role}
+          </p>
           <button
             type="button"
             data-testid="account-sign-out"

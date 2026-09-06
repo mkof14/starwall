@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const result = createUser({
+  const result = await createUser({
     name,
     organization: typeof organization === "string" ? organization : "",
     email,
@@ -37,6 +37,9 @@ export async function POST(request: Request) {
   });
 
   if (!result.ok) {
+    if (result.error === "unavailable") {
+      return NextResponse.json({ error: "Account store unavailable." }, { status: 503 });
+    }
     return NextResponse.json(
       { error: "An account with this email already exists." },
       { status: 409 },

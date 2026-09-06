@@ -32,6 +32,8 @@ yarn-error.log*
 
 # local credential store — demo only
 /data/users.json
+/prisma/dev.db
+/prisma/dev.db-journal
 
 # vercel
 .vercel

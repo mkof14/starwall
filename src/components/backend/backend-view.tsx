@@ -1,39 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { HudPanel } from "@/components/bridge/hud-panel";
-import { LiveModeBanner } from "@/components/live-mode-banner";
-import { ModeToggle } from "@/components/mode-toggle";
-import {
-  ADMIN_ROLES,
-  INTEGRATION_SEED,
-  SEEDED_USERS,
-  clockStamp,
-  getAdminHeartbeat,
-  newAdminId,
-  postAdmin,
-  type AdminIntegration,
-  type AdminRole,
-  type AdminUser,
-  type AuditEntry,
-  type EquipCheck,
-  type EquipStatus,
-  type Heartbeat,
-} from "@/lib/admin";
-import { useBlackBox } from "@/lib/black-box";
-import { cn } from "@/lib/cn";
+import { useCallback, useEffect, useState } from "react";
 import { NotifyPanel } from "@/components/backend/notify-panel";
 import { ObjectsPanel } from "@/components/backend/objects-panel";
 import { PlanPanel } from "@/components/backend/plan-panel";
-import { EQUIPMENT } from "@/lib/equipment";
+import { EventToasts, type EventToast } from "@/components/bridge/event-toasts";
+import { HudPanel } from "@/components/bridge/hud-panel";
+import { LiveModeBanner } from "@/components/live-mode-banner";
+import { ModeToggle } from "@/components/mode-toggle";
+import { clockStamp, getAdminHeartbeat, postAdmin, type Heartbeat } from "@/lib/admin";
+import { useAuthSession } from "@/lib/auth-session";
+import { useBlackBox } from "@/lib/black-box";
+import { cn } from "@/lib/cn";
+import type { EquipmentStatus } from "@/lib/equipment";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAppMode } from "@/lib/mode";
-
-const EXTRA_EQUIPMENT = [
-  { id: "hull", name: "AGRON Container Unit — Hull Sensor Array" },
-  { id: "power", name: "AGRON Container Unit — Power System" },
-] as const;
+import {
+  canManageUsers,
+  canWriteSettings,
+  USER_ROLES,
+  type UserRole,
+} from "@/lib/rbac";
 
 const SECTIONS = [
   "health",
@@ -49,6 +37,32 @@ const SECTIONS = [
 
 type SectionId = (typeof SECTIONS)[number];
 
+type EquipmentItem = {
+  id: string;
+  name: string;
+  category: string;
+  lastCheckAt: string | null;
+  status: EquipmentStatus;
+  addedAt: string;
+};
+
+type IntegrationItem = {
+  id: string;
+  name: string;
+  vendor: string;
+  lastPingAt: string | null;
+  status: "connected" | "stale" | "disconnected";
+};
+
+type AuditItem = {
+  id: string;
+  action: string;
+  details: string;
+  timestamp: string;
+  userName: string;
+  userEmail: string;
+};
+
 function isSectionId(value: string | null | undefined): value is SectionId {
   return Boolean(value && (SECTIONS as readonly string[]).includes(value));
 }
@@ -62,62 +76,39 @@ function sectionFromLocation(): SectionId {
   return "health";
 }
 
-function statusDot(status: EquipStatus) {
-  if (status === "OK") return "bg-ok";
-  if (status === "Warning") return "bg-attn";
+function statusDot(status: EquipmentStatus) {
+  if (status === "ok") return "bg-ok";
+  if (status === "warning") return "bg-attn";
   return "bg-crit";
 }
 
-function initialChecks(): Record<string, EquipCheck> {
-  const rows = [...EQUIPMENT, ...EXTRA_EQUIPMENT];
-  const initial: Record<string, EquipCheck> = {};
-  rows.forEach((item, index) => {
-    initial[item.id] = {
-      status: index === 4 ? "Warning" : "OK",
-      time: index === 4 ? "15:41:08" : "16:02:11",
-      scan: "idle",
-      acknowledged: false,
-    };
-  });
-  return initial;
+function formatCheckTime(value: string | null) {
+  if (!value) return "—";
+  return new Date(value).toISOString().slice(11, 19);
 }
 
 export function BackendView() {
   const { live } = useAppMode();
   const { t } = usePreferences();
   const { records } = useBlackBox();
+  const { session } = useAuthSession();
   const copy = t.backend;
+  const role = session?.role ?? "Operator";
+  const writeSettings = canWriteSettings(role);
+  const manageUsers = canManageUsers(role);
+
   const [section, setSection] = useState<SectionId>("health");
-
-  useEffect(() => {
-    setSection(sectionFromLocation());
-    function onHash() {
-      setSection(sectionFromLocation());
-    }
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
-
-  function selectSection(item: SectionId) {
-    setSection(item);
-    const url = new URL(window.location.href);
-    url.searchParams.delete("section");
-    url.hash = item;
-    window.history.replaceState(null, "", `${url.pathname}${url.search}#${item}`);
-  }
   const [online, setOnline] = useState(true);
   const [syncedFor, setSyncedFor] = useState(12);
   const [localFor, setLocalFor] = useState(40);
   const [cloudBusy, setCloudBusy] = useState(false);
   const [localBusy, setLocalBusy] = useState(false);
-  const [checks, setChecks] = useState(initialChecks);
-  const [users, setUsers] = useState<AdminUser[]>(() => SEEDED_USERS);
-  const [draftName, setDraftName] = useState("");
-  const [draftRole, setDraftRole] = useState<AdminRole>("Operator");
-  const [integrations, setIntegrations] = useState<AdminIntegration[]>(
-    () => INTEGRATION_SEED,
-  );
-  const [audit, setAudit] = useState<AuditEntry[]>([]);
+  const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
+  const [scanningId, setScanningId] = useState<string | null>(null);
+  const [integrations, setIntegrations] = useState<IntegrationItem[]>([]);
+  const [pingingId, setPingingId] = useState<string | null>(null);
+  const [audit, setAudit] = useState<AuditItem[]>([]);
+  const [toasts, setToasts] = useState<EventToast[]>([]);
   const [heartbeat, setHeartbeat] = useState<Heartbeat>({
     status: "idle",
     at: null,
@@ -138,17 +129,60 @@ export function BackendView() {
     notify: copy.notify,
   };
 
-  const roleDetails: Record<AdminRole, { name: string; detail: string }> = {
+  const roleDetails: Record<UserRole, { name: string; detail: string }> = {
     "Super Admin": { name: copy.roleSuper, detail: copy.roleSuperDetail },
     Admin: { name: copy.roleAdmin, detail: copy.roleAdminDetail },
     Operator: { name: copy.roleOperator, detail: copy.roleOperatorDetail },
     Viewer: { name: copy.roleViewer, detail: copy.roleViewerDetail },
   };
 
-  const visibleUsers = useMemo(
-    () => (live ? users.filter((user) => !user.seeded) : users),
-    [live, users],
+  const loadAudit = useCallback(async () => {
+    const response = await fetch("/api/audit", { cache: "no-store" });
+    if (!response.ok) return;
+    const payload = (await response.json()) as { entries?: AuditItem[] };
+    setAudit(payload.entries ?? []);
+  }, []);
+
+  const pushToast = useCallback((text: string, level: EventToast["level"] = "ATTENTION") => {
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const toast: EventToast = {
+      id,
+      time: clockStamp(),
+      level,
+      text,
+      kind: "fault",
+    };
+    setToasts((current) => [toast, ...current].slice(0, 4));
+  }, []);
+
+  const applyEquipment = useCallback(
+    (rows: EquipmentItem[], changed: EquipmentItem[] = []) => {
+      setEquipment(rows);
+      for (const item of changed) {
+        if (item.status === "warning" || item.status === "fail") {
+          pushToast(`${item.name}: ${item.status}`, item.status === "fail" ? "CRITICAL" : "ATTENTION");
+        }
+      }
+    },
+    [pushToast],
   );
+
+  useEffect(() => {
+    setSection(sectionFromLocation());
+    function onHash() {
+      setSection(sectionFromLocation());
+    }
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  function selectSection(item: SectionId) {
+    setSection(item);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("section");
+    url.hash = item;
+    window.history.replaceState(null, "", `${url.pathname}${url.search}#${item}`);
+  }
 
   useEffect(() => {
     setOnline(navigator.onLine);
@@ -203,12 +237,64 @@ export function BackendView() {
     };
   }, []);
 
-  function pushAudit(line: string) {
-    setAudit((current) => [
-      { id: newAdminId("aud"), at: clockStamp(), line },
-      ...current,
-    ]);
-  }
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const [equipRes, integRes] = await Promise.all([
+        fetch("/api/equipment", { cache: "no-store" }),
+        fetch("/api/integrations", { cache: "no-store" }),
+      ]);
+      if (cancelled) return;
+      if (equipRes.ok) {
+        const payload = (await equipRes.json()) as { equipment?: EquipmentItem[] };
+        setEquipment(payload.equipment ?? []);
+      }
+      if (integRes.ok) {
+        const payload = (await integRes.json()) as { integrations?: IntegrationItem[] };
+        setIntegrations(payload.integrations ?? []);
+      }
+      await loadAudit();
+    }
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [loadAudit]);
+
+  useEffect(() => {
+    if (live) return;
+    async function tick() {
+      const [equipRes, integRes] = await Promise.all([
+        fetch("/api/equipment/check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason: "interval" }),
+        }),
+        fetch("/api/integrations/ping", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }),
+      ]);
+      if (equipRes.ok) {
+        const payload = (await equipRes.json()) as {
+          equipment?: EquipmentItem[];
+          changed?: EquipmentItem[];
+        };
+        applyEquipment(payload.equipment ?? [], payload.changed ?? []);
+      }
+      if (integRes.ok) {
+        const payload = (await integRes.json()) as { integrations?: IntegrationItem[] };
+        setIntegrations(payload.integrations ?? []);
+      }
+      await loadAudit();
+    }
+    void tick();
+    const timer = window.setInterval(() => {
+      void tick();
+    }, 30_000);
+    return () => window.clearInterval(timer);
+  }, [live, applyEquipment, loadAudit]);
 
   function relativeLabel(seconds: number) {
     if (seconds < 5) return copy.justNow;
@@ -221,9 +307,8 @@ export function BackendView() {
     if (live) {
       try {
         await postAdmin("request-config", kind);
-        pushAudit(`${copy.requestConfig}: ${kind}`);
       } catch {
-        pushAudit(`${copy.heartbeatFail}: ${kind}`);
+        /* keep the existing status */
       }
       return;
     }
@@ -239,170 +324,90 @@ export function BackendView() {
           setLocalFor(0);
           setLocalBusy(false);
         }
-        pushAudit(
-          kind === "cloud"
-            ? `${copy.backupDone} · cloud`
-            : `${copy.backupDone} · local`,
-        );
       }, 1200);
     } catch {
       if (kind === "cloud") setCloudBusy(false);
       else setLocalBusy(false);
-      pushAudit(copy.heartbeatFail);
     }
   }
 
-  function runDiagnostic(id: string, name: string) {
-    setChecks((current) => ({
-      ...current,
-      [id]: { ...current[id], scan: "scanning" },
-    }));
-    void postAdmin("diagnostic", id)
-      .then(() => {
-        window.setTimeout(() => {
-          const stamp = clockStamp();
-          setChecks((current) => ({
-            ...current,
-            [id]: {
-              status: "OK",
-              time: stamp,
-              scan: "done",
-              acknowledged: true,
-            },
-          }));
-          pushAudit(`${copy.runDiagnostic}: ${name}`);
-        }, 1600);
-      })
-      .catch(() => {
-        setChecks((current) => ({
-          ...current,
-          [id]: { ...current[id], scan: "idle" },
-        }));
-        pushAudit(`${copy.heartbeatFail}: ${name}`);
-      });
-  }
-
-  function acknowledgeWarning(id: string, name: string) {
-    void postAdmin("acknowledge", id).then(() => {
-      setChecks((current) => ({
-        ...current,
-        [id]: { ...current[id], status: "OK", acknowledged: true },
-      }));
-      pushAudit(`${copy.acknowledged}: ${name}`);
+  async function runDiagnostic(id: string) {
+    if (!writeSettings) return;
+    setScanningId(id);
+    const response = await fetch("/api/equipment/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
     });
+    setScanningId(null);
+    if (response.status === 403) return;
+    if (!response.ok) return;
+    const payload = (await response.json()) as {
+      equipment?: EquipmentItem[];
+      changed?: EquipmentItem[];
+    };
+    applyEquipment(payload.equipment ?? [], payload.changed ?? []);
+    await loadAudit();
   }
 
-  function addUser() {
-    const name = draftName.trim();
-    if (!name) return;
-    void postAdmin("add-user", name).then(() => {
-      setUsers((current) => [
-        {
-          id: newAdminId("usr"),
-          name,
-          role: draftRole,
-          last: copy.justNow,
-          enabled: true,
-          seeded: false,
-        },
-        ...current,
-      ]);
-      setDraftName("");
-      pushAudit(`${copy.addUser}: ${name} · ${draftRole}`);
+  async function acknowledgeWarning(id: string) {
+    if (!writeSettings) return;
+    const response = await fetch("/api/equipment/acknowledge", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
     });
-  }
-
-  function setUserRole(id: string, role: AdminRole, name: string) {
-    void postAdmin("set-role", `${id}:${role}`).then(() => {
-      setUsers((current) =>
-        current.map((user) => (user.id === id ? { ...user, role } : user)),
+    if (!response.ok) return;
+    const payload = (await response.json()) as { equipment?: EquipmentItem };
+    if (payload.equipment) {
+      setEquipment((current) =>
+        current.map((item) => (item.id === payload.equipment?.id ? payload.equipment : item)),
       );
-      pushAudit(`${copy.colRole}: ${name} → ${role}`);
+    }
+    await loadAudit();
+  }
+
+  async function testIntegration(id: string) {
+    setPingingId(id);
+    const response = await fetch("/api/integrations/ping", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
     });
+    setPingingId(null);
+    if (!response.ok) return;
+    const payload = (await response.json()) as { integrations?: IntegrationItem[] };
+    setIntegrations(payload.integrations ?? []);
   }
 
-  function toggleUser(id: string, name: string, enabled: boolean) {
-    void postAdmin("set-user-enabled", `${id}:${enabled ? "off" : "on"}`).then(
-      () => {
-        setUsers((current) =>
-          current.map((user) =>
-            user.id === id ? { ...user, enabled: !enabled } : user,
-          ),
-        );
-        pushAudit(
-          `${enabled ? copy.disable : copy.enable}: ${name}`,
-        );
-      },
-    );
-  }
-
-  function testIntegration(id: string, name: string) {
-    setIntegrations((current) =>
-      current.map((item) =>
-        item.id === id ? { ...item, testing: true } : item,
-      ),
-    );
-    void postAdmin("test-integration", id)
-      .then(() => {
-        window.setTimeout(() => {
-          setIntegrations((current) =>
-            current.map((item) =>
-              item.id === id
-                ? { ...item, testing: false, last: clockStamp() }
-                : item,
-            ),
-          );
-          pushAudit(
-            live
-              ? `${copy.testFail}: ${name}`
-              : `${copy.testOk}: ${name}`,
-          );
-        }, 900);
-      })
-      .catch(() => {
-        setIntegrations((current) =>
-          current.map((item) =>
-            item.id === id ? { ...item, testing: false } : item,
-          ),
-        );
-        pushAudit(`${copy.heartbeatFail}: ${name}`);
-      });
-  }
-
-  function toggleIntegration(id: string, name: string, enabled: boolean) {
-    void postAdmin("toggle-integration", id).then(() => {
-      setIntegrations((current) =>
-        current.map((item) =>
-          item.id === id ? { ...item, enabled: !enabled } : item,
-        ),
-      );
-      pushAudit(`${enabled ? copy.disableInt : copy.enableInt}: ${name}`);
+  async function exportAudit() {
+    const lines =
+      audit.length === 0
+        ? copy.noAudit
+        : audit
+            .map(
+              (entry) =>
+                `${entry.timestamp}  ${entry.userName} <${entry.userEmail}>  ${entry.action}  ${entry.details}`,
+            )
+            .join("\n");
+    const blob = new Blob([`StarWall Backend audit\n${lines}\n`], {
+      type: "text/plain",
     });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = `starwall-audit-${clockStamp().replaceAll(":", "")}.txt`;
+    link.click();
+    URL.revokeObjectURL(href);
   }
-
-  function exportAudit() {
-    void postAdmin("export-audit").then(() => {
-      const lines =
-        audit.length === 0
-          ? copy.noAudit
-          : audit.map((entry) => `${entry.at}  ${entry.line}`).join("\n");
-      const blob = new Blob([`StarWall Backend audit\n${lines}\n`], {
-        type: "text/plain",
-      });
-      const href = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = href;
-      link.download = `starwall-audit-${clockStamp().replaceAll(":", "")}.txt`;
-      link.click();
-      URL.revokeObjectURL(href);
-      pushAudit(copy.exportAudit);
-    });
-  }
-
-  const equipmentRows = [...EQUIPMENT, ...EXTRA_EQUIPMENT];
 
   return (
     <div className="min-h-screen bg-bridge-bg font-ui text-bridge-text" dir="ltr">
+      <EventToasts
+        toasts={toasts}
+        onDismiss={(id) => setToasts((current) => current.filter((item) => item.id !== id))}
+        onOpen={() => selectSection("equipment")}
+      />
       {live ? <LiveModeBanner /> : null}
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
         {live ? null : (
@@ -421,6 +426,16 @@ export function BackendView() {
             {copy.title}
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-bridge-dim">{copy.lead}</p>
+          <p
+            data-testid="backend-role"
+            className="mt-3 inline-flex border border-orange/50 bg-orange/10 px-2.5 py-1 font-mono text-[11px] tracking-wider text-orange"
+          >
+            {copy.signedInRole.replace("{role}", roleDetails[role].name)}
+            {session?.email ? ` · ${session.email}` : ""}
+          </p>
+          {role === "Viewer" ? (
+            <p className="mt-2 font-mono text-[11px] text-attn">{copy.viewerLocked}</p>
+          ) : null}
         </header>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[13rem_1fr]">
@@ -443,6 +458,15 @@ export function BackendView() {
                 {sectionLabels[item]}
               </button>
             ))}
+            {manageUsers ? (
+              <Link
+                href="/backend/users"
+                data-testid="backend-users-link"
+                className="border border-orange/50 px-3 py-2 text-start font-mono text-[11px] tracking-wider text-orange hover:bg-orange/10"
+              >
+                {copy.users}
+              </Link>
+            ) : null}
             <Link
               href="/backend/privacy"
               data-testid="backend-privacy-link"
@@ -576,7 +600,7 @@ export function BackendView() {
                           type="button"
                           data-testid="local-backup"
                           onClick={() => void runBackup("local")}
-                          className="border border-bridge-line px-2 py-1 text-[11px] hover:border-orange"
+                          className="border border-bridge-line px-2 py-1 hover:border-orange"
                         >
                           {copy.requestConfig}
                         </button>
@@ -632,6 +656,11 @@ export function BackendView() {
 
             {section === "equipment" ? (
               <HudPanel testId="backend-equipment" title={copy.equipmentTitle}>
+                {!writeSettings ? (
+                  <p className="mb-3 font-mono text-[11px] text-attn">
+                    {copy.diagnosticLocked}
+                  </p>
+                ) : null}
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[36rem] text-start font-mono text-xs">
                     <thead className="text-bridge-dim">
@@ -647,71 +676,56 @@ export function BackendView() {
                       </tr>
                     </thead>
                     <tbody>
-                      {equipmentRows.map((item) => {
-                        const row = checks[item.id];
-                        return (
-                          <tr
-                            key={item.id}
-                            className="border-b border-bridge-line/60"
-                          >
-                            <td className="py-2.5 pe-3 text-bridge-text">
-                              {item.name}
-                            </td>
-                            <td className="py-2.5 pe-3">
-                              <span className="inline-flex items-center gap-2">
-                                <span
-                                  className={cn(
-                                    "h-1.5 w-1.5 rounded-full",
-                                    live
-                                      ? "bg-bridge-dim"
-                                      : statusDot(row.status),
-                                  )}
-                                />
-                                {live ? copy.notConnected : row.status}
-                              </span>
-                            </td>
-                            <td className="py-2.5 pe-3 text-bridge-dim">
-                              {live ? "—" : row.time}
-                            </td>
-                            <td className="py-2.5">
-                              <div className="flex flex-wrap gap-2">
+                      {equipment.map((item) => (
+                        <tr key={item.id} className="border-b border-bridge-line/60">
+                          <td className="py-2.5 pe-3 text-bridge-text">{item.name}</td>
+                          <td className="py-2.5 pe-3">
+                            <span className="inline-flex items-center gap-2">
+                              <span
+                                className={cn(
+                                  "h-1.5 w-1.5 rounded-full",
+                                  live ? "bg-bridge-dim" : statusDot(item.status),
+                                )}
+                              />
+                              {live ? copy.notConnected : item.status}
+                            </span>
+                          </td>
+                          <td className="py-2.5 pe-3 text-bridge-dim">
+                            {live ? "—" : formatCheckTime(item.lastCheckAt)}
+                          </td>
+                          <td className="py-2.5">
+                            <div className="flex flex-wrap gap-2">
+                              <button
+                                type="button"
+                                data-testid={`diagnostic-${item.id}`}
+                                disabled={live || !writeSettings || scanningId === item.id}
+                                title={
+                                  live
+                                    ? copy.notConnected
+                                    : writeSettings
+                                      ? undefined
+                                      : copy.diagnosticLocked
+                                }
+                                onClick={() => void runDiagnostic(item.id)}
+                                className="border border-bridge-line px-2 py-1 text-[11px] hover:border-orange disabled:cursor-not-allowed disabled:opacity-60"
+                              >
+                                {scanningId === item.id ? copy.scanning : copy.runDiagnostic}
+                              </button>
+                              {!live && item.status === "warning" ? (
                                 <button
                                   type="button"
-                                  data-testid={`diagnostic-${item.id}`}
-                                  disabled={live || row.scan === "scanning"}
-                                  title={
-                                    live ? copy.notConnected : undefined
-                                  }
-                                  onClick={() =>
-                                    runDiagnostic(item.id, item.name)
-                                  }
-                                  className="border border-bridge-line px-2 py-1 text-[11px] hover:border-orange disabled:cursor-not-allowed disabled:opacity-60"
+                                  data-testid={`ack-${item.id}`}
+                                  disabled={!writeSettings}
+                                  onClick={() => void acknowledgeWarning(item.id)}
+                                  className="border border-attn/50 px-2 py-1 text-[11px] text-attn hover:border-attn disabled:opacity-60"
                                 >
-                                  {row.scan === "scanning"
-                                    ? copy.scanning
-                                    : row.scan === "done"
-                                      ? `OK — ${row.time}`
-                                      : copy.runDiagnostic}
+                                  {copy.acknowledge}
                                 </button>
-                                {!live &&
-                                row.status === "Warning" &&
-                                !row.acknowledged ? (
-                                  <button
-                                    type="button"
-                                    data-testid={`ack-${item.id}`}
-                                    onClick={() =>
-                                      acknowledgeWarning(item.id, item.name)
-                                    }
-                                    className="border border-attn/50 px-2 py-1 text-[11px] text-attn hover:border-attn"
-                                  >
-                                    {copy.acknowledge}
-                                  </button>
-                                ) : null}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              ) : null}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -724,135 +738,42 @@ export function BackendView() {
                   {copy.roleHierarchy}
                 </p>
                 <ol className="space-y-2">
-                  {ADMIN_ROLES.map((role, index) => (
+                  {USER_ROLES.map((item, index) => (
                     <li
-                      key={role}
-                      className="border border-bridge-line bg-bridge-bg px-3 py-2"
+                      key={item}
+                      className={cn(
+                        "border bg-bridge-bg px-3 py-2",
+                        item === role ? "border-orange" : "border-bridge-line",
+                      )}
                       style={{ marginInlineStart: `${index * 12}px` }}
                     >
                       <p className="font-ui text-sm font-semibold">
-                        {roleDetails[role].name}
+                        {roleDetails[item].name}
+                        {item === role ? (
+                          <span className="ms-2 font-mono text-[10px] text-orange">
+                            {copy.signedInRole.replace("{role}", roleDetails[item].name)}
+                          </span>
+                        ) : null}
                       </p>
                       <p className="mt-0.5 text-xs text-bridge-dim">
-                        {roleDetails[role].detail}
+                        {roleDetails[item].detail}
                       </p>
                     </li>
                   ))}
                 </ol>
-                <p className="mb-2 mt-6 font-mono text-[10px] tracking-wider text-bridge-dim">
-                  {copy.accounts}
-                </p>
-                <form
-                  className="mb-4 flex flex-wrap gap-2"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    addUser();
-                  }}
-                >
-                  <input
-                    data-testid="admin-user-name"
-                    value={draftName}
-                    onChange={(event) => setDraftName(event.target.value)}
-                    placeholder={copy.userPlaceholder}
-                    className="min-w-[10rem] flex-1 border border-bridge-line bg-bridge-bg px-2 py-1.5 font-ui text-sm outline-none focus:border-orange"
-                  />
-                  <select
-                    data-testid="admin-user-role"
-                    value={draftRole}
-                    onChange={(event) =>
-                      setDraftRole(event.target.value as AdminRole)
-                    }
-                    className="border border-bridge-line bg-bridge-bg px-2 py-1.5 font-mono text-xs outline-none focus:border-orange"
-                  >
-                    {ADMIN_ROLES.map((role) => (
-                      <option key={role} value={role}>
-                        {roleDetails[role].name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="submit"
-                    data-testid="admin-add-user"
-                    className="border border-orange px-3 py-1.5 font-ui text-xs text-orange hover:bg-orange/10"
-                  >
-                    {copy.addUser}
-                  </button>
-                </form>
-                {visibleUsers.length === 0 ? (
-                  <p className="font-mono text-xs text-bridge-dim">
-                    {copy.noUsers}
+                {manageUsers ? (
+                  <p className="mt-6">
+                    <Link
+                      href="/backend/users"
+                      className="font-mono text-[11px] text-orange hover:underline"
+                    >
+                      {copy.usersLink}
+                    </Link>
                   </p>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[32rem] font-mono text-xs">
-                      <thead className="text-bridge-dim">
-                        <tr className="border-b border-bridge-line">
-                          <th className="py-2 pe-3 text-start font-medium">
-                            {copy.colName}
-                          </th>
-                          <th className="py-2 pe-3 text-start font-medium">
-                            {copy.colRole}
-                          </th>
-                          <th className="py-2 pe-3 text-start font-medium">
-                            {copy.colLast}
-                          </th>
-                          <th className="py-2 text-start font-medium">
-                            {copy.colActions}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {visibleUsers.map((user) => (
-                          <tr
-                            key={user.id}
-                            className="border-b border-bridge-line/60"
-                          >
-                            <td className="py-2 pe-3">
-                              {user.name}
-                              {!user.enabled ? (
-                                <span className="ms-2 text-attn">
-                                  {copy.disabled}
-                                </span>
-                              ) : null}
-                            </td>
-                            <td className="py-2 pe-3">
-                              <select
-                                value={user.role}
-                                onChange={(event) =>
-                                  setUserRole(
-                                    user.id,
-                                    event.target.value as AdminRole,
-                                    user.name,
-                                  )
-                                }
-                                className="border border-bridge-line bg-bridge-bg px-1 py-0.5"
-                              >
-                                {ADMIN_ROLES.map((role) => (
-                                  <option key={role} value={role}>
-                                    {roleDetails[role].name}
-                                  </option>
-                                ))}
-                              </select>
-                            </td>
-                            <td className="py-2 pe-3 text-bridge-dim">
-                              {user.last}
-                            </td>
-                            <td className="py-2">
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  toggleUser(user.id, user.name, user.enabled)
-                                }
-                                className="border border-bridge-line px-2 py-1 hover:border-orange"
-                              >
-                                {user.enabled ? copy.disable : copy.enable}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <p className="mt-6 font-mono text-[11px] text-bridge-dim">
+                    {copy.settingsLocked}
+                  </p>
                 )}
               </HudPanel>
             ) : null}
@@ -906,7 +827,7 @@ export function BackendView() {
                           {copy.colIntegration}
                         </th>
                         <th className="py-2 pe-3 text-start font-medium">
-                          {copy.colNotes}
+                          {copy.colVendor}
                         </th>
                         <th className="py-2 pe-3 text-start font-medium">
                           {copy.colStatus}
@@ -927,67 +848,55 @@ export function BackendView() {
                         >
                           <td className="py-2.5 pe-3">{item.name}</td>
                           <td className="py-2.5 pe-3 text-bridge-dim">
-                            {item.note}
+                            {item.vendor}
                           </td>
                           <td className="py-2.5 pe-3">
                             <span
                               className={cn(
                                 "inline-flex items-center gap-2",
-                                live || !item.enabled
+                                live
                                   ? "text-bridge-dim"
-                                  : "text-ok",
+                                  : item.status === "connected"
+                                    ? "text-ok"
+                                    : item.status === "stale"
+                                      ? "text-attn"
+                                      : "text-bridge-dim",
                               )}
                             >
                               <span
                                 className={cn(
                                   "h-1.5 w-1.5 rounded-full",
-                                  live || !item.enabled
+                                  live
                                     ? "bg-bridge-dim"
-                                    : "bg-ok",
+                                    : item.status === "connected"
+                                      ? "bg-ok"
+                                      : item.status === "stale"
+                                        ? "bg-attn"
+                                        : "bg-bridge-dim",
                                 )}
                               />
                               {live
                                 ? copy.notIntegrated
-                                : item.enabled
-                                  ? copy.online
-                                  : copy.disabled}
+                                : item.status === "connected"
+                                  ? copy.feedConnected
+                                  : item.status === "stale"
+                                    ? copy.feedStale
+                                    : copy.feedDisconnected}
                             </span>
                           </td>
                           <td className="py-2.5 pe-3 text-bridge-dim">
-                            {live ? "—" : item.last}
+                            {live ? "—" : formatCheckTime(item.lastPingAt)}
                           </td>
                           <td className="py-2.5">
-                            <div className="flex flex-wrap gap-2">
-                              <button
-                                type="button"
-                                data-testid={`test-${item.id}`}
-                                disabled={item.testing}
-                                onClick={() =>
-                                  testIntegration(item.id, item.name)
-                                }
-                                className="border border-bridge-line px-2 py-1 hover:border-orange disabled:opacity-60"
-                              >
-                                {item.testing
-                                  ? copy.testing
-                                  : copy.testConnection}
-                              </button>
-                              <button
-                                type="button"
-                                disabled={live}
-                                onClick={() =>
-                                  toggleIntegration(
-                                    item.id,
-                                    item.name,
-                                    item.enabled,
-                                  )
-                                }
-                                className="border border-bridge-line px-2 py-1 hover:border-orange disabled:cursor-not-allowed disabled:opacity-60"
-                              >
-                                {item.enabled
-                                  ? copy.disableInt
-                                  : copy.enableInt}
-                              </button>
-                            </div>
+                            <button
+                              type="button"
+                              data-testid={`test-${item.id}`}
+                              disabled={live || pingingId === item.id}
+                              onClick={() => void testIntegration(item.id)}
+                              className="border border-bridge-line px-2 py-1 hover:border-orange disabled:opacity-60"
+                            >
+                              {pingingId === item.id ? copy.testing : copy.testConnection}
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -999,7 +908,7 @@ export function BackendView() {
 
             {section === "plan" ? <PlanPanel /> : null}
             {section === "objects" ? <ObjectsPanel /> : null}
-            {section === "notify" ? <NotifyPanel /> : null}
+            {section === "notify" ? <NotifyPanel canWrite={writeSettings && !live} /> : null}
 
             {section === "audit" ? (
               <HudPanel testId="backend-audit" title={copy.auditTitle}>
@@ -1010,7 +919,7 @@ export function BackendView() {
                   <button
                     type="button"
                     data-testid="export-audit"
-                    onClick={exportAudit}
+                    onClick={() => void exportAudit()}
                     className="border border-orange px-2 py-1 font-mono text-[11px] text-orange hover:bg-orange/10"
                   >
                     {copy.exportAudit}
@@ -1025,10 +934,20 @@ export function BackendView() {
                     {audit.map((entry) => (
                       <li
                         key={entry.id}
-                        className="grid grid-cols-[auto_1fr] gap-3 border-b border-bridge-line/50 pb-2"
+                        data-testid="audit-row"
+                        className="grid gap-1 border-b border-bridge-line/50 pb-2 sm:grid-cols-[auto_1fr]"
                       >
-                        <span className="text-bridge-dim">{entry.at}</span>
-                        <span>{entry.line}</span>
+                        <span className="text-bridge-dim">
+                          {entry.timestamp.slice(11, 19)}
+                        </span>
+                        <span>
+                          <span className="text-orange">{entry.userName}</span>
+                          <span className="text-bridge-dim">
+                            {" "}
+                            &lt;{entry.userEmail}&gt;
+                          </span>
+                          <span className="ms-2">{entry.details}</span>
+                        </span>
                       </li>
                     ))}
                   </ul>

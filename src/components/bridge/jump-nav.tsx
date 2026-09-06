@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { useAuthSession } from "@/lib/auth-session";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { HELM_STATE_EVENT, openHelm } from "@/lib/helm-events";
+import { canUseHelm } from "@/lib/rbac";
 
 type JumpKind = "scroll" | "helm" | "link";
 
@@ -196,6 +198,8 @@ function typingInField(target: EventTarget | null) {
 
 export function JumpNav() {
   const { crisis } = useCrisisMode();
+  const { session } = useAuthSession();
+  const helmAllowed = canUseHelm(session?.role);
   const [pinned, setPinned] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState("picture");
@@ -207,9 +211,10 @@ export function JumpNav() {
       ITEMS.filter((item) => {
         if (item.crisisOnly && !crisis) return false;
         if (item.hideInCrisis && crisis) return false;
+        if (item.kind === "helm" && !helmAllowed) return false;
         return true;
       }),
-    [crisis],
+    [crisis, helmAllowed],
   );
 
   const numbered = useMemo(

@@ -58,6 +58,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/forgot-password` | Password reset request |
 | `/tasks` | All tasks (gated; sign in first) |
 | `/backend` | StarWall Backend (gated) |
+| `/backend/users` | User Management (Super Admin) |
 | `/backend/privacy` | Data & Privacy (gated) |
 | `/privacy` | Privacy Policy (public) |
 | `/terms` | Terms of Service (public) |
@@ -76,7 +77,8 @@ Helm, the watch advisor, sits as a living icon at the bottom-right of every page
 
 Sign-in is NextAuth.js (Auth.js) at `/api/auth/[...nextauth]`:
 
-- **Credentials** — email + password, stored in a local JSON file (`data/users.json`, or `/tmp` on Vercel). This is a demo store. Replace it with a real database (e.g. Postgres via Prisma) before production.
+- **Credentials** — email + password, stored in Prisma (`User.role`, `passwordHash`, `lastSignInAt`). New sign-ups default to **Operator**.
+- Pre-pilot role accounts (local SQLite): `super@starwall.demo` / Super Admin, `admin@starwall.demo` / Admin, `operator@starwall.demo` / Operator, `viewer@starwall.demo` / Viewer. Passwords are listed on `/login`.
 - **Google** — “Continue with Google”. This needs a real OAuth client that only you can create.
 
 Create a Google Cloud OAuth app: **Google Cloud Console → APIs & Services → Credentials → Create credentials → OAuth client ID** (Web application). Add authorized redirect URI `https://YOUR_DOMAIN/api/auth/callback/google` (and `http://127.0.0.1:3000/api/auth/callback/google` for local). Copy the client ID and secret into `.env.local`. These values cannot be generated here.
@@ -112,7 +114,7 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
    - `NEXTAUTH_URL` — same production origin.
    - `NEXTAUTH_SECRET` — random secret for session tokens.
    - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from the Google Cloud OAuth client. Without them the Google button is visible but sign-in cannot complete.
-   - `DATABASE_URL` — Vercel Postgres connection string. Without it the site still runs: IndexedDB keeps the Event Log, Helm, and Black Box locally. Cloud sync (`/api/events`, `/api/conversations`, `/api/blackbox`) returns 503 until this is set and you run `npx prisma db push`.
+   - `DATABASE_URL` — local default is SQLite (`file:./dev.db` next to `prisma/schema.prisma`). For production you can keep SQLite on the host or switch the Prisma datasource to PostgreSQL and point this at your connection string. After changing it, run `npx prisma db push`.
 3. Deploy. `vercel.json` pins the framework and a single region (`iad1`).
 
 ## Persistent storage
@@ -120,13 +122,16 @@ This is a standard Next.js 14 App Router app. Do **not** set `output: "standalon
 Two layers, local first:
 
 - **IndexedDB** (via `idb`) in the browser — `events`, `conversations`, `sessionReports`, plus a local Black Box index. A refresh during a DEMO session restores the Event Log, Helm history, and Black Box list.
-- **PostgreSQL via Prisma** — cloud copy for a signed-in user. A record is written locally first (`Local`), then the badge becomes `Local + Cloud` only after `/api/blackbox` confirms the write. If the database is missing or the request fails, the local copy stays.
+- **Prisma** — local SQLite by default (`prisma/dev.db`), used for accounts, RBAC, equipment checks, notification routes, integrations, the audit log, and the optional cloud copy of Bridge records. A Bridge record is written locally first (`Local`), then the badge becomes `Local + Cloud` only after `/api/blackbox` confirms the write.
 
-Schema: `prisma/schema.prisma` (`User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`). After you add `DATABASE_URL`:
+Schema: `prisma/schema.prisma` (`User`, `Session`, `Event`, `Conversation`, `BlackBoxRecord`, `Equipment`, `NotificationRoute`, `AuditLog`, `Integration`).
 
 ```bash
+npx prisma generate
 npx prisma db push
 ```
+
+`/backend` is a working pre-pilot admin: Super Admin only on `/backend/users`; Admin and above can run diagnostics and save notification routing; Operators can view and use the Bridge; Viewers see reports and the Black Box only. Equipment is checked every 30 seconds while `/backend` is open (simulated heartbeat until hardware is connected). DEMO/LIVE switches, role changes, diagnostics, and notify saves write real audit rows.
 
 Production checks locally before a deploy:
 
@@ -137,4 +142,4 @@ npm run build
 npm start
 ```
 
-`/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/api/admin` is the live administration service used by `/backend`: heartbeat, backups, diagnostics, access changes, integration tests, and audit export.
+`/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/backend` writes through `/api/equipment`, `/api/notifications`, `/api/audit`, `/api/integrations`, and `/api/users`. Unauthorized writes return 403.

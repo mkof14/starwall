@@ -32,7 +32,7 @@ function riskChip(level: Exclude<RiskLevel, "NORMAL">) {
   return "text-crit border-crit/60 bg-crit/10";
 }
 
-const LIVE_TIP = "Scenario simulation is a DEMO mode feature.";
+const DISABLED_TIP = "Scenario triggering is unavailable in this session.";
 
 export function ScenarioLibrary({
   selectedId,
@@ -90,7 +90,7 @@ export function ScenarioLibrary({
               type="button"
               data-testid="reset-normal"
               disabled={disabled}
-              title={disabled ? LIVE_TIP : undefined}
+              title={disabled ? DISABLED_TIP : undefined}
               onClick={onReset}
               className="border border-sand/40 bg-transparent px-3 py-1.5 font-ui text-xs font-medium text-sand hover:border-sand hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
             >
@@ -209,7 +209,7 @@ export function ScenarioLibrary({
                           type="button"
                           data-testid={`scenario-${item.id}`}
                           disabled={disabled}
-                          title={disabled ? LIVE_TIP : undefined}
+                          title={disabled ? DISABLED_TIP : undefined}
                           onClick={() => onSelect(item)}
                           className={cn(
                             "flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left font-ui text-sm",

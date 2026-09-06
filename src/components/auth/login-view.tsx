@@ -117,6 +117,21 @@ export function LoginView({ next }: { next?: string | null }) {
           Sign up
         </Link>
       </p>
+
+      <div
+        data-testid="demo-role-accounts"
+        className="mt-6 border border-[#B7C9D8] bg-[#F7FBFD] px-3 py-3 text-start"
+      >
+        <p className="font-mono text-[10px] tracking-wider text-[#55687A]">
+          PRE-PILOT ROLE ACCOUNTS
+        </p>
+        <ul className="mt-2 space-y-1 font-mono text-[11px] text-navyText">
+          <li>super@starwall.demo · SuperAdmin!23 · Super Admin</li>
+          <li>admin@starwall.demo · AdminPass!23 · Admin</li>
+          <li>operator@starwall.demo · Operator!23 · Operator</li>
+          <li>viewer@starwall.demo · ViewerPass!23 · Viewer</li>
+        </ul>
+      </div>
     </AuthShell>
   );
 }

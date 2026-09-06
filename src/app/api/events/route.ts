@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPrisma } from "@/lib/prisma";
+import { getPrisma, prismaReady } from "@/lib/prisma";
 import { ensureWatchSession, requireCloudActor, requireCloudUser } from "@/lib/watch-session";
 
 type EventBody = {
@@ -21,7 +21,7 @@ export async function GET() {
   if (!ready.ok) {
     return NextResponse.json({ error: ready.error }, { status: ready.status });
   }
-  const prisma = getPrisma();
+  const prisma = await prismaReady();
   if (!prisma) {
     return NextResponse.json({ error: "cloud_unavailable" }, { status: 503 });
   }
