@@ -33,7 +33,7 @@ const STEPS: Step[] = [
     text: "StarWall's suggested next step for the current situation — always a suggestion, never an automatic action. You decide.",
   },
   {
-    target: "scenario-select",
+    target: "scenario-picker",
     text: "For training purposes, you can select any scenario here to see how StarWall responds — this is how new crew practice recognizing each situation type.",
   },
   {
@@ -44,6 +44,7 @@ const STEPS: Step[] = [
     target: null,
     text: "That's the basics. Try selecting a scenario from the dropdown now to see it in action.",
   },
+  // Adaptive Learning sits below the watch console and is left out of this tour on purpose.
 ];
 
 type Rect = { top: number; left: number; width: number; height: number };
@@ -153,7 +154,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
       <div
         ref={calloutRef}
         data-testid="training-callout"
-        className="pointer-events-auto absolute w-[min(22rem,calc(100vw-2rem))] border border-orange/50 bg-[#0A0F14] p-4 text-sand shadow-xl"
+        className="pointer-events-auto absolute w-[min(22rem,calc(100vw-2rem))] border border-orange/50 bg-[#0A0F14] p-4 font-ui text-sand shadow-xl"
         style={calloutStyle}
       >
         <p className="font-mono text-[10px] tracking-[0.18em] text-orange">

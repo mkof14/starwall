@@ -34,6 +34,7 @@ const DAYS = [
 
 export function AdaptiveLearningPanel() {
   const [day, setDay] = useState<(typeof DAYS)[number]["id"]>("1");
+  const [expanded, setExpanded] = useState(true);
   const current = DAYS.find((item) => item.id === day) ?? DAYS[0];
 
   return (
@@ -43,11 +44,23 @@ export function AdaptiveLearningPanel() {
           testId="adaptive-learning-panel"
           title="OBJECT PROFILE — LEARNING OVER TIME"
           extra={
-            <span className="font-mono text-[10px] text-bridge-dim">
-              ILLUSTRATIVE SIMULATION
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="hidden font-mono text-[10px] text-bridge-dim sm:inline">
+                ILLUSTRATIVE SIMULATION
+              </span>
+              <button
+                type="button"
+                data-testid="learning-toggle"
+                onClick={() => setExpanded((open) => !open)}
+                className="font-ui text-xs text-orange hover:underline"
+              >
+                {expanded ? "Hide" : "Show"}
+              </button>
+            </div>
           }
         >
+          {expanded ? (
+          <>
           <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Learning timeline">
             {DAYS.map((item) => {
               const active = item.id === day;
@@ -176,6 +189,12 @@ export function AdaptiveLearningPanel() {
             Illustrative simulation of the learning process — actual timelines and accuracy
             depend on the object and available data.
           </p>
+          </>
+          ) : (
+            <p className="font-mono text-[10px] text-bridge-dim">
+              ILLUSTRATIVE SIMULATION
+            </p>
+          )}
         </HudPanel>
       </div>
     </div>

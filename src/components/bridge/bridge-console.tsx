@@ -316,6 +316,7 @@ export function BridgeConsole() {
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
                 {t.bridge.live}
               </span>
+              <div data-testid="scenario-picker" className="w-full min-w-[12rem] sm:w-auto">
               <label htmlFor="scenario-select" className="sr-only">
                 Scenario
               </label>
@@ -327,7 +328,7 @@ export function BridgeConsole() {
                   const next = SCENARIOS.find((item) => item.id === event.target.value);
                   if (next) applyScenario(next);
                 }}
-                className="max-w-[16rem] border border-bridge-line bg-bridge-panel px-2 py-1 font-ui text-xs text-bridge-text outline-none focus:border-orange"
+                className="w-full max-w-full border border-bridge-line bg-bridge-panel px-2 py-1 font-ui text-xs text-bridge-text outline-none focus:border-orange sm:max-w-[16rem]"
               >
                 <option value="">Select a scenario…</option>
                 {SCENARIO_CATEGORIES.map((category) => (
@@ -340,6 +341,7 @@ export function BridgeConsole() {
                   </optgroup>
                 ))}
               </select>
+              </div>
               <button
                 type="button"
                 data-testid="reset-normal"

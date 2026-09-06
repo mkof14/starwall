@@ -40,7 +40,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
           type="button"
           data-testid="print-report"
           onClick={() => window.print()}
-          className="bg-orange px-3 py-1.5 text-sm font-medium text-white hover:bg-orange/90"
+          className="bg-orange px-3 py-1.5 font-ui text-sm font-medium text-white hover:bg-orange/90"
         >
           Print / Save as PDF
         </button>
@@ -48,7 +48,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
           type="button"
           data-testid="back-to-console"
           onClick={onBack}
-          className="border border-navyText/30 px-3 py-1.5 text-sm text-navyText hover:border-orange hover:text-orange"
+          className="border border-navyText/30 px-3 py-1.5 font-ui text-sm text-navyText hover:border-orange hover:text-orange"
         >
           Back to console
         </button>
@@ -71,7 +71,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
 
         {events.length === 0 ? (
           <p className="mt-8 text-base text-[#6B7280]">
-            No events yet this session — try a scenario from the dropdown above, then
+            No events yet this session — try a scenario from the dropdown, then
             generate a report.
           </p>
         ) : (
@@ -83,7 +83,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
             </p>
 
             <div className="mt-8 overflow-x-auto">
-              <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
+              <table className="w-full min-w-[40rem] border-collapse text-left font-ui text-sm">
                 <thead>
                   <tr className="border-b border-[#d5d0c8] text-xs uppercase tracking-wider text-[#6B7280]">
                     <th className="py-2 pr-3 font-medium">Time</th>
