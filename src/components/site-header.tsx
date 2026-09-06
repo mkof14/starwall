@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePreferences } from "@/lib/i18n/context";
-import { navItems } from "@/lib/nav";
+import { adminNavItem, navItems } from "@/lib/nav";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -44,6 +44,22 @@ export function SiteHeader() {
               </Link>
             );
           })}
+          <Link
+            href={adminNavItem.href}
+            className={`inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${
+              pathname.startsWith(adminNavItem.href)
+                ? "border-orange text-orange"
+                : "border-stroke text-muted hover:text-ink"
+            }`}
+          >
+            <svg viewBox="0 0 16 16" className="h-3 w-3" aria-hidden>
+              <path
+                fill="currentColor"
+                d="M8 1.4 2.2 4.2v3.4C2.2 11 5 13.8 8 14.6 11 13.8 13.8 11 13.8 7.6V4.2L8 1.4Zm0 2.3 4.4 2.1v2.1c0 2.3-1.9 4.3-4.4 5-2.5-.7-4.4-2.7-4.4-5V5.8L8 3.7Z"
+              />
+            </svg>
+            {t.nav[adminNavItem.key]}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-1">
@@ -86,6 +102,15 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li className="border-b border-stroke last:border-b-0">
+              <Link
+                href={adminNavItem.href}
+                className="flex items-center gap-2 px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink"
+                onClick={() => setOpen(false)}
+              >
+                {t.nav[adminNavItem.key]}
+              </Link>
+            </li>
           </ul>
           <div className="flex items-center justify-between px-3 py-2">
             <ThemeToggle />

@@ -64,4 +64,9 @@ export const pageMeta = {
     description:
       "Request a briefing with AGRON Maritime about StarWall for a vessel, marina, port, or private island.",
   },
+  backend: {
+    title: "StarWall Backend — System administration — StarWall by AGRON",
+    description:
+      "Illustrative system administration view: connectivity, equipment health, access control, and monitoring.",
+  },
 } as const;

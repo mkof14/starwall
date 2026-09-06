@@ -10,6 +10,7 @@ export const ar: Messages = {
     faq: "FAQ",
     containers: "الحاويات",
     contact: "تواصل",
+    backend: "الخلفية",
     openMenu: "فتح القائمة",
     closeMenu: "إغلاق القائمة",
     primary: "التنقل الرئيسي",
@@ -36,6 +37,7 @@ export const ar: Messages = {
     containersTiers: "المستويات — AGRON Containers",
     containersDeployment: "النشر — AGRON Containers",
     contact: "تواصل — StarWall by AGRON",
+    backend: "StarWall Backend — إدارة النظام — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

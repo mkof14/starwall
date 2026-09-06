@@ -10,6 +10,7 @@ export const ja: Messages = {
     faq: "FAQ",
     containers: "コンテナ",
     contact: "お問い合わせ",
+    backend: "バックエンド",
     openMenu: "メニューを開く",
     closeMenu: "メニューを閉じる",
     primary: "メインナビゲーション",
@@ -36,6 +37,7 @@ export const ja: Messages = {
     containersTiers: "ティア — AGRON Containers",
     containersDeployment: "展開 — AGRON Containers",
     contact: "お問い合わせ — StarWall by AGRON",
+    backend: "StarWall Backend — システム管理 — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

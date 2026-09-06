@@ -10,3 +10,8 @@ export const navItems: Array<{ href: string; key: keyof Messages["nav"] }> = [
   { href: "/containers", key: "containers" },
   { href: "/contact", key: "contact" },
 ];
+
+export const adminNavItem = {
+  href: "/backend",
+  key: "backend",
+} as const;

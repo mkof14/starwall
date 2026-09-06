@@ -49,6 +49,7 @@ Shared sticky header and footer wrap every route via the root layout.
 | `/containers/specs` | Specifications |
 | `/containers/deployment` | Deployment |
 | `/contact` | Contact |
+| `/backend` | StarWall Backend (illustrative admin) |
 
 ## Brand, theme, and language
 

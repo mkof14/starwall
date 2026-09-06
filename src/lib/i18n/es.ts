@@ -10,6 +10,7 @@ export const es: Messages = {
     faq: "FAQ",
     containers: "Contenedores",
     contact: "Contacto",
+    backend: "Backend",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
     primary: "Navegación principal",
@@ -36,6 +37,7 @@ export const es: Messages = {
     containersTiers: "Niveles — AGRON Containers",
     containersDeployment: "Despliegue — AGRON Containers",
     contact: "Contacto — StarWall by AGRON",
+    backend: "StarWall Backend — administración del sistema — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

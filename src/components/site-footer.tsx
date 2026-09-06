@@ -5,7 +5,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePreferences } from "@/lib/i18n/context";
-import { navItems } from "@/lib/nav";
+import { adminNavItem, navItems } from "@/lib/nav";
 
 export function SiteFooter() {
   const { t } = usePreferences();
@@ -26,6 +26,12 @@ export function SiteFooter() {
               {t.nav[item.key]}
             </Link>
           ))}
+          <Link
+            href={adminNavItem.href}
+            className="font-mono text-[11px] uppercase tracking-wider text-sand/80 hover:text-sand"
+          >
+            {t.nav[adminNavItem.key]}
+          </Link>
         </nav>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <p>{t.chrome.rights}</p>

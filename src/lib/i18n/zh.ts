@@ -10,6 +10,7 @@ export const zh: Messages = {
     faq: "FAQ",
     containers: "集装箱",
     contact: "联系",
+    backend: "后台",
     openMenu: "打开菜单",
     closeMenu: "关闭菜单",
     primary: "主导航",
@@ -36,6 +37,7 @@ export const zh: Messages = {
     containersTiers: "层级 — AGRON Containers",
     containersDeployment: "部署 — AGRON Containers",
     contact: "联系 — StarWall by AGRON",
+    backend: "StarWall Backend — 系统管理 — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

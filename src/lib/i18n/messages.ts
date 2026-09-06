@@ -8,6 +8,7 @@ export type Messages = {
     faq: string;
     containers: string;
     contact: string;
+    backend: string;
     openMenu: string;
     closeMenu: string;
     primary: string;
@@ -34,6 +35,7 @@ export type Messages = {
     containersTiers: string;
     containersDeployment: string;
     contact: string;
+    backend: string;
   };
   home: {
     kicker: string;
@@ -259,6 +261,7 @@ export const en: Messages = {
     faq: "FAQ",
     containers: "Containers",
     contact: "Contact",
+    backend: "Backend",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     primary: "Primary",
@@ -285,6 +288,7 @@ export const en: Messages = {
     containersTiers: "Tiers — AGRON Containers",
     containersDeployment: "Deployment — AGRON Containers",
     contact: "Contact — StarWall by AGRON",
+    backend: "StarWall Backend — System administration — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",

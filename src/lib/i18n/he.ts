@@ -10,6 +10,7 @@ export const he: Messages = {
     faq: "FAQ",
     containers: "מכולות",
     contact: "יצירת קשר",
+    backend: "Backend",
     openMenu: "פתיחת תפריט",
     closeMenu: "סגירת תפריט",
     primary: "ניווט ראשי",
@@ -36,6 +37,7 @@ export const he: Messages = {
     containersTiers: "רמות — AGRON Containers",
     containersDeployment: "פריסה — AGRON Containers",
     contact: "יצירת קשר — StarWall by AGRON",
+    backend: "StarWall Backend — ניהול מערכת — StarWall by AGRON",
   },
   home: {
     kicker: "AGRON MARITIME · STARWALL BY AGRON",
