@@ -26,13 +26,13 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header print:hidden">
-      <div className="flex h-full items-center justify-between gap-3 px-4 md:px-6">
+      <div className="flex h-full items-center justify-between gap-2 px-4 md:gap-3 md:px-6">
         <Link
           href="/"
-          className="flex h-full shrink-0 items-center"
+          className="flex h-full min-w-0 items-center"
           onClick={() => setOpen(false)}
         >
-          <BrandLogo priority />
+          <BrandLogo priority className="max-w-[10.5rem] sm:max-w-none" />
         </Link>
 
         <nav
@@ -81,17 +81,28 @@ export function SiteHeader() {
           </div>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center text-ink lg:hidden"
+            data-testid="mobile-nav-toggle"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-stroke text-ink lg:hidden"
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((value) => !value)}
           >
-            <span className="sr-only">
-              {open ? t.nav.closeMenu : t.nav.openMenu}
-            </span>
-            <span aria-hidden className="text-xl leading-none">
-              {open ? "×" : "☰"}
-            </span>
+            {open ? (
+              <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden>
+                <path
+                  fill="currentColor"
+                  d="M3.2 2.3 8 7.1l4.8-4.8 1.1 1.1L9.1 8.2l4.8 4.8-1.1 1.1L8 9.3l-4.8 4.8-1.1-1.1 4.8-4.8-4.8-4.8 1.1-1.1Z"
+                />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden>
+                <path
+                  fill="currentColor"
+                  d="M2 3.2h12v1.5H2V3.2Zm0 4.05h12v1.5H2V7.25Zm0 4.05h12V12.8H2v-1.5Z"
+                />
+              </svg>
+            )}
           </button>
         </div>
       </div>
