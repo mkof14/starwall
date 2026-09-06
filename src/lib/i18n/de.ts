@@ -59,7 +59,7 @@ export const de: Messages = {
     termsTitle: "Nutzungsbedingungen",
     storesTitle: "Was StarWall speichert",
     storesBody:
-      "Ereignisprotokolle, Sitzungsaufzeichnungen und Helm-Gespräche auf der Bridge. Administrative Aktionen stehen in einem eigenen Prüfprotokoll.",
+      "Ereignisprotokolle, Sitzungsaufzeichnungen und Lotsen-Gespräche auf der Bridge. Administrative Aktionen stehen in einem eigenen Prüfprotokoll.",
     whereTitle: "Wo es gespeichert wird",
     whereBody:
       "Aufzeichnungen werden zuerst lokal geschrieben und dann in die Cloud synchronisiert — derselbe Black-Box-Pfad wie auf Bridge und Backend. Nichts verlässt das Konto für Modelltraining.",
@@ -69,7 +69,7 @@ export const de: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "Diese Seiten beschreiben eine illustrative StarWall-Installation. Die Nutzung von Bridge, Backend und Helm unterliegt einer schriftlichen Vereinbarung mit AGRON. Spezialausrüstung und jede Reaktionsfähigkeit bleiben unter menschlicher Freigabe und lokalem Recht.",
+      "Diese Seiten beschreiben eine illustrative StarWall-Installation. Die Nutzung von Bridge, Backend und Lotse unterliegt einer schriftlichen Vereinbarung mit AGRON. Spezialausrüstung und jede Reaktionsfähigkeit bleiben unter menschlicher Freigabe und lokalem Recht.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGIE",
@@ -82,14 +82,14 @@ export const de: Messages = {
     connectionsIn: "Daten ein (Sensoren → Kern)",
     connectionsOut: "Information aus (Kern → Bridge / Support)",
     connectionsOff: "Nicht verbunden",
-    helmTitle: "Helm",
+    helmTitle: "Lotse",
     helmAdvisor: "WACHBERATER",
-    helmAsk: "Helm fragen…",
+    helmAsk: "Den Lotsen fragen…",
     helmSend: "Senden",
     helmHide: "Ausblenden",
-    helmOpen: "Helm öffnen",
+    helmOpen: "Lotse öffnen",
     helmEmpty:
-      "Helm hat Wache. Fragen Sie zum Lagebild — Sprache oder Text. Nur Rat; Sie entscheiden.",
+      "Lotse hat Wache. Fragen Sie zum Lagebild — Sprache oder Text. Nur Rat; Sie entscheiden.",
     helmLive: "WACHBERATER · LIVE · keine Sensoren",
     liveBanner:
       "LIVE-MODUS — zeigt den tatsächlichen Zustand dieser Installation. Es ist noch kein Gerät verbunden. Wechseln Sie zu DEMO, um die volle Fähigkeit von StarWall mit simulierten Daten zu sehen.",
@@ -136,8 +136,8 @@ export const de: Messages = {
     heartbeat: "Administrationsdienst",
     heartbeatOk: "Erreichbar",
     heartbeatFail: "Nicht erreichbar",
-    helmReady: "Helm-API konfiguriert",
-    helmMissing: "Helm-API-Schlüssel fehlt",
+    helmReady: "Lotsen-API konfiguriert",
+    helmMissing: "Lotsen-API-Schlüssel fehlt",
     equipmentTitle: "GERÄTEÜBERWACHUNG",
     colEquipment: "Gerät",
     colStatus: "Status",
@@ -171,7 +171,7 @@ export const de: Messages = {
     roleViewerDetail: "Nur-Lesezugriff auf Berichte.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "Sitzungsaufzeichnungen in diesem Browser — Helm-Gespräche und Szenarien — werden auf der Bridge geschrieben und lokal gehalten.",
+      "Sitzungsaufzeichnungen in diesem Browser — Lotsen-Gespräche und Szenarien — werden auf der Bridge geschrieben und lokal gehalten.",
     blackboxLeadLive: "Noch keine Aufzeichnungen dieser Installation.",
     blackboxEmpty: "Noch keine Aufzeichnungen.",
     blackboxOpen: "Rekorder auf der Bridge öffnen →",

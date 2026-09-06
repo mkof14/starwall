@@ -108,6 +108,6 @@ export const pageMeta = {
   },
   terms: {
     title: "Terms of Service — StarWall by AGRON",
-    description: "Terms for using StarWall, the Bridge, Backend, and Helm.",
+    description: "Terms for using StarWall, the Bridge, Backend, and Pilot.",
   },
 } as const;

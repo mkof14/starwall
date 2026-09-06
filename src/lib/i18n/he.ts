@@ -59,7 +59,7 @@ export const he: Messages = {
     termsTitle: "תנאי שימוש",
     storesTitle: "מה StarWall שומר",
     storesBody:
-      "יומני אירועים, הקלטות סשן ושיחות Helm ב־Bridge. פעולות ניהול נשמרות ביומן ביקורת נפרד.",
+      "יומני אירועים, הקלטות סשן ושיחות לוץ ב־Bridge. פעולות ניהול נשמרות ביומן ביקורת נפרד.",
     whereTitle: "איפה זה נשמר",
     whereBody:
       "הרשומות נכתבות קודם מקומית ואז מסונכרנות לענן — אותו נתיב Black Box כמו ב־Bridge וב־Backend. שום דבר לא יוצא מהחשבון לאימון מודלים.",
@@ -69,7 +69,7 @@ export const he: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "הדפים האלה מתארים פריסת StarWall להמחשה. שימוש ב־Bridge, Backend ו־Helm כפוף להסכם כתוב עם AGRON. ציוד ייעודי וכל יכולת תגובה נשארים תחת אישור אנושי והחוק המקומי.",
+      "הדפים האלה מתארים פריסת StarWall להמחשה. שימוש ב־Bridge, Backend ו־לוץ כפוף להסכם כתוב עם AGRON. ציוד ייעודי וכל יכולת תגובה נשארים תחת אישור אנושי והחוק המקומי.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · טופולוגיה",
@@ -82,14 +82,14 @@ export const he: Messages = {
     connectionsIn: "נתונים נכנסים (חיישנים → ליבה)",
     connectionsOut: "מידע יוצא (ליבה → Bridge / Support)",
     connectionsOff: "לא מחובר",
-    helmTitle: "Helm",
+    helmTitle: "לוץ",
     helmAdvisor: "יועץ משמרת",
-    helmAsk: "לשאול את Helm…",
+    helmAsk: "לשאול את לוץ…",
     helmSend: "שליחה",
     helmHide: "הסתרה",
-    helmOpen: "פתיחת Helm",
+    helmOpen: "פתיחת לוץ",
     helmEmpty:
-      "Helm במשמרת. שאלו על התמונה — בדיבור או בכתב. ייעוץ בלבד; ההחלטה שלכם.",
+      "לוץ במשמרת. שאלו על התמונה — בדיבור או בכתב. ייעוץ בלבד; ההחלטה שלכם.",
     helmLive: "יועץ משמרת · LIVE · אין חיישנים",
     liveBanner:
       "מצב LIVE — מצב אמיתי של הפריסה הזו. עדיין לא מחובר ציוד. עברו ל־DEMO כדי לראות את מלוא יכולת StarWall בנתונים מדומים.",
@@ -136,8 +136,8 @@ export const he: Messages = {
     heartbeat: "שירות ניהול",
     heartbeatOk: "נגיש",
     heartbeatFail: "לא נגיש",
-    helmReady: "ממשק Helm הוגדר",
-    helmMissing: "מפתח API של Helm לא הוגדר",
+    helmReady: "ממשק לוץ הוגדר",
+    helmMissing: "מפתח API של לוץ לא הוגדר",
     equipmentTitle: "ניטור ציוד",
     colEquipment: "ציוד",
     colStatus: "סטטוס",
@@ -171,7 +171,7 @@ export const he: Messages = {
     roleViewerDetail: "קריאה בלבד של דוחות.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "רשומות הסשן בדפדפן זה — שיחות Helm והרצות תרחישים — נכתבות ב־Bridge ונשמרות מקומית.",
+      "רשומות הסשן בדפדפן זה — שיחות לוץ והרצות תרחישים — נכתבות ב־Bridge ונשמרות מקומית.",
     blackboxLeadLive: "אין עדיין רשומות לפריסה זו.",
     blackboxEmpty: "אין עדיין רשומות.",
     blackboxOpen: "פתיחת הרשמקול ב־Bridge →",

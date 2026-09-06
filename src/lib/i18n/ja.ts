@@ -59,7 +59,7 @@ export const ja: Messages = {
     termsTitle: "利用規約",
     storesTitle: "StarWall が保存するもの",
     storesBody:
-      "イベントログ、セッション記録、Bridge 上の Helm 会話。管理操作は別の監査ログに残します。",
+      "イベントログ、セッション記録、Bridge 上の 水先人 会話。管理操作は別の監査ログに残します。",
     whereTitle: "保存場所",
     whereBody:
       "記録はまずローカルに書き、その後クラウドへ同期します。Bridge と Backend の Black Box と同じ経路です。モデル学習のためにアカウント外へは出しません。",
@@ -69,7 +69,7 @@ export const ja: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "これらのページは StarWall の説明用展開を述べます。Bridge、Backend、Helm の利用は AGRON との書面契約に従います。専用機器とあらゆる対応能力は、人間の許可と現地法の下にあります。",
+      "これらのページは StarWall の説明用展開を述べます。Bridge、Backend、水先人 の利用は AGRON との書面契約に従います。専用機器とあらゆる対応能力は、人間の許可と現地法の下にあります。",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · トポロジ",
@@ -82,14 +82,14 @@ export const ja: Messages = {
     connectionsIn: "データ入力（センサー → コア）",
     connectionsOut: "情報出力（コア → Bridge / Support）",
     connectionsOff: "未接続",
-    helmTitle: "Helm",
+    helmTitle: "水先人",
     helmAdvisor: "当直アドバイザー",
-    helmAsk: "Helm に尋ねる…",
+    helmAsk: "水先人 に尋ねる…",
     helmSend: "送信",
     helmHide: "隠す",
-    helmOpen: "Helm を開く",
+    helmOpen: "水先人 を開く",
     helmEmpty:
-      "Helm は当直中です。画面について音声または文字で尋ねてください。助言のみ。判断はあなたです。",
+      "水先人 は当直中です。画面について音声または文字で尋ねてください。助言のみ。判断はあなたです。",
     helmLive: "当直アドバイザー · LIVE · センサーなし",
     liveBanner:
       "LIVE モード — この展開の実状態を表示しています。機器はまだ接続されていません。DEMO に切り替えると、模擬データで StarWall の全能力を確認できます。",
@@ -136,8 +136,8 @@ export const ja: Messages = {
     heartbeat: "管理サービス",
     heartbeatOk: "到達可能",
     heartbeatFail: "到達不能",
-    helmReady: "Helm API 設定済み",
-    helmMissing: "Helm API キー未設定",
+    helmReady: "水先人 API 設定済み",
+    helmMissing: "水先人 API キー未設定",
     equipmentTitle: "機器監視",
     colEquipment: "機器",
     colStatus: "状態",
@@ -171,7 +171,7 @@ export const ja: Messages = {
     roleViewerDetail: "レポートの読み取りのみ。",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "このブラウザのセッション記録 — Helm の会話とシナリオ実行 — は Bridge に書かれ、ローカルに保持されます。",
+      "このブラウザのセッション記録 — 水先人 の会話とシナリオ実行 — は Bridge に書かれ、ローカルに保持されます。",
     blackboxLeadLive: "この展開の記録はまだありません。",
     blackboxEmpty: "記録はまだありません。",
     blackboxOpen: "Bridge の記録器を開く →",

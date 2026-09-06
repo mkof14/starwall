@@ -129,7 +129,7 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "helm",
-    label: "Helm",
+    label: "Pilot",
     kind: "helm",
     icon: (
       <svg viewBox="0 0 16 16" className={ICON} aria-hidden>

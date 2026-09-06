@@ -59,7 +59,7 @@ export const es: Messages = {
     termsTitle: "Términos de servicio",
     storesTitle: "Qué almacena StarWall",
     storesBody:
-      "Registros de eventos, grabaciones de sesión y conversaciones de Helm en el Bridge. Las acciones administrativas se guardan en un registro de auditoría aparte.",
+      "Registros de eventos, grabaciones de sesión y conversaciones de Práctico en el Bridge. Las acciones administrativas se guardan en un registro de auditoría aparte.",
     whereTitle: "Dónde se guarda",
     whereBody:
       "Los registros se escriben primero en local y luego se sincronizan en la nube — el mismo camino Black Box del Bridge y del Backend. Nada sale de la cuenta para entrenar modelos.",
@@ -69,7 +69,7 @@ export const es: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "Estas páginas describen un despliegue ilustrativo de StarWall. El uso de Bridge, Backend y Helm queda sujeto a un acuerdo escrito con AGRON. El equipo especializado y cualquier capacidad de respuesta permanecen bajo autorización humana y la ley local.",
+      "Estas páginas describen un despliegue ilustrativo de StarWall. El uso de Bridge, Backend y Práctico queda sujeto a un acuerdo escrito con AGRON. El equipo especializado y cualquier capacidad de respuesta permanecen bajo autorización humana y la ley local.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGÍA",
@@ -82,14 +82,14 @@ export const es: Messages = {
     connectionsIn: "Datos de entrada (sensores → núcleo)",
     connectionsOut: "Información de salida (núcleo → Bridge / Support)",
     connectionsOff: "Sin conexión",
-    helmTitle: "Helm",
+    helmTitle: "Práctico",
     helmAdvisor: "ASESOR DE GUARDIA",
-    helmAsk: "Preguntar a Helm…",
+    helmAsk: "Preguntar a Práctico…",
     helmSend: "Enviar",
     helmHide: "Ocultar",
-    helmOpen: "Abrir Helm",
+    helmOpen: "Abrir Práctico",
     helmEmpty:
-      "Helm está de guardia. Pregunte por el cuadro — voz o texto. Solo consejo; usted decide.",
+      "Práctico está de guardia. Pregunte por el cuadro — voz o texto. Solo consejo; usted decide.",
     helmLive: "ASESOR DE GUARDIA · LIVE · sin sensores",
     liveBanner:
       "MODO LIVE — estado real de este despliegue. Aún no hay equipo conectado. Cambie a DEMO para ver la capacidad completa de StarWall con datos simulados.",
@@ -136,8 +136,8 @@ export const es: Messages = {
     heartbeat: "Servicio de administración",
     heartbeatOk: "Alcanzable",
     heartbeatFail: "Inalcanzable",
-    helmReady: "API de Helm configurada",
-    helmMissing: "Clave API de Helm no definida",
+    helmReady: "API de Práctico configurada",
+    helmMissing: "Clave API de Práctico no definida",
     equipmentTitle: "SUPERVISIÓN DE EQUIPO",
     colEquipment: "Equipo",
     colStatus: "Estado",
@@ -171,7 +171,7 @@ export const es: Messages = {
     roleViewerDetail: "Solo lectura de informes.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "Registros de esta sesión en el navegador — conversaciones de Helm y escenarios — escritos en el Bridge y retenidos en local.",
+      "Registros de esta sesión en el navegador — conversaciones de Práctico y escenarios — escritos en el Bridge y retenidos en local.",
     blackboxLeadLive: "Aún no hay registros de este despliegue.",
     blackboxEmpty: "Aún no hay registros.",
     blackboxOpen: "Abrir el registrador en el Bridge →",

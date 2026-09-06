@@ -497,7 +497,7 @@ export function BackendView() {
                     </span>
                   </li>
                   <li className="flex items-center justify-between gap-3">
-                    <span>Helm</span>
+                    <span>Pilot</span>
                     <span
                       className={
                         heartbeat.helm === true

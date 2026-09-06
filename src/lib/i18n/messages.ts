@@ -648,7 +648,7 @@ export const en: Messages = {
     termsTitle: "Terms of Service",
     storesTitle: "What StarWall stores",
     storesBody:
-      "Event logs, session recordings, and Helm conversations written on the Bridge. Administration actions are kept in a separate audit log.",
+      "Event logs, session recordings, and Pilot conversations written on the Bridge. Administration actions are kept in a separate audit log.",
     whereTitle: "Where it is stored",
     whereBody:
       "Records are written locally first, then synced to cloud storage — the same Black Box path shown on the Bridge and in Backend. Nothing leaves this account for model training.",
@@ -658,7 +658,7 @@ export const en: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "These pages describe an illustrative StarWall deployment. Use of the Bridge, Backend, and Helm is subject to a written agreement with AGRON. Specialized equipment and any response capability remain under human authorization and local law.",
+      "These pages describe an illustrative StarWall deployment. Use of the Bridge, Backend, and Pilot is subject to a written agreement with AGRON. Specialized equipment and any response capability remain under human authorization and local law.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGY",
@@ -671,14 +671,14 @@ export const en: Messages = {
     connectionsIn: "Data in (sensors → core)",
     connectionsOut: "Information out (core → Bridge / Support)",
     connectionsOff: "Not connected",
-    helmTitle: "Helm",
+    helmTitle: "Pilot",
     helmAdvisor: "WATCH ADVISOR",
-    helmAsk: "Ask Helm…",
+    helmAsk: "Ask Pilot…",
     helmSend: "Send",
     helmHide: "Hide",
-    helmOpen: "Open Helm",
+    helmOpen: "Open Pilot",
     helmEmpty:
-      "Helm is on watch. Ask about the picture — speak or type. Advice only; you decide.",
+      "Pilot is on watch. Ask about the picture — speak or type. Advice only; you decide.",
     helmLive: "WATCH ADVISOR · LIVE · no sensors",
     liveBanner:
       "LIVE MODE — showing the real current state of this deployment. No equipment is connected yet. Switch to DEMO to see StarWall's full capability with simulated data.",
@@ -725,8 +725,8 @@ export const en: Messages = {
     heartbeat: "Admin service",
     heartbeatOk: "Reachable",
     heartbeatFail: "Unreachable",
-    helmReady: "Helm API configured",
-    helmMissing: "Helm API key not set",
+    helmReady: "Pilot API configured",
+    helmMissing: "Pilot API key not set",
     equipmentTitle: "EQUIPMENT MONITORING",
     colEquipment: "Equipment",
     colStatus: "Status",
@@ -756,11 +756,11 @@ export const en: Messages = {
     roleViewer: "Viewer",
     roleSuperDetail: "Full system plus user management.",
     roleAdminDetail: "Equipment diagnostics and notification routing, plus everything an Operator can do.",
-    roleOperatorDetail: "View every surface, trigger scenarios, and use Helm. Cannot change settings.",
+    roleOperatorDetail: "View every surface, trigger scenarios, and use Pilot. Cannot change settings.",
     roleViewerDetail: "Reports and Black Box only — no scenario triggering, no settings.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "Session records from this browser — Helm conversations and scenario runs — written on the Bridge and retained locally.",
+      "Session records from this browser — Pilot conversations and scenario runs — written on the Bridge and retained locally.",
     blackboxLeadLive: "No records yet from this deployment.",
     blackboxEmpty: "No records yet.",
     blackboxOpen: "Open recorder on the Bridge →",

@@ -59,7 +59,7 @@ export const fr: Messages = {
     termsTitle: "Conditions d'utilisation",
     storesTitle: "Ce que StarWall conserve",
     storesBody:
-      "Journaux d'événements, enregistrements de session et conversations Helm sur le Bridge. Les actions d'administration sont tenues dans un journal d'audit distinct.",
+      "Journaux d'événements, enregistrements de session et conversations Pilote sur le Bridge. Les actions d'administration sont tenues dans un journal d'audit distinct.",
     whereTitle: "Où c'est stocké",
     whereBody:
       "Les enregistrements sont d'abord écrits en local, puis synchronisés vers le cloud — le même chemin Black Box que sur le Bridge et le Backend. Rien ne quitte le compte pour un entraînement de modèle.",
@@ -69,7 +69,7 @@ export const fr: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "Ces pages décrivent un déploiement illustratif de StarWall. L'usage du Bridge, du Backend et de Helm est soumis à un accord écrit avec AGRON. Les équipements spécialisés et toute capacité de réponse restent sous autorisation humaine et droit local.",
+      "Ces pages décrivent un déploiement illustratif de StarWall. L'usage du Bridge, du Backend et de Pilote est soumis à un accord écrit avec AGRON. Les équipements spécialisés et toute capacité de réponse restent sous autorisation humaine et droit local.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGIE",
@@ -82,14 +82,14 @@ export const fr: Messages = {
     connectionsIn: "Données entrantes (capteurs → noyau)",
     connectionsOut: "Information sortante (noyau → Bridge / Support)",
     connectionsOff: "Non connecté",
-    helmTitle: "Helm",
+    helmTitle: "Pilote",
     helmAdvisor: "CONSEILLER DE QUART",
-    helmAsk: "Demander à Helm…",
+    helmAsk: "Demander à Pilote…",
     helmSend: "Envoyer",
     helmHide: "Masquer",
-    helmOpen: "Ouvrir Helm",
+    helmOpen: "Ouvrir Pilote",
     helmEmpty:
-      "Helm est de quart. Interrogez le tableau — voix ou texte. Conseil seulement ; vous décidez.",
+      "Pilote est de quart. Interrogez le tableau — voix ou texte. Conseil seulement ; vous décidez.",
     helmLive: "CONSEILLER DE QUART · LIVE · aucun capteur",
     liveBanner:
       "MODE LIVE — état réel de ce déploiement. Aucun équipement n'est encore connecté. Passez en DEMO pour voir toutes les capacités de StarWall avec des données simulées.",
@@ -136,8 +136,8 @@ export const fr: Messages = {
     heartbeat: "Service d'administration",
     heartbeatOk: "Joignable",
     heartbeatFail: "Injoignable",
-    helmReady: "API Helm configurée",
-    helmMissing: "Clé API Helm absente",
+    helmReady: "API Pilote configurée",
+    helmMissing: "Clé API Pilote absente",
     equipmentTitle: "SUPERVISION DES ÉQUIPEMENTS",
     colEquipment: "Équipement",
     colStatus: "État",
@@ -171,7 +171,7 @@ export const fr: Messages = {
     roleViewerDetail: "Lecture seule des rapports.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "Enregistrements de cette session dans le navigateur — conversations Helm et scénarios — écrits sur le Bridge et conservés en local.",
+      "Enregistrements de cette session dans le navigateur — conversations Pilote et scénarios — écrits sur le Bridge et conservés en local.",
     blackboxLeadLive: "Aucun enregistrement de ce déploiement pour l'instant.",
     blackboxEmpty: "Aucun enregistrement pour l'instant.",
     blackboxOpen: "Ouvrir l'enregistreur sur le Bridge →",

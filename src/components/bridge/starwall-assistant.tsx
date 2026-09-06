@@ -317,7 +317,7 @@ export function Helm() {
         error?: string;
       };
       if (!response.ok || !data.reply) {
-        const errorText = data.error ?? "Helm could not reply.";
+        const errorText = data.error ?? "Pilot could not reply.";
         const errorId = messageId();
         setMessages((current) => [
           ...current,
@@ -331,8 +331,8 @@ export function Helm() {
           langCode: recogLang,
         });
         recordConversation({
-          summary: `Helm exchange — ${clean.slice(0, 72)}`,
-          fullContent: `Officer: ${clean}\n\nHelm: ${errorText}`,
+          summary: `Pilot exchange — ${clean.slice(0, 72)}`,
+          fullContent: `Officer: ${clean}\n\nPilot: ${errorText}`,
         });
         setMic("idle");
         return;
@@ -350,8 +350,8 @@ export function Helm() {
         langCode: data.langCode ?? recogLang,
       });
       recordConversation({
-        summary: `Helm exchange — ${clean.slice(0, 72)}`,
-        fullContent: `Officer: ${clean}\n\nHelm: ${data.reply}`,
+        summary: `Pilot exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nPilot: ${data.reply}`,
       });
       setTypingId(assistantId);
       speakReply(data.reply, data.langCode ?? "en");
@@ -369,8 +369,8 @@ export function Helm() {
         langCode: recogLang,
       });
       recordConversation({
-        summary: `Helm exchange — ${clean.slice(0, 72)}`,
-        fullContent: `Officer: ${clean}\n\nHelm: Network error — try again.`,
+        summary: `Pilot exchange — ${clean.slice(0, 72)}`,
+        fullContent: `Officer: ${clean}\n\nPilot: Network error — try again.`,
       });
       setMic("idle");
     }
@@ -387,7 +387,7 @@ export function Helm() {
         <section className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden border border-stroke bg-panel text-ink shadow-[0_12px_40px_rgb(15_25_34/0.18)]">
           <header className="flex items-center justify-between gap-2 border-b border-stroke bg-header px-3 py-2">
             <div className="min-w-0">
-              <p className="flex items-center gap-2 font-ui text-sm font-semibold text-ink">
+              <p className="flex items-center gap-2 font-ui text-sm font-semibold tracking-wide text-ink">
                 <span
                   className={cn(
                     "h-1.5 w-1.5 rounded-full",

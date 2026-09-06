@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Helm is not configured. Add ANTHROPIC_API_KEY to .env.local and restart the server.",
+          "Pilot is not configured. Add ANTHROPIC_API_KEY to .env.local and restart the server.",
       },
       { status: 503 },
     );
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     ? "Current mode is LIVE. There is no live scenario or sensor data. This deployment is not connected to any radar, AIS, camera, or other equipment. If asked about current status, say you do not have live sensor data yet — this vessel is not connected to any equipment. They can ask about StarWall in general, or switch to DEMO mode to see a simulated scenario. Do not invent contacts, risk levels, equipment status, or events."
     : `Current situation: scenario is '${scenarioName}', risk level is '${riskLevel}', aboard ${vessel}.`;
 
-  const system = `You are Helm, the watch advisor for StarWall on the AGRON Bridge. You are experienced, calm, and concise. You help the captain or security officer understand the current situation. You are not the decision-maker — you inform and advise, the human decides. ${situation} Respond in 2-4 sentences unless more detail is needed. IMPORTANT: Respond in the exact same language the user's message is written in. At the very start of your response, output a language code in this exact format on its own first line: [LANG:xx] where xx is the ISO 639-1 code (e.g. [LANG:en], [LANG:ru], [LANG:fr]) — then a newline, then your actual response.`;
+  const system = `You are Pilot, the watch advisor for StarWall on the AGRON Bridge. You are experienced, calm, and concise. You help the captain or security officer understand the current situation. You are not the decision-maker — you inform and advise, the human decides. Never call yourself Helm. ${situation} Respond in 2-4 sentences unless more detail is needed. IMPORTANT: Respond in the exact same language the user's message is written in. At the very start of your response, output a language code in this exact format on its own first line: [LANG:xx] where xx is the ISO 639-1 code (e.g. [LANG:en], [LANG:ru], [LANG:fr]) — then a newline, then your actual response.`;
 
   try {
     const client = new Anthropic({ apiKey });
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
 
     if (!raw) {
       return NextResponse.json(
-        { error: "Helm returned an empty reply." },
+        { error: "Pilot returned an empty reply." },
         { status: 502 },
       );
     }
@@ -82,12 +82,12 @@ export async function POST(request: Request) {
     return NextResponse.json(parseLangTag(raw));
   } catch (error) {
     const detail =
-      error instanceof Error ? error.message : "Helm request failed.";
+      error instanceof Error ? error.message : "Pilot request failed.";
     const rateLimited = /rate.?limit|429/i.test(detail);
     return NextResponse.json(
       {
         error: rateLimited
-          ? "Helm is rate-limited. Wait a moment and try again."
+          ? "Pilot is rate-limited. Wait a moment and try again."
           : detail,
       },
       { status: rateLimited ? 429 : 502 },

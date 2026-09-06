@@ -59,7 +59,7 @@ export const zh: Messages = {
     termsTitle: "服务条款",
     storesTitle: "StarWall 保存什么",
     storesBody:
-      "事件日志、会话记录，以及 Bridge 上的 Helm 对话。管理操作记在单独的审计日志中。",
+      "事件日志、会话记录，以及 Bridge 上的 引航员 对话。管理操作记在单独的审计日志中。",
     whereTitle: "存储位置",
     whereBody:
       "记录先写在本地，再同步到云端 — 与 Bridge 和 Backend 上的 Black Box 路径相同。数据不会离开账户用于模型训练。",
@@ -69,7 +69,7 @@ export const zh: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "这些页面描述的是示意性 StarWall 部署。使用 Bridge、Backend 和 Helm 须以与 AGRON 的书面协议为准。专用设备与任何响应能力始终处于人工授权与当地法律之下。",
+      "这些页面描述的是示意性 StarWall 部署。使用 Bridge、Backend 和 引航员 须以与 AGRON 的书面协议为准。专用设备与任何响应能力始终处于人工授权与当地法律之下。",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · 拓扑",
@@ -82,14 +82,14 @@ export const zh: Messages = {
     connectionsIn: "数据入（传感器 → 核心）",
     connectionsOut: "信息出（核心 → Bridge / Support）",
     connectionsOff: "未连接",
-    helmTitle: "Helm",
+    helmTitle: "引航员",
     helmAdvisor: "值班顾问",
-    helmAsk: "询问 Helm…",
+    helmAsk: "询问 引航员…",
     helmSend: "发送",
     helmHide: "隐藏",
-    helmOpen: "打开 Helm",
+    helmOpen: "打开 引航员",
     helmEmpty:
-      "Helm 正在值班。询问当前画面 — 语音或文字。仅供建议，由您决定。",
+      "引航员 正在值班。询问当前画面 — 语音或文字。仅供建议，由您决定。",
     helmLive: "值班顾问 · LIVE · 无传感器",
     liveBanner:
       "LIVE 模式 — 显示此部署的真实状态。尚未连接任何设备。切换到 DEMO 可用模拟数据查看 StarWall 的完整能力。",
@@ -136,8 +136,8 @@ export const zh: Messages = {
     heartbeat: "管理服务",
     heartbeatOk: "可达",
     heartbeatFail: "不可达",
-    helmReady: "Helm API 已配置",
-    helmMissing: "未设置 Helm API 密钥",
+    helmReady: "引航员 API 已配置",
+    helmMissing: "未设置 引航员 API 密钥",
     equipmentTitle: "设备监控",
     colEquipment: "设备",
     colStatus: "状态",
@@ -171,7 +171,7 @@ export const zh: Messages = {
     roleViewerDetail: "仅只读报告。",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "本浏览器会话记录 — Helm 对话与场景运行 — 在 Bridge 写入并本地保留。",
+      "本浏览器会话记录 — 引航员 对话与场景运行 — 在 Bridge 写入并本地保留。",
     blackboxLeadLive: "此部署尚无记录。",
     blackboxEmpty: "尚无记录。",
     blackboxOpen: "在 Bridge 打开记录器 →",

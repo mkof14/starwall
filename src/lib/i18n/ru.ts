@@ -59,7 +59,7 @@ export const ru: Messages = {
     termsTitle: "Условия использования",
     storesTitle: "Что хранит StarWall",
     storesBody:
-      "Журналы событий, записи сессий и разговоры Helm на Bridge. Административные действия ведутся в отдельном журнале аудита.",
+      "Журналы событий, записи сессий и разговоры Лоцмана на Bridge. Административные действия ведутся в отдельном журнале аудита.",
     whereTitle: "Где хранится",
     whereBody:
       "Записи сначала пишутся локально, затем синхронизируются в облако — тот же путь Black Box, что на Bridge и в Backend. Данные не уходят из аккаунта на обучение моделей.",
@@ -69,7 +69,7 @@ export const ru: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "Эти страницы описывают иллюстративное развёртывание StarWall. Использование Bridge, Backend и Helm регулируется письменным договором с AGRON. Специальное оборудование и любое реагирование остаются под человеческим разрешением и местным правом.",
+      "Эти страницы описывают иллюстративное развёртывание StarWall. Использование Bridge, Backend и Лоцмана регулируется письменным договором с AGRON. Специальное оборудование и любое реагирование остаются под человеческим разрешением и местным правом.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · ТОПОЛОГИЯ",
@@ -82,14 +82,14 @@ export const ru: Messages = {
     connectionsIn: "Вход данных (датчики → ядро)",
     connectionsOut: "Выход информации (ядро → Bridge / Support)",
     connectionsOff: "Не подключено",
-    helmTitle: "Helm",
+    helmTitle: "Лоцман",
     helmAdvisor: "СОВЕТНИК ВАХТЫ",
-    helmAsk: "Спросить Helm…",
+    helmAsk: "Спросить Лоцмана…",
     helmSend: "Отправить",
     helmHide: "Скрыть",
-    helmOpen: "Открыть Helm",
+    helmOpen: "Открыть Лоцмана",
     helmEmpty:
-      "Helm на вахте. Спросите о картине — голосом или текстом. Это совет; решение за вами.",
+      "Лоцман на вахте. Спросите о картине — голосом или текстом. Это совет; решение за вами.",
     helmLive: "СОВЕТНИК ВАХТЫ · LIVE · нет датчиков",
     liveBanner:
       "РЕЖИМ LIVE — показано реальное состояние этого развёртывания. Оборудование ещё не подключено. Переключитесь в DEMO, чтобы увидеть полные возможности StarWall на учебных данных.",
@@ -136,8 +136,8 @@ export const ru: Messages = {
     heartbeat: "Сервис администрирования",
     heartbeatOk: "Доступен",
     heartbeatFail: "Недоступен",
-    helmReady: "API Helm настроен",
-    helmMissing: "Ключ API Helm не задан",
+    helmReady: "API Лоцмана настроен",
+    helmMissing: "Ключ API Лоцмана не задан",
     equipmentTitle: "МОНИТОРИНГ ОБОРУДОВАНИЯ",
     colEquipment: "Оборудование",
     colStatus: "Статус",
@@ -171,7 +171,7 @@ export const ru: Messages = {
     roleViewerDetail: "Только чтение отчётов.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "Записи этой сессии в браузере — разговоры Helm и прогоны сценариев — пишутся на Bridge и хранятся локально.",
+      "Записи этой сессии в браузере — разговоры Лоцмана и прогоны сценариев — пишутся на Bridge и хранятся локально.",
     blackboxLeadLive: "Записей этого развёртывания пока нет.",
     blackboxEmpty: "Записей пока нет.",
     blackboxOpen: "Открыть регистратор на Bridge →",

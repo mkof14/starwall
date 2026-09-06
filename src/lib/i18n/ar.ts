@@ -59,7 +59,7 @@ export const ar: Messages = {
     termsTitle: "شروط الخدمة",
     storesTitle: "ما يخزّنه StarWall",
     storesBody:
-      "سجلات الأحداث وتسجيلات الجلسات ومحادثات Helm على Bridge. تُحفظ الإجراءات الإدارية في سجل تدقيق منفصل.",
+      "سجلات الأحداث وتسجيلات الجلسات ومحادثات المرشد على Bridge. تُحفظ الإجراءات الإدارية في سجل تدقيق منفصل.",
     whereTitle: "أين تُحفظ",
     whereBody:
       "تُكتب السجلات أولاً محلياً ثم تُزامَن إلى السحابة — نفس مسار Black Box في Bridge وBackend. لا تغادر البيانات الحساب لتدريب النماذج.",
@@ -69,7 +69,7 @@ export const ar: Messages = {
     gdpr:
       "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
     termsBody:
-      "تصف هذه الصفحات نشراً توضيحياً لـ StarWall. يخضع استخدام Bridge وBackend وHelm لاتفاق مكتوب مع AGRON. تبقى المعدات المتخصصة وأي قدرة على الاستجابة تحت تفويض بشري والقانون المحلي.",
+      "تصف هذه الصفحات نشراً توضيحياً لـ StarWall. يخضع استخدام Bridge وBackend والمرشد لاتفاق مكتوب مع AGRON. تبقى المعدات المتخصصة وأي قدرة على الاستجابة تحت تفويض بشري والقانون المحلي.",
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · الطوبولوجيا",
@@ -82,14 +82,14 @@ export const ar: Messages = {
     connectionsIn: "بيانات داخلة (مستشعرات → النواة)",
     connectionsOut: "معلومات خارجة (النواة → Bridge / Support)",
     connectionsOff: "غير متصل",
-    helmTitle: "Helm",
+    helmTitle: "المرشد",
     helmAdvisor: "مستشار الخفارة",
-    helmAsk: "اسأل Helm…",
+    helmAsk: "اسأل المرشد…",
     helmSend: "إرسال",
     helmHide: "إخفاء",
-    helmOpen: "فتح Helm",
+    helmOpen: "فتح المرشد",
     helmEmpty:
-      "Helm على الخفارة. اسأل عن الصورة — صوتاً أو كتابة. نصيحة فقط؛ القرار لكم.",
+      "المرشد على الخفارة. اسأل عن الصورة — صوتاً أو كتابة. نصيحة فقط؛ القرار لكم.",
     helmLive: "مستشار الخفارة · LIVE · لا مستشعرات",
     liveBanner:
       "وضع LIVE — الحالة الحقيقية لهذا النشر. لم يُوصَل أي معدات بعد. انتقلوا إلى DEMO لرؤية قدرة StarWall الكاملة ببيانات محاكاة.",
@@ -136,8 +136,8 @@ export const ar: Messages = {
     heartbeat: "خدمة الإدارة",
     heartbeatOk: "قابلة للوصول",
     heartbeatFail: "غير قابلة للوصول",
-    helmReady: "واجهة Helm مُعدّة",
-    helmMissing: "مفتاح واجهة Helm غير معيّن",
+    helmReady: "واجهة المرشد مُعدّة",
+    helmMissing: "مفتاح واجهة المرشد غير معيّن",
     equipmentTitle: "مراقبة المعدات",
     colEquipment: "المعدات",
     colStatus: "الحالة",
@@ -171,7 +171,7 @@ export const ar: Messages = {
     roleViewerDetail: "قراءة التقارير فقط.",
     blackboxTitle: "BLACK BOX",
     blackboxLead:
-      "سجلات هذه الجلسة في المتصفح — محادثات Helm وتشغيل السيناريوهات — تُكتب على Bridge وتُحفظ محلياً.",
+      "سجلات هذه الجلسة في المتصفح — محادثات المرشد وتشغيل السيناريوهات — تُكتب على Bridge وتُحفظ محلياً.",
     blackboxLeadLive: "لا سجلات بعد من هذا النشر.",
     blackboxEmpty: "لا سجلات بعد.",
     blackboxOpen: "فتح المسجّل على Bridge →",
