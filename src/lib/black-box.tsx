@@ -14,7 +14,7 @@ import { useBridgeSession } from "@/lib/bridge-session";
 import { syncBlackBoxToCloud } from "@/lib/cloud-sync";
 import { DEMO_CLEARED_EVENT } from "@/lib/demo-storage";
 import { listBlackBox, markBlackBoxLocation, putBlackBox } from "@/lib/local-db";
-import { useAppMode } from "@/lib/mode";
+import { MODE_KEY, useAppMode } from "@/lib/mode";
 
 export type { BlackBoxRecord, BlackBoxType, StorageLocation };
 
