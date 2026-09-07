@@ -9,7 +9,7 @@ export const uk: Messages = {
     pricing: "Ціни",
     technology: "Технології",
     faq: "FAQ",
-    containers: "Контейнери",
+    containers: "Контейнер AGRON",
     about: "Про нас",
     contact: "Контакт",
     backend: "Бекенд",

@@ -9,7 +9,7 @@ export const de: Messages = {
     pricing: "Preise",
     technology: "Technik",
     faq: "FAQ",
-    containers: "Container",
+    containers: "AGRON-Container",
     about: "Über uns",
     contact: "Kontakt",
     backend: "Backend",

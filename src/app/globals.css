@@ -36,6 +36,24 @@ body {
   @apply bg-page font-body text-ink antialiased;
 }
 
+::selection {
+  background: rgb(241 90 0 / 0.22);
+  color: inherit;
+}
+
+.chart-grid {
+  background-image:
+    linear-gradient(rgb(27 42 58 / 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(27 42 58 / 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dark .chart-grid {
+  background-image:
+    linear-gradient(rgb(233 228 218 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(233 228 218 / 0.045) 1px, transparent 1px);
+}
+
 @keyframes hero-radar-sweep {
   to {
     transform: rotate(360deg);

@@ -633,7 +633,7 @@ export const en: Messages = {
     pricing: "Pricing",
     technology: "Technology",
     faq: "FAQ",
-    containers: "Containers",
+    containers: "AGRON Container",
     about: "About",
     contact: "Contact",
     backend: "Backend",

@@ -9,7 +9,7 @@ export const ja: Messages = {
     pricing: "料金",
     technology: "技術",
     faq: "FAQ",
-    containers: "コンテナ",
+    containers: "AGRONコンテナ",
     about: "私たちについて",
     contact: "お問い合わせ",
     backend: "バックエンド",

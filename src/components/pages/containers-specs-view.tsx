@@ -12,7 +12,7 @@ export function ContainersSpecsView() {
         <ContainersBackLink />
 
         <header>
-          <p className="text-[13px] text-orange">
+          <p className="font-ui text-[12px] tracking-wide text-orange">
             {t.containers.eyebrow}
           </p>
           <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">

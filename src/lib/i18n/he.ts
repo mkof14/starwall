@@ -9,7 +9,7 @@ export const he: Messages = {
     pricing: "מחירים",
     technology: "טכנולוגיה",
     faq: "FAQ",
-    containers: "מכולות",
+    containers: "מכולת AGRON",
     about: "אודות",
     contact: "יצירת קשר",
     backend: "Backend",

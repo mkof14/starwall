@@ -13,9 +13,9 @@ const productHrefs = [
   "/",
   "/how-it-works",
   "/interface",
-  "/levels",
   "/pricing",
   "/technology",
+  "/levels",
   "/containers",
 ] as const;
 
@@ -35,6 +35,7 @@ export function SiteFooter() {
 
   return (
     <footer className="w-full bg-navy print:hidden">
+      <div className="h-[2px] bg-orange" />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-2 md:px-6 lg:grid-cols-4">
         <div className="space-y-4">
           <Link href="/" className="inline-flex shrink-0 items-center">
@@ -45,9 +46,7 @@ export function SiteFooter() {
           </p>
         </div>
         <nav aria-label={t.chrome.footerProduct} className="space-y-3">
-          <p className="font-ui text-xs font-semibold uppercase tracking-[0.16em] text-sand">
-            {t.chrome.footerProduct}
-          </p>
+          <p className="font-heading text-lg text-sand">{t.chrome.footerProduct}</p>
           <ul className="space-y-2 text-[13px] text-sand/70">
             {product.map((item) => (
               <li key={item.href}>
@@ -59,9 +58,7 @@ export function SiteFooter() {
           </ul>
         </nav>
         <nav aria-label={t.chrome.footerCompany} className="space-y-3">
-          <p className="font-ui text-xs font-semibold uppercase tracking-[0.16em] text-sand">
-            {t.chrome.footerCompany}
-          </p>
+          <p className="font-heading text-lg text-sand">{t.chrome.footerCompany}</p>
           <ul className="space-y-2 text-[13px] text-sand/70">
             {company.map((item) => (
               <li key={item.href}>
@@ -80,9 +77,7 @@ export function SiteFooter() {
           </ul>
         </nav>
         <nav aria-label={t.chrome.footerLegal} className="space-y-3">
-          <p className="font-ui text-xs font-semibold uppercase tracking-[0.16em] text-sand">
-            {t.chrome.footerLegal}
-          </p>
+          <p className="font-heading text-lg text-sand">{t.chrome.footerLegal}</p>
           <ul className="space-y-2 text-[13px] text-sand/70">
             <li>
               <Link href="/privacy" className="hover:text-sand">

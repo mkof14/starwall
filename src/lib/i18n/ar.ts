@@ -9,7 +9,7 @@ export const ar: Messages = {
     pricing: "الأسعار",
     technology: "التقنية",
     faq: "الأسئلة الشائعة",
-    containers: "الحاويات",
+    containers: "حاوية AGRON",
     about: "عن الشركة",
     contact: "تواصل",
     backend: "Backend",

@@ -9,7 +9,7 @@ export const zh: Messages = {
     pricing: "价格",
     technology: "技术",
     faq: "FAQ",
-    containers: "集装箱",
+    containers: "AGRON 集装箱",
     about: "关于",
     contact: "联系",
     backend: "后台",

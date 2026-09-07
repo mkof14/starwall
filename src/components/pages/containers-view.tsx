@@ -26,7 +26,7 @@ export function ContainersView() {
     <div className="bg-page text-ink">
       <div className="mx-auto max-w-6xl space-y-12 px-4 py-14 md:px-6 lg:py-20">
         <header className="max-w-3xl space-y-5">
-          <p className="text-[13px] text-orange">{t.containers.kicker}</p>
+          <p className="font-ui text-[12px] tracking-wide text-orange">{t.containers.kicker}</p>
           <h1 className="font-heading text-4xl font-bold text-ink text-balance sm:text-5xl">
             {t.containers.title}
           </h1>

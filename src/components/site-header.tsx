@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AccountMenu } from "@/components/auth/account-menu";
 import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
-import { headerWorkItems, navItems } from "@/lib/nav";
+import { headerNavItems, headerWorkItems } from "@/lib/nav";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -26,7 +26,7 @@ export function SiteHeader() {
   if (isAuthRoute(pathname)) return null;
 
   return (
-    <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header print:hidden">
+    <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header/92 shadow-[inset_0_2px_0_0_#F15A00] backdrop-blur-md print:hidden">
       <div className="flex h-full items-center justify-between gap-2 px-4 md:gap-3 md:px-6">
         <Link
           href="/"
@@ -40,7 +40,7 @@ export function SiteHeader() {
           className="hidden items-center gap-4 lg:flex xl:gap-5"
           aria-label={t.nav.primary}
         >
-          {navItems.map((item) => {
+          {headerNavItems.map((item) => {
             const active =
               item.href === "/"
                 ? pathname === "/"
@@ -49,7 +49,11 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-sm ${active ? "text-ink" : "text-muted hover:text-ink"}`}
+                className={`relative font-ui text-[13px] ${
+                  active
+                    ? "text-ink after:absolute after:-bottom-1 after:start-0 after:h-px after:w-full after:bg-orange"
+                    : "text-muted hover:text-ink"
+                }`}
               >
                 {t.nav[item.key]}
               </Link>
@@ -115,7 +119,7 @@ export function SiteHeader() {
           aria-label={t.nav.mobile}
         >
           <ul>
-            {navItems.map((item) => (
+            {headerNavItems.map((item) => (
               <li key={item.href} className="border-b border-stroke last:border-b-0">
                 <Link
                   href={item.href}

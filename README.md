@@ -52,7 +52,7 @@ Bridge walkthrough stills go in `public/bridge/`:
 
 ## Routes
 
-Shared sticky header and footer wrap every route via the root layout.
+Shared sticky header and footer wrap every route via the root layout. The header keeps the main product pages. Levels, FAQ, and AGRON Container live in the footer.
 
 | Path | Heading |
 |---|---|
