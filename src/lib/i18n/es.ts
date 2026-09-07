@@ -6,7 +6,7 @@ export const es: Messages = {
     howItWorks: "Cómo funciona",
     interface: "Interfaz",
     levels: "Niveles",
-    pricing: "Precios",
+    pricing: "Planes",
     technology: "Tecnología",
     faq: "FAQ",
     containers: "Contenedor AGRON",
@@ -545,8 +545,11 @@ export const es: Messages = {
     getStarted: "Empezar",
     contactAgron: "Contactar con AGRON",
     disclaimer:
-      "Precios ilustrativos para planificación — el precio final depende del tamaño de la embarcación o el emplazamiento, el estado del equipo y la configuración. Contáctenos para un presupuesto preciso.",
-    faqTitle: "Preguntas sobre precios",
+      "Nada en esta página es un presupuesto. La cifra la da la persona que redactará el contrato.",
+    salesNote:
+      "Los nombres de los planes y lo que incluyen son públicos. La cifra no está en el sitio. La da el comercial que llevará el contrato.",
+    askSales: "Escribir a quien lleva el contrato",
+    faqTitle: "Preguntas sobre los planes",
     faq1q: "¿Qué incluye el coste único del equipo?",
     faq1aBefore:
       "El AGRON Security Gateway y la instalación en su objeto. El hardware AGRON Container se cotiza por separado — consulte",
@@ -577,7 +580,8 @@ export const es: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Detalles",
       hideSummary: "Ocultar",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "Me interesa: {summary}. Pido que la persona que lleve el contrato envíe el precio.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

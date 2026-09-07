@@ -423,6 +423,8 @@ export type Messages = {
     getStarted: string;
     contactAgron: string;
     disclaimer: string;
+    salesNote: string;
+    askSales: string;
     faqTitle: string;
     faq1q: string;
     faq1aBefore: string;
@@ -636,7 +638,7 @@ export const en: Messages = {
     howItWorks: "How it works",
     interface: "Interface",
     levels: "Levels",
-    pricing: "Pricing",
+    pricing: "Plans",
     technology: "Technology",
     faq: "FAQ",
     containers: "AGRON Container",
@@ -669,7 +671,7 @@ export const en: Messages = {
     howItWorks: "How StarWall Works — StarWall by AGRON",
     interface: "AGRON Bridge — Interactive Demo — StarWall by AGRON",
     levels: "Subscription Levels — StarWall by AGRON",
-    pricing: "Pricing — StarWall by AGRON",
+    pricing: "Plans — StarWall by AGRON",
     technology: "Equipment & Integration — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "Containers — AGRON",
@@ -983,7 +985,7 @@ export const en: Messages = {
       bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
       connections: "Radial map of Core, sensors, Bridge, and Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
-      pricing: "Configure monthly and one-time cost by object, software, container, and extras.",
+      pricing: "Open plan names and descriptions. A salesperson on the contract names the figure.",
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",
@@ -1005,7 +1007,7 @@ export const en: Messages = {
     cards: [
       { title: "How it is put together", body: "What gets plugged in, what the watch actually sees, who is still responsible." },
       { title: "The Bridge", body: "Open /interface. DEMO is a drill with invented traffic. LIVE is whatever is really wired — often nothing yet." },
-      { title: "How it is sold", body: "LIGHT, ADVANCED, INTELLIGENCE, or a build we spec with you. Numbers live on Pricing." },
+      { title: "How it is sold", body: "LIGHT, ADVANCED, INTELLIGENCE, or a build we spec with you. What each plan includes is public. The figure comes from the person who writes the contract." },
       { title: "What it talks to", body: "A plain table of equipment classes. If your box is not on it, that is a conversation, not a slogan." },
     ],
     interfaceKicker: "The Interface",
@@ -1161,7 +1163,7 @@ export const en: Messages = {
   },
   levels: {
     kicker: "Levels",
-    title: "Four ways to buy it. CUSTOM does not have a price on this page.",
+    title: "Four ways to buy it. The figure is not on this page.",
     tiersLabel: "Service tiers",
     honestySr: "Available now and in development",
     mapNote:
@@ -1223,9 +1225,9 @@ export const en: Messages = {
     ],
   },
   pricing: {
-    kicker: "Pricing",
-    title: "Configure your deployment",
-    lead: "Choose the object, StarWall tier, AGRON Container hardware, and extras. The estimate on the right updates as you configure — monthly software and one-time equipment stay separate.",
+    kicker: "Plans",
+    title: "What you can buy. The number is not here.",
+    lead: "LIGHT, ADVANCED, INTELLIGENCE, CUSTOM — names and what they include are open. Pick an object, a plan, a container if you need metal. The person who will write the contract names the price.",
     mostPopular: "Most popular",
     perMonth: "/mo",
     equipmentPrefix: "+",
@@ -1235,11 +1237,14 @@ export const en: Messages = {
     getStarted: "Get started",
     contactAgron: "Contact AGRON",
     disclaimer:
-      "Illustrative pricing for planning purposes — final pricing depends on vessel/site size, equipment condition, and configuration. Contact us for an accurate quote.",
-    faqTitle: "Pricing questions",
-    faq1q: "What's included in the one-time equipment cost?",
+      "Nothing on this page is a quote. The person who will write the contract names the figure after they have seen the object.",
+    salesNote:
+      "Plan names and what they include are public. The number is not on this site. It comes from the salesperson who will handle the contract.",
+    askSales: "Ask the person on the contract",
+    faqTitle: "Questions about the plans",
+    faq1q: "What does the one-time equipment cover?",
     faq1aBefore:
-      "The AGRON Security Gateway and installation for your object. AGRON Container hardware is priced separately — see",
+      "The AGRON Security Gateway and installation for your object. AGRON Container hardware is a separate conversation — see",
     faq1aLink: "/containers",
     faq1aAfter: ".",
     faq2q: "Can I change tiers later?",
@@ -1249,7 +1254,7 @@ export const en: Messages = {
     faq3a:
       "Standard terms are month-to-month after an initial onboarding period — ask us for specifics for your situation.",
     interestMessage: "I'm interested in the {tier} plan",
-    levelsCta: "Configure your deployment",
+    levelsCta: "See the plans",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",
@@ -1262,12 +1267,13 @@ export const en: Messages = {
       perMonth: "/mo",
       contactPricing: "Contact us for pricing",
       customQuote: "Contact AGRON for a custom quote",
-      requestQuote: "Request exact quote",
+      requestQuote: "Ask the person on the contract",
       summaryNote:
-        "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
+        "This is a brief, not a quote. The salesperson who will write the contract names the figure after a look at the object.",
       showSummary: "Details",
       hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "I'm interested in: {summary}. Please have the person who will handle the contract send pricing. Nothing on the public site is a quote.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",
@@ -1293,19 +1299,23 @@ export const en: Messages = {
       software: {
         LIGHT: {
           name: "LIGHT",
-          detail: "Essential monitoring, unified picture",
+          detail:
+            "Connect what is already on the hull or the site. One picture. Support in working hours. The watch stays the watch.",
         },
         ADVANCED: {
           name: "ADVANCED",
-          detail: "Risk engine, 24/7 Support Center",
+          detail:
+            "Risk engine with four words. History that does not vanish when an alert closes. AGRON Support Center around the clock.",
         },
         INTELLIGENCE: {
           name: "INTELLIGENCE",
-          detail: "Adaptive AI, anomaly detection",
+          detail:
+            "The picture learns this yacht or this harbour. Anomaly detection. Scenario engine. A person on the AGRON desk who already knows the object.",
         },
         CUSTOM: {
           name: "CUSTOM",
-          detail: "Fully bespoke",
+          detail:
+            "We spec it with you. Specialized modules, Crisis Mode, a dedicated security lead. The contract names the build.",
         },
       },
       containers: {

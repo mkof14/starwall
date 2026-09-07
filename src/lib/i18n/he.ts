@@ -6,7 +6,7 @@ export const he: Messages = {
     howItWorks: "איך זה עובד",
     interface: "ממשק",
     levels: "רמות",
-    pricing: "מחירים",
+    pricing: "תוכניות",
     technology: "טכנולוגיה",
     faq: "FAQ",
     containers: "מכולת AGRON",
@@ -543,8 +543,11 @@ export const he: Messages = {
     getStarted: "להתחיל",
     contactAgron: "יצירת קשר עם AGRON",
     disclaimer:
-      "תמחור להמחשה לצורכי תכנון — המחיר הסופי תלוי בגודל כלי השיט או האתר, מצב הציוד וההגדרה. צרו קשר להצעת מחיר מדויקת.",
-    faqTitle: "שאלות על מחירים",
+      "אין הצעת מחיר בעמוד הזה. את הסכום אומר מי שיכתוב את החוזה.",
+    salesNote:
+      "שמות התוכניות ומה כלול בהן גלויים. הסכום לא באתר. אותו נותן איש המכירות שיוביל את החוזה.",
+    askSales: "לכתוב למי שמוביל את החוזה",
+    faqTitle: "שאלות על התוכניות",
     faq1q: "מה כלול בעלות הציוד החד־פעמית?",
     faq1aBefore:
       "שער AGRON Security Gateway וההתקנה באובייקט שלכם. חומרת AGRON Container מתומחרת בנפרד — ראו",
@@ -575,7 +578,8 @@ export const he: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Details",
       hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "מעניין אותי: {summary}. בבקשה שהאדם שיוביל את החוזה ישלח מחיר.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

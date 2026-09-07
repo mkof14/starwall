@@ -43,6 +43,8 @@ Pilot (the watch advisor) calls Anthropic from `src/app/api/assistant/route.ts`.
 
 The homepage “Download overview (PDF)” button uses the one-page leaflet in `public/overview-leaflet.jpg` as a thumbnail and serves `public/starwall-overview.pdf`.
 
+The Technology page embeds the briefing deck `public/starwall-intelligence-platform.pdf`.
+
 Bridge walkthrough stills go in `public/bridge/`:
 
 - `public/bridge/radar-normal.png`
@@ -61,8 +63,8 @@ Shared sticky header and footer wrap every route via the root layout. The header
 | `/interface` | Interface (scenario-linked Situational Picture) |
 | `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
-| `/pricing` | Pricing configurator (object, software, container, extras) |
-| `/technology` | Technology |
+| `/pricing` | Public plans (no prices — sales names the figure) |
+| `/technology` | Technology (briefing deck + equipment catalog) |
 | `/faq` | FAQ |
 | `/containers` | AGRON Containers |
 | `/containers/detection` | Detection Suite |

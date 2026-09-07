@@ -3,24 +3,11 @@
 import { ContactForm } from "@/components/contact-form";
 import { PageBody, PageHero, PageShell } from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
-import {
-  calculateQuote,
-  formatUsd,
-  quoteFromSearch,
-  type PricingSelection,
-} from "@/lib/pricing";
+import { quoteFromSearch, type PricingSelection } from "@/lib/pricing";
 
 const PRICING_PLANS = new Set(["LIGHT", "ADVANCED", "INTELLIGENCE"]);
 
-function quoteMessage(selection: PricingSelection, copy: ReturnType<typeof usePreferences>["t"]["pricing"]) {
-  const quote = calculateQuote(selection);
-  const monthly =
-    quote.monthly === null ? copy.config.contactPricing : `${formatUsd(quote.monthly)}${copy.config.perMonth}`;
-  const oneTime = quote.oneTime === null ? copy.config.contactPricing : formatUsd(quote.oneTime);
-  const estimate =
-    quote.customSoftware && quote.oneTime === null
-      ? copy.config.customQuote
-      : `${monthly}, ${oneTime} ${copy.config.oneTimeShort}`;
+function briefMessage(selection: PricingSelection, copy: ReturnType<typeof usePreferences>["t"]["pricing"]) {
   const addons = selection.addonIds.map((id) => `+ ${copy.config.addons[id].name}`).join(", ");
   const summary = [
     copy.config.objects[selection.objectId].name,
@@ -30,7 +17,7 @@ function quoteMessage(selection: PricingSelection, copy: ReturnType<typeof usePr
   ]
     .filter(Boolean)
     .join(", ");
-  return copy.config.quoteMessage.replace("{summary}", summary).replace("{estimate}", estimate);
+  return copy.config.quoteMessage.replace("{summary}", summary);
 }
 
 export function ContactView({
@@ -50,7 +37,7 @@ export function ContactView({
   const fromConfig = quoteFromSearch({ object, software, container, addons });
   const tier = plan?.toUpperCase() ?? "";
   const initialMessage = fromConfig
-    ? quoteMessage(fromConfig, t.pricing)
+    ? briefMessage(fromConfig, t.pricing)
     : PRICING_PLANS.has(tier)
       ? t.pricing.interestMessage.replace("{tier}", tier)
       : "";

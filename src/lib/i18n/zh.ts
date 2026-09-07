@@ -6,7 +6,7 @@ export const zh: Messages = {
     howItWorks: "工作原理",
     interface: "界面",
     levels: "层级",
-    pricing: "价格",
+    pricing: "方案",
     technology: "技术",
     faq: "FAQ",
     containers: "AGRON 集装箱",
@@ -543,8 +543,11 @@ export const zh: Messages = {
     getStarted: "开始",
     contactAgron: "联系 AGRON",
     disclaimer:
-      "以上为规划用示意价格 — 最终价格取决于船舶或场地规模、设备状况与配置。请联系我们获取准确报价。",
-    faqTitle: "价格相关问题",
+      "本页不是报价。数字由将签署合同的人给出。",
+    salesNote:
+      "方案名称与内容公开。数字不在网站上。由负责合同的销售人员告知。",
+    askSales: "写信给负责合同的人",
+    faqTitle: "关于方案的问题",
     faq1q: "一次性设备费用包含什么？",
     faq1aBefore:
       "AGRON Security Gateway 以及在您对象上的安装。AGRON Container 硬件另行计价 — 见",
@@ -575,7 +578,8 @@ export const zh: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Details",
       hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "我感兴趣：{summary}。请负责合同的人发送价格。",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

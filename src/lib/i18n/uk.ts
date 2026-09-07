@@ -6,7 +6,7 @@ export const uk: Messages = {
     howItWorks: "Як це працює",
     interface: "Інтерфейс",
     levels: "Рівні",
-    pricing: "Ціни",
+    pricing: "Плани",
     technology: "Технології",
     faq: "FAQ",
     containers: "Контейнер AGRON",
@@ -534,8 +534,11 @@ export const uk: Messages = {
     getStarted: "Почати",
     contactAgron: "Зв'язатися з AGRON",
     disclaimer:
-      "Орієнтовні ціни для планування — підсумкова вартість залежить від розміру судна чи об'єкта, стану обладнання та конфігурації. Зв'яжіться з нами за точним розрахунком.",
-    faqTitle: "Питання про ціни",
+      "На цій сторінці немає оферти. Цифру називає людина, яка вестиме контракт.",
+    salesNote:
+      "Назви планів і що в них входить — відкриті. Цифри на сайті немає. Її дає продавець, який веде контракт.",
+    askSales: "Написати тому, хто веде контракт",
+    faqTitle: "Питання про плани",
     faq1q: "Що входить у разовий платіж за обладнання?",
     faq1aBefore:
       "Шлюз AGRON Security Gateway і встановлення на ваш об'єкт. Обладнання AGRON Container оцінюється окремо — див.",
@@ -566,7 +569,8 @@ export const uk: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Details",
       hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "Цікавить: {summary}. Прошу людину, яка вестиме контракт, назвати ціну.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

@@ -6,7 +6,7 @@ export const ja: Messages = {
     howItWorks: "仕組み",
     interface: "インターフェース",
     levels: "レベル",
-    pricing: "料金",
+    pricing: "プラン",
     technology: "技術",
     faq: "FAQ",
     containers: "AGRONコンテナ",
@@ -543,8 +543,11 @@ export const ja: Messages = {
     getStarted: "始める",
     contactAgron: "AGRON に問い合わせる",
     disclaimer:
-      "計画用の目安料金です。最終料金は船舶・サイトの規模、機器の状態、構成によって変わります。正確な見積もりはお問い合わせください。",
-    faqTitle: "料金に関する質問",
+      "このページに見積もりはありません。数字は契約を書く担当者から出ます。",
+    salesNote:
+      "プラン名と内容は公開です。数字はこのサイトにありません。契約を担当する営業が伝えます。",
+    askSales: "契約担当に書く",
+    faqTitle: "プランについての質問",
     faq1q: "機器の一時費用には何が含まれますか？",
     faq1aBefore:
       "AGRON Security Gateway と、対象への設置です。AGRON Container のハードウェアは別料金です — 参照",
@@ -575,7 +578,8 @@ export const ja: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Details",
       hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "関心あり: {summary}。契約を担当する人から価格を送ってください。",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

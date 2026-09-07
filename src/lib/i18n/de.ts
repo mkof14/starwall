@@ -6,7 +6,7 @@ export const de: Messages = {
     howItWorks: "So funktioniert es",
     interface: "Oberfläche",
     levels: "Stufen",
-    pricing: "Preise",
+    pricing: "Pläne",
     technology: "Technik",
     faq: "FAQ",
     containers: "AGRON-Container",
@@ -545,8 +545,11 @@ export const de: Messages = {
     getStarted: "Loslegen",
     contactAgron: "AGRON kontaktieren",
     disclaimer:
-      "Illustrative Preise zur Planung — der endgültige Preis hängt von Schiffs- bzw. Standortgröße, Zustand der Ausrüstung und Konfiguration ab. Kontaktieren Sie uns für ein genaues Angebot.",
-    faqTitle: "Fragen zu den Preisen",
+      "Auf dieser Seite steht kein Angebot. Die Zahl nennt die Person, die den Vertrag führt.",
+    salesNote:
+      "Plannamen und Leistungsumfang sind öffentlich. Die Zahl steht nicht auf der Seite. Sie kommt vom Vertrieb, der den Vertrag schreibt.",
+    askSales: "Die Person am Vertrag schreiben",
+    faqTitle: "Fragen zu den Plänen",
     faq1q: "Was ist in den einmaligen Ausrüstungskosten enthalten?",
     faq1aBefore:
       "Das AGRON Security Gateway und die Installation an Ihrem Objekt. AGRON-Container-Hardware wird separat berechnet — siehe",
@@ -577,7 +580,8 @@ export const de: Messages = {
         "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
       showSummary: "Details",
       hideSummary: "Ausblenden",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+      quoteMessage:
+        "Interesse an: {summary}. Bitte die Person, die den Vertrag führt, um den Preis.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",

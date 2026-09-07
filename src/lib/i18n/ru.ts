@@ -6,7 +6,7 @@ export const ru: Messages = {
     howItWorks: "Как это работает",
     interface: "Интерфейс",
     levels: "Уровни",
-    pricing: "Цены",
+    pricing: "Планы",
     technology: "Технологии",
     faq: "Вопросы",
     containers: "Контейнер AGRON",
@@ -39,7 +39,7 @@ export const ru: Messages = {
     howItWorks: "Как работает StarWall — StarWall by AGRON",
     interface: "AGRON Bridge — интерактивное демо — StarWall by AGRON",
     levels: "Уровни подписки — StarWall by AGRON",
-    pricing: "Цены — StarWall by AGRON",
+    pricing: "Планы — StarWall by AGRON",
     technology: "Оборудование и интеграция — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "Контейнеры — AGRON",
@@ -353,7 +353,7 @@ export const ru: Messages = {
       bridge: "AGRON Bridge — ситуационная картина и сценарии.",
       connections: "Карта ядра, датчиков, Bridge и Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM и что доступно сейчас.",
-      pricing: "Настройте помесячную и разовую стоимость по объекту, ПО, контейнеру и дополнениям.",
+      pricing: "Открытые названия и описания планов. Цифру называет человек на контракте.",
       technology: "Категории оборудования и как StarWall садится на уже стоящие системы.",
       faq: "Ответы про ответственность, связь, данные и специализированные модули.",
       containers: "Развёртываемое контейнерное оборудование AGRON со StarWall.",
@@ -375,7 +375,7 @@ export const ru: Messages = {
     cards: [
       { title: "Как это собрано", body: "Что подключают, что видит вахта, кто по-прежнему отвечает." },
       { title: "Bridge", body: "Откройте /interface. DEMO — учение с выдуманным трафиком. LIVE — что реально воткнуто. Часто пока ничего." },
-      { title: "Как продаём", body: "LIGHT, ADVANCED, INTELLIGENCE или сборка под вас. Цифры — на странице цен, не здесь." },
+      { title: "Как продаём", body: "LIGHT, ADVANCED, INTELLIGENCE или сборка под вас. Что входит — открыто. Цифру называет человек, который ведёт контракт." },
       { title: "С чем говорит", body: "Таблица классов оборудования. Нет вашей марки — это разговор, не слоган." },
     ],
     interfaceKicker: "Interface",
@@ -524,7 +524,7 @@ export const ru: Messages = {
   },
   levels: {
     kicker: "Уровни",
-    title: "Четыре способа купить. У CUSTOM на этой странице нет цены.",
+    title: "Четыре способа купить. Цифры на этой странице нет.",
     tiersLabel: "Уровни сервиса",
     honestySr: "Доступно сейчас и в разработке",
     mapNote:
@@ -582,9 +582,9 @@ export const ru: Messages = {
     ],
   },
   pricing: {
-    kicker: "Цены",
-    title: "Настройте развёртывание",
-    lead: "Выберите объект, уровень StarWall, оборудование AGRON Container и дополнения. Оценка справа обновляется — ежемесячное ПО и разовый комплект остаются раздельно.",
+    kicker: "Планы",
+    title: "Что можно купить. Цифры здесь нет.",
+    lead: "LIGHT, ADVANCED, INTELLIGENCE, CUSTOM — названия и состав открыты. Выберите объект, план, контейнер если нужен металл. Цену назовёт человек, который будет вести контракт.",
     mostPopular: "Чаще всего выбирают",
     perMonth: "/мес",
     equipmentPrefix: "+",
@@ -594,11 +594,14 @@ export const ru: Messages = {
     getStarted: "Начать",
     contactAgron: "Связаться с AGRON",
     disclaimer:
-      "Ориентировочные цены для планирования — итоговая стоимость зависит от размера судна или объекта, состояния оборудования и конфигурации. Свяжитесь с нами за точным расчётом.",
-    faqTitle: "Вопросы о ценах",
-    faq1q: "Что входит в разовый платёж за оборудование?",
+      "На этой странице нет оферты. Цифру называет человек, который будет вести контракт, когда увидит объект.",
+    salesNote:
+      "Названия планов и что в них входит — открыты. Цифры на сайте нет. Её даёт продавец, который ведёт контракт.",
+    askSales: "Написать тому, кто ведёт контракт",
+    faqTitle: "Вопросы о планах",
+    faq1q: "Что входит в разовое оборудование?",
     faq1aBefore:
-      "Шлюз AGRON Security Gateway и установка на ваш объект. Оборудование AGRON Container оценивается отдельно — см.",
+      "Шлюз AGRON Security Gateway и установка на ваш объект. Оборудование AGRON Container — отдельный разговор — см.",
     faq1aLink: "/containers",
     faq1aAfter: ".",
     faq2q: "Можно ли сменить уровень позже?",
@@ -608,7 +611,7 @@ export const ru: Messages = {
     faq3a:
       "Стандартные условия — помесячно после начального периода внедрения; уточните детали для вашей ситуации.",
     interestMessage: "Меня интересует тариф {tier}",
-    levelsCta: "Настройте развёртывание",
+    levelsCta: "Смотреть планы",
     config: {
       stepObject: "Object type",
       stepSoftware: "StarWall software",
@@ -621,12 +624,13 @@ export const ru: Messages = {
       perMonth: "/mo",
       contactPricing: "Contact us for pricing",
       customQuote: "Contact AGRON for a custom quote",
-      requestQuote: "Request exact quote",
+      requestQuote: "Написать тому, кто ведёт контракт",
       summaryNote:
-        "Illustrative pricing for planning purposes. Final pricing depends on site survey, installation complexity, and configuration. This is not a binding quote.",
-      showSummary: "Details",
-      hideSummary: "Hide",
-      quoteMessage: "I'm interested in: {summary}. Estimated: {estimate}.",
+        "Это бриф, не счёт. Цифру называет человек, который будет вести контракт, после взгляда на объект.",
+      showSummary: "Подробнее",
+      hideSummary: "Скрыть",
+      quoteMessage:
+        "Интересует: {summary}. Прошу человека, который будет вести контракт, назвать цену. На открытой странице цифр нет.",
       objects: {
         yacht: {
           name: "Yacht / Superyacht",
@@ -652,19 +656,23 @@ export const ru: Messages = {
       software: {
         LIGHT: {
           name: "LIGHT",
-          detail: "Essential monitoring, unified picture",
+          detail:
+            "Подключаем то, что уже стоит на корпусе или объекте. Одна картина. Поддержка в рабочие часы. Вахта остаётся вахтой.",
         },
         ADVANCED: {
           name: "ADVANCED",
-          detail: "Risk engine, 24/7 Support Center",
+          detail:
+            "Движок риска на четыре слова. История не пропадает, когда тревогу закрыли. Support Center AGRON круглосуточно.",
         },
         INTELLIGENCE: {
           name: "INTELLIGENCE",
-          detail: "Adaptive AI, anomaly detection",
+          detail:
+            "Картина учит эту яхту или эту гавань. Поиск аномалий. Сценарии. Человек за столом AGRON, который уже знает объект.",
         },
         CUSTOM: {
           name: "CUSTOM",
-          detail: "Fully bespoke",
+          detail:
+            "Собираем с вами. Специальные модули, Crisis Mode, свой руководитель охраны. Сборку называет контракт.",
         },
       },
       containers: {
