@@ -578,10 +578,17 @@ export type Messages = {
     ];
     teamTitle: string;
     teamBody: string;
+    teamField: string;
+    teamPoints: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+    ];
     agronTitle: string;
     agronBefore: string;
     agronLink: string;
     agronAfter: string;
+    agronTeam: string;
     todayTitle: string;
     todayBody: string;
     todayCta: string;
@@ -1451,11 +1458,29 @@ export const en: Messages = {
     teamTitle: "Team",
     teamBody:
       "StarWall is built by a team with over 30 years of experience in networking technology, satellite communications, fiber optics, and data infrastructure. We bring the same engineering discipline used to build critical communications infrastructure to the problem of protecting people at sea.",
+    teamField:
+      "They are AGRON professionals with substantial practical experience in real conditions. They have worked through critical situations that leave little time to hesitate — and they design StarWall for that tempo: one picture, one next step, for the person who must act.",
+    teamPoints: [
+      {
+        title: "Real conditions",
+        body: "On the water and on site the picture is rarely complete or convenient. The team builds for that world — weather, distance, and incomplete information — not a clean lab.",
+      },
+      {
+        title: "Critical situations",
+        body: "When the stakes are high they stay calm, cut the noise, and leave a usable choice. Not a pile of alerts. A decision the person on watch can take.",
+      },
+      {
+        title: "Fast decisions",
+        body: "Years of practice compressing the time from a signal to a decision. StarWall is built to match the tempo professionals already work at.",
+      },
+    ],
     agronTitle: "AGRON",
     agronBefore:
       "StarWall is developed by AGRON, working across maritime intelligence, security integration, and deployable protection systems. Learn more about AGRON's broader work at ",
     agronLink: "agron1.com",
     agronAfter: ".",
+    agronTeam:
+      "The people behind AGRON are practitioners and engineers first: professionals who have had to decide quickly in the field, then built the tools they wished they had.",
     todayTitle: "StarWall today",
     todayBody:
       "StarWall is a complete, working system — built, tested, and ready for deployment.",

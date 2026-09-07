@@ -862,11 +862,29 @@ export const es: Messages = {
     teamTitle: "Equipo",
     teamBody:
       "StarWall lo construye un equipo con más de 30 años de experiencia en redes, comunicaciones por satélite, fibra óptica e infraestructura de datos. Aplicamos la misma disciplina de ingeniería usada para construir infraestructuras de comunicaciones críticas al problema de proteger a las personas en el mar.",
+    teamField:
+      "Son profesionales de AGRON con una amplia experiencia práctica en condiciones reales. Han trabajado en situaciones críticas donde hay que decidir rápido — sin ambigüedad y sin tiempo que perder. Esa experiencia define StarWall: una imagen y un siguiente paso para quien debe actuar.",
+    teamPoints: [
+      {
+        title: "Condiciones reales",
+        body: "En el agua y en el terreno la imagen rara vez es completa o cómoda. El equipo construye para ese mundo — clima, distancia e información incompleta — no para un laboratorio limpio.",
+      },
+      {
+        title: "Situaciones críticas",
+        body: "Cuando lo que está en juego es alto, mantienen la calma, recortan el ruido y dejan una opción usable. No un montón de alertas: una decisión que se puede tomar de guardia.",
+      },
+      {
+        title: "Decisiones rápidas",
+        body: "Años de práctica comprimiendo el tiempo entre una señal y una decisión. StarWall está pensado para el ritmo al que ya trabajan los profesionales.",
+      },
+    ],
     agronTitle: "AGRON",
     agronBefore:
       "StarWall lo desarrolla AGRON, en inteligencia marítima, integración de seguridad y sistemas de protección desplegables. Más sobre el trabajo de AGRON en ",
     agronLink: "agron1.com",
     agronAfter: ".",
+    agronTeam:
+      "Detrás de AGRON hay, ante todo, prácticos e ingenieros: profesionales que han tenido que decidir rápido en el terreno y luego construyeron las herramientas que les faltaban.",
     todayTitle: "StarWall hoy",
     todayBody:
       "StarWall es un sistema completo y operativo — construido, puesto a prueba y listo para el despliegue.",

@@ -41,11 +41,24 @@ export function AboutView() {
           </div>
         </section>
 
-        <section aria-labelledby="team-heading" className="max-w-3xl space-y-4">
-          <h2 id="team-heading" className="font-heading text-3xl font-bold text-ink">
-            {copy.teamTitle}
-          </h2>
-          <p className="text-sm leading-relaxed text-muted sm:text-base">{copy.teamBody}</p>
+        <section aria-labelledby="team-heading" className="space-y-5">
+          <div className="max-w-3xl space-y-4">
+            <h2 id="team-heading" className="font-heading text-3xl font-bold text-ink">
+              {copy.teamTitle}
+            </h2>
+            <p className="text-sm leading-relaxed text-muted sm:text-base">{copy.teamBody}</p>
+            <p className="text-sm leading-relaxed text-ink sm:text-base">{copy.teamField}</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {copy.teamPoints.map((item) => (
+              <article key={item.title} className="border border-stroke bg-page p-5">
+                <h3 className="font-heading text-xl font-bold text-ink">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section aria-labelledby="agron-heading" className="max-w-3xl space-y-4">
@@ -64,6 +77,7 @@ export function AboutView() {
             </a>
             {copy.agronAfter}
           </p>
+          <p className="text-sm leading-relaxed text-ink sm:text-base">{copy.agronTeam}</p>
         </section>
 
         <section

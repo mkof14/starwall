@@ -862,11 +862,29 @@ export const fr: Messages = {
     teamTitle: "Équipe",
     teamBody:
       "StarWall est construit par une équipe qui cumule plus de 30 ans d'expérience en réseaux, communications satellitaires, fibre optique et infrastructures de données. Nous appliquons la même discipline d'ingénierie que pour les infrastructures de communications critiques au problème de protéger les personnes en mer.",
+    teamField:
+      "Ce sont des professionnels d'AGRON, avec une large expérience pratique en conditions réelles. Ils ont travaillé dans des situations critiques où il faut décider vite — sans ambiguïté et sans le droit de temporiser. Cette expérience façonne StarWall : une image, une prochaine étape, pour la personne qui doit agir.",
+    teamPoints: [
+      {
+        title: "Conditions réelles",
+        body: "Sur l'eau et sur site, l'image est rarement complète ni commode. L'équipe construit pour ce monde — météo, distance, information incomplète — pas pour un laboratoire propre.",
+      },
+      {
+        title: "Situations critiques",
+        body: "Quand l'enjeu est élevé, ils restent calmes, coupent le bruit et laissent un choix utilisable. Pas une pile d'alertes : une décision que l'on peut prendre de quart.",
+      },
+      {
+        title: "Décisions rapides",
+        body: "Des années à comprimer le temps entre un signal et une décision. StarWall est conçu pour le tempo auquel les professionnels travaillent déjà.",
+      },
+    ],
     agronTitle: "AGRON",
     agronBefore:
       "StarWall est développé par AGRON, dans l'intelligence maritime, l'intégration de sécurité et les systèmes de protection déployables. En savoir plus sur le travail d'AGRON sur ",
     agronLink: "agron1.com",
     agronAfter: ".",
+    agronTeam:
+      "Derrière AGRON, ce sont d'abord des praticiens et des ingénieurs : des professionnels qui ont dû décider vite sur le terrain, puis ont construit les outils qui leur manquaient.",
     todayTitle: "StarWall aujourd'hui",
     todayBody:
       "StarWall est un système complet et opérationnel — construit, éprouvé et prêt au déploiement.",

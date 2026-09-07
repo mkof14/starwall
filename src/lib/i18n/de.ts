@@ -862,11 +862,29 @@ export const de: Messages = {
     teamTitle: "Team",
     teamBody:
       "StarWall wird von einem Team mit über 30 Jahren Erfahrung in Netzwerktechnik, Satellitenkommunikation, Glasfaser und Dateninfrastruktur gebaut. Dieselbe Ingenieursdisziplin, mit der kritische Kommunikationsinfrastruktur entsteht, bringen wir auf den Schutz von Menschen auf See.",
+    teamField:
+      "Es sind AGRON-Profis mit großer praktischer Erfahrung unter realen Bedingungen. Sie haben kritische Lagen erlebt, in denen schnell entschieden werden muss — ohne Zweideutigkeit und ohne Zeit zu verlieren. Diese Erfahrung prägt StarWall: ein Lagebild, ein nächster Schritt, für die Person, die handeln muss.",
+    teamPoints: [
+      {
+        title: "Reale Bedingungen",
+        body: "Auf dem Wasser und vor Ort ist das Bild selten vollständig oder bequem. Das Team baut für diese Welt — Wetter, Distanz, unvollständige Information — nicht für ein sauberes Labor.",
+      },
+      {
+        title: "Kritische Lagen",
+        body: "Wenn viel auf dem Spiel steht, bleiben sie ruhig, schneiden das Rauschen weg und lassen eine brauchbare Wahl. Kein Stapel Alarme — eine Entscheidung, die auf Wache getroffen werden kann.",
+      },
+      {
+        title: "Schnelle Entscheidungen",
+        body: "Jahre der Praxis, die Zeit vom Signal zur Entscheidung zu verkürzen. StarWall ist auf das Tempo gebaut, in dem Profis bereits arbeiten.",
+      },
+    ],
     agronTitle: "AGRON",
     agronBefore:
       "StarWall wird von AGRON entwickelt — in maritimer Intelligenz, Sicherheitsintegration und einsetzbaren Schutzsystemen. Mehr zur Arbeit von AGRON unter ",
     agronLink: "agron1.com",
     agronAfter: ".",
+    agronTeam:
+      "Hinter AGRON stehen zuerst Praktiker und Ingenieure: Profis, die im Feld schnell entscheiden mussten — und danach die Werkzeuge gebaut haben, die ihnen gefehlt haben.",
     todayTitle: "StarWall heute",
     todayBody:
       "StarWall ist ein vollständiges, funktionierendes System — gebaut, geprüft und bereit für den Einsatz.",
