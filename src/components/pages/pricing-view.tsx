@@ -19,48 +19,6 @@ import {
   type SoftwareId,
 } from "@/lib/pricing";
 
-const PLAN_TONE: Record<
-  SoftwareId,
-  { rail: string; chip: string; wash: string }
-> = {
-  LIGHT: {
-    rail: "border-ok",
-    chip: "bg-ok text-[#0F1922]",
-    wash: "bg-ok/10",
-  },
-  ADVANCED: {
-    rail: "border-orange",
-    chip: "bg-orange text-white",
-    wash: "bg-orange/10",
-  },
-  INTELLIGENCE: {
-    rail: "border-navy",
-    chip: "bg-navy text-sand",
-    wash: "bg-navy/10",
-  },
-  CUSTOM: {
-    rail: "border-attn",
-    chip: "bg-attn text-[#0F1922]",
-    wash: "bg-attn/15",
-  },
-};
-
-const OBJECT_TONE = [
-  "border-ok",
-  "border-orange",
-  "border-navy",
-  "border-attn",
-  "border-ok",
-] as const;
-
-const CONTAINER_TONE = [
-  "border-stroke",
-  "border-ok",
-  "border-orange",
-  "border-navy",
-  "border-attn",
-] as const;
-
 export function PricingView() {
   const { t } = usePreferences();
   const { pricing } = t;
@@ -99,19 +57,18 @@ export function PricingView() {
   return (
     <PageShell>
       <PageHero kicker={pricing.kicker} title={pricing.title} lead={pricing.lead}>
-        <p className="max-w-xl border-s-2 border-orange ps-4 text-sm leading-relaxed text-ink sm:text-[15px]">
+        <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-[15px]">
           {pricing.salesNote}
         </p>
       </PageHero>
       <PageBody>
-        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.65fr)_minmax(17rem,0.85fr)]">
-          <div className="space-y-12 pb-28 lg:pb-0">
+        <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1.7fr)_minmax(16rem,0.8fr)]">
+          <div className="space-y-14 pb-28 lg:pb-0">
             <Step heading={copy.stepSoftware} index={1}>
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="divide-y divide-stroke border-y border-stroke">
                 {SOFTWARE_TIERS.map((item, index) => {
                   const selected = selection.softwareId === item.id;
                   const label = copy.software[item.id];
-                  const tone = PLAN_TONE[item.id];
                   return (
                     <button
                       key={item.id}
@@ -124,32 +81,25 @@ export function PricingView() {
                           softwareId: item.id as SoftwareId,
                         }))
                       }
-                      className={cn(
-                        "relative h-full border-s-4 px-4 py-5 text-start transition-colors",
-                        tone.rail,
-                        selected ? tone.wash : "bg-page hover:bg-panel",
-                      )}
+                      className="grid w-full gap-1 py-5 text-start sm:grid-cols-[4rem_11rem_minmax(0,1fr)] sm:gap-8"
                     >
-                      <p className="font-mono text-[11px] text-orange">
+                      <span className="font-mono text-[11px] text-orange">
                         {String(index + 1).padStart(2, "0")}
-                      </p>
+                      </span>
                       <span
                         className={cn(
-                          "mt-2 inline-flex px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider",
-                          tone.chip,
+                          "font-heading text-2xl font-bold",
+                          selected ? "text-orange" : "text-ink",
                         )}
                       >
                         {label.name}
+                        {"popular" in item && item.popular ? (
+                          <span className="ms-2 align-middle font-ui text-[12px] font-normal text-muted">
+                            {pricing.mostPopular}
+                          </span>
+                        ) : null}
                       </span>
-                      {"popular" in item && item.popular ? (
-                        <span className="ms-2 font-mono text-[10px] text-orange">
-                          {pricing.mostPopular}
-                        </span>
-                      ) : null}
-                      <h3 className="mt-3 font-heading text-3xl font-bold text-ink">
-                        {label.name}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted">{label.detail}</p>
+                      <span className="text-sm leading-relaxed text-muted">{label.detail}</span>
                     </button>
                   );
                 })}
@@ -157,16 +107,15 @@ export function PricingView() {
             </Step>
 
             <Step heading={copy.stepObject} index={2}>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {OBJECT_TYPES.map((item, index) => {
+              <div className="divide-y divide-stroke border-y border-stroke">
+                {OBJECT_TYPES.map((item) => {
                   const selected = selection.objectId === item.id;
                   const label = copy.objects[item.id];
                   return (
-                    <SelectBlock
+                    <ChoiceRow
                       key={item.id}
                       testId={`object-${item.id}`}
                       selected={selected}
-                      rail={OBJECT_TONE[index]}
                       title={label.name}
                       detail={label.detail}
                       onClick={() =>
@@ -179,16 +128,15 @@ export function PricingView() {
             </Step>
 
             <Step heading={copy.stepContainer} index={3}>
-              <div className="grid gap-4">
-                {CONTAINER_TIERS.map((item, index) => {
+              <div className="divide-y divide-stroke border-y border-stroke">
+                {CONTAINER_TIERS.map((item) => {
                   const selected = selection.containerId === item.id;
                   const label = copy.containers[item.id];
                   return (
-                    <SelectBlock
+                    <ChoiceRow
                       key={item.id}
                       testId={`container-${item.id}`}
                       selected={selected}
-                      rail={CONTAINER_TONE[index]}
                       title={label.name}
                       detail={label.detail}
                       onClick={() =>
@@ -204,7 +152,7 @@ export function PricingView() {
             </Step>
 
             <Step heading={copy.stepAddons} index={4}>
-              <ul className="grid gap-3 sm:grid-cols-2">
+              <ul className="divide-y divide-stroke border-y border-stroke">
                 {ADDONS.map((item) => {
                   const checked = selection.addonIds.includes(item.id);
                   const label = copy.addons[item.id];
@@ -212,21 +160,21 @@ export function PricingView() {
                     <li key={item.id}>
                       <label
                         data-testid={`addon-${item.id}`}
-                        className={cn(
-                          "flex cursor-pointer items-start gap-3 border-s-4 py-3 ps-3",
-                          checked ? "border-orange bg-orange/10" : "border-stroke hover:border-navy",
-                        )}
+                        className="flex cursor-pointer items-baseline gap-4 py-4"
                       >
                         <input
                           type="checkbox"
-                          className="mt-1 accent-orange"
+                          className="accent-orange"
                           checked={checked}
                           onChange={() => toggleAddon(item.id)}
                         />
-                        <span className="min-w-0 flex-1">
-                          <span className="block font-heading text-xl font-bold text-ink">
-                            {label.name}
-                          </span>
+                        <span
+                          className={cn(
+                            "font-heading text-xl font-bold",
+                            checked ? "text-orange" : "text-ink",
+                          )}
+                        >
+                          {label.name}
                         </span>
                       </label>
                     </li>
@@ -247,7 +195,7 @@ export function PricingView() {
           </aside>
         </div>
 
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-stroke bg-header/95 p-3 shadow-[0_-8px_24px_rgb(15_25_34/0.12)] backdrop-blur lg:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-stroke bg-header/95 p-3 backdrop-blur lg:hidden">
           <button
             type="button"
             data-testid="mobile-summary-toggle"
@@ -266,7 +214,7 @@ export function PricingView() {
             </span>
           </button>
           {summaryOpen ? (
-            <div className="mt-3 max-h-[55vh] overflow-y-auto border-s-4 border-orange bg-page p-3">
+            <div className="mt-3 max-h-[55vh] overflow-y-auto border-t border-stroke pt-3">
               <BriefPanel
                 copy={copy}
                 pricing={pricing}
@@ -323,25 +271,23 @@ function Step({
         {String(index).padStart(2, "0")}
       </p>
       <h2 className="mt-1 font-heading text-3xl font-bold text-ink">{heading}</h2>
-      <div className="mt-5">{children}</div>
+      <div className="mt-6">{children}</div>
     </section>
   );
 }
 
-function SelectBlock({
+function ChoiceRow({
   title,
   detail,
   selected,
   onClick,
   testId,
-  rail,
 }: {
   title: string;
   detail: string;
   selected: boolean;
   onClick: () => void;
   testId: string;
-  rail: string;
 }) {
   return (
     <button
@@ -349,14 +295,17 @@ function SelectBlock({
       data-testid={testId}
       aria-pressed={selected}
       onClick={onClick}
-      className={cn(
-        "h-full border-s-4 px-4 py-4 text-start transition-colors",
-        rail,
-        selected ? "bg-orange/10" : "bg-page hover:bg-panel",
-      )}
+      className="grid w-full gap-1 py-4 text-start sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-8"
     >
-      <span className="block font-heading text-2xl font-bold text-ink">{title}</span>
-      <span className="mt-2 block text-sm leading-relaxed text-muted">{detail}</span>
+      <span
+        className={cn(
+          "font-heading text-xl font-bold",
+          selected ? "text-orange" : "text-ink",
+        )}
+      >
+        {title}
+      </span>
+      <span className="text-sm leading-relaxed text-muted">{detail}</span>
     </button>
   );
 }
@@ -381,35 +330,26 @@ function BriefPanel({
   const container = copy.containers[selection.containerId];
 
   return (
-    <div
-      data-testid="pricing-summary"
-      className={cn(compact ? "" : "sticky top-24 border-s-4 border-orange bg-navy px-5 py-6 text-sand")}
-    >
-      <p className="font-mono text-[11px] text-orange">{copy.yourConfig}</p>
-      <ul className="mt-4 space-y-3 text-sm">
-        <li>
-          <p className="font-heading text-2xl font-bold">{software.name}</p>
-          <p className={compact ? "text-muted" : "text-sand/70"}>{software.detail}</p>
-        </li>
-        <li className={compact ? "text-ink" : "text-sand"}>{object.name}</li>
-        <li className={compact ? "text-ink" : "text-sand"}>{container.name}</li>
+    <div data-testid="pricing-summary" className={cn(compact ? "" : "sticky top-24")}>
+      <p className="font-ui text-[12px] tracking-wide text-orange">{copy.yourConfig}</p>
+      <p className="mt-2 font-heading text-3xl font-bold text-ink">{software.name}</p>
+      <p className="mt-2 text-sm leading-relaxed text-muted">{software.detail}</p>
+      <ul className="mt-6 divide-y divide-stroke border-y border-stroke text-sm">
+        <li className="py-3 text-ink">{object.name}</li>
+        <li className="py-3 text-ink">{container.name}</li>
         {selection.addonIds.map((id) => (
-          <li key={id} className="text-orange">
-            + {copy.addons[id].name}
+          <li key={id} className="py-3 text-ink">
+            {copy.addons[id].name}
           </li>
         ))}
       </ul>
-      <p className={cn("mt-5 text-sm leading-relaxed", compact ? "text-muted" : "text-sand/75")}>
-        {pricing.salesNote}
-      </p>
-      <p className={cn("mt-3 text-xs italic leading-relaxed", compact ? "text-muted" : "text-sand/55")}>
-        {copy.summaryNote}
-      </p>
+      <p className="mt-5 text-sm leading-relaxed text-muted">{pricing.salesNote}</p>
+      <p className="mt-3 text-xs italic leading-relaxed text-muted">{copy.summaryNote}</p>
       <Link
         href={contactHref}
         data-testid="request-quote"
         data-quote={quoteMessage}
-        className="mt-5 inline-flex min-h-11 w-full items-center justify-center bg-orange px-4 text-sm font-medium text-white hover:bg-orange/90"
+        className="mt-6 inline-flex min-h-11 items-center justify-center bg-orange px-4 text-sm font-medium text-white hover:bg-orange/90"
       >
         {pricing.askSales}
       </Link>
