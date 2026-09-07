@@ -26,12 +26,12 @@ export function SiteFooter() {
   const pathname = usePathname();
   if (isAuthRoute(pathname)) return null;
 
-  const product = navItems.filter((item) =>
-    (productHrefs as readonly string[]).includes(item.href),
-  );
-  const company = navItems.filter((item) =>
-    (companyHrefs as readonly string[]).includes(item.href),
-  );
+  const product = productHrefs
+    .map((href) => navItems.find((item) => item.href === href))
+    .filter((item): item is (typeof navItems)[number] => Boolean(item));
+  const company = companyHrefs
+    .map((href) => navItems.find((item) => item.href === href))
+    .filter((item): item is (typeof navItems)[number] => Boolean(item));
 
   return (
     <footer className="w-full bg-navy print:hidden">
