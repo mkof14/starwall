@@ -1,6 +1,7 @@
 "use client";
 
 import { ContactForm } from "@/components/contact-form";
+import { PageBody, PageHero, PageShell } from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
 import {
   calculateQuote,
@@ -55,19 +56,13 @@ export function ContactView({
       : "";
 
   return (
-    <div className="bg-page text-ink">
-      <div className="mx-auto max-w-3xl space-y-8 px-4 py-14 md:px-6 lg:py-20">
-        <header>
-          <p className="font-ui text-[12px] tracking-wide text-orange">{t.contact.kicker}</p>
-          <h1 className="mt-2 font-heading text-4xl font-bold text-ink sm:text-5xl">
-            {t.contact.title}
-          </h1>
-          <p className="mt-4 max-w-xl text-[1.05rem] leading-[1.65] text-ink/80">
-            {t.contact.lead}
-          </p>
-        </header>
-        <ContactForm initialMessage={initialMessage} />
-      </div>
-    </div>
+    <PageShell>
+      <PageHero kicker={t.contact.kicker} title={t.contact.title} lead={t.contact.lead} />
+      <PageBody>
+        <div className="max-w-3xl">
+          <ContactForm initialMessage={initialMessage} />
+        </div>
+      </PageBody>
+    </PageShell>
   );
 }

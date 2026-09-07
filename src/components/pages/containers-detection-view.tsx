@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ContainersBackLink } from "@/components/containers-back-link";
+import { LogTable, PageBody, PageHero, PageShell } from "@/components/page-chrome";
 import { RtlAwareLabel } from "@/components/rtl-aware-label";
 import { usePreferences } from "@/lib/i18n/context";
 
@@ -9,49 +10,27 @@ export function ContainersDetectionView() {
   const { t } = usePreferences();
 
   return (
-    <div className="bg-page text-ink">
-      <div className="mx-auto max-w-6xl space-y-10 px-4 py-14 md:px-6 lg:py-20">
-        <ContainersBackLink />
-
-        <header>
-          <p className="font-ui text-[12px] tracking-wide text-orange">
-            {t.containers.eyebrow}
-          </p>
-          <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">
-            {t.containers.detectionTitle}
-          </h1>
-        </header>
-
-        <div className="overflow-x-auto border border-stroke">
-          <table className="w-full min-w-[32rem] text-start text-sm">
-            <thead className="bg-navy text-sand">
-              <tr>
-                <th className="px-4 py-3 font-heading text-base font-bold">
-                  {t.containers.equipment}
-                </th>
-                <th className="px-4 py-3 font-heading text-base font-bold">
-                  {t.containers.spec}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {t.containers.detectionRows.map((row) => (
-                <tr key={row.name} className="border-t border-stroke align-top">
-                  <th className="px-4 py-3 font-bold text-ink">{row.name}</th>
-                  <td className="px-4 py-3 text-muted">{row.spec}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
+    <PageShell>
+      <PageHero
+        kicker={t.containers.eyebrow}
+        title={t.containers.detectionTitle}
+        preface={<ContainersBackLink />}
+      />
+      <PageBody>
+        <LogTable
+          columns={[t.containers.equipment, t.containers.spec]}
+          rows={t.containers.detectionRows.map((row) => ({
+            name: row.name,
+            value: row.spec,
+          }))}
+        />
         <p className="text-sm text-muted">
           {t.containers.detectionNote}{" "}
           <Link href="/how-it-works" className="text-orange hover:underline">
             <RtlAwareLabel text={t.containers.howLink} />
           </Link>
         </p>
-      </div>
-    </div>
+      </PageBody>
+    </PageShell>
   );
 }

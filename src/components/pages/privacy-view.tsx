@@ -1,5 +1,6 @@
 "use client";
 
+import { PageBody, PageHero, PageShell, RuleList, RuleRow } from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
 
 export function PrivacyView({
@@ -15,67 +16,84 @@ export function PrivacyView({
 
   const privacyBlock = (
     <>
-      <p className="mt-6 max-w-3xl text-xs uppercase tracking-[0.14em] text-muted">
-        {legal.privacyUpdated}
+      <p className="text-sm italic text-muted">{legal.privacyUpdated}</p>
+      <p className="mt-4 max-w-3xl text-[1.02rem] leading-[1.7] text-muted">
+        {legal.privacyIntro}
       </p>
-      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">{legal.privacyIntro}</p>
-      {legal.privacySections.map((section) => (
-        <section key={section.title} className="mt-10 space-y-3">
-          <h2 className="font-ui text-xl font-semibold">{section.title}</h2>
-          <p className="max-w-3xl text-sm leading-relaxed text-muted">{section.body}</p>
-        </section>
-      ))}
+      <RuleList>
+        {legal.privacySections.map((section) => (
+          <RuleRow key={section.title} title={section.title} body={section.body} />
+        ))}
+      </RuleList>
     </>
   );
 
   const termsBlock = (
     <>
-      <p className="mt-6 max-w-3xl text-xs uppercase tracking-[0.14em] text-muted">
-        {legal.termsUpdated}
+      <p className="text-sm italic text-muted">{legal.termsUpdated}</p>
+      <p className="mt-4 max-w-3xl text-[1.02rem] leading-[1.7] text-muted">
+        {legal.termsIntro}
       </p>
-      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">{legal.termsIntro}</p>
-      {legal.termsSections.map((section) => (
-        <section key={section.title} className="mt-10 space-y-3">
-          <h2 className="font-ui text-xl font-semibold">{section.title}</h2>
-          <p className="max-w-3xl text-sm leading-relaxed text-muted">{section.body}</p>
-        </section>
-      ))}
-    </>
-  );
-
-  const inner = (
-    <>
-          <p className="font-ui text-[12px] tracking-wide text-orange">
-        {termsFirst ? t.chrome.terms : t.chrome.privacy}
-      </p>
-      <h1 className="mt-3 font-heading text-4xl font-bold text-ink">
-        {termsFirst ? legal.termsTitle : legal.privacyTitle}
-      </h1>
-      {termsFirst ? (
-        <>
-          <div id="terms">{termsBlock}</div>
-          <h2 className="mt-16 font-heading text-3xl font-bold">{legal.privacyTitle}</h2>
-          {privacyBlock}
-        </>
-      ) : (
-        <>
-          {privacyBlock}
-          <section id="terms" className="mt-16">
-            <h2 className="font-heading text-3xl font-bold">{legal.termsTitle}</h2>
-            {termsBlock}
-          </section>
-        </>
-      )}
+      <RuleList>
+        {legal.termsSections.map((section) => (
+          <RuleRow key={section.title} title={section.title} body={section.body} />
+        ))}
+      </RuleList>
     </>
   );
 
   if (framed) {
-    return <div className="text-bridge-text">{inner}</div>;
+    return (
+      <div className="space-y-10 text-bridge-text">
+        <h1 className="font-heading text-3xl font-bold">
+          {termsFirst ? legal.termsTitle : legal.privacyTitle}
+        </h1>
+        {termsFirst ? (
+          <>
+            <div id="terms">{termsBlock}</div>
+            <h2 className="font-heading text-3xl font-bold">{legal.privacyTitle}</h2>
+            {privacyBlock}
+          </>
+        ) : (
+          <>
+            {privacyBlock}
+            <section id="terms" className="space-y-6">
+              <h2 className="font-heading text-3xl font-bold">{legal.termsTitle}</h2>
+              {termsBlock}
+            </section>
+          </>
+        )}
+      </div>
+    );
   }
 
   return (
-    <div className="bg-page text-ink">
-      <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 lg:py-20">{inner}</div>
-    </div>
+    <PageShell>
+      <PageHero
+        kicker={termsFirst ? t.chrome.terms : t.chrome.privacy}
+        title={termsFirst ? legal.termsTitle : legal.privacyTitle}
+      />
+      <PageBody>
+        {termsFirst ? (
+          <>
+            <div id="terms" className="space-y-6">
+              {termsBlock}
+            </div>
+            <section className="space-y-6">
+              <h2 className="font-heading text-3xl font-bold text-ink">{legal.privacyTitle}</h2>
+              {privacyBlock}
+            </section>
+          </>
+        ) : (
+          <>
+            <div className="space-y-6">{privacyBlock}</div>
+            <section id="terms" className="space-y-6">
+              <h2 className="font-heading text-3xl font-bold text-ink">{legal.termsTitle}</h2>
+              {termsBlock}
+            </section>
+          </>
+        )}
+      </PageBody>
+    </PageShell>
   );
 }

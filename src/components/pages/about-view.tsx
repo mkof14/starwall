@@ -1,6 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import {
+  OrangeRail,
+  PageBody,
+  PageHero,
+  PageShell,
+  RuleList,
+  RuleRow,
+  SectionTitle,
+} from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
 
 export function AboutView() {
@@ -8,52 +17,39 @@ export function AboutView() {
   const copy = t.about;
 
   return (
-    <div className="bg-page text-ink">
-      <div className="mx-auto max-w-6xl space-y-16 px-4 py-14 md:px-6 lg:py-20">
-        <header className="max-w-2xl">
-          <p className="font-ui text-[12px] tracking-wide text-orange">{copy.kicker}</p>
-          <h1 className="mt-2 font-heading text-4xl font-bold leading-tight text-ink sm:text-5xl">
-            {copy.title}
-          </h1>
-          <p className="mt-5 text-[1.05rem] leading-[1.7] text-ink/80">{copy.lead}</p>
-        </header>
-
-        <section aria-labelledby="beliefs-heading" className="max-w-2xl space-y-8">
-          <h2
-            id="beliefs-heading"
-            className="font-heading text-3xl font-bold text-ink"
-          >
-            {copy.beliefsTitle}
-          </h2>
-          {copy.beliefs.map((item) => (
-            <article key={item.title}>
-              <h3 className="font-heading text-xl font-bold text-ink">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
-            </article>
-          ))}
-        </section>
-
-        <section aria-labelledby="team-heading" className="max-w-2xl space-y-5">
-          <h2 id="team-heading" className="font-heading text-3xl font-bold text-ink">
-            {copy.teamTitle}
-          </h2>
-          <p className="text-sm leading-relaxed text-muted sm:text-base">{copy.teamBody}</p>
-          <p className="text-sm leading-relaxed text-ink sm:text-base">{copy.teamField}</p>
-          <ul className="space-y-4 border-s-2 border-stroke ps-4">
-            {copy.teamPoints.map((item) => (
-              <li key={item.title}>
-                <p className="font-ui text-sm font-semibold text-ink">{item.title}</p>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{item.body}</p>
-              </li>
+    <PageShell>
+      <PageHero kicker={copy.kicker} title={copy.title} lead={copy.lead} />
+      <PageBody>
+        <section aria-labelledby="beliefs-heading">
+          <SectionTitle id="beliefs-heading">{copy.beliefsTitle}</SectionTitle>
+          <RuleList>
+            {copy.beliefs.map((item) => (
+              <RuleRow key={item.title} title={item.title} body={item.body} />
             ))}
-          </ul>
+          </RuleList>
         </section>
 
-        <section aria-labelledby="agron-heading" className="max-w-3xl space-y-4">
-          <h2 id="agron-heading" className="font-heading text-3xl font-bold text-ink">
-            {copy.agronTitle}
-          </h2>
-          <p className="text-sm leading-relaxed text-muted sm:text-base">
+        <section aria-labelledby="team-heading">
+          <SectionTitle id="team-heading">{copy.teamTitle}</SectionTitle>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {copy.teamBody}
+          </p>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-ink/80">
+            {copy.teamField}
+          </p>
+          <OrangeRail className="mt-6 space-y-4">
+            {copy.teamPoints.map((item) => (
+              <div key={item.title}>
+                <p className="font-heading text-lg font-semibold text-ink">{item.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{item.body}</p>
+              </div>
+            ))}
+          </OrangeRail>
+        </section>
+
+        <section aria-labelledby="agron-heading">
+          <SectionTitle id="agron-heading">{copy.agronTitle}</SectionTitle>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
             {copy.agronBefore}
             <a
               href="https://agron1.com"
@@ -65,14 +61,15 @@ export function AboutView() {
             </a>
             {copy.agronAfter}
           </p>
-          <p className="text-sm leading-relaxed text-ink sm:text-base">{copy.agronTeam}</p>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-ink/80">
+            {copy.agronTeam}
+          </p>
         </section>
 
-        <section
-          aria-label={copy.contactCta}
-          className="max-w-3xl space-y-5 border border-stroke bg-panel px-5 py-6 md:px-7 md:py-8"
-        >
-          <p className="text-sm leading-relaxed text-muted sm:text-base">{copy.todayCta}</p>
+        <section aria-label={copy.contactCta} className="space-y-5">
+          <OrangeRail>
+            <p>{copy.todayCta}</p>
+          </OrangeRail>
           <Link
             href="/contact"
             className="inline-flex items-center justify-center bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
@@ -80,7 +77,7 @@ export function AboutView() {
             {copy.contactCta}
           </Link>
         </section>
-      </div>
-    </div>
+      </PageBody>
+    </PageShell>
   );
 }

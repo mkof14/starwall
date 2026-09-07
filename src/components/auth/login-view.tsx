@@ -65,7 +65,7 @@ export function LoginView({ next }: { next?: string | null }) {
               setEmail(event.target.value);
               setError(null);
             }}
-            className="mt-1 w-full border border-[#B7C9D8] bg-[#F7FBFD] px-3 py-2.5 text-navyText outline-none focus:border-orange"
+            className="mt-1 w-full border-b border-stroke bg-transparent px-0 py-2 text-ink outline-none focus:border-orange"
           />
         </label>
         <PasswordField

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, type ReactNode } from "react";
+import { PageBody, PageHero, PageShell, RuleList, RuleRow } from "@/components/page-chrome";
 import { cn } from "@/lib/cn";
 import { usePreferences } from "@/lib/i18n/context";
 import {
@@ -75,19 +76,10 @@ export function PricingView() {
   const contactHref = `/contact?${selectionToQuery(selection)}`;
 
   return (
-    <div className="bg-page text-ink">
-      <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 lg:py-20">
-        <header>
-          <p className="font-ui text-[12px] tracking-wide text-orange">
-            {pricing.kicker}
-          </p>
-          <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">
-            {pricing.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{pricing.lead}</p>
-        </header>
-
-        <div className="mt-12 grid items-start gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.9fr)]">
+    <PageShell>
+      <PageHero kicker={pricing.kicker} title={pricing.title} lead={pricing.lead} />
+      <PageBody>
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.9fr)]">
           <div className="space-y-8 pb-28 lg:pb-0">
             <Step heading={copy.stepObject} index={1}>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -187,8 +179,8 @@ export function PricingView() {
                       <label
                         data-testid={`addon-${item.id}`}
                         className={cn(
-                          "flex cursor-pointer items-start gap-3 border px-4 py-3",
-                          checked ? "border-orange bg-orange/5" : "border-stroke bg-page",
+                          "flex cursor-pointer items-start gap-3 border-s-2 py-3 ps-3",
+                          checked ? "border-orange" : "border-stroke",
                           quote.customSoftware && "opacity-70",
                         )}
                       >
@@ -261,33 +253,32 @@ export function PricingView() {
           ) : null}
         </div>
 
-        <section className="mt-16 space-y-8" aria-labelledby="pricing-faq">
-          <h2 id="pricing-faq" className="font-heading text-2xl font-bold text-ink">
+        <section aria-labelledby="pricing-faq">
+          <h2 id="pricing-faq" className="font-heading text-3xl font-bold text-ink">
             {pricing.faqTitle}
           </h2>
-          <dl className="space-y-8">
-            <div>
-              <dt className="font-heading text-lg font-semibold text-ink">{pricing.faq1q}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted">
-                {pricing.faq1aBefore}{" "}
-                <Link href="/containers" className="font-medium text-orange underline-offset-2 hover:underline">
-                  {pricing.faq1aLink}
-                </Link>
-                {pricing.faq1aAfter}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-heading text-lg font-semibold text-ink">{pricing.faq2q}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted">{pricing.faq2a}</dd>
-            </div>
-            <div>
-              <dt className="font-heading text-lg font-semibold text-ink">{pricing.faq3q}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted">{pricing.faq3a}</dd>
-            </div>
-          </dl>
+          <RuleList>
+            <RuleRow
+              title={pricing.faq1q}
+              body={
+                <>
+                  {pricing.faq1aBefore}{" "}
+                  <Link
+                    href="/containers"
+                    className="font-medium text-orange underline-offset-2 hover:underline"
+                  >
+                    {pricing.faq1aLink}
+                  </Link>
+                  {pricing.faq1aAfter}
+                </>
+              }
+            />
+            <RuleRow title={pricing.faq2q} body={pricing.faq2a} />
+            <RuleRow title={pricing.faq3q} body={pricing.faq3a} />
+          </RuleList>
         </section>
-      </div>
-    </div>
+      </PageBody>
+    </PageShell>
   );
 }
 
@@ -302,7 +293,7 @@ function Step({
 }) {
   return (
     <section>
-      <p className="font-mono text-[11px] tracking-[0.22em] text-orange">
+      <p className="font-mono text-[11px] text-orange">
         {String(index).padStart(2, "0")}
       </p>
       <h2 className="mt-1 font-heading text-2xl font-bold text-ink">{heading}</h2>
@@ -337,8 +328,8 @@ function SelectCard({
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "relative h-full border p-4 text-start transition-colors",
-        selected ? "border-orange bg-orange/5" : "border-stroke bg-page hover:border-navy",
+        "relative h-full border-s-2 py-4 pe-2 text-start transition-colors",
+        selected ? "border-orange" : "border-stroke hover:border-navy",
         muted && "opacity-80",
       )}
     >
@@ -383,10 +374,10 @@ function SummaryPanel({
     <div
       data-testid="pricing-summary"
       className={cn(
-        compact ? "" : "sticky top-24 border border-stroke bg-panel p-5",
+        compact ? "" : "sticky top-24 border-s-2 border-orange ps-5",
       )}
     >
-      <p className="font-mono text-[11px] tracking-[0.22em] text-orange">{copy.yourConfig}</p>
+      <p className="font-mono text-[11px] text-orange">{copy.yourConfig}</p>
       <ul className="mt-4 space-y-3 text-sm">
         <Line
           label={object.name}

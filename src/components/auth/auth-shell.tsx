@@ -11,26 +11,24 @@ export function AuthShell({
 }) {
   return (
     <div
-      className="relative min-h-screen bg-[#E0EDF6] px-4 py-10 text-navyText"
+      className="relative min-h-screen bg-page text-ink"
       data-testid="auth-shell"
     >
+      <div className="chart-grid pointer-events-none absolute inset-0" />
+      <div className="relative h-[2px] bg-orange" />
       <Link
         href="/"
         data-testid="auth-back"
-        className="absolute start-4 top-4 inline-flex items-center gap-1 font-ui text-sm text-navyText hover:text-orange md:start-6 md:top-6"
+        className="absolute start-4 top-6 z-10 inline-flex items-center gap-1 font-ui text-sm text-ink hover:text-orange md:start-6"
       >
         ← Back
       </Link>
-      <div className="mx-auto w-full max-w-[26rem]">
-        <div className="border border-[#B7C9D8] bg-white px-6 py-8 shadow-[0_12px_40px_rgb(15_25_34/0.08)] sm:px-8">
-          <div className="flex justify-center">
-            <BrandLogo priority />
-          </div>
-          <h1 className="mt-6 text-center font-heading text-3xl font-bold text-navyText">
-            {title}
-          </h1>
-          {children}
-        </div>
+      <div className="relative mx-auto w-full max-w-[26rem] px-4 py-20">
+        <BrandLogo priority />
+        <h1 className="mt-8 font-heading text-[2.5rem] font-bold leading-[1.08] text-ink">
+          {title}
+        </h1>
+        <div className="mt-8">{children}</div>
       </div>
     </div>
   );

@@ -56,14 +56,15 @@ export function TaskList({ signedIn, onLocked }: TaskListProps) {
           <section key={group} aria-labelledby={`tasks-${group}`}>
             <h2
               id={`tasks-${group}`}
-              className="font-mono text-[10px] tracking-[0.22em] text-muted"
+              className="font-ui text-[12px] tracking-wide text-orange"
             >
               {group === "backend" ? t.auth.groupBackend : t.auth.groupSite}
             </h2>
-            <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-              {items.map((task) => (
+            <ul className="mt-6 grid gap-x-10 gap-y-8 border-t border-stroke pt-8 sm:grid-cols-2">
+              {items.map((task, index) => (
                 <li key={task.id}>
                   <TaskCard
+                    index={index + 1}
                     task={task}
                     title={taskTitle(task, t)}
                     body={taskBody(task, t)}
@@ -83,6 +84,7 @@ export function TaskList({ signedIn, onLocked }: TaskListProps) {
 }
 
 function TaskCard({
+  index,
   task,
   title,
   body,
@@ -91,6 +93,7 @@ function TaskCard({
   signedIn,
   onLocked,
 }: {
+  index: number;
   task: TaskDef;
   title: string;
   body: string;
@@ -100,17 +103,17 @@ function TaskCard({
   onLocked: (href: string) => void;
 }) {
   const locked = task.gated && !signedIn;
-  const className = cn(
-    "flex h-full flex-col border bg-panel p-4 transition-colors",
-    locked
-      ? "border-stroke text-ink"
-      : "border-stroke hover:border-orange",
-  );
+  const className = "group block text-start";
 
   const inner = (
     <>
-      <p className="font-ui text-sm font-semibold text-ink">{title}</p>
-      <p className="mt-1 flex-1 text-sm leading-relaxed text-muted">{body}</p>
+      <p className="font-mono text-[11px] text-orange">
+        {String(index).padStart(2, "0")}
+      </p>
+      <p className="mt-1 font-heading text-2xl font-bold text-ink group-hover:text-orange">
+        {title}
+      </p>
+      <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">{body}</p>
       <p
         className={cn(
           "mt-3 font-mono text-[11px]",

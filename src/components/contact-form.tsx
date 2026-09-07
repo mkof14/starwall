@@ -78,14 +78,14 @@ export function ContactForm({ initialMessage = "" }: { initialMessage?: string }
 
   if (sent) {
     return (
-      <p className="border border-stroke bg-panel px-4 py-6 text-base text-ink" role="status">
+      <p className="border-s-2 border-orange ps-4 text-base leading-relaxed text-ink" role="status">
         {t.contact.success}
       </p>
     );
   }
 
   const fieldClass =
-    "w-full border bg-panel px-3 py-2 text-ink outline-none focus:border-orange";
+    "w-full border-b border-stroke bg-transparent px-0 py-2 text-ink outline-none focus:border-orange";
 
   return (
     <form onSubmit={onSubmit} className="space-y-5" noValidate>

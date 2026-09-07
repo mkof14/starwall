@@ -38,7 +38,7 @@ export function ForgotPasswordView() {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-1 w-full border border-[#B7C9D8] bg-[#F7FBFD] px-3 py-2.5 text-navyText outline-none focus:border-orange"
+              className="mt-1 w-full border-b border-stroke bg-transparent px-0 py-2 text-ink outline-none focus:border-orange"
             />
           </label>
           <button
