@@ -11,8 +11,8 @@ export function BrandLogo({ className, priority = false }: BrandLogoProps) {
     <Image
       src="/SW3.png"
       alt="StarWall"
-      width={2086}
-      height={316}
+      width={2172}
+      height={724}
       priority={priority}
       className={cn("h-8 w-auto sm:h-9", className)}
     />

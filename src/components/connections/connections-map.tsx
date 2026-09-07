@@ -458,8 +458,8 @@ export function ConnectionsMap() {
       <Image
         src="/SW3.png"
         alt="StarWall"
-        width={2086}
-        height={316}
+        width={2172}
+        height={724}
         data-testid="map-core-logo"
         className="pointer-events-none absolute z-[1] h-auto w-[200px] -translate-x-1/2 -translate-y-[80%]"
         style={{
