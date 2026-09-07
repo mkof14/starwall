@@ -17,12 +17,21 @@ npm run dev
 
 Dev server: `http://127.0.0.1:3000`
 
-To keep production-like `next start`, Postgres, and a public Cloudflare tunnel up (restarts if any piece dies):
+Local production server (stays up; starts Postgres and Next if they are down):
 
 ```bash
-npm run build
+npm run ensure
+```
+
+Then open `http://127.0.0.1:3000` (and `http://127.0.0.1:43180` for the preview port).
+
+To keep it running in the foreground and restart anything that dies:
+
+```bash
 npm run up
 ```
+
+Cloud Agent environments run `scripts/ensure-site.sh` on every boot (`start` in `.cursor/environment.json`) and keep `npm run up` in a terminal. On this machine a cron job also checks once a minute and brings the site back if it is down.
 
 The supervisor writes the current public URL to `/tmp/starwall-public-url.txt`. Quick-tunnel hostnames change when cloudflared restarts.
 

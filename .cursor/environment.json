@@ -1,14 +1,21 @@
 {
+  "install": "npm ci",
+  "start": "bash scripts/ensure-site.sh",
   "terminals": [
     {
       "name": "StarWall",
-      "command": "npm run up"
+      "command": "npm run up",
+      "description": "Keeps Postgres and Next.js running locally and restarts them if they die."
     }
   ],
   "ports": [
     {
       "name": "StarWall",
       "port": 3000
+    },
+    {
+      "name": "StarWall preview",
+      "port": 43180
     }
   ]
 }

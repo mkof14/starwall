@@ -6,6 +6,7 @@
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "node scripts/prisma-generate.mjs && node scripts/migrate-if-hosted.mjs && next build",
     "start": "next start -H 0.0.0.0 -p 3000",
+    "ensure": "bash scripts/ensure-site.sh",
     "up": "bash scripts/keep-site-up.sh",
     "test": "vitest run",
     "lint": "next lint && npm run lint:copy",
