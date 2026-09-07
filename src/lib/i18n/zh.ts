@@ -105,6 +105,8 @@ export const zh: Messages = {
     helmEmpty:
       "引航员 正在值班。询问当前画面 — 语音或文字。仅供建议，由您决定。",
     helmLive: "值班顾问 · LIVE · 无传感器",
+    helmSpeakerOn: "扬声器开",
+    helmSpeakerOff: "扬声器关",
     liveBanner:
       "LIVE 模式 — 显示此部署的真实状态。尚未连接任何设备。切换到 DEMO 可用模拟数据查看 StarWall 的完整能力。",
   },
@@ -657,6 +659,10 @@ export const zh: Messages = {
       "部分设备类别 — 例如射频 / 反无人机探测或电子战系统 — 在部署前需按管辖区进行出口管制与许可审查。StarWall 的架构将其作为可选模块支持；启用其中任何一项都必须先经过单独法律审查，相关响应能力需要持证操作员与人工授权。详情请",
     contactUs: "联系我们",
     oem: "OEM 合作",
+    deckTitle: "简报幻灯",
+    deckLead: "与首次通话相同的幻灯：StarWall 接在什么上，值班画面如何组成。",
+    deckOpen: "打开演示文稿",
+    deckDownload: "下载 PDF",
     rows: [
       {
         name: "船舶 / 场地平台",

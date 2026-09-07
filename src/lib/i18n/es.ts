@@ -105,6 +105,8 @@ export const es: Messages = {
     helmEmpty:
       "Práctico está de guardia. Pregunte por el cuadro — voz o texto. Solo consejo; usted decide.",
     helmLive: "ASESOR DE GUARDIA · LIVE · sin sensores",
+    helmSpeakerOn: "Altavoz encendido",
+    helmSpeakerOff: "Altavoz apagado",
     liveBanner:
       "MODO LIVE — estado real de este despliegue. Aún no hay equipo conectado. Cambie a DEMO para ver la capacidad completa de StarWall con datos simulados.",
   },
@@ -659,6 +661,11 @@ export const es: Messages = {
       "Algunas categorías de equipo — por ejemplo detección RF/contra-drones o sistemas de guerra electrónica — requieren revisión de control de exportaciones y licencias propia de cada jurisdicción antes del despliegue. La arquitectura de StarWall las admite como módulos opcionales; activar cualquiera de ellas pasa siempre primero por una revisión jurídica aparte, y cualquier capacidad de respuesta asociada exige un operador con licencia y autorización humana. Para más detalles,",
     contactUs: "contáctenos",
     oem: "Alianza OEM",
+    deckTitle: "La presentación",
+    deckLead:
+      "Las mismas diapositivas de la primera llamada: sobre qué se apoya StarWall y cómo se arma el cuadro de guardia.",
+    deckOpen: "Abrir la presentación",
+    deckDownload: "Descargar PDF",
     rows: [
       {
         name: "Plataforma del buque / emplazamiento",

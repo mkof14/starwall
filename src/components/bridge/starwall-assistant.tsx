@@ -44,7 +44,7 @@ const SPEAK_LANG: Record<string, string> = {
   he: "he-IL",
 };
 
-const BAR_COUNT = 4;
+const BAR_COUNT = 10;
 const TYPE_MS = 28;
 
 function SpeechEngine() {
@@ -68,6 +68,7 @@ export function Helm() {
   const [open, setOpen] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
   const [mic, setMic] = useState<MicState>("idle");
+  const [voiceOn, setVoiceOn] = useState(true);
   const [levels, setLevels] = useState<number[]>(() => Array(BAR_COUNT).fill(0));
   const [recogLang, setRecogLang] = useState<Locale>("en");
   const [draft, setDraft] = useState("");
@@ -277,8 +278,22 @@ export function Helm() {
     }
   }
 
+  function stopSpeech() {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setMic((current) => (current === "speaking" ? "idle" : current));
+  }
+
+  function toggleSpeaker() {
+    setVoiceOn((current) => {
+      if (current) stopSpeech();
+      return !current;
+    });
+  }
+
   function speakReply(text: string, langCode: string) {
-    if (typeof window === "undefined" || !window.speechSynthesis) {
+    if (!voiceOn || typeof window === "undefined" || !window.speechSynthesis) {
       setMic("idle");
       return;
     }
@@ -400,16 +415,25 @@ export function Helm() {
   return (
     <div
       data-testid="starwall-assistant"
-      className="fixed bottom-4 right-4 z-[70] font-ui"
+      className="fixed bottom-4 end-4 z-[70] font-ui"
     >
       {open ? (
-        <section className="flex w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden border border-stroke bg-panel text-ink shadow-[0_16px_48px_rgb(15_25_34/0.22)]">
-          <header className="flex items-center justify-between gap-2 border-b border-stroke bg-header px-3 py-2">
-            <div className="min-w-0">
-              <p className="flex items-center gap-2 font-ui text-sm font-semibold tracking-wide text-ink">
+        <section className="helm-scope flex h-[min(42rem,calc(100vh-5.5rem))] w-[min(20rem,calc(100vw-1.5rem))] flex-col overflow-hidden border border-stroke bg-[#0b141c] text-sand shadow-[0_20px_56px_rgb(15_25_34/0.38)]">
+          <div className="h-[2px] bg-orange" />
+          <header className="relative flex items-center justify-between gap-2 border-b border-sand/15 bg-[#061018] px-3 py-2.5">
+            <span
+              className="helm-fab-sweep pointer-events-none absolute -end-6 -top-10 h-28 w-28 rounded-full opacity-40"
+              style={{
+                background:
+                  "conic-gradient(from 200deg, transparent 0deg, transparent 300deg, rgb(241 90 0 / 0.45) 360deg)",
+              }}
+              aria-hidden
+            />
+            <div className="relative min-w-0">
+              <p className="flex items-center gap-2 font-heading text-xl font-bold text-sand">
                 <span
                   className={cn(
-                    "h-1.5 w-1.5 rounded-full",
+                    "h-2 w-2 rounded-full",
                     mic === "listening"
                       ? "bg-ok assistant-mic-listen"
                       : mic === "speaking"
@@ -419,13 +443,13 @@ export function Helm() {
                 />
                 {surface.helmTitle}
               </p>
-              <p className="truncate font-mono text-[10px] text-muted">
+              <p className="truncate font-mono text-[10px] text-sand/55">
                 {live
                   ? surface.helmLive
                   : `${surface.helmAdvisor} · ${session.vessel} · ${session.riskLevel}`}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="relative flex items-center gap-1.5">
               <div ref={langRef} className="relative">
                 <button
                   type="button"
@@ -433,7 +457,7 @@ export function Helm() {
                   aria-expanded={langsOpen}
                   aria-controls={menuId}
                   onClick={() => setLangsOpen((value) => !value)}
-                  className="inline-flex items-center gap-1.5 border border-stroke px-2 py-1 font-mono text-[10px] text-ink hover:border-orange"
+                  className="inline-flex items-center gap-1.5 border border-sand/20 px-2 py-1 font-mono text-[10px] text-sand hover:border-orange"
                 >
                   <FlagIcon locale={recogLang} />
                   {recogLang.toUpperCase()}
@@ -442,7 +466,7 @@ export function Helm() {
                 {langsOpen ? (
                   <ul
                     id={menuId}
-                    className="absolute end-0 z-20 mt-1 max-h-64 min-w-[11rem] overflow-auto border border-stroke bg-panel py-1 shadow-lg"
+                    className="absolute end-0 z-20 mt-1 max-h-64 min-w-[11rem] overflow-auto border border-stroke bg-panel py-1 text-ink shadow-lg"
                   >
                     {locales.map((code) => (
                       <li key={code}>
@@ -471,7 +495,7 @@ export function Helm() {
                 type="button"
                 data-testid="assistant-toggle"
                 onClick={() => setOpen(false)}
-                className="border border-stroke px-2 py-1 font-mono text-[10px] text-muted hover:text-ink"
+                className="border border-sand/20 px-2 py-1 font-mono text-[10px] text-sand/70 hover:text-sand"
               >
                 {surface.helmHide}
               </button>
@@ -481,10 +505,12 @@ export function Helm() {
           <div
             ref={listRef}
             data-testid="assistant-chat"
-            className="h-72 space-y-2 overflow-y-auto px-3 py-2"
+            className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 py-3"
           >
             {messages.length === 0 ? (
-              <p className="text-xs text-muted">{surface.helmEmpty}</p>
+              <p className="border-s-2 border-orange ps-3 text-xs leading-relaxed text-sand/65">
+                {surface.helmEmpty}
+              </p>
             ) : null}
             {messages.map((item) => {
               const showing =
@@ -495,12 +521,12 @@ export function Helm() {
                 <div
                   key={item.id}
                   className={cn(
-                    "max-w-[90%] px-2.5 py-1.5 text-sm",
+                    "max-w-[92%] px-2.5 py-2 text-sm leading-relaxed",
                     item.role === "user"
                       ? "ms-auto bg-orange text-white"
                       : item.role === "error"
                         ? "border border-attn text-attn"
-                        : "bg-page text-ink",
+                        : "border-s-2 border-ok bg-[#111820] text-sand",
                   )}
                 >
                   {showing}
@@ -509,18 +535,18 @@ export function Helm() {
             })}
           </div>
 
-          <div className="border-t border-stroke px-3 py-2">
-            <div className="mb-2 flex items-center gap-2">
+          <div className="border-t border-sand/15 bg-[#061018] px-3 py-3">
+            <div className="mb-3 flex items-end gap-2">
               <button
                 type="button"
                 data-testid="assistant-mic"
                 onClick={() => void toggleMic()}
                 className={cn(
-                  "flex h-9 w-9 items-center justify-center border",
-                  mic === "idle" && "border-stroke text-muted",
+                  "flex h-10 w-10 items-center justify-center border",
                   mic === "listening" && "assistant-mic-listen border-ok text-ok",
                   mic === "processing" && "border-attn text-attn",
                   mic === "speaking" && "assistant-mic-speak border-orange text-orange",
+                  mic === "idle" && "border-sand/25 text-sand/70 hover:text-sand",
                 )}
                 aria-label={
                   mic === "listening" ? "Stop listening" : "Start listening"
@@ -537,9 +563,25 @@ export function Helm() {
                   </svg>
                 )}
               </button>
+              <button
+                type="button"
+                data-testid="assistant-speaker"
+                onClick={toggleSpeaker}
+                aria-pressed={!voiceOn}
+                aria-label={voiceOn ? surface.helmSpeakerOn : surface.helmSpeakerOff}
+                title={voiceOn ? surface.helmSpeakerOn : surface.helmSpeakerOff}
+                className={cn(
+                  "flex h-10 w-10 items-center justify-center border",
+                  voiceOn
+                    ? "border-sand/25 text-sand hover:border-orange"
+                    : "border-attn text-attn",
+                )}
+              >
+                {voiceOn ? <SpeakerOnIcon /> : <SpeakerOffIcon />}
+              </button>
               <div
                 data-testid="assistant-vu"
-                className="flex h-3.5 w-12 shrink-0 items-end gap-px"
+                className="flex h-10 min-w-0 flex-1 items-end gap-px border-s-2 border-orange/70 ps-2"
                 title="Sound"
                 aria-hidden
               >
@@ -551,18 +593,15 @@ export function Helm() {
                       mic === "speaking" ? "bg-orange" : "bg-ok",
                     )}
                     style={{
-                      height: `${Math.max(18, (mic === "idle" ? 0.18 + (index % 2) * 0.12 : level) * 100)}%`,
+                      height: `${Math.max(16, (mic === "idle" ? 0.2 + (index % 2) * 0.16 : level) * 100)}%`,
                       opacity:
                         mic === "listening" || mic === "speaking"
-                          ? Math.max(0.35, level)
-                          : 0.35,
+                          ? Math.max(0.4, level)
+                          : 0.28,
                     }}
                   />
                 ))}
               </div>
-              <span className="w-16 text-end font-mono text-[10px] uppercase text-muted">
-                {mic}
-              </span>
             </div>
             {micError ? (
               <p className="mb-2 font-mono text-[10px] text-attn">{micError}</p>
@@ -579,7 +618,7 @@ export function Helm() {
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
                 placeholder={surface.helmAsk}
-                className="min-w-0 flex-1 border border-stroke bg-page px-2 py-1.5 font-ui text-sm text-ink outline-none focus:border-orange"
+                className="min-w-0 flex-1 border-b border-sand/25 bg-transparent px-0 py-1.5 font-ui text-sm text-sand outline-none placeholder:text-sand/40 focus:border-orange"
               />
               <button
                 type="submit"
@@ -619,6 +658,28 @@ export function Helm() {
         </button>
       )}
     </div>
+  );
+}
+
+function SpeakerOnIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M2.2 5.6h2.2L7.8 3.2v9.6L4.4 10.4H2.2A.8.8 0 0 1 1.4 9.6V6.4a.8.8 0 0 1 .8-.8Zm8 5.1a3.6 3.6 0 0 0 0-5.4l1.1-1.1a5.2 5.2 0 0 1 0 7.6L10.2 10.7Zm1.9 1.9a6.4 6.4 0 0 0 0-9.2L13.2 2.3a8 8 0 0 1 0 11.4l-1.1-1.1Z"
+      />
+    </svg>
+  );
+}
+
+function SpeakerOffIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M2.2 5.6h2.2L7.8 3.2v9.6L4.4 10.4H2.2A.8.8 0 0 1 1.4 9.6V6.4a.8.8 0 0 1 .8-.8ZM3.2 2.3 14.1 13.2l-1.1 1.1-2.1-2.1A6.3 6.3 0 0 1 9.4 14l-1-1.3a4.8 4.8 0 0 0 1.3-1.3L3.2 5l-1.1-1.1L3.2 2.3Zm8.1 2.2 1.1-1.1a8 8 0 0 1 1.8 7.2L12.9 9.3a6.3 6.3 0 0 0-1.6-4.8Z"
+      />
+    </svg>
   );
 }
 

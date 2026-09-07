@@ -97,6 +97,8 @@ export type Messages = {
     helmOpen: string;
     helmEmpty: string;
     helmLive: string;
+    helmSpeakerOn: string;
+    helmSpeakerOff: string;
     liveBanner: string;
   };
   backend: {
@@ -488,6 +490,10 @@ export type Messages = {
     legal: string;
     contactUs: string;
     oem: string;
+    deckTitle: string;
+    deckLead: string;
+    deckOpen: string;
+    deckDownload: string;
     rows: [
       { name: string; connects: string },
       { name: string; connects: string },
@@ -765,6 +771,8 @@ export const en: Messages = {
     helmEmpty:
       "Pilot is on watch. Ask about the picture — speak or type. Advice only; you decide.",
     helmLive: "WATCH ADVISOR · LIVE · no sensors",
+    helmSpeakerOn: "Speaker on",
+    helmSpeakerOff: "Speaker off",
     liveBanner:
       "LIVE MODE — showing the real current state of this deployment. No equipment is connected yet. Switch to DEMO to see StarWall's full capability with simulated data.",
   },
@@ -1343,6 +1351,11 @@ export const en: Messages = {
       "Some equipment categories — for example RF/counter-drone detection or electronic warfare systems — require jurisdiction-specific export control and licensing review before deployment. StarWall's architecture supports these as optional modules; enabling any of them always goes through a separate legal review first, and any related response capability requires a licensed operator and human authorization. For details,",
     contactUs: "contact us",
     oem: "OEM partnership",
+    deckTitle: "The briefing deck",
+    deckLead:
+      "The same slides we walk on a first call — what StarWall sits on, and how the watch picture is built.",
+    deckOpen: "Open the presentation",
+    deckDownload: "Download PDF",
     rows: [
       {
         name: "Vessel / site platform",

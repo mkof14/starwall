@@ -105,6 +105,8 @@ export const ja: Messages = {
     helmEmpty:
       "水先人 は当直中です。画面について音声または文字で尋ねてください。助言のみ。判断はあなたです。",
     helmLive: "当直アドバイザー · LIVE · センサーなし",
+    helmSpeakerOn: "スピーカーオン",
+    helmSpeakerOff: "スピーカーオフ",
     liveBanner:
       "LIVE モード — この展開の実状態を表示しています。機器はまだ接続されていません。DEMO に切り替えると、模擬データで StarWall の全能力を確認できます。",
   },
@@ -657,6 +659,11 @@ export const ja: Messages = {
       "一部の装備区分 — たとえば RF / 対ドローン探知や電子戦システム — は、展開前に管轄ごとの輸出管理と許認可の審査が必要です。StarWall のアーキテクチャはこれらをオプションモジュールとして支えます。いずれも有効化の前に必ず別途の法務審査を経て、関連する対応能力には免許を持つ操作者と人の承認が必要です。詳細は",
     contactUs: "お問い合わせください",
     oem: "OEM 提携",
+    deckTitle: "説明デッキ",
+    deckLead:
+      "初回の会話で使う同じスライド。StarWall が何の上に乗り、当直の絵がどう組まれるか。",
+    deckOpen: "プレゼンを開く",
+    deckDownload: "PDF をダウンロード",
     rows: [
       {
         name: "船舶 / サイト基盤",

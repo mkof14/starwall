@@ -25,7 +25,7 @@ export function AuthShell({
       </Link>
       <div className="relative mx-auto w-full max-w-[26rem] px-4 py-20">
         <BrandLogo priority />
-        <h1 className="mt-8 font-heading text-[2.5rem] font-bold leading-[1.08] text-ink">
+        <h1 className="mt-8 font-heading text-[5rem] font-bold leading-[0.95] text-ink">
           {title}
         </h1>
         <div className="mt-8">{children}</div>

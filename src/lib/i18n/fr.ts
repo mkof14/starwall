@@ -105,6 +105,8 @@ export const fr: Messages = {
     helmEmpty:
       "Pilote est de quart. Interrogez le tableau — voix ou texte. Conseil seulement ; vous décidez.",
     helmLive: "CONSEILLER DE QUART · LIVE · aucun capteur",
+    helmSpeakerOn: "Haut-parleur allumé",
+    helmSpeakerOff: "Haut-parleur coupé",
     liveBanner:
       "MODE LIVE — état réel de ce déploiement. Aucun équipement n'est encore connecté. Passez en DEMO pour voir toutes les capacités de StarWall avec des données simulées.",
   },
@@ -659,6 +661,11 @@ export const fr: Messages = {
       "Certaines catégories d'équipements — par exemple la détection RF/anti-drones ou les systèmes de guerre électronique — exigent un contrôle des exportations et un examen des licences propres à la juridiction avant déploiement. L'architecture de StarWall les prend en charge comme modules optionnels ; l'activation de l'un d'eux passe toujours d'abord par un examen juridique distinct, et toute capacité de réponse associée exige un opérateur agréé et une autorisation humaine. Pour plus de détails,",
     contactUs: "contactez-nous",
     oem: "Partenariat OEM",
+    deckTitle: "Le dossier de briefing",
+    deckLead:
+      "Les mêmes planches qu'au premier appel — sur quoi repose StarWall, et comment se construit le tableau de quart.",
+    deckOpen: "Ouvrir la présentation",
+    deckDownload: "Télécharger le PDF",
     rows: [
       {
         name: "Plateforme navire / site",

@@ -35,7 +35,7 @@ export function PageHero({
         <div className="space-y-5">
           {preface}
           <p className="font-ui text-[12px] tracking-wide text-orange">{kicker}</p>
-          <h1 className="max-w-[18ch] font-heading text-[2.5rem] font-bold leading-[1.08] text-ink sm:text-5xl">
+          <h1 className="max-w-[14ch] font-heading text-[5rem] font-bold leading-[0.95] text-ink sm:text-[6rem]">
             {title}
           </h1>
           {lead ? (

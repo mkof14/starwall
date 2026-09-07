@@ -105,6 +105,8 @@ export const de: Messages = {
     helmEmpty:
       "Lotse hat Wache. Fragen Sie zum Lagebild — Sprache oder Text. Nur Rat; Sie entscheiden.",
     helmLive: "WACHBERATER · LIVE · keine Sensoren",
+    helmSpeakerOn: "Lautsprecher an",
+    helmSpeakerOff: "Lautsprecher aus",
     liveBanner:
       "LIVE-MODUS — zeigt den tatsächlichen Zustand dieser Installation. Es ist noch kein Gerät verbunden. Wechseln Sie zu DEMO, um die volle Fähigkeit von StarWall mit simulierten Daten zu sehen.",
   },
@@ -659,6 +661,11 @@ export const de: Messages = {
       "Einige Ausrüstungskategorien — etwa RF-/Drohnenabwehr-Erfassung oder elektronische Kampfführung — erfordern vor dem Einsatz eine länderspezifische Prüfung von Exportkontrolle und Genehmigungen. Die Architektur von StarWall unterstützt sie als optionale Module; die Freischaltung jedes Moduls durchläuft stets zuerst eine gesonderte rechtliche Prüfung, und jede zugehörige Reaktionsfähigkeit erfordert eine lizenzierte Bedienung und menschliche Freigabe. Einzelheiten:",
     contactUs: "kontaktieren Sie uns",
     oem: "OEM-Partnerschaft",
+    deckTitle: "Das Briefing",
+    deckLead:
+      "Dieselben Folien wie im ersten Gespräch — worauf StarWall sitzt und wie das Wachbild entsteht.",
+    deckOpen: "Präsentation öffnen",
+    deckDownload: "PDF herunterladen",
     rows: [
       {
         name: "Schiff- / Objektplattform",

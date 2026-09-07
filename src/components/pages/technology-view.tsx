@@ -13,6 +13,8 @@ import {
 } from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
 
+const DECK_HREF = "/starwall-intelligence-platform.pdf";
+
 export function TechnologyView() {
   const { t } = usePreferences();
 
@@ -20,6 +22,37 @@ export function TechnologyView() {
     <PageShell>
       <PageHero kicker={t.tech.kicker} title={t.tech.title} lead={t.tech.lead} />
       <PageBody>
+        <section aria-labelledby="deck-heading" className="space-y-5">
+          <SectionTitle id="deck-heading">{t.tech.deckTitle}</SectionTitle>
+          <p className="max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {t.tech.deckLead}
+          </p>
+          <div className="overflow-hidden border-y border-stroke bg-[#061018]">
+            <iframe
+              title={t.tech.deckTitle}
+              src={`${DECK_HREF}#view=FitH`}
+              className="h-[min(78vh,52rem)] w-full bg-[#061018]"
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <a
+              href={DECK_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-orange px-4 py-2.5 font-medium text-white hover:bg-orange/90"
+            >
+              {t.tech.deckOpen}
+            </a>
+            <a
+              href={DECK_HREF}
+              download
+              className="text-ink underline decoration-stroke underline-offset-4 hover:decoration-orange"
+            >
+              {t.tech.deckDownload}
+            </a>
+          </div>
+        </section>
+
         <section aria-labelledby="catalog-heading">
           <SectionTitle id="catalog-heading">{t.tech.catalog}</SectionTitle>
           <div className="mt-6">
