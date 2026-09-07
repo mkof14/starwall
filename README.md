@@ -17,6 +17,15 @@ npm run dev
 
 Dev server: `http://127.0.0.1:3000`
 
+To keep production-like `next start`, Postgres, and a public Cloudflare tunnel up (restarts if any piece dies):
+
+```bash
+npm run build
+npm run up
+```
+
+The supervisor writes the current public URL to `/tmp/starwall-public-url.txt`. Quick-tunnel hostnames change when cloudflared restarts.
+
 Pilot (the watch advisor) calls Anthropic from `src/app/api/assistant/route.ts`. Copy `.env.local.example` to `.env.local` and set `ANTHROPIC_API_KEY`. `.env*.local` is gitignored. Without the key the panel still opens; sending a message returns a configuration error instead of a reply.
 
 `NEXT_PUBLIC_SITE_URL` is used for canonical metadata, Open Graph, `robots.txt`, and `sitemap.xml`. Locally it defaults to `http://127.0.0.1:3000`. On Vercel it falls back to `https://$VERCEL_URL` if you leave it blank.

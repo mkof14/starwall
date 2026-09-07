@@ -1,0 +1,14 @@
+{
+  "terminals": [
+    {
+      "name": "StarWall",
+      "command": "npm run up"
+    }
+  ],
+  "ports": [
+    {
+      "name": "StarWall",
+      "port": 3000
+    }
+  ]
+}
