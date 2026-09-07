@@ -885,9 +885,6 @@ export const es: Messages = {
     agronAfter: ".",
     agronTeam:
       "Detrás de AGRON hay, ante todo, prácticos e ingenieros: profesionales que han tenido que decidir rápido en el terreno y luego construyeron las herramientas que les faltaban.",
-    todayTitle: "StarWall hoy",
-    todayBody:
-      "StarWall ya está en marcha. No es un producto a la espera de empezar: el trabajo comenzó hace tiempo.",
     todayCta:
       "Contáctenos para hablar del despliegue en su yate, marina, puerto o finca.",
     contactCta: "Contactar con AGRON",

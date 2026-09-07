@@ -81,13 +81,9 @@ export function AboutView() {
         </section>
 
         <section
-          aria-labelledby="today-heading"
+          aria-label={copy.contactCta}
           className="max-w-3xl space-y-5 border border-stroke bg-panel px-5 py-6 md:px-7 md:py-8"
         >
-          <h2 id="today-heading" className="font-heading text-3xl font-bold text-ink">
-            {copy.todayTitle}
-          </h2>
-          <p className="text-sm leading-relaxed text-ink sm:text-base">{copy.todayBody}</p>
           <p className="text-sm leading-relaxed text-muted sm:text-base">{copy.todayCta}</p>
           <Link
             href="/contact"

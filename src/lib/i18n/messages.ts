@@ -589,8 +589,6 @@ export type Messages = {
     agronLink: string;
     agronAfter: string;
     agronTeam: string;
-    todayTitle: string;
-    todayBody: string;
     todayCta: string;
     contactCta: string;
   };
@@ -1481,9 +1479,6 @@ export const en: Messages = {
     agronAfter: ".",
     agronTeam:
       "The people behind AGRON are practitioners and engineers first: professionals who have had to decide quickly in the field, then built the tools they wished they had.",
-    todayTitle: "StarWall today",
-    todayBody:
-      "StarWall is already at work. This is not a product waiting to begin — the work started long ago.",
     todayCta:
       "Contact us to discuss deployment for your yacht, marina, port, or estate.",
     contactCta: "Contact AGRON",

@@ -883,9 +883,6 @@ export const ja: Messages = {
     agronAfter: " でご覧ください。",
     agronTeam:
       "AGRON の後ろにいるのは、まず実務者と技術者です。現場で速く決めなければならなかったプロが、当時欲しかった道具を後から作ったのです。",
-    todayTitle: "StarWall の現在",
-    todayBody:
-      "StarWall はすでに動いています。これから始める製品ではありません。仕事はとうに始まっています。",
     todayCta:
       "ヨット、マリーナ、港、邸宅への展開について、ご相談ください。",
     contactCta: "AGRON に連絡する",
