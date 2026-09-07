@@ -9,10 +9,8 @@ export function FaqView() {
     <div className="bg-page text-ink">
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-14 md:px-6 lg:py-20">
         <header>
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
-            {t.faq.kicker}
-          </p>
-          <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">
+          <p className="text-[13px] text-orange">{t.faq.kicker}</p>
+          <h1 className="mt-2 font-heading text-4xl font-bold text-ink sm:text-5xl">
             {t.faq.title}
           </h1>
         </header>

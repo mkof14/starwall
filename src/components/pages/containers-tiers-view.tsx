@@ -14,7 +14,7 @@ export function ContainersTiersView() {
         <ContainersBackLink />
 
         <header>
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
+          <p className="text-[13px] text-orange">
             {t.containers.eyebrow}
           </p>
           <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">

@@ -9,11 +9,9 @@ export function HowItWorksView() {
   return (
     <div className="bg-page text-ink">
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14 md:px-6 lg:py-20">
-        <header>
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
-            {t.how.kicker}
-          </p>
-          <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">
+        <header className="max-w-2xl">
+          <p className="text-[13px] text-orange">{t.how.kicker}</p>
+          <h1 className="mt-2 font-heading text-4xl font-bold leading-tight text-ink sm:text-5xl">
             {t.how.title}
           </h1>
         </header>
@@ -22,15 +20,13 @@ export function HowItWorksView() {
           <h2 id="steps-heading" className="sr-only">
             {t.how.stepsLabel}
           </h2>
-          <ol className="grid gap-4 md:grid-cols-3">
+          <ol className="max-w-2xl space-y-8 border-s border-stroke ps-6">
             {t.how.steps.map((step, index) => (
-              <li key={step.title} className="border border-stroke bg-page p-5">
-                <p className="font-heading text-3xl font-bold text-orange">
+              <li key={step.title} className="relative">
+                <span className="absolute -start-[1.6rem] top-0 font-mono text-xs text-orange">
                   {index + 1}
-                </p>
-                <h3 className="mt-2 font-heading text-2xl font-bold text-ink">
-                  {step.title}
-                </h3>
+                </span>
+                <h3 className="font-heading text-2xl font-bold text-ink">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
               </li>
             ))}
@@ -54,9 +50,9 @@ export function HowItWorksView() {
           >
             {t.how.does}
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="max-w-2xl divide-y divide-stroke border-y border-stroke">
             {t.how.capabilities.map((item) => (
-              <article key={item.title} className="border border-stroke bg-page p-5">
+              <article key={item.title} className="py-5">
                 <h3 className="font-heading text-xl font-bold text-ink">
                   {item.title}
                 </h3>

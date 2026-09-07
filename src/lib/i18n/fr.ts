@@ -324,9 +324,9 @@ export const fr: Messages = {
     },
   },
   home: {
-    kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "Une situation unique. Toutes les sources. Une décision fiable.",
-    lead: "StarWall relie les équipements déjà présents sur votre yacht, marina, port ou île privée en une seule image de situation, actualisée en continu — et donne à l'officier de quart une base claire pour chaque décision, en quelques secondes.",
+    kicker: "StarWall, AGRON",
+    title: "Le quart reste une personne. Les écrans n'ont pas à se disputer.",
+    lead: "Sur un yacht, une marina, un port ou une île, radar et caméras sont souvent déjà là. Le problème, c'est qu'ils n'ont pas la même horloge. StarWall lit ce qui est déjà payé et le pose sur un Bridge. Ensuite il dit ce qu'il ferait. Vous prenez, ou pas.",
     points: [
       "Fonctionne avec l'équipement que vous avez déjà — aucun remplacement requis",
       "Apprend votre navire ou votre site, et gagne en précision avec le temps",
@@ -734,7 +734,7 @@ export const fr: Messages = {
   },
   contact: {
     kicker: "Contact",
-    title: "Parlons-en",
+    title: "Écrire à AGRON",
     lead: "Yacht, marina, île ou cas particulier — décrivez votre situation, nous vous répondrons.",
     name: "Nom",
     organization: "Organisation",

@@ -656,7 +656,7 @@ export const en: Messages = {
     footerCompany: "Company",
     footerLegal: "Legal",
     footerBlurb:
-      "StarWall by AGRON — one picture from the equipment you already have, and a clear next step for the person on watch.",
+      "StarWall reads the kit already on the yacht, marina or island. AGRON builds it.",
   },
   seo: {
     home: "StarWall by AGRON — Maritime Security Intelligence",
@@ -984,79 +984,79 @@ export const en: Messages = {
     },
   },
   home: {
-    kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "One picture. Every source. A decision you can trust.",
-    lead: "StarWall connects the equipment already on your yacht, marina, port, or private island into a single, continuously updated picture — and gives the person in command a clear basis for every decision, in seconds.",
+    kicker: "StarWall, by AGRON",
+    title: "The watch is still run by a person. The screens should stop arguing with each other.",
+    lead: "Most yachts and sites already have radar, cameras, AIS, something on the perimeter. The mess is that none of it shares a clock. StarWall reads what is already paid for and puts it on one Bridge. Then it says what it would do next. You take that, or you don't.",
     points: [
-      "Works with the equipment you already have — no replacement required",
-      "Learns your vessel or site, and gets sharper the longer it runs",
-      "Connects straight to AGRON's Security Support Center when it matters",
+      "Leave the existing set in place. We write adapters; we do not rip out a working helm.",
+      "After a while it knows this yacht or this marina — the usual traffic, the usual night — and it gets nosier about what does not fit.",
+      "If you want a second pair of eyes, the line is to AGRON's support desk. A person. Not another alarm tone.",
     ],
-    contactCta: "Contact AGRON Maritime",
-    pdfCta: "Download overview (PDF)",
+    contactCta: "Write to AGRON",
+    pdfCta: "One-page PDF",
     cards: [
-      { title: "How it works", body: "Connect, understand, decide — in three steps" },
-      { title: "See it in action", body: "An interactive look at the Bridge interface" },
-      { title: "Levels", body: "From essential monitoring to a fully custom build" },
-      { title: "Equipment", body: "What it connects to, and how" },
+      { title: "How it is put together", body: "What gets plugged in, what the watch actually sees, who is still responsible." },
+      { title: "The Bridge", body: "Open /interface. DEMO is a drill with invented traffic. LIVE is whatever is really wired — often nothing yet." },
+      { title: "How it is sold", body: "LIGHT, ADVANCED, INTELLIGENCE, or a build we spec with you. Numbers live on Pricing." },
+      { title: "What it talks to", body: "A plain table of equipment classes. If your box is not on it, that is a conversation, not a slogan." },
     ],
-    interfaceKicker: "AGRON Bridge",
-    interfaceTitle: "What you actually get on the Interface",
+    interfaceKicker: "The Interface",
+    interfaceTitle: "What is on the Bridge today",
     interfaceLead:
-      "The Bridge is the working picture — not a slide. These are the parts built into /interface today, including an honest LIVE state when nothing is connected yet.",
-    interfaceCta: "Open the Interface",
+      "This is /interface as it ships — the same page you open after sign-in. DEMO fills it so you can click. LIVE does not invent a contact because the page would look empty otherwise.",
+    interfaceCta: "Go to the Interface",
     interfacePoints: [
       {
         title: "Situational Picture",
-        body: "One map of contacts from the sources in the picture — radar, cameras, AIS and the rest — instead of a stack of separate screens.",
+        body: "Contacts from the feeds that are in the picture, on one map. Radar, cameras, AIS, whatever else is actually attached.",
       },
       {
-        title: "Risk level",
-        body: "Normal, Attention, Elevated, Critical. The reason for a change stays visible, not hidden behind a colour.",
+        title: "Risk",
+        body: "Four words: Normal, Attention, Elevated, Critical. When the word changes, the reason sits next to it.",
       },
       {
         title: "Recommended action",
-        body: "A ranked next step for the person on watch. Advice only. The human still decides.",
+        body: "A next step, ranked. Pilot and the panel can suggest. The watch still owns the call.",
       },
       {
         title: "Event log",
-        body: "A time-ordered record of what the picture reported, kept after an alert is closed.",
+        body: "What the picture reported, in order. Closing an alert does not throw the row away.",
       },
       {
         title: "Jump rail",
-        body: "Move straight between picture, risk, systems, log, learning, Black Box, Pilot, and the connections map.",
+        body: "The strip on the left. Picture, risk, systems, log, learning, Black Box, Pilot, connections map.",
       },
       {
-        title: "DEMO and LIVE",
-        body: "DEMO is the full simulated watch so you can learn the layout. LIVE is this deployment as it really is — empty until equipment is installed.",
+        title: "DEMO / LIVE",
+        body: "DEMO is the full drill. LIVE is this install as it stands. Empty LIVE is not a bug.",
       },
       {
         title: "Adaptive learning",
-        body: "An object profile that can grow over time on that vessel or site. No invented scores. LIVE stays empty until there is real history.",
+        body: "A profile of an object that can thicken over days on that hull or that site. No fake score. No history in LIVE until there is history.",
       },
       {
         title: "Black Box, map, Pilot",
-        body: "Session records in the Black Box, a topology map of sensors to core to Bridge, and Pilot — the watch advisor you can speak or type to.",
+        body: "The session record, the wiring diagram from sensors through core to the Bridge, and Pilot — type or talk, advice only.",
       },
     ],
-    containersLink: "StarWall also runs inside AGRON's deployable container hardware →",
+    containersLink: "There is also a steel box. StarWall runs inside AGRON's deployable containers →",
   },
   how: {
-    kicker: "How it works",
-    title: "Connect, understand, decide",
-    stepsLabel: "Three-step flow",
+    kicker: "How it is put together",
+    title: "Read the kit you already have. Make it usable on watch.",
+    stepsLabel: "In practice",
     steps: [
       {
-        title: "Connect",
-        body: "StarWall reads from the radar, cameras, AIS, and other systems already installed — no replacement equipment required.",
+        title: "The adapters go on first",
+        body: "Radar, cameras, AIS, whatever is already bolted down. StarWall listens. You do not buy a second radar to make this page work.",
       },
       {
-        title: "Understand",
-        body: "Signals are brought into a single timeline and map, with history retained after each alert is closed.",
+        title: "Same map, same clock",
+        body: "Those feeds share a timeline. When an alert is closed the row stays in the log. Nobody has to reconstruct the night from three recorders.",
       },
       {
-        title: "Decide",
-        body: "A clear, explainable risk level and, where needed, a direct line to AGRON's Security Support Center.",
+        title: "A word for the risk, a line if you need it",
+        body: "Normal through Critical, with the reason attached. If the watch wants a human at AGRON, that is a desk, not another banner on the screen.",
       },
     ],
     architecture: "Architecture",
@@ -1071,31 +1071,31 @@ export const en: Messages = {
       { name: "Decision", lines: ["recommended next step"] },
       { name: "Support Center", lines: ["human specialist, live"] },
     ],
-    does: "What StarWall does",
+    does: "What that looks like on the watch",
     capabilities: [
       {
-        title: "Unified picture",
-        body: "Radar, video, AIS, drones and perimeter sensors shown as one situational picture, not separate screens.",
+        title: "One map",
+        body: "Radar paint, cameras, AIS, a drone if you have one, the fence if you have one. Same picture. The manufacturer on the label does not matter.",
       },
       {
-        title: "Continuous history",
-        body: "Every object and event is retained, not discarded once an alert is closed.",
+        title: "The night stays written down",
+        body: "Objects and events are kept. Closing the alert does not wipe the evidence.",
       },
       {
-        title: "Explainable risk levels",
-        body: "A defined scale — Normal, Attention, Elevated, Critical — with the reasons behind each change always visible.",
+        title: "The risk word has a reason",
+        body: "Normal, Attention, Elevated, Critical. If it jumps, you can see why without opening a second tool.",
       },
       {
-        title: "Works with existing equipment",
-        body: "Built to sit on top of the systems already on board or on site, regardless of manufacturer.",
+        title: "It sits on top",
+        body: "The helm stays the helm. StarWall is the layer that reads it.",
       },
       {
-        title: "Learns the specific vessel or site",
-        body: "Builds a profile of normal activity for that yacht, marina or property, and flags what falls outside it.",
+        title: "This hull, this basin",
+        body: "After enough quiet nights it knows the usual. What is odd for this place gets a harder look.",
       },
       {
-        title: "Connected to AGRON's Support Center",
-        body: "Escalation to a trained specialist when a situation calls for it, not only an automated alert.",
+        title: "A person at AGRON",
+        body: "When the watch wants escalation, it is a specialist on the other end — not only a louder beep.",
       },
     ],
   },
@@ -1153,7 +1153,7 @@ export const en: Messages = {
   },
   levels: {
     kicker: "Levels",
-    title: "From essential monitoring to a fully custom build",
+    title: "Four ways to buy it. CUSTOM does not have a price on this page.",
     tiersLabel: "Service tiers",
     honestySr: "Available now and in development",
     mapNote:
@@ -1334,8 +1334,8 @@ export const en: Messages = {
   },
   tech: {
     kicker: "Technology",
-    title: "What it connects to, and how",
-    lead: "StarWall is not tied to one manufacturer. Its integration layer connects any modern equipment on the market through adapters — including newly released and specialized device classes.",
+    title: "A table, not a brand religion",
+    lead: "We write adapters. The rows below are classes we already talk to. A new box usually means a new adapter, not a new helm. If your make is missing, say so on the contact page.",
     catalog: "Equipment catalog",
     category: "Category",
     connects: "What connects",
@@ -1392,7 +1392,7 @@ export const en: Messages = {
   },
   faq: {
     kicker: "FAQ",
-    title: "Questions we expect first",
+    title: "The questions that come up on the first call",
     items: [
       {
         q: "Does StarWall replace the captain?",
@@ -1418,8 +1418,8 @@ export const en: Messages = {
   },
   contact: {
     kicker: "Contact",
-    title: "Let's talk",
-    lead: "Whether it's a yacht, a marina, an island, or a special case — tell us about your situation and we'll get back to you.",
+    title: "Write to AGRON",
+    lead: "Yacht, marina, island, something odd — say what you have on board and what you are trying to stop guessing at. Someone reads this. It is not a ticket robot.",
     name: "Name",
     organization: "Organization",
     optional: "optional",
@@ -1443,9 +1443,9 @@ export const en: Messages = {
     invalidEmail: "Enter a valid email address.",
   },
   containers: {
-    kicker: "AGRON · DEPLOYABLE SECURITY CONTAINER",
-    title: "One container. Full-spectrum awareness.",
-    lead: "A self-contained detection, analysis, and response platform — deployable by land, sea, or fixed site in hours, not weeks. Detection and analysis run on StarWall; response equipment is available on select tiers, always under human authorization.",
+    kicker: "AGRON container",
+    title: "The steel box, if you need hardware as well as software",
+    lead: "Detection and the picture run on StarWall inside the container. Some tiers can carry a response bay. That bay does not fire itself. A person authorizes it, and local law still applies. How fast it can sit on a quay or a road depends on the site, not on a slogan.",
     contact: "Contact AGRON",
     back: "← Back to Containers overview",
     eyebrow: "AGRON Containers",
@@ -1554,52 +1554,52 @@ export const en: Messages = {
   },
   about: {
     kicker: "About",
-    title: "Why StarWall",
+    title: "Who is behind the Bridge",
     lead:
-      "AGRON builds intelligence and integration systems for maritime and physical security. StarWall is the layer that connects the equipment on a yacht, marina, port, or private island — radar, cameras, navigation, sensors from any manufacturer — into one picture and one clear next step for the person in command.",
-    beliefsTitle: "What we believe",
+      "AGRON has been tying sensors and comms together for a long time. StarWall is the watch layer: whatever brand of radar or camera is already on the yacht, the marina, the port or the island, it should land on one picture. The next step is a suggestion. The person on watch still has to take it.",
+    beliefsTitle: "How we refuse to sell it",
     beliefs: [
       {
-        title: "The person stays in command",
-        body: "Technology should make a captain's judgment faster and better-informed — never replace it.",
+        title: "The captain is not a passenger",
+        body: "Faster judgment is the job. Replacing the captain is not a feature we will ever put on a slide.",
       },
       {
-        title: "Honesty over hype",
-        body: "We build exactly what we say we've built. No system should ever claim more than it can deliver — least of all one meant to protect lives.",
+        title: "Do not dress up an empty LIVE",
+        body: "If nothing is plugged in, the picture is empty. We would rather look unfinished than invent a contact.",
       },
       {
-        title: "Built on what already works",
-        body: "StarWall connects to the equipment you already trust, rather than asking you to replace it.",
+        title: "Do not rip out what already works",
+        body: "If the set on board is trusted, StarWall reads it. A forklift upgrade of the helm is someone else's pitch.",
       },
     ],
     teamTitle: "Team",
     teamBody:
-      "StarWall is built by a team with over 30 years of experience in networking technology, satellite communications, fiber optics, and data infrastructure. We bring the same engineering discipline used to build critical communications infrastructure to the problem of protecting people at sea.",
+      "The same people who spent decades on networks, satcom, fibre and the ugly parts of data infrastructure. That habit — make the link hold when it is inconvenient — is what they brought to a watch picture.",
     teamField:
-      "They are AGRON professionals with substantial practical experience in real conditions. They have worked through critical situations that leave little time to hesitate — and they design StarWall for that tempo: one picture, one next step, for the person who must act.",
+      "They have been in weather, on sites, in rooms where the next minute mattered. StarWall is built at that speed: enough picture to act, not a dashboard to admire.",
     teamPoints: [
       {
-        title: "Real conditions",
-        body: "On the water and on site the picture is rarely complete or convenient. The team builds for that world — weather, distance, and incomplete information — not a clean lab.",
+        title: "Ash and salt, not a lab bench",
+        body: "Range, fog, a radio that drops. The product assumes the picture will be incomplete.",
       },
       {
-        title: "Critical situations",
-        body: "When the stakes are high they stay calm, cut the noise, and leave a usable choice. Not a pile of alerts. A decision the person on watch can take.",
+        title: "When it is ugly",
+        body: "Cut the noise. Leave one choice the watch can take. A wall of red is not help.",
       },
       {
-        title: "Fast decisions",
-        body: "Years of practice compressing the time from a signal to a decision. StarWall is built to match the tempo professionals already work at.",
+        title: "Time-to-decision",
+        body: "They have had to shrink the gap from a blip to a call. The Bridge is meant to match that, not to look busy.",
       },
     ],
     agronTitle: "AGRON",
     agronBefore:
-      "StarWall is developed by AGRON, working across maritime intelligence, security integration, and deployable protection systems. Learn more about AGRON's broader work at ",
+      "StarWall is an AGRON product. The rest of the house — other integration and deployable work — is on ",
     agronLink: "agron1.com",
     agronAfter: ".",
     agronTeam:
-      "The people behind AGRON are practitioners and engineers first: professionals who have had to decide quickly in the field, then built the tools they wished they had.",
+      "Engineers and people who have had to decide on site. The tools came after the nights, not the other way around.",
     todayCta:
-      "Contact us to discuss deployment for your yacht, marina, port, or estate.",
+      "If you have a hull, a basin or a fence in mind, use the contact page. Say what is already installed.",
     contactCta: "Contact AGRON",
   },
 };

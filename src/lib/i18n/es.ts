@@ -324,9 +324,9 @@ export const es: Messages = {
     },
   },
   home: {
-    kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "Una imagen. Todas las fuentes. Una decisión en la que puede confiar.",
-    lead: "StarWall conecta el equipo que ya tiene en su yate, marina, puerto o isla privada en una sola imagen actualizada de forma continua — y da a quien está al mando una base clara para cada decisión, en segundos.",
+    kicker: "StarWall, AGRON",
+    title: "La guardia la lleva una persona. Las pantallas no deberían discutir entre ellas.",
+    lead: "En el yate, la marina, el puerto o la isla el radar y las cámaras casi siempre ya están. El lío es que no comparten reloj. StarWall lee lo que ya pagó y lo pone en un Bridge. Luego dice qué haría. Usted lo toma o no.",
     points: [
       "Funciona con el equipo que ya tiene — no hace falta sustituirlo",
       "Aprende su buque o emplazamiento y gana precisión cuanto más tiempo opera",
@@ -734,7 +734,7 @@ export const es: Messages = {
   },
   contact: {
     kicker: "Contacto",
-    title: "Hablemos",
+    title: "Hablemos por escrito",
     lead: "Ya sea un yate, un puerto deportivo, una isla o un caso especial — cuéntenos su situación y le responderemos.",
     name: "Nombre",
     organization: "Organización",

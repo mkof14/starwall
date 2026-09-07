@@ -58,13 +58,13 @@ export function ContactView({
     <div className="bg-page text-ink">
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-14 md:px-6 lg:py-20">
         <header>
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
-            {t.contact.kicker}
-          </p>
-          <h1 className="mt-3 font-heading text-4xl font-bold text-ink sm:text-5xl">
+          <p className="text-[13px] text-orange">{t.contact.kicker}</p>
+          <h1 className="mt-2 font-heading text-4xl font-bold text-ink sm:text-5xl">
             {t.contact.title}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-muted">{t.contact.lead}</p>
+          <p className="mt-4 max-w-xl text-[1.05rem] leading-[1.65] text-ink/80">
+            {t.contact.lead}
+          </p>
         </header>
         <ContactForm initialMessage={initialMessage} />
       </div>

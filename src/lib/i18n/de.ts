@@ -324,9 +324,9 @@ export const de: Messages = {
     },
   },
   home: {
-    kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "Ein Lagebild. Alle Quellen. Eine Entscheidung, der Sie vertrauen können.",
-    lead: "StarWall verbindet die Ausrüstung, die bereits auf Ihrer Yacht, in der Marina, im Hafen oder auf einer privaten Insel steht, zu einem einzigen, fortlaufend aktualisierten Lagebild — und gibt der wachhabenden Person in Sekunden eine klare Grundlage für jede Entscheidung.",
+    kicker: "StarWall, AGRON",
+    title: "Die Wache führt ein Mensch. Die Schirme sollen nicht miteinander streiten.",
+    lead: "Auf Yacht, Marina, Hafen oder Insel stehen Radar und Kameras meist schon. Das Problem ist die fehlende gemeinsame Uhr. StarWall liest, was schon bezahlt ist, und legt es auf einen Bridge. Dann sagt es, was es als Nächstes täte. Sie nehmen das — oder nicht.",
     points: [
       "Arbeitet mit der vorhandenen Ausrüstung — kein Austausch nötig",
       "Lernt Ihr Schiff oder Objekt und wird mit der Laufzeit präziser",

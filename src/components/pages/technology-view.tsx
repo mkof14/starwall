@@ -10,9 +10,7 @@ export function TechnologyView() {
     <div className="bg-page text-ink">
       <div className="mx-auto max-w-6xl space-y-14 px-4 py-14 md:px-6 lg:py-20">
         <header className="max-w-3xl space-y-4">
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
-            {t.tech.kicker}
-          </p>
+          <p className="text-[13px] text-orange">{t.tech.kicker}</p>
           <h1 className="font-heading text-4xl font-bold text-ink sm:text-5xl">
             {t.tech.title}
           </h1>

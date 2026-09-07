@@ -45,7 +45,7 @@ export function PrivacyView({
 
   const inner = (
     <>
-      <p className="text-xs font-medium uppercase tracking-[0.22em] text-orange">
+          <p className="text-[13px] text-orange">
         {termsFirst ? t.chrome.terms : t.chrome.privacy}
       </p>
       <h1 className="mt-3 font-heading text-4xl font-bold text-ink">

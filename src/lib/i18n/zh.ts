@@ -322,9 +322,9 @@ export const zh: Messages = {
     },
   },
   home: {
-    kicker: "AGRON MARITIME · STARWALL BY AGRON",
-    title: "一幅态势。全部来源。一个可以信赖的决定。",
-    lead: "StarWall 把游艇、码头、港口或私人岛屿上已有的设备汇成一幅持续更新的态势图 — 并在数秒内为值班负责人提供每一项决定的清晰依据。",
+    kicker: "StarWall, AGRON",
+    title: "值班的是人。屏幕不该互相打架。",
+    lead: "游艇、码头、港口或岛上多半已有雷达和摄像机。麻烦是它们不同步。StarWall 读已经买过的设备，放到一块 Bridge 上。然后说出它会走哪一步。你接不接，是你的事。",
     points: [
       "对接现有设备即可工作 — 无需更换",
       "学习您的船舶或场地，运行越久越精准",
