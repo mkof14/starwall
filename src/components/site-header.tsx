@@ -30,10 +30,10 @@ export function SiteHeader() {
       <div className="flex h-full items-center justify-between gap-2 px-4 md:gap-3 md:px-6">
         <Link
           href="/"
-          className="flex h-full min-w-0 items-center"
+          className="flex h-full shrink-0 items-center"
           onClick={() => setOpen(false)}
         >
-          <BrandLogo priority className="max-w-[8.5rem] sm:max-w-[9.5rem]" />
+          <BrandLogo priority />
         </Link>
 
         <nav

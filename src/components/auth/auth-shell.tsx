@@ -24,7 +24,7 @@ export function AuthShell({
       <div className="mx-auto w-full max-w-[26rem]">
         <div className="border border-[#B7C9D8] bg-white px-6 py-8 shadow-[0_12px_40px_rgb(15_25_34/0.08)] sm:px-8">
           <div className="flex justify-center">
-            <BrandLogo className="h-9 sm:h-10" priority />
+            <BrandLogo priority />
           </div>
           <h1 className="mt-6 text-center font-heading text-3xl font-bold text-navyText">
             {title}
