@@ -887,7 +887,7 @@ export const fr: Messages = {
       "Derrière AGRON, ce sont d'abord des praticiens et des ingénieurs : des professionnels qui ont dû décider vite sur le terrain, puis ont construit les outils qui leur manquaient.",
     todayTitle: "StarWall aujourd'hui",
     todayBody:
-      "StarWall est un système complet et opérationnel — construit, éprouvé et prêt au déploiement.",
+      "StarWall est déjà à l'œuvre. Ce n'est pas un produit qui attend de commencer : le travail a commencé il y a longtemps.",
     todayCta:
       "Contactez-nous pour parler du déploiement sur votre yacht, marina, port ou domaine.",
     contactCta: "Contacter AGRON",

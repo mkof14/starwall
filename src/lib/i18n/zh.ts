@@ -884,7 +884,7 @@ export const zh: Messages = {
     agronTeam:
       "AGRON 背后首先是实践者与工程师：曾在现场必须迅速决断的专业人士，随后做出了他们当时缺少的工具。",
     todayTitle: "StarWall 今天",
-    todayBody: "StarWall 是一套完整、可运行的系统——已建成、已验证，并已准备好部署。",
+    todayBody: "StarWall 已经在运转。这不是等待起步的产品——工作很早就开始了。",
     todayCta: "联系我们，讨论在您的游艇、码头、港口或庄园上的部署。",
     contactCta: "联系 AGRON",
   },

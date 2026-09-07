@@ -1483,7 +1483,7 @@ export const en: Messages = {
       "The people behind AGRON are practitioners and engineers first: professionals who have had to decide quickly in the field, then built the tools they wished they had.",
     todayTitle: "StarWall today",
     todayBody:
-      "StarWall is a complete, working system — built, tested, and ready for deployment.",
+      "StarWall is already at work. This is not a product waiting to begin — the work started long ago.",
     todayCta:
       "Contact us to discuss deployment for your yacht, marina, port, or estate.",
     contactCta: "Contact AGRON",
