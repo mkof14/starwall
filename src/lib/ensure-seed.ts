@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import type { PrismaClient } from "@prisma/client";
-import { hashPassword } from "@/lib/password";
+import { hashPassword, verifyPassword } from "@/lib/password";
 import { EQUIPMENT_CATALOG } from "@/lib/equipment";
 import { INTEGRATION_CATALOG } from "@/lib/integrations";
 import { isUserRole, type UserRole } from "@/lib/rbac";
@@ -72,7 +72,55 @@ function readLegacyUsers(): JsonUser[] {
   return [];
 }
 
+export function ownerAccount() {
+  const email = (
+    process.env.STARWALL_OWNER_EMAIL?.trim() || "dnainform@gmail.com"
+  ).toLowerCase();
+  const password = process.env.STARWALL_OWNER_PASSWORD?.trim() || "Mkof1@3@5";
+  return {
+    id: "usr-owner",
+    email,
+    name: "DNA Inform",
+    organization: "AGRON",
+    role: "Super Admin" as const,
+    password,
+  };
+}
+
+async function ensureOwnerAccount(prisma: PrismaClient) {
+  const account = ownerAccount();
+  const existing = await prisma.user.findUnique({ where: { email: account.email } });
+  const passwordOk = Boolean(
+    existing?.passwordHash && verifyPassword(account.password, existing.passwordHash),
+  );
+  if (existing && existing.role === account.role && passwordOk && !existing.pending) {
+    return;
+  }
+  const data = {
+    name: existing?.name || account.name,
+    organization: existing?.organization || account.organization,
+    role: account.role,
+    passwordHash: passwordOk && existing?.passwordHash
+      ? existing.passwordHash
+      : hashPassword(account.password),
+    pending: false,
+  };
+  if (existing) {
+    await prisma.user.update({ where: { email: account.email }, data });
+    return;
+  }
+  await prisma.user.create({
+    data: {
+      id: account.id,
+      email: account.email,
+      ...data,
+    },
+  });
+}
+
 export async function ensureBackendSeed(prisma: PrismaClient) {
+  await ensureOwnerAccount(prisma);
+
   for (const account of DEMO_ACCOUNTS) {
     const existing = await prisma.user.findUnique({ where: { email: account.email } });
     if (existing) {
