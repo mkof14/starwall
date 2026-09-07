@@ -28,6 +28,11 @@ export const de: Messages = {
     language: "Sprache",
     privacy: "Datenschutz",
     terms: "Nutzungsbedingungen",
+    footerProduct: "Produkt",
+    footerCompany: "Unternehmen",
+    footerLegal: "Rechtliches",
+    footerBlurb:
+      "StarWall by AGRON — ein Lagebild aus der vorhandenen Ausrüstung und ein klarer nächster Schritt für die Wache.",
   },
   seo: {
     home: "StarWall by AGRON — maritime Sicherheitslage",
@@ -55,21 +60,30 @@ export const de: Messages = {
     terms: "Nutzungsbedingungen — StarWall by AGRON",
   },
   legal: {
-    privacyTitle: "Daten und Datenschutz",
+    privacyTitle: "Datenschutzrichtlinie",
+    privacyUpdated: "Aktualisiert: 7. September 2026",
+    privacyIntro:
+      "Diese Richtlinie erklärt, wie AGRON Inc. («AGRON», «wir») Informationen verarbeitet, wenn Sie die StarWall-Website, den illustrativen AGRON Bridge, Pilot und die Administrationsoberflächen nutzen. Sie beschreibt das Produkt, wie es heute ist — einschließlich DEMO und LIVE.",
+    privacySections: [
+      { title: "Wer verantwortlich ist", body: "Hinter StarWall steht AGRON Inc. Datenschutzfragen: Kontaktformular oder agron1.com. Ist für einen vertraglichen Einsatz eine Datenschutzstelle benannt, steht sie in der schriftlichen Vereinbarung." },
+      { title: "Was diese Website ist", body: "Die öffentlichen Seiten sind das Produkt. Der Bridge unter /interface ist ein illustratives Wachbild: DEMO nutzt simulierte Kontakte, Ereignisse und Gerätestatus. LIVE zeigt den echten Zustand dieses Einsatzes — leer, bis Sensoren angeschlossen sind. Die öffentliche Demo ist kein Live-Feed einer Yacht, Marina oder eines Hafens, außer ein schriftlicher AGRON-Vertrag sagt etwas anderes." },
+      { title: "Welche Angaben wir verarbeiten", body: "Bei einem Konto speichern wir E-Mail und Passwort-Hash (oder die Kennung des Anmeldeanbieters) und die Rolle. Das Kontaktformular sendet, was Sie eingeben. Der Browser speichert Sprache, Thema und DEMO/LIVE lokal. Ereignisprotokolle, Black Box und Pilot-Gespräche werden zuerst auf dem Gerät geschrieben; sie erreichen die Einsatzdatenbank nur, wenn sie konfiguriert ist. Bridge- und Pilot-Inhalte nutzen wir nicht zum Modelltraining." },
+      { title: "Cookies und ähnlicher Speicher", body: "Ein Sitzungs-Cookie hält Sie angemeldet; lokaler Speicher dient Sprache, Thema und Wachmodus. Keine Werbe-Cookies, kein Verkauf personenbezogener Daten." },
+      { title: "Zugriff und Weitergabe", body: "Zugriff folgt den Backend-Rollen: Super Admin, Admin, Operator und Viewer. Hosting und Datenbank verarbeiten Daten nach unserer Weisung, wenn ein Einsatz verbunden ist. Anthropic erhält die Nachricht an Pilot, damit der Berater antworten kann — nicht für AGRON-Marketing." },
+      { title: "Ihre Rechte und Aufbewahrung", body: "Sie können Auskunft, Berichtigung oder Löschung über die Kontaktseite verlangen. In der EU, dem EWR, dem Vereinigten Königreich oder Monaco kann die DSGVO oder gleichwertiges Recht weitere Rechte geben. Wir bewahren Aufzeichnungen, solange Konto oder Vertrag sie brauchen. Das beschreibt die aktuelle Praxis, kein Zertifikat." },
+    ],
     termsTitle: "Nutzungsbedingungen",
-    storesTitle: "Was StarWall speichert",
-    storesBody:
-      "Ereignisprotokolle, Sitzungsaufzeichnungen und Lotsen-Gespräche auf der Bridge. Administrative Aktionen stehen in einem eigenen Prüfprotokoll.",
-    whereTitle: "Wo es gespeichert wird",
-    whereBody:
-      "Aufzeichnungen werden zuerst lokal geschrieben und dann in die Cloud synchronisiert — derselbe Black-Box-Pfad wie auf Bridge und Backend. Nichts verlässt das Konto für Modelltraining.",
-    whoTitle: "Wer Zugriff hat",
-    whoBody:
-      "Der Zugriff folgt der Rollenhierarchie im Backend: Super Admin, Admin, Operator und Viewer sehen nur das, was ihre Rolle erlaubt.",
-    gdpr:
-      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
-    termsBody:
-      "Diese Seiten beschreiben eine illustrative StarWall-Installation. Die Nutzung von Bridge, Backend und Lotse unterliegt einer schriftlichen Vereinbarung mit AGRON. Spezialausrüstung und jede Reaktionsfähigkeit bleiben unter menschlicher Freigabe und lokalem Recht.",
+    termsUpdated: "Aktualisiert: 7. September 2026",
+    termsIntro:
+      "Diese Bedingungen gelten für die StarWall-Website und die hier veröffentlichten illustrativen Bridge-, Pilot- und Backend-Oberflächen. Der Betrieb von StarWall als Arbeitssystem braucht eine gesonderte schriftliche Vereinbarung mit AGRON.",
+    termsSections: [
+      { title: "Annahme", body: "Mit der Nutzung dieser Website akzeptieren Sie diese Bedingungen. AGRON kann sie aktualisieren; maßgeblich ist das Datum am Seitenanfang." },
+      { title: "Illustrativer Bridge", body: "DEMO ist ein Ausbildungslagebild. Es ist kein Sensorfeed. LIVE zeigt den echten Einsatz: ohne Gerät ist das Bild leer. Empfohlene Handlungen und Pilot-Antworten sind Rat für die Wache. Sie ersetzen deren Urteil nicht." },
+      { title: "Konten", body: "Sie verantworten die Zugangsdaten. Demo-Zugänge auf der Anmeldeseite, falls gezeigt, dienen der Rollenillustration — ändern Sie sie vor einem echten Einsatz." },
+      { title: "Zulässige Nutzung", body: "Kein unbefugter Zugriff; StarWall nicht nutzen, um Menschen oder Eigentum zu schädigen; den Dienst nicht als live operativen Feed ausgeben." },
+      { title: "Menschliche Freigabe und örtliches Recht", body: "Spezialausrüstung und jede Reaktionsfähigkeit bleiben unter menschlicher Freigabe und dem Recht des Einsatzorts. StarWall erteilt keine Lizenz für beschränkte Systeme." },
+      { title: "Rechte, Haftung, Kontakt", body: "StarWall, AGRON und das Logo sind AGRON-Zeichen. Inhalte stehen «wie besehen». AGRON haftet nicht für Entscheidungen allein aus der öffentlichen Demo oder Pilot auf dieser Website. Fragen: /contact oder agron1.com." },
+    ],
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGIE",
@@ -325,6 +339,21 @@ export const de: Messages = {
       { title: "Im Einsatz sehen", body: "Ein interaktiver Blick auf die Bridge-Oberfläche" },
       { title: "Stufen", body: "Von der wesentlichen Überwachung bis zum vollständig maßgeschneiderten Aufbau" },
       { title: "Ausrüstung", body: "Womit es sich verbindet — und wie" },
+    ],
+    interfaceKicker: "AGRON Bridge",
+    interfaceTitle: "Was im Interface wirklich steckt",
+    interfaceLead:
+      "Der Bridge ist das Arbeitslagebild, keine Folie. Das sind die Teile, die heute auf /interface gebaut sind — einschließlich eines ehrlichen LIVE, wenn noch nichts angeschlossen ist.",
+    interfaceCta: "Interface öffnen",
+    interfacePoints: [
+      { title: "Situational Picture", body: "Eine Karte der Kontakte aus den Quellen des Bildes — Radar, Kameras, AIS und der Rest — statt eines Stapels getrennter Schirme." },
+      { title: "Risikostufe", body: "Normal, Attention, Elevated, Critical. Der Grund für eine Änderung bleibt sichtbar, nicht hinter einer Farbe versteckt." },
+      { title: "Empfohlene Handlung", body: "Ein geordneter nächster Schritt für die Wache. Nur Rat. Der Mensch entscheidet." },
+      { title: "Ereignisprotokoll", body: "Eine zeitliche Aufzeichnung dessen, was das Bild gemeldet hat, bleibt nach dem Schließen einer Alarmierung." },
+      { title: "Jump rail", body: "Direkt zwischen Bild, Risiko, Systemen, Protokoll, Lernen, Black Box, Pilot und der Verbindungskarte wechseln." },
+      { title: "DEMO und LIVE", body: "DEMO ist die volle simulierte Wache, um das Layout zu lernen. LIVE ist dieser Einsatz, wie er ist: leer, bis Ausrüstung steht." },
+      { title: "Adaptive Learning", body: "Ein Objektprofil, das mit der Zeit wachsen kann. Keine erfundenen Werte. LIVE bleibt leer ohne echte Historie." },
+      { title: "Black Box, Karte, Pilot", body: "Sitzungsaufzeichnungen in der Black Box, Topologie von Sensoren zu Kern und Bridge, und Pilot — der Wachberater." },
     ],
     containersLink: "StarWall läuft auch in der verlegbaren Container-Hardware von AGRON →",
   },

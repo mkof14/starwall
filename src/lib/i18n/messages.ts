@@ -26,6 +26,10 @@ export type Messages = {
     language: string;
     privacy: string;
     terms: string;
+    footerProduct: string;
+    footerCompany: string;
+    footerLegal: string;
+    footerBlurb: string;
   };
   seo: {
     home: string;
@@ -54,15 +58,27 @@ export type Messages = {
   };
   legal: {
     privacyTitle: string;
+    privacyUpdated: string;
+    privacyIntro: string;
+    privacySections: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+    ];
     termsTitle: string;
-    storesTitle: string;
-    storesBody: string;
-    whereTitle: string;
-    whereBody: string;
-    whoTitle: string;
-    whoBody: string;
-    gdpr: string;
-    termsBody: string;
+    termsUpdated: string;
+    termsIntro: string;
+    termsSections: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+    ];
   };
   surface: {
     connectionsKicker: string;
@@ -292,6 +308,20 @@ export type Messages = {
     contactCta: string;
     pdfCta: string;
     cards: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+    ];
+    interfaceKicker: string;
+    interfaceTitle: string;
+    interfaceLead: string;
+    interfaceCta: string;
+    interfacePoints: [
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
+      { title: string; body: string },
       { title: string; body: string },
       { title: string; body: string },
       { title: string; body: string },
@@ -622,6 +652,11 @@ export const en: Messages = {
     language: "Language",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    footerProduct: "Product",
+    footerCompany: "Company",
+    footerLegal: "Legal",
+    footerBlurb:
+      "StarWall by AGRON — one picture from the equipment you already have, and a clear next step for the person on watch.",
   },
   seo: {
     home: "StarWall by AGRON — Maritime Security Intelligence",
@@ -649,21 +684,66 @@ export const en: Messages = {
     terms: "Terms of Service — StarWall by AGRON",
   },
   legal: {
-    privacyTitle: "Data & Privacy",
+    privacyTitle: "Privacy Policy",
+    privacyUpdated: "Last updated: 7 September 2026",
+    privacyIntro:
+      "This policy explains how AGRON Inc. (“AGRON”, “we”) handles information when you use the StarWall website, the illustrative AGRON Bridge, Pilot, and related administration screens. It is written for this product as it exists today — including DEMO and LIVE — not as a promise of a future system.",
+    privacySections: [
+      {
+        title: "Who is responsible",
+        body: "AGRON Inc. is the organisation behind StarWall. For privacy questions use the contact form on this site or write via agron1.com. If we appoint a data-protection contact for a contracted deployment, that person is named in the written agreement.",
+      },
+      {
+        title: "What this site is",
+        body: "The public pages are a product site. The Bridge at /interface is an illustrative watch picture: DEMO uses simulated contacts, events, and equipment status so you can see how StarWall is meant to work. LIVE shows the real state of this deployment — empty until sensors are actually connected. Nothing on the public demo is a live feed from a yacht, marina, or port unless a written AGRON agreement says otherwise.",
+      },
+      {
+        title: "Information we process",
+        body: "If you create an account we store the email and password hash (or the identifier from a sign-in provider you choose) and the role assigned to you. The contact form sends the details you type so we can reply. The browser keeps language, theme, and DEMO/LIVE locally. Event logs, session reports, Black Box records, and Pilot conversations are written on the device first; they sync to the deployment database only when that database is configured. We do not use Bridge or Pilot content to train models.",
+      },
+      {
+        title: "Cookies and similar storage",
+        body: "We use a session cookie so you stay signed in, plus local storage for language, theme, and watch mode. These are needed to run the site. We do not drop advertising cookies and we do not sell personal data.",
+      },
+      {
+        title: "Access and sharing",
+        body: "Access follows the roles already on Backend: Super Admin, Admin, Operator, and Viewer each see only what that role allows. Hosting and database providers process data on our instructions when a deployment is connected. Sign-in providers receive only what you authorize. Anthropic receives the Pilot prompt you send, so the advisor can reply — not for AGRON marketing.",
+      },
+      {
+        title: "Your rights and retention",
+        body: "You may ask to access, correct, or delete account and Bridge records that we hold, using the contact page. If you are in the EU, EEA, UK, or Monaco, GDPR or equivalent law may add further rights, including complaint to a supervisory authority. We keep records for as long as the account or contracted deployment needs them, then delete or anonymise them. This policy is not a certification stamp; it describes our current practice.",
+      },
+    ],
     termsTitle: "Terms of Service",
-    storesTitle: "What StarWall stores",
-    storesBody:
-      "Event logs, session recordings, and Pilot conversations written on the Bridge. Administration actions are kept in a separate audit log.",
-    whereTitle: "Where it is stored",
-    whereBody:
-      "Records are written locally first, then synced to cloud storage — the same Black Box path shown on the Bridge and in Backend. Nothing leaves this account for model training.",
-    whoTitle: "Who can access it",
-    whoBody:
-      "Access follows the role hierarchy already defined in Backend: Super Admin, Admin, Operator, and Viewer each see only what their role allows.",
-    gdpr:
-      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
-    termsBody:
-      "These pages describe an illustrative StarWall deployment. Use of the Bridge, Backend, and Pilot is subject to a written agreement with AGRON. Specialized equipment and any response capability remain under human authorization and local law.",
+    termsUpdated: "Last updated: 7 September 2026",
+    termsIntro:
+      "These terms govern use of the StarWall website and the illustrative Bridge, Pilot, and Backend screens published here. Use of StarWall as an operational system on a vessel or site requires a separate written agreement with AGRON.",
+    termsSections: [
+      {
+        title: "Acceptance",
+        body: "By using this website you agree to these terms. If you do not agree, do not use the site. AGRON may update these terms; the date at the top of this page is the version that applies. Continued use after an update means you accept the revised terms.",
+      },
+      {
+        title: "Illustrative Bridge",
+        body: "DEMO is a training and explanation picture. It is not a sensor feed and must not be treated as the real situation of any vessel or site. LIVE is honest about the current deployment: if no equipment is connected, the picture is empty. Recommended actions and Pilot replies are advice for the person on watch. They do not replace that person’s judgment.",
+      },
+      {
+        title: "Accounts",
+        body: "You are responsible for the credentials you use. Do not share an account that can change watch state or administration. Demo sign-in details, if shown on the login page, are for illustration of roles — change them before any real deployment. AGRON may suspend access that is abused or that puts others at risk.",
+      },
+      {
+        title: "Acceptable use",
+        body: "You may not attempt unauthorized access to the site, other accounts, or connected systems; you may not use StarWall to harm people or property; and you may not scrape or republish the service in a way that misrepresents it as a live operational feed.",
+      },
+      {
+        title: "Human authorization and local law",
+        body: "Specialized equipment and any response capability remain under human authorization and the law of the place where they are used. StarWall does not grant a licence to operate restricted systems. Dual-use or export rules may apply to a contracted deployment; those rules are addressed in the written agreement, not by this website.",
+      },
+      {
+        title: "Intellectual property, liability, contact",
+        body: "StarWall, AGRON, and the site logo are AGRON marks. Page content is provided “as is” for information. AGRON is not liable for decisions taken solely from the public demo picture or from Pilot advice on this site. Operational liability, if any, is set in a written agreement. Questions: use /contact or agron1.com. These website terms are governed by the laws applicable to AGRON Inc., without choosing a venue we have not agreed in writing.",
+      },
+    ],
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · TOPOLOGY",
@@ -919,6 +999,45 @@ export const en: Messages = {
       { title: "See it in action", body: "An interactive look at the Bridge interface" },
       { title: "Levels", body: "From essential monitoring to a fully custom build" },
       { title: "Equipment", body: "What it connects to, and how" },
+    ],
+    interfaceKicker: "AGRON Bridge",
+    interfaceTitle: "What you actually get on the Interface",
+    interfaceLead:
+      "The Bridge is the working picture — not a slide. These are the parts built into /interface today, including an honest LIVE state when nothing is connected yet.",
+    interfaceCta: "Open the Interface",
+    interfacePoints: [
+      {
+        title: "Situational Picture",
+        body: "One map of contacts from the sources in the picture — radar, cameras, AIS and the rest — instead of a stack of separate screens.",
+      },
+      {
+        title: "Risk level",
+        body: "Normal, Attention, Elevated, Critical. The reason for a change stays visible, not hidden behind a colour.",
+      },
+      {
+        title: "Recommended action",
+        body: "A ranked next step for the person on watch. Advice only. The human still decides.",
+      },
+      {
+        title: "Event log",
+        body: "A time-ordered record of what the picture reported, kept after an alert is closed.",
+      },
+      {
+        title: "Jump rail",
+        body: "Move straight between picture, risk, systems, log, learning, Black Box, Pilot, and the connections map.",
+      },
+      {
+        title: "DEMO and LIVE",
+        body: "DEMO is the full simulated watch so you can learn the layout. LIVE is this deployment as it really is — empty until equipment is installed.",
+      },
+      {
+        title: "Adaptive learning",
+        body: "An object profile that can grow over time on that vessel or site. No invented scores. LIVE stays empty until there is real history.",
+      },
+      {
+        title: "Black Box, map, Pilot",
+        body: "Session records in the Black Box, a topology map of sensors to core to Bridge, and Pilot — the watch advisor you can speak or type to.",
+      },
     ],
     containersLink: "StarWall also runs inside AGRON's deployable container hardware →",
   },

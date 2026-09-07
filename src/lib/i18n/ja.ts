@@ -28,6 +28,11 @@ export const ja: Messages = {
     language: "言語",
     privacy: "プライバシーポリシー",
     terms: "利用規約",
+    footerProduct: "製品",
+    footerCompany: "会社",
+    footerLegal: "法務",
+    footerBlurb:
+      "StarWall by AGRON — 既存の装備から一枚の絵と、当直者への明確な次の一手。",
   },
   seo: {
     home: "StarWall by AGRON — 海上セキュリティインテリジェンス",
@@ -55,21 +60,30 @@ export const ja: Messages = {
     terms: "利用規約 — StarWall by AGRON",
   },
   legal: {
-    privacyTitle: "データとプライバシー",
+    privacyTitle: "プライバシーポリシー",
+    privacyUpdated: "最終更新: 2026年9月7日",
+    privacyIntro:
+      "本ポリシーは、StarWall サイト、説明用 AGRON Bridge、Pilot、管理画面の利用時に AGRON Inc.（「AGRON」「当社」）が情報をどう扱うかを説明します。DEMO と LIVE を含む、今日の製品の姿を述べます。",
+    privacySections: [
+      { title: "責任者", body: "StarWall の背後は AGRON Inc. です。プライバシーの問い合わせは連絡フォームまたは agron1.com。契約展開でデータ保護の連絡先を置く場合は書面契約に記します。" },
+      { title: "このサイトは何か", body: "公開ページは製品サイトです。/interface の Bridge は説明用の当直画面です。DEMO は模擬の物標・事象・装備状態を使います。LIVE はこの展開の実状態で、センサー未接続なら空です。AGRON との書面が無い限り、公開デモはヨット・マリーナ・港のライブ源ではありません。" },
+      { title: "取り扱う情報", body: "アカウント作成時はメールとパスワードハッシュ（またはログイン提供者の識別子）と役割を保存します。連絡フォームは入力内容を送ります。ブラウザは言語・テーマ・DEMO/LIVE をローカルに保ちます。イベントログ、Black Box、Pilot の会話はまず端末に書き、展開用データベースが設定されているときだけ同期します。Bridge や Pilot の内容をモデル学習には使いません。" },
+      { title: "Cookie と類似の保存", body: "セッション Cookie でログインを維持し、ローカル保存は言語・テーマ・当直モード用です。広告 Cookie は置かず、個人データは販売しません。" },
+      { title: "アクセスと共有", body: "アクセスは Backend の役割に従います（Super Admin、Admin、Operator、Viewer）。ホスティングとデータベースは展開が接続されているとき当社の指示で処理します。Anthropic は Pilot へ送った内容を受け取り、助言者が返信するためであり、AGRON の宣伝のためではありません。" },
+      { title: "権利と保管", body: "連絡ページからアクセス、訂正、削除を求められます。EU・EEA・英国・モナコでは GDPR 等により追加の権利がある場合があります。記録はアカウントまたは契約が必要とする間保管します。これは現行実務の説明であり、認証ではありません。" },
+    ],
     termsTitle: "利用規約",
-    storesTitle: "StarWall が保存するもの",
-    storesBody:
-      "イベントログ、セッション記録、Bridge 上の 水先人 会話。管理操作は別の監査ログに残します。",
-    whereTitle: "保存場所",
-    whereBody:
-      "記録はまずローカルに書き、その後クラウドへ同期します。Bridge と Backend の Black Box と同じ経路です。モデル学習のためにアカウント外へは出しません。",
-    whoTitle: "誰がアクセスできるか",
-    whoBody:
-      "アクセスは Backend の役割階層に従います。Super Admin、Admin、Operator、Viewer はそれぞれの役割が許す範囲だけを見ます。",
-    gdpr:
-      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
-    termsBody:
-      "これらのページは StarWall の説明用展開を述べます。Bridge、Backend、水先人 の利用は AGRON との書面契約に従います。専用機器とあらゆる対応能力は、人間の許可と現地法の下にあります。",
+    termsUpdated: "最終更新: 2026年9月7日",
+    termsIntro:
+      "本規約は StarWall サイトと、ここに公開する Bridge、Pilot、Backend の説明画面に適用します。運用システムとしての利用には AGRON との別途書面契約が必要です。",
+    termsSections: [
+      { title: "承諾", body: "本サイトの利用により本規約に同意したものとします。AGRON は更新でき、ページ先頭の日付が適用されます。" },
+      { title: "説明用 Bridge", body: "DEMO は訓練用の絵でありセンサー源ではありません。LIVE は実展開です。装備が無ければ空です。推奨行動と Pilot の返信は当直者への助言であり、判断の代わりではありません。" },
+      { title: "アカウント", body: "認証情報は利用者が責任を負います。ログインページのデモ口座は役割の説明用です。実展開の前に変更してください。" },
+      { title: "利用の範囲", body: "無断アクセスを試みてはなりません。人や財産を害する目的で StarWall を使ってはなりません。本サービスをライブ運用源と称してはなりません。" },
+      { title: "人の許可と現地法", body: "特殊装備とあらゆる対応能力は、人の許可と現地法の下に残ります。StarWall は制限システムの免許を与えません。" },
+      { title: "知的財産、責任、連絡", body: "StarWall、AGRON、サイトのロゴは AGRON の標章です。内容は現状有姿です。本サイトの公開デモや Pilot だけに基づく判断について AGRON は責任を負いません。問い合わせ: /contact または agron1.com。" },
+    ],
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · トポロジ",
@@ -323,6 +337,21 @@ export const ja: Messages = {
       { title: "実際の動きを見る", body: "Bridge インターフェースのインタラクティブな確認" },
       { title: "レベル", body: "必須の監視から完全な個別構築まで" },
       { title: "装備", body: "何に、どのように接続するか" },
+    ],
+    interfaceKicker: "AGRON Bridge",
+    interfaceTitle: "Interface に実際にあるもの",
+    interfaceLead:
+      "Bridge は作業用の絵であり、スライドではありません。/interface に今日入っている部分です。何もつながっていないときの正直な LIVE も含みます。",
+    interfaceCta: "Interface を開く",
+    interfacePoints: [
+      { title: "Situational Picture", body: "絵の中の源 — レーダー、カメラ、AIS など — からの物標を一枚の地図に。別画面の山ではありません。" },
+      { title: "リスクレベル", body: "Normal、Attention、Elevated、Critical。変化の理由は色の後ろに隠れません。" },
+      { title: "推奨アクション", body: "当直者への順位付きの次の一手。助言のみ。決めるのは人です。" },
+      { title: "イベントログ", body: "絵が報じたことの時系列。警報を閉じたあとも残ります。" },
+      { title: "Jump rail", body: "絵、リスク、システム、ログ、学習、Black Box、Pilot、接続図の間を直接移ります。" },
+      { title: "DEMO と LIVE", body: "DEMO は配置を学ぶための完全な模擬当直です。LIVE はこの展開の実状で、装備がなければ空です。" },
+      { title: "Adaptive Learning", body: "時間とともに育ちうる対象プロファイル。作った点数はありません。実履歴がなければ LIVE は空のままです。" },
+      { title: "Black Box、地図、Pilot", body: "Black Box のセッション記録、センサーからコア、Bridge への位相図、そして話せる当直アドバイザー Pilot。" },
     ],
     containersLink: "StarWall は AGRON の展開可能なコンテナハードウェアでも稼働します →",
   },

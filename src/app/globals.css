@@ -46,10 +46,38 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 300deg,
-    rgb(51 211 166 / 0.28) 360deg
+    transparent 280deg,
+    rgb(241 90 0 / 0.22) 330deg,
+    rgb(51 211 166 / 0.42) 360deg
   );
   animation: hero-radar-sweep 14s linear infinite;
+}
+
+.hero-radar-glow {
+  background: radial-gradient(
+    circle,
+    rgb(241 90 0 / 0.16) 0%,
+    rgb(51 211 166 / 0.08) 42%,
+    transparent 70%
+  );
+}
+
+.hero-radar-blip {
+  left: 68%;
+  top: 28%;
+  animation: hero-radar-blip 2.8s ease-in-out infinite;
+}
+
+@keyframes hero-radar-blip {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 @keyframes spin {

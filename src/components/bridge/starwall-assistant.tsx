@@ -44,7 +44,7 @@ const SPEAK_LANG: Record<string, string> = {
   he: "he-IL",
 };
 
-const BAR_COUNT = 8;
+const BAR_COUNT = 4;
 const TYPE_MS = 28;
 
 function SpeechEngine() {
@@ -403,7 +403,7 @@ export function Helm() {
       className="fixed bottom-4 right-4 z-[70] font-ui"
     >
       {open ? (
-        <section className="w-[min(24rem,calc(100vw-2rem))] overflow-hidden border border-stroke bg-panel text-ink shadow-[0_12px_40px_rgb(15_25_34/0.18)]">
+        <section className="flex w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden border border-stroke bg-panel text-ink shadow-[0_16px_48px_rgb(15_25_34/0.22)]">
           <header className="flex items-center justify-between gap-2 border-b border-stroke bg-header px-3 py-2">
             <div className="min-w-0">
               <p className="flex items-center gap-2 font-ui text-sm font-semibold tracking-wide text-ink">
@@ -481,7 +481,7 @@ export function Helm() {
           <div
             ref={listRef}
             data-testid="assistant-chat"
-            className="h-56 space-y-2 overflow-y-auto px-3 py-2"
+            className="h-72 space-y-2 overflow-y-auto px-3 py-2"
           >
             {messages.length === 0 ? (
               <p className="text-xs text-muted">{surface.helmEmpty}</p>
@@ -539,22 +539,23 @@ export function Helm() {
               </button>
               <div
                 data-testid="assistant-vu"
-                className="flex h-8 flex-1 items-end gap-0.5"
+                className="flex h-3.5 w-12 shrink-0 items-end gap-px"
+                title="Sound"
                 aria-hidden
               >
                 {levels.map((level, index) => (
                   <span
                     key={index}
                     className={cn(
-                      "flex-1",
+                      "w-1.5",
                       mic === "speaking" ? "bg-orange" : "bg-ok",
                     )}
                     style={{
-                      height: `${Math.max(12, (mic === "idle" ? 0.22 + (index % 3) * 0.08 : level) * 100)}%`,
+                      height: `${Math.max(18, (mic === "idle" ? 0.18 + (index % 2) * 0.12 : level) * 100)}%`,
                       opacity:
                         mic === "listening" || mic === "speaking"
-                          ? Math.max(0.25, level)
-                          : 0.28,
+                          ? Math.max(0.35, level)
+                          : 0.35,
                     }}
                   />
                 ))}

@@ -13,23 +13,33 @@ export function PrivacyView({
   const legal = t.legal;
   const termsFirst = focus === "terms";
 
-  const privacySections = (
+  const privacyBlock = (
     <>
-      <section className="mt-10 space-y-3">
-        <h2 className="font-ui text-xl font-semibold">{legal.storesTitle}</h2>
-        <p className="max-w-3xl text-sm leading-relaxed text-muted">{legal.storesBody}</p>
-      </section>
-      <section className="mt-8 space-y-3">
-        <h2 className="font-ui text-xl font-semibold">{legal.whereTitle}</h2>
-        <p className="max-w-3xl text-sm leading-relaxed text-muted">{legal.whereBody}</p>
-      </section>
-      <section className="mt-8 space-y-3">
-        <h2 className="font-ui text-xl font-semibold">{legal.whoTitle}</h2>
-        <p className="max-w-3xl text-sm leading-relaxed text-muted">{legal.whoBody}</p>
-      </section>
-      <p className="mt-10 max-w-3xl border border-stroke bg-panel px-4 py-3 text-sm leading-relaxed text-ink">
-        {legal.gdpr}
+      <p className="mt-6 max-w-3xl text-xs uppercase tracking-[0.14em] text-muted">
+        {legal.privacyUpdated}
       </p>
+      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">{legal.privacyIntro}</p>
+      {legal.privacySections.map((section) => (
+        <section key={section.title} className="mt-10 space-y-3">
+          <h2 className="font-ui text-xl font-semibold">{section.title}</h2>
+          <p className="max-w-3xl text-sm leading-relaxed text-muted">{section.body}</p>
+        </section>
+      ))}
+    </>
+  );
+
+  const termsBlock = (
+    <>
+      <p className="mt-6 max-w-3xl text-xs uppercase tracking-[0.14em] text-muted">
+        {legal.termsUpdated}
+      </p>
+      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">{legal.termsIntro}</p>
+      {legal.termsSections.map((section) => (
+        <section key={section.title} className="mt-10 space-y-3">
+          <h2 className="font-ui text-xl font-semibold">{section.title}</h2>
+          <p className="max-w-3xl text-sm leading-relaxed text-muted">{section.body}</p>
+        </section>
+      ))}
     </>
   );
 
@@ -43,18 +53,16 @@ export function PrivacyView({
       </h1>
       {termsFirst ? (
         <>
-          <section id="terms" className="mt-10 space-y-3">
-            <p className="max-w-3xl text-sm leading-relaxed text-muted">{legal.termsBody}</p>
-          </section>
-          <h2 className="mt-14 font-heading text-3xl font-bold">{legal.privacyTitle}</h2>
-          {privacySections}
+          <div id="terms">{termsBlock}</div>
+          <h2 className="mt-16 font-heading text-3xl font-bold">{legal.privacyTitle}</h2>
+          {privacyBlock}
         </>
       ) : (
         <>
-          {privacySections}
-          <section id="terms" className="mt-14 space-y-3">
+          {privacyBlock}
+          <section id="terms" className="mt-16">
             <h2 className="font-heading text-3xl font-bold">{legal.termsTitle}</h2>
-            <p className="max-w-3xl text-sm leading-relaxed text-muted">{legal.termsBody}</p>
+            {termsBlock}
           </section>
         </>
       )}

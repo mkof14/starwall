@@ -28,6 +28,11 @@ export const zh: Messages = {
     language: "语言",
     privacy: "隐私政策",
     terms: "服务条款",
+    footerProduct: "产品",
+    footerCompany: "公司",
+    footerLegal: "法律",
+    footerBlurb:
+      "StarWall by AGRON — 用现有设备合成一幅态势，给值班人员明确的下一步。",
   },
   seo: {
     home: "StarWall by AGRON — 海上安全情报",
@@ -55,21 +60,30 @@ export const zh: Messages = {
     terms: "服务条款 — StarWall by AGRON",
   },
   legal: {
-    privacyTitle: "数据与隐私",
+    privacyTitle: "隐私政策",
+    privacyUpdated: "更新日期：2026年9月7日",
+    privacyIntro:
+      "本政策说明 AGRON Inc.（「AGRON」「我们」）在您使用 StarWall 网站、说明性 AGRON Bridge、Pilot 及相关管理界面时如何处理信息。它描述产品的现状，包括 DEMO 与 LIVE。",
+    privacySections: [
+      { title: "责任方", body: "StarWall 由 AGRON Inc. 提供。隐私问题请通过联系表单或 agron1.com。若合同部署指定了数据保护联系人，会写在书面协议中。" },
+      { title: "本站是什么", body: "公开页面是产品介绍。/interface 上的 Bridge 是说明性值班画面：DEMO 使用模拟目标、事件与设备状态。LIVE 显示本部署的真实状态——在传感器接入前为空。除非与 AGRON 另有书面约定，公开演示不是游艇、码头或港口的实时源。" },
+      { title: "我们处理哪些信息", body: "若您创建账户，我们保存电子邮件与密码哈希（或登录提供方标识）以及角色。联系表单发送您填写的内容。浏览器在本地保存语言、主题和 DEMO/LIVE。事件日志、Black Box 与 Pilot 对话先写在设备上；仅在部署数据库已配置时才会同步。我们不用 Bridge 或 Pilot 内容训练模型。" },
+      { title: "Cookie 与类似存储", body: "会话 cookie 用于保持登录；本地存储用于语言、主题和值班模式。我们不下发广告 cookie，也不出售个人数据。" },
+      { title: "访问与共享", body: "访问遵循 Backend 角色：Super Admin、Admin、Operator、Viewer。托管与数据库在部署已连接时按我们的指示处理数据。Anthropic 收到您发给 Pilot 的内容以便顾问回复，而非用于 AGRON 营销。" },
+      { title: "您的权利与保存期限", body: "您可通过联系页请求查阅、更正或删除。在欧盟、欧洲经济区、英国或摩纳哥，GDPR 或同等法律可能赋予更多权利。记录在账户或合同需要期间保存。这是现行做法的说明，不是认证印章。" },
+    ],
     termsTitle: "服务条款",
-    storesTitle: "StarWall 保存什么",
-    storesBody:
-      "事件日志、会话记录，以及 Bridge 上的 引航员 对话。管理操作记在单独的审计日志中。",
-    whereTitle: "存储位置",
-    whereBody:
-      "记录先写在本地，再同步到云端 — 与 Bridge 和 Backend 上的 Black Box 路径相同。数据不会离开账户用于模型训练。",
-    whoTitle: "谁可以访问",
-    whoBody:
-      "访问遵循 Backend 的角色层级：Super Admin、Admin、Operator 与 Viewer 只能看到其角色允许的内容。",
-    gdpr:
-      "StarWall is designed to comply with applicable data protection regulations, including GDPR for EU/Monaco-based deployments. Full compliance documentation available on request.",
-    termsBody:
-      "这些页面描述的是示意性 StarWall 部署。使用 Bridge、Backend 和 引航员 须以与 AGRON 的书面协议为准。专用设备与任何响应能力始终处于人工授权与当地法律之下。",
+    termsUpdated: "更新日期：2026年9月7日",
+    termsIntro:
+      "本条款适用于 StarWall 网站以及此处发布的说明性 Bridge、Pilot 与 Backend 界面。将 StarWall 作为作业系统使用，须另与 AGRON 签订书面协议。",
+    termsSections: [
+      { title: "接受", body: "使用本网站即表示接受本条款。AGRON 可更新条款；以页首日期为准。" },
+      { title: "说明性 Bridge", body: "DEMO 是训练画面，不是传感器源。LIVE 显示真实部署：无设备则画面为空。推荐行动与 Pilot 回复是给值班人员的建议，不能代替其判断。" },
+      { title: "账户", body: "您对登录凭据负责。登录页上的演示账户若展示，仅用于说明角色——真实部署前请更换。" },
+      { title: "可接受使用", body: "不得尝试未经授权的访问；不得用 StarWall 伤害人或财产；不得把本服务表述为实时作业源。" },
+      { title: "人工授权与当地法律", body: "专用设备及任何响应能力仍须经人工授权并遵守当地法律。StarWall 不授予受限系统的许可。" },
+      { title: "知识产权、责任与联系", body: "StarWall、AGRON 与站点标志为 AGRON 标记。页面内容按「现状」提供。AGRON 不对仅依据本站公开演示或 Pilot 作出的决定承担责任。问题：/contact 或 agron1.com。" },
+    ],
   },
   surface: {
     connectionsKicker: "AGRON BRIDGE · 拓扑",
@@ -323,6 +337,21 @@ export const zh: Messages = {
       { title: "看实际效果", body: "交互查看 Bridge 界面" },
       { title: "层级", body: "从必要监测到完全定制构建" },
       { title: "设备", body: "对接什么，如何对接" },
+    ],
+    interfaceKicker: "AGRON Bridge",
+    interfaceTitle: "Interface 里实际有什么",
+    interfaceLead:
+      "Bridge 是工作态势，不是幻灯片。以下是今天已做进 /interface 的部分，包括尚未接入设备时诚实的 LIVE。",
+    interfaceCta: "打开 Interface",
+    interfacePoints: [
+      { title: "Situational Picture", body: "把画面中的来源——雷达、摄像机、AIS 等——合成一张目标图，而不是一叠独立屏幕。" },
+      { title: "风险等级", body: "Normal、Attention、Elevated、Critical。等级变化的原因可见，不藏在颜色后面。" },
+      { title: "建议行动", body: "给值班人员排序后的下一步。仅是建议。仍由人决定。" },
+      { title: "事件日志", body: "按时间记录画面所报内容，告警关闭后仍保留。" },
+      { title: "Jump rail", body: "在态势、风险、系统、日志、学习、Black Box、Pilot 与连接图之间直接跳转。" },
+      { title: "DEMO 与 LIVE", body: "DEMO 是完整模拟值班，用来熟悉布局。LIVE 是本部署的真实状态：设备未装则空。" },
+      { title: "Adaptive Learning", body: "可随时间增长的对象档案。没有编造分数。没有真实历史时 LIVE 保持为空。" },
+      { title: "Black Box、地图、Pilot", body: "Black Box 中的会话记录、从传感器到核心再到 Bridge 的拓扑，以及可说可写的值班顾问 Pilot。" },
     ],
     containersLink: "StarWall 也可运行于 AGRON 可部署集装箱硬件之中 →",
   },
