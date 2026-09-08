@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireCommercial } from "@/lib/commercial-rbac";
+import { requireCommercial } from "@/lib/commercial-auth";
 import { prismaReady } from "@/lib/prisma";
 import { listBook } from "@/lib/price-book/service";
 
