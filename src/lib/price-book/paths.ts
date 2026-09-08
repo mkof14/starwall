@@ -7,6 +7,7 @@ export const deskPaths = {
   quote: (id: string) => `${DESK_ROOT}/quotes/${id}`,
   proposal: (id: string) => `${DESK_ROOT}/quotes/${id}/proposal`,
   catalog: "/pricing",
+  pdf: (id: string) => `/api/admin/starwall/pricing/quotes/${id}/pdf`,
 } as const;
 
 export function isPlansDeskPath(pathname: string | null | undefined) {

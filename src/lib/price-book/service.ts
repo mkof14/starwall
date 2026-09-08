@@ -9,6 +9,7 @@ import {
   canOverrideListPrice,
   canSeeInternalCost,
 } from "@/lib/commercial-rbac";
+import { ISSUER } from "@/lib/price-book/issuer";
 import { asMoney, landedCost, listFromLanded } from "@/lib/price-book/calc";
 import { computeLineCustomer, computeQuoteTotals, nextQuoteNumber, persistQuoteTotals, snapshotQuote } from "@/lib/price-book/quote";
 import { getActivePriceBook } from "@/lib/price-book/seed";
@@ -158,6 +159,7 @@ export async function listQuotes(prisma: PrismaClient, actor: CommercialActor) {
     objectName: quote.objectName,
     customer: quote.customer.name,
     company: quote.customer.company,
+    location: quote.location,
     year1: money(quote.year1Total),
     annualRecurring: money(quote.annualRecurring),
     approvalState: quote.approvalState,
@@ -180,18 +182,23 @@ export async function dashboard(prisma: PrismaClient, actor: CommercialActor) {
   const accepted = quotes.filter((q) => q.status === "ACCEPTED");
   const pipeline = active.reduce((sum, q) => sum + (money(q.year1Total) ?? 0), 0);
   const arr = active.reduce((sum, q) => sum + (money(q.annualRecurring) ?? 0), 0);
-  const recent = quotes.slice(0, 12).map((quote) => ({
+  const tickets = quotes.map((quote) => ({
     id: quote.id,
     number: quote.number,
     version: quote.version,
     customer: quote.customer.name,
+    company: quote.customer.company,
     object: quote.objectName || quote.objectType,
+    objectType: quote.objectType,
+    location: quote.location,
     plan: quote.plan,
     year1: money(quote.year1Total),
     annualRecurring: money(quote.annualRecurring),
     status: quote.status,
     approvalState: quote.approvalState,
     ownerId: quote.salesOwnerId,
+    modifiedAt: quote.modifiedAt.toISOString(),
+    lines: quote.items.length,
     margin: canSeeInternalCost(actor.commercialRole)
       ? computeQuoteTotals(quote.items ?? [], quote).year1Margin
       : undefined,
@@ -205,7 +212,8 @@ export async function dashboard(prisma: PrismaClient, actor: CommercialActor) {
     },
     pipeline,
     annualRecurring: arr,
-    recent,
+    recent: tickets.slice(0, 12),
+    quotes: tickets,
   };
 }
 
@@ -694,6 +702,11 @@ export async function getQuote(prisma: PrismaClient, actor: CommercialActor, id:
 
 export function customerProposal(data: NonNullable<Awaited<ReturnType<typeof getQuote>>>) {
   return {
+    issuer: ISSUER,
+    issuedAt: data.quote.createdAt,
+    quoteNumber: data.quote.number,
+    version: data.quote.version,
+    plan: data.quote.plan,
     customer: data.quote.customer,
     object: {
       type: data.quote.objectType,
@@ -702,8 +715,8 @@ export function customerProposal(data: NonNullable<Awaited<ReturnType<typeof get
       location: data.quote.location,
       sites: data.quote.siteCount,
       vessels: data.quote.vesselCount,
+      notes: data.quote.objectNotes,
     },
-    plan: data.quote.plan,
     configuration: data.quote.items.map((item) => ({
       name: item.name,
       category: item.category,
@@ -718,10 +731,10 @@ export function customerProposal(data: NonNullable<Awaited<ReturnType<typeof get
     commercial: {
       year1: "year1" in data.totals ? data.totals.year1 : null,
       annualRecurring: "annualRecurring" in data.totals ? data.totals.annualRecurring : null,
+      oneTime: "oneTime" in data.totals ? data.totals.oneTime : null,
     },
-    terms: "Valid 30 days from issue. Final figure follows site survey and signed scope.",
+    terms: ISSUER.terms,
+    caveat: ISSUER.caveat,
     validity: "30 days",
-    quoteNumber: data.quote.number,
-    version: data.quote.version,
   };
 }
