@@ -5,6 +5,7 @@ import { hashPassword, verifyPassword } from "@/lib/password";
 import { EQUIPMENT_CATALOG } from "@/lib/equipment";
 import { INTEGRATION_CATALOG } from "@/lib/integrations";
 import { isUserRole, type UserRole } from "@/lib/rbac";
+import { ensurePriceBookSeed } from "@/lib/price-book/seed";
 
 export const DEMO_ACCOUNTS: {
   id: string;
@@ -214,6 +215,53 @@ export async function ensureBackendSeed(prisma: PrismaClient) {
       })),
     });
   }
+
+  const commercial = [
+    {
+      id: "usr-sales",
+      email: "sales@starwall.demo",
+      name: "Sales",
+      organization: "AGRON",
+      role: "Operator" as const,
+      commercialRole: "sales",
+      password: "SalesPass!23",
+    },
+    {
+      id: "usr-engineering",
+      email: "engineering@starwall.demo",
+      name: "Engineering",
+      organization: "AGRON",
+      role: "Operator" as const,
+      commercialRole: "engineering",
+      password: "Engineer!23",
+    },
+  ];
+  for (const account of commercial) {
+    const existing = await prisma.user.findUnique({ where: { email: account.email } });
+    if (existing) {
+      if (existing.commercialRole !== account.commercialRole) {
+        await prisma.user.update({
+          where: { email: account.email },
+          data: { commercialRole: account.commercialRole, pending: false },
+        });
+      }
+      continue;
+    }
+    await prisma.user.create({
+      data: {
+        id: account.id,
+        email: account.email,
+        name: account.name,
+        organization: account.organization,
+        role: account.role,
+        commercialRole: account.commercialRole,
+        passwordHash: hashPassword(account.password),
+        pending: false,
+      },
+    });
+  }
+
+  await ensurePriceBookSeed(prisma, "system");
 }
 
 export function parseStoredRole(value: string | null | undefined): UserRole {

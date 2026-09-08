@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id            String     @id
-  email         String     @unique
-  name          String
-  organization  String     @default("")
-  passwordHash  String     @default("")
-  role          String     @default("Operator")
-  pending       Boolean    @default(false)
-  lastSignInAt  DateTime?
-  createdAt     DateTime   @default(now())
-  sessions      Session[]
-  auditLogs     AuditLog[]
+  id              String     @id
+  email           String     @unique
+  name            String
+  organization    String     @default("")
+  passwordHash    String     @default("")
+  role            String     @default("Operator")
+  commercialRole  String     @default("none")
+  pending         Boolean    @default(false)
+  lastSignInAt    DateTime?
+  createdAt       DateTime   @default(now())
+  sessions        Session[]
+  auditLogs       AuditLog[]
 }
 
 model Session {
@@ -106,4 +107,183 @@ model Integration {
   name       String
   vendor     String
   lastPingAt DateTime?
+}
+
+model PriceBook {
+  id        String      @id @default(cuid())
+  version   String
+  name      String
+  status    String      @default("active")
+  createdAt DateTime    @default(now())
+  createdBy String
+  items     PriceItem[]
+  quotes    Quote[]
+
+  @@unique([version])
+}
+
+model PriceItem {
+  id                  String      @id @default(cuid())
+  priceBookId         String
+  priceBook           PriceBook   @relation(fields: [priceBookId], references: [id], onDelete: Cascade)
+  itemCode            String
+  category            String
+  subcategory         String      @default("")
+  name                String
+  description         String      @default("")
+  unit                String
+  internalCost        Decimal?    @db.Decimal(14, 2)
+  listPrice           Decimal?    @db.Decimal(14, 2)
+  minimumPrice        Decimal?    @db.Decimal(14, 2)
+  billingType         String
+  applicablePlans     String      @default("LIGHT,ADVANCED,INTELLIGENCE,CUSTOM")
+  active              Boolean     @default(true)
+  internalNotes       String      @default("")
+  manufacturer        String      @default("")
+  model               String      @default("")
+  sku                 String      @default("")
+  vendorCost          Decimal?    @db.Decimal(14, 2)
+  shippingCost        Decimal?    @db.Decimal(14, 2)
+  otherAcquisition    Decimal?    @db.Decimal(14, 2)
+  landedCost          Decimal?    @db.Decimal(14, 2)
+  markupPercent       Decimal?    @db.Decimal(8, 2)
+  listPriceOverride   Boolean     @default(false)
+  installationHours   Decimal?    @db.Decimal(8, 2)
+  configurationHours  Decimal?    @db.Decimal(8, 2)
+  warranty            String      @default("")
+  leadTime            String      @default("")
+  coverageHours       String      @default("")
+  responseTarget      String      @default("")
+  escalation          String      @default("")
+  namedContact        Boolean     @default(false)
+  remoteSupport       Boolean     @default(false)
+  onSiteSupport       Boolean     @default(false)
+  includedEngHours    Decimal?    @db.Decimal(8, 2)
+  slaNotes            String      @default("")
+  slaApproved         Boolean     @default(false)
+  hourlyCost          Decimal?    @db.Decimal(14, 2)
+  customerHourly      Decimal?    @db.Decimal(14, 2)
+  customerDaily       Decimal?    @db.Decimal(14, 2)
+  minIncrementHours   Decimal?    @db.Decimal(8, 2)
+  includedInPlans     String      @default("")
+  updatedAt           DateTime    @updatedAt
+  updatedBy           String
+  quoteItems          QuoteItem[]
+
+  @@unique([priceBookId, itemCode])
+  @@index([category, active])
+}
+
+model CommercialCustomer {
+  id        String   @id @default(cuid())
+  name      String
+  company   String   @default("")
+  contact   String   @default("")
+  email     String   @default("")
+  phone     String   @default("")
+  country   String   @default("")
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+}
+
+model Quote {
+  id                String            @id @default(cuid())
+  number            String
+  version           Int               @default(1)
+  status            String            @default("DRAFT")
+  priceBookId       String
+  priceBook         PriceBook         @relation(fields: [priceBookId], references: [id])
+  customerId        String
+  customer          CommercialCustomer @relation(fields: [customerId], references: [id])
+  salesOwnerId      String
+  opportunityId     String            @default("")
+  objectType        String
+  objectName        String            @default("")
+  objectSize        String            @default("")
+  location          String            @default("")
+  siteCount         Int               @default(1)
+  vesselCount       Int               @default(1)
+  objectNotes       String            @default("")
+  plan              String
+  infrastructure    String            @default("[]")
+  travelExpense     Decimal           @default(0) @db.Decimal(14, 2)
+  hotelExpense      Decimal           @default(0) @db.Decimal(14, 2)
+  airfareExpense    Decimal           @default(0) @db.Decimal(14, 2)
+  groundExpense     Decimal           @default(0) @db.Decimal(14, 2)
+  shippingExpense   Decimal           @default(0) @db.Decimal(14, 2)
+  otherExpense      Decimal           @default(0) @db.Decimal(14, 2)
+  overallDiscount   Decimal           @default(0) @db.Decimal(8, 2)
+  discountNote      String            @default("")
+  approvalState     String            @default("NORMAL")
+  rfpNumber         String            @default("")
+  rfpReference      String            @default("")
+  rfpDeadline       DateTime?
+  rfpRequirements   String            @default("")
+  rfpClarifications String            @default("")
+  rfpCompliance     String            @default("")
+  rfpCommercial     String            @default("")
+  year1Total        Decimal           @default(0) @db.Decimal(14, 2)
+  annualRecurring   Decimal           @default(0) @db.Decimal(14, 2)
+  createdAt         DateTime          @default(now())
+  createdBy         String
+  modifiedAt        DateTime          @updatedAt
+  modifiedBy        String
+  parentQuoteId     String?
+  items             QuoteItem[]
+  versions          QuoteVersion[]
+  approvals         QuoteApproval[]
+
+  @@unique([number, version])
+  @@index([status, modifiedAt])
+}
+
+model QuoteItem {
+  id                String     @id @default(cuid())
+  quoteId           String
+  quote             Quote      @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  priceItemId       String?
+  priceItem         PriceItem? @relation(fields: [priceItemId], references: [id])
+  category          String
+  name              String
+  description       String     @default("")
+  billingType       String
+  quantity          Decimal    @default(1) @db.Decimal(10, 2)
+  unit              String
+  listPrice         Decimal?   @db.Decimal(14, 2)
+  internalCost      Decimal?   @db.Decimal(14, 2)
+  minimumPrice      Decimal?   @db.Decimal(14, 2)
+  unitPrice         Decimal?   @db.Decimal(14, 2)
+  discountPct       Decimal    @default(0) @db.Decimal(8, 2)
+  customerPrice     Decimal?   @db.Decimal(14, 2)
+  engineeringHours  Decimal?   @db.Decimal(8, 2)
+  notes             String     @default("")
+  inclusion         String     @default("ADDITIONAL")
+  sortOrder         Int        @default(0)
+}
+
+model QuoteVersion {
+  id        String   @id @default(cuid())
+  quoteId   String
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  version   Int
+  snapshot  String
+  createdAt DateTime @default(now())
+  createdBy String
+  note      String   @default("")
+
+  @@index([quoteId, version])
+}
+
+model QuoteApproval {
+  id          String    @id @default(cuid())
+  quoteId     String
+  quote       Quote     @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  kind        String
+  status      String    @default("PENDING")
+  reason      String    @default("")
+  requestedBy String
+  decidedBy   String    @default("")
+  decidedAt   DateTime?
+  createdAt   DateTime  @default(now())
 }

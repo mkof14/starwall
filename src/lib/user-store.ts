@@ -11,6 +11,7 @@ export type StoredUser = {
   email: string;
   passwordHash: string;
   role: UserRole;
+  commercialRole: string;
   pending: boolean;
   lastSignInAt: string | null;
 };
@@ -26,6 +27,7 @@ function toStored(user: {
   email: string;
   passwordHash: string;
   role: string;
+  commercialRole?: string;
   pending: boolean;
   lastSignInAt: Date | null;
 }): StoredUser {
@@ -36,6 +38,7 @@ function toStored(user: {
     email: user.email,
     passwordHash: user.passwordHash,
     role: parseStoredRole(user.role),
+    commercialRole: user.commercialRole ?? "none",
     pending: user.pending,
     lastSignInAt: user.lastSignInAt ? user.lastSignInAt.toISOString() : null,
   };

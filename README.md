@@ -78,6 +78,7 @@ Shared sticky header and footer wrap every route via the root layout. The header
 | `/signup` | Create an account |
 | `/forgot-password` | Password reset request |
 | `/tasks` | All tasks (gated; sign in first) |
+| `/admin/starwall/pricing` | Internal Price Book and quote desk (gated, AGRON commercial roles) |
 | `/backend` | StarWall Backend (gated) |
 | `/backend/users` | User Management (Super Admin) |
 | `/backend/privacy` | Data & Privacy (gated) |
@@ -192,5 +193,7 @@ npm start
 ```
 
 `/pricing` is a public product page: LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM, a comparison matrix, environments, optional hardware, and how a configuration is priced. There are no dollar figures. The request form posts to `/api/contact`. Plan CTAs can still open `/contact?plan=ADVANCED` from older links.
+
+`/admin/starwall/pricing` is the internal Master Price Book and quote desk. It is not linked from the public site. Super Admin and Admin receive commercial-admin access. Seeded desk accounts: `sales@starwall.demo` and `engineering@starwall.demo` (Operator on the Bridge, sales/engineering on the desk). License list prices are seeded (LIGHT $6,000, ADVANCED $18,000, INTELLIGENCE $42,000, CUSTOM starting $75,000). Every other catalog row is PRICE REQUIRED until AGRON enters real costs. Public APIs never return this book.
 
 `/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/backend` writes through `/api/equipment`, `/api/notifications`, `/api/audit`, `/api/integrations`, and `/api/users`. Unauthorized writes return 403.

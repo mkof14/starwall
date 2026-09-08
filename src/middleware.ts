@@ -7,5 +7,11 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/interface", "/interface/:path*", "/backend", "/backend/:path*"],
+  matcher: [
+    "/interface",
+    "/interface/:path*",
+    "/backend",
+    "/backend/:path*",
+    "/admin/:path*",
+  ],
 };
