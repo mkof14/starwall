@@ -77,7 +77,7 @@ export async function buildProposalPdf(
 
   const page = doc.addPage([612, 792]);
   drawLetterhead(page, { serif, serifBold, sans, sansBold, logo, input });
-  let y = logo ? 668 : 650;
+  let y = 620;
   y = drawPartyBlock(page, y, { serifBold, sans, sansBold, input });
   y = drawLines(doc, page, y, { sans, sansBold, serifBold, input });
   drawFooter(page, { sans, input });
