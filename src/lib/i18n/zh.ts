@@ -14,6 +14,7 @@ export const zh: Messages = {
     contact: "联系",
     backend: "后台",
     auth: "登录",
+    desk: "价格手册",
     tasks: "任务",
     openMenu: "打开菜单",
     closeMenu: "关闭菜单",

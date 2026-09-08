@@ -14,6 +14,7 @@ export const ar: Messages = {
     contact: "تواصل",
     backend: "Backend",
     auth: "دخول",
+    desk: "دفتر الأسعار",
     tasks: "المهام",
     openMenu: "فتح القائمة",
     closeMenu: "إغلاق القائمة",

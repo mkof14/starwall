@@ -12,6 +12,7 @@ export type Messages = {
     contact: string;
     backend: string;
     auth: string;
+    desk: string;
     tasks: string;
     openMenu: string;
     closeMenu: string;
@@ -646,6 +647,7 @@ export const en: Messages = {
     contact: "Contact",
     backend: "Backend",
     auth: "Auth",
+    desk: "Price Book",
     tasks: "Tasks",
     openMenu: "Open menu",
     closeMenu: "Close menu",

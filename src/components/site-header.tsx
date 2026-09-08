@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AccountMenu } from "@/components/auth/account-menu";
-import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
+import { isAuthRoute, isInternalDesk, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { headerNavItems, headerWorkItems } from "@/lib/nav";
 
@@ -23,7 +23,7 @@ export function SiteHeader() {
     pathname.startsWith("/tasks");
   const workItems = session ? [] : [...headerWorkItems];
 
-  if (isAuthRoute(pathname)) return null;
+  if (isAuthRoute(pathname) || isInternalDesk(pathname)) return null;
 
   return (
     <header className="sticky top-0 z-40 h-16 w-full border-b border-stroke bg-header/92 shadow-[inset_0_2px_0_0_#F15A00] backdrop-blur-md print:hidden">

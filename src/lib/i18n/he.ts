@@ -14,6 +14,7 @@ export const he: Messages = {
     contact: "יצירת קשר",
     backend: "Backend",
     auth: "כניסה",
+    desk: "ספר מחירים",
     tasks: "משימות",
     openMenu: "פתיחת תפריט",
     closeMenu: "סגירת תפריט",

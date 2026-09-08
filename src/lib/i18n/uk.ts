@@ -14,6 +14,7 @@ export const uk: Messages = {
     contact: "Контакт",
     backend: "Бекенд",
     auth: "Вхід",
+    desk: "Стіл цін",
     tasks: "Завдання",
     openMenu: "Відкрити меню",
     closeMenu: "Закрити меню",

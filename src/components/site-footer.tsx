@@ -5,7 +5,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePathname } from "next/navigation";
-import { isAuthRoute } from "@/lib/auth-session";
+import { isAuthRoute, isInternalDesk, useAuthSession } from "@/lib/auth-session";
 import { usePreferences } from "@/lib/i18n/context";
 import { footerWorkItems, navItems } from "@/lib/nav";
 
@@ -24,7 +24,8 @@ const companyHrefs = ["/about", "/contact", "/faq"] as const;
 export function SiteFooter() {
   const { t } = usePreferences();
   const pathname = usePathname();
-  if (isAuthRoute(pathname)) return null;
+  const { session } = useAuthSession();
+  if (isAuthRoute(pathname) || isInternalDesk(pathname)) return null;
 
   const product = productHrefs
     .map((href) => navItems.find((item) => item.href === href))
@@ -74,6 +75,13 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            {session ? (
+              <li>
+                <Link href="/admin/starwall/pricing" className="hover:text-sand">
+                  {t.nav.desk}
+                </Link>
+              </li>
+            ) : null}
           </ul>
         </nav>
         <nav aria-label={t.chrome.footerLegal} className="space-y-3">

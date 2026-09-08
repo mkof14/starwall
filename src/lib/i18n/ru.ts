@@ -14,6 +14,7 @@ export const ru: Messages = {
     contact: "Контакты",
     backend: "Backend",
     auth: "Вход",
+    desk: "Стол цен",
     tasks: "Задания",
     openMenu: "Открыть меню",
     closeMenu: "Закрыть меню",

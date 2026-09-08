@@ -52,6 +52,10 @@ export function isAuthRoute(pathname: string | null | undefined) {
   );
 }
 
+export function isInternalDesk(pathname: string | null | undefined) {
+  return Boolean(pathname?.startsWith("/admin"));
+}
+
 function AuthSessionInner({ children }: { children: ReactNode }) {
   const { data, status } = useSession();
   const ready = status !== "loading";

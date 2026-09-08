@@ -14,6 +14,7 @@ export const es: Messages = {
     contact: "Contacto",
     backend: "Backend",
     auth: "Acceso",
+    desk: "Libro de precios",
     tasks: "Tareas",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",

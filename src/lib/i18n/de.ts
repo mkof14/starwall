@@ -14,6 +14,7 @@ export const de: Messages = {
     contact: "Kontakt",
     backend: "Backend",
     auth: "Zugang",
+    desk: "Preisbuch",
     tasks: "Aufgaben",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schließen",

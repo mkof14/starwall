@@ -14,6 +14,7 @@ export const ja: Messages = {
     contact: "お問い合わせ",
     backend: "バックエンド",
     auth: "認証",
+    desk: "価格帳",
     tasks: "タスク",
     openMenu: "メニューを開く",
     closeMenu: "メニューを閉じる",
