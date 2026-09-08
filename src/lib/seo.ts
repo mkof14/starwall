@@ -25,9 +25,9 @@ export const pageMeta = {
       "LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — plus what is available now versus still in development.",
   },
   pricing: {
-    title: "Pricing — StarWall by AGRON",
+    title: "Plans — StarWall by AGRON",
     description:
-      "Configure illustrative StarWall pricing by object, software tier, AGRON Container, and additional equipment.",
+      "LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM — StarWall plan levels, what they include, and how to request a configuration.",
   },
   technology: {
     title: "Equipment & Integration — StarWall by AGRON",

@@ -1,359 +1,290 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
-import { PageBody, PageHero, PageShell, RuleList, RuleRow } from "@/components/page-chrome";
+import { useState } from "react";
+import {
+  PageBody,
+  PageHero,
+  PageShell,
+  SectionKicker,
+  SectionTitle,
+} from "@/components/page-chrome";
+import { PlansRequestForm } from "@/components/plans-request-form";
 import { cn } from "@/lib/cn";
+import { getPlansPage } from "@/lib/i18n/plans-page";
 import { usePreferences } from "@/lib/i18n/context";
 import {
-  ADDONS,
-  CONTAINER_TIERS,
-  DEFAULT_SELECTION,
-  OBJECT_TYPES,
-  SOFTWARE_TIERS,
-  selectionToQuery,
-  type AddonId,
-  type ContainerId,
-  type ObjectId,
-  type PricingSelection,
-  type SoftwareId,
-} from "@/lib/pricing";
+  COMPARE_KEYS,
+  COMPARE_ROWS,
+  ENVIRONMENT_KEYS,
+  HARDWARE_KEYS,
+  HOW_KEYS,
+  PLAN_ORDER,
+  POPULAR_PLAN,
+  type CompareCell,
+  type PlanId,
+} from "@/lib/plans";
+
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 export function PricingView() {
-  const { t } = usePreferences();
-  const { pricing } = t;
-  const copy = pricing.config;
-  const [selection, setSelection] = useState<PricingSelection>(DEFAULT_SELECTION);
-  const [summaryOpen, setSummaryOpen] = useState(false);
+  const { locale } = usePreferences();
+  const copy = getPlansPage(locale);
+  const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
 
-  const objectCopy = copy.objects[selection.objectId];
-  const softwareCopy = copy.software[selection.softwareId];
-  const containerCopy = copy.containers[selection.containerId];
-
-  function toggleAddon(id: AddonId) {
-    setSelection((current) => {
-      const has = current.addonIds.includes(id);
-      return {
-        ...current,
-        addonIds: has
-          ? current.addonIds.filter((item) => item !== id)
-          : [...current.addonIds, id],
-      };
-    });
+  function goToRequest(plan?: PlanId) {
+    if (plan) setSelectedPlan(plan);
+    scrollToId("request");
   }
-
-  const addonSummary = selection.addonIds
-    .map((id) => `+ ${copy.addons[id].name}`)
-    .join(", ");
-  const summaryParts = [
-    objectCopy.name,
-    softwareCopy.name,
-    containerCopy.name,
-    addonSummary,
-  ].filter(Boolean);
-  const quoteMessage = copy.quoteMessage.replace("{summary}", summaryParts.join(", "));
-  const contactHref = `/contact?${selectionToQuery(selection)}`;
 
   return (
     <PageShell>
-      <PageHero kicker={pricing.kicker} title={pricing.title} lead={pricing.lead}>
-        <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-[15px]">
-          {pricing.salesNote}
+      <PageHero kicker={copy.kicker} title={copy.title}>
+        <p className="max-w-2xl font-heading text-2xl font-semibold leading-snug text-ink sm:text-3xl">
+          {copy.supporting}
         </p>
-      </PageHero>
-      <PageBody>
-        <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1.7fr)_minmax(16rem,0.8fr)]">
-          <div className="space-y-14 pb-28 lg:pb-0">
-            <Step heading={copy.stepSoftware} index={1}>
-              <div className="divide-y divide-stroke border-y border-stroke">
-                {SOFTWARE_TIERS.map((item, index) => {
-                  const selected = selection.softwareId === item.id;
-                  const label = copy.software[item.id];
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      data-testid={`software-${item.id}`}
-                      aria-pressed={selected}
-                      onClick={() =>
-                        setSelection((current) => ({
-                          ...current,
-                          softwareId: item.id as SoftwareId,
-                        }))
-                      }
-                      className="grid w-full gap-1 py-5 text-start sm:grid-cols-[4rem_11rem_minmax(0,1fr)] sm:gap-8"
-                    >
-                      <span className="font-mono text-[11px] text-orange">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={cn(
-                          "font-heading text-2xl font-bold",
-                          selected ? "text-orange" : "text-ink",
-                        )}
-                      >
-                        {label.name}
-                        {"popular" in item && item.popular ? (
-                          <span className="ms-2 align-middle font-ui text-[12px] font-normal text-muted">
-                            {pricing.mostPopular}
-                          </span>
-                        ) : null}
-                      </span>
-                      <span className="text-sm leading-relaxed text-muted">{label.detail}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </Step>
-
-            <Step heading={copy.stepObject} index={2}>
-              <div className="divide-y divide-stroke border-y border-stroke">
-                {OBJECT_TYPES.map((item) => {
-                  const selected = selection.objectId === item.id;
-                  const label = copy.objects[item.id];
-                  return (
-                    <ChoiceRow
-                      key={item.id}
-                      testId={`object-${item.id}`}
-                      selected={selected}
-                      title={label.name}
-                      detail={label.detail}
-                      onClick={() =>
-                        setSelection((current) => ({ ...current, objectId: item.id as ObjectId }))
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </Step>
-
-            <Step heading={copy.stepContainer} index={3}>
-              <div className="divide-y divide-stroke border-y border-stroke">
-                {CONTAINER_TIERS.map((item) => {
-                  const selected = selection.containerId === item.id;
-                  const label = copy.containers[item.id];
-                  return (
-                    <ChoiceRow
-                      key={item.id}
-                      testId={`container-${item.id}`}
-                      selected={selected}
-                      title={label.name}
-                      detail={label.detail}
-                      onClick={() =>
-                        setSelection((current) => ({
-                          ...current,
-                          containerId: item.id as ContainerId,
-                        }))
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </Step>
-
-            <Step heading={copy.stepAddons} index={4}>
-              <ul className="divide-y divide-stroke border-y border-stroke">
-                {ADDONS.map((item) => {
-                  const checked = selection.addonIds.includes(item.id);
-                  const label = copy.addons[item.id];
-                  return (
-                    <li key={item.id}>
-                      <label
-                        data-testid={`addon-${item.id}`}
-                        className="flex cursor-pointer items-baseline gap-4 py-4"
-                      >
-                        <input
-                          type="checkbox"
-                          className="accent-orange"
-                          checked={checked}
-                          onChange={() => toggleAddon(item.id)}
-                        />
-                        <span
-                          className={cn(
-                            "font-heading text-xl font-bold",
-                            checked ? "text-orange" : "text-ink",
-                          )}
-                        >
-                          {label.name}
-                        </span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Step>
-          </div>
-
-          <aside className="hidden lg:block">
-            <BriefPanel
-              copy={copy}
-              pricing={pricing}
-              selection={selection}
-              contactHref={contactHref}
-              quoteMessage={quoteMessage}
-            />
-          </aside>
+        <p className="max-w-2xl text-[1.05rem] leading-[1.7] text-ink/80">{copy.body}</p>
+        <ol className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 font-heading text-xl font-bold text-ink sm:text-2xl">
+          {PLAN_ORDER.map((id, index) => (
+            <li key={id} className="flex items-center gap-5">
+              {index > 0 ? (
+                <span className="hidden h-4 w-px bg-stroke sm:block" aria-hidden />
+              ) : null}
+              <a href={`#${id.toLowerCase()}`} className="hover:text-orange">
+                {id}
+              </a>
+            </li>
+          ))}
+        </ol>
+        <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+          <a
+            href="#compare"
+            data-testid="compare-plans"
+            className="inline-flex items-center justify-center bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
+          >
+            {copy.compareCta}
+          </a>
+          <a
+            href="#request"
+            data-testid="request-pricing"
+            className="inline-flex items-center justify-center px-1 py-2 text-sm text-ink underline decoration-stroke underline-offset-4 hover:decoration-orange"
+          >
+            {copy.requestCta}
+          </a>
         </div>
+        <p className="max-w-xl text-sm leading-relaxed text-muted">{copy.heroNote}</p>
+      </PageHero>
 
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-stroke bg-header/95 p-3 backdrop-blur lg:hidden">
+      <PageBody className="space-y-24">
+        <section aria-label={copy.title} className="grid gap-12 md:grid-cols-2 xl:grid-cols-4">
+          {PLAN_ORDER.map((id) => {
+            const plan = copy.plans[id];
+            const popular = id === POPULAR_PLAN;
+            return (
+              <article
+                key={id}
+                id={id.toLowerCase()}
+                data-testid={`plan-${id}`}
+                className="flex scroll-mt-24 flex-col border-t border-stroke pt-6"
+              >
+                <div className="min-h-[1.15rem]">
+                  {popular ? (
+                    <p className="font-ui text-[11px] tracking-wide text-orange">
+                      {copy.mostPopular}
+                    </p>
+                  ) : null}
+                </div>
+                <h2 className="mt-2 font-heading text-3xl font-bold text-ink">{id}</h2>
+                <p className="mt-1 text-sm italic text-muted">{plan.subtitle}</p>
+                <p className="mt-4 text-sm leading-relaxed text-ink/80">{plan.description}</p>
+                <p className="mt-6 font-ui text-[11px] tracking-wide text-muted">
+                  {copy.includesLabel}
+                </p>
+                <ul className="mt-2 space-y-2 text-sm leading-relaxed text-muted">
+                  {plan.includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <p className="mt-auto pt-8 text-xs leading-relaxed text-muted">
+                  <span className="text-ink">{copy.bestForLabel}</span>
+                  <span className="mt-1 block">{plan.bestFor}</span>
+                </p>
+                <a
+                  href="#request"
+                  onClick={() => setSelectedPlan(id)}
+                  className="mt-5 self-start text-sm font-medium text-orange underline-offset-4 hover:underline"
+                >
+                  {plan.cta}
+                </a>
+              </article>
+            );
+          })}
+        </section>
+
+        <section id="compare" className="scroll-mt-24" aria-labelledby="compare-heading">
+          <SectionKicker>{copy.kicker}</SectionKicker>
+          <SectionTitle id="compare-heading">{copy.compare.heading}</SectionTitle>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {copy.compare.subheading}
+          </p>
+          <div className="mt-8 overflow-x-auto border-y border-stroke">
+            <table className="w-full min-w-[40rem] text-start text-sm">
+              <caption className="sr-only">{copy.compare.heading}</caption>
+              <thead>
+                <tr className="border-b border-stroke">
+                  <th className="sticky start-0 bg-page py-3 pe-6 text-start font-heading text-base font-bold text-ink">
+                    {copy.compare.capability}
+                  </th>
+                  {PLAN_ORDER.map((id) => (
+                    <th
+                      key={id}
+                      className="px-3 py-3 text-center font-heading text-base font-bold text-ink"
+                    >
+                      {id}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE_KEYS.map((key) => (
+                  <tr key={key} className="border-t border-stroke">
+                    <th className="sticky start-0 bg-page py-3 pe-6 text-start font-medium text-ink">
+                      {copy.compare.rows[key]}
+                    </th>
+                    {COMPARE_ROWS[key].map((cell, index) => (
+                      <td key={PLAN_ORDER[index]} className="px-3 py-3 text-center">
+                        <CompareMark cell={cell} optionalLabel={copy.optional} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="environments" className="scroll-mt-24" aria-labelledby="environments-heading">
+          <SectionKicker>{copy.kicker}</SectionKicker>
+          <SectionTitle id="environments-heading">{copy.environments.heading}</SectionTitle>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {copy.environments.body}
+          </p>
+          <div className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {ENVIRONMENT_KEYS.map((key) => {
+              const item = copy.environments.items[key];
+              return (
+                <article key={key} className="border-t border-stroke pt-5">
+                  <h3 className="font-heading text-2xl font-bold text-ink">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
+                  <p className="mt-4 font-ui text-[11px] tracking-wide text-muted">
+                    {copy.recommendedLabel}
+                    <span className="ms-2 text-ink">{item.recommended}</span>
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="hardware" className="scroll-mt-24" aria-labelledby="hardware-heading">
+          <SectionKicker>{copy.kicker}</SectionKicker>
+          <SectionTitle id="hardware-heading">{copy.hardware.heading}</SectionTitle>
+          <p className="mt-2 max-w-2xl font-heading text-xl text-ink">{copy.hardware.subheading}</p>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {copy.hardware.body}
+          </p>
+          <div className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2">
+            {HARDWARE_KEYS.map((key) => {
+              const item = copy.hardware.items[key];
+              return (
+                <article key={key} className="border-t border-stroke pt-5">
+                  <h3 className="font-heading text-2xl font-bold text-ink">{item.title}</h3>
+                  <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">{item.body}</p>
+                </article>
+              );
+            })}
+          </div>
+          <Link
+            href="/technology"
+            data-testid="explore-hardware"
+            className="mt-8 inline-flex text-sm font-medium text-orange underline-offset-4 hover:underline"
+          >
+            {copy.hardware.cta}
+          </Link>
+        </section>
+
+        <section id="pricing-how" className="scroll-mt-24" aria-labelledby="how-heading">
+          <SectionKicker>{copy.kicker}</SectionKicker>
+          <SectionTitle id="how-heading">{copy.how.heading}</SectionTitle>
+          <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            {HOW_KEYS.map((key, index) => {
+              const item = copy.how.items[key];
+              const last = index === HOW_KEYS.length - 1;
+              return (
+                <div key={key} className="flex flex-col gap-6 lg:flex-row lg:items-start">
+                  {index > 0 ? (
+                    <p
+                      className="font-heading text-2xl font-bold text-orange lg:pt-1"
+                      aria-hidden
+                    >
+                      {last ? "=" : "+"}
+                    </p>
+                  ) : null}
+                  <div className={cn("max-w-xs lg:max-w-[10.5rem]", last && "lg:max-w-[12rem]")}>
+                    <p className="font-heading text-xl font-bold text-ink">{item.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{item.caption}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-10 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">{copy.how.body}</p>
           <button
             type="button"
-            data-testid="mobile-summary-toggle"
-            aria-expanded={summaryOpen}
-            onClick={() => setSummaryOpen((value) => !value)}
-            className="flex w-full items-center justify-between gap-3 text-start"
+            onClick={() => goToRequest()}
+            className="mt-8 inline-flex bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
           >
-            <span>
-              <span className="block font-heading text-lg font-bold text-ink">
-                {softwareCopy.name}
-              </span>
-              <span className="block text-sm text-muted">{objectCopy.name}</span>
-            </span>
-            <span className="font-mono text-[10px] text-orange">
-              {summaryOpen ? copy.hideSummary : copy.showSummary}
-            </span>
+            {copy.how.cta}
           </button>
-          {summaryOpen ? (
-            <div className="mt-3 max-h-[55vh] overflow-y-auto border-t border-stroke pt-3">
-              <BriefPanel
-                copy={copy}
-                pricing={pricing}
-                selection={selection}
-                contactHref={contactHref}
-                quoteMessage={quoteMessage}
-                compact
-              />
-            </div>
-          ) : null}
-        </div>
+        </section>
 
-        <section aria-labelledby="pricing-faq">
-          <h2 id="pricing-faq" className="font-heading text-3xl font-bold text-ink">
-            {pricing.faqTitle}
-          </h2>
-          <RuleList>
-            <RuleRow
-              title={pricing.faq1q}
-              body={
-                <>
-                  {pricing.faq1aBefore}{" "}
-                  <Link
-                    href="/containers"
-                    className="font-medium text-orange underline-offset-2 hover:underline"
-                  >
-                    {pricing.faq1aLink}
-                  </Link>
-                  {pricing.faq1aAfter}
-                </>
-              }
-            />
-            <RuleRow title={pricing.faq2q} body={pricing.faq2a} />
-            <RuleRow title={pricing.faq3q} body={pricing.faq3a} />
-          </RuleList>
+        <section id="request" className="scroll-mt-24 pb-8" aria-labelledby="request-heading">
+          <SectionKicker>{copy.kicker}</SectionKicker>
+          <SectionTitle id="request-heading">{copy.request.heading}</SectionTitle>
+          <p className="mt-4 max-w-2xl text-[1.02rem] leading-[1.7] text-muted">
+            {copy.request.body}
+          </p>
+          <div className="mt-10">
+            <PlansRequestForm copy={copy.request} selectedPlan={selectedPlan} />
+          </div>
         </section>
       </PageBody>
     </PageShell>
   );
 }
 
-function Step({
-  heading,
-  index,
-  children,
+function CompareMark({
+  cell,
+  optionalLabel,
 }: {
-  heading: string;
-  index: number;
-  children: ReactNode;
+  cell: CompareCell;
+  optionalLabel: string;
 }) {
-  return (
-    <section>
-      <p className="font-mono text-[11px] text-orange">
-        {String(index).padStart(2, "0")}
-      </p>
-      <h2 className="mt-1 font-heading text-3xl font-bold text-ink">{heading}</h2>
-      <div className="mt-6">{children}</div>
-    </section>
-  );
-}
-
-function ChoiceRow({
-  title,
-  detail,
-  selected,
-  onClick,
-  testId,
-}: {
-  title: string;
-  detail: string;
-  selected: boolean;
-  onClick: () => void;
-  testId: string;
-}) {
-  return (
-    <button
-      type="button"
-      data-testid={testId}
-      aria-pressed={selected}
-      onClick={onClick}
-      className="grid w-full gap-1 py-4 text-start sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-8"
-    >
-      <span
-        className={cn(
-          "font-heading text-xl font-bold",
-          selected ? "text-orange" : "text-ink",
-        )}
-      >
-        {title}
+  if (cell === "yes") {
+    return (
+      <span className="text-orange" aria-label="yes">
+        ✓
       </span>
-      <span className="text-sm leading-relaxed text-muted">{detail}</span>
-    </button>
-  );
-}
-
-function BriefPanel({
-  copy,
-  pricing,
-  selection,
-  contactHref,
-  quoteMessage,
-  compact = false,
-}: {
-  copy: ReturnType<typeof usePreferences>["t"]["pricing"]["config"];
-  pricing: ReturnType<typeof usePreferences>["t"]["pricing"];
-  selection: PricingSelection;
-  contactHref: string;
-  quoteMessage: string;
-  compact?: boolean;
-}) {
-  const object = copy.objects[selection.objectId];
-  const software = copy.software[selection.softwareId];
-  const container = copy.containers[selection.containerId];
-
+    );
+  }
+  if (cell === "optional") {
+    return <span className="text-xs text-muted">{optionalLabel}</span>;
+  }
   return (
-    <div data-testid="pricing-summary" className={cn(compact ? "" : "sticky top-24")}>
-      <p className="font-ui text-[12px] tracking-wide text-orange">{copy.yourConfig}</p>
-      <p className="mt-2 font-heading text-3xl font-bold text-ink">{software.name}</p>
-      <p className="mt-2 text-sm leading-relaxed text-muted">{software.detail}</p>
-      <ul className="mt-6 divide-y divide-stroke border-y border-stroke text-sm">
-        <li className="py-3 text-ink">{object.name}</li>
-        <li className="py-3 text-ink">{container.name}</li>
-        {selection.addonIds.map((id) => (
-          <li key={id} className="py-3 text-ink">
-            {copy.addons[id].name}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-5 text-sm leading-relaxed text-muted">{pricing.salesNote}</p>
-      <p className="mt-3 text-xs italic leading-relaxed text-muted">{copy.summaryNote}</p>
-      <Link
-        href={contactHref}
-        data-testid="request-quote"
-        data-quote={quoteMessage}
-        className="mt-6 inline-flex min-h-11 items-center justify-center bg-orange px-4 text-sm font-medium text-white hover:bg-orange/90"
-      >
-        {pricing.askSales}
-      </Link>
-      <p className="sr-only">{quoteMessage}</p>
-    </div>
+    <span className="text-muted" aria-label="not included">
+      —
+    </span>
   );
 }

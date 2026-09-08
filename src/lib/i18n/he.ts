@@ -39,7 +39,7 @@ export const he: Messages = {
     howItWorks: "איך StarWall עובד — StarWall by AGRON",
     interface: "AGRON Bridge — הדגמה אינטראקטיבית — StarWall by AGRON",
     levels: "רמות מנוי — StarWall by AGRON",
-    pricing: "מחירים — StarWall by AGRON",
+    pricing: "תוכניות — StarWall by AGRON",
     technology: "ציוד ואינטגרציה — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "מכולות — AGRON",

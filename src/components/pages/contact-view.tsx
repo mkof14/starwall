@@ -5,7 +5,7 @@ import { PageBody, PageHero, PageShell } from "@/components/page-chrome";
 import { usePreferences } from "@/lib/i18n/context";
 import { quoteFromSearch, type PricingSelection } from "@/lib/pricing";
 
-const PRICING_PLANS = new Set(["LIGHT", "ADVANCED", "INTELLIGENCE"]);
+const PRICING_PLANS = new Set(["LIGHT", "ADVANCED", "INTELLIGENCE", "CUSTOM"]);
 
 function briefMessage(selection: PricingSelection, copy: ReturnType<typeof usePreferences>["t"]["pricing"]) {
   const addons = selection.addonIds.map((id) => `+ ${copy.config.addons[id].name}`).join(", ");

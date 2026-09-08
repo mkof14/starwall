@@ -63,7 +63,7 @@ Shared sticky header and footer wrap every route via the root layout. The header
 | `/interface` | Interface (scenario-linked Situational Picture) |
 | `/interface/connections` | System Connections Map |
 | `/levels` | Levels |
-| `/pricing` | Public plans (no prices — sales names the figure) |
+| `/pricing` | Plans — four levels, comparison, how pricing is built, request form |
 | `/technology` | Technology (briefing deck + equipment catalog) |
 | `/faq` | FAQ |
 | `/containers` | AGRON Containers |
@@ -191,6 +191,6 @@ npm run build
 npm start
 ```
 
-`/pricing` is a live configurator: object type, StarWall tier, AGRON Container hardware, and extras. Monthly software and one-time equipment stay as two totals. CUSTOM / Exclusive show “Contact us for pricing” for that part. **Request exact quote** opens `/contact` with the configuration pre-filled.
+`/pricing` is a public product page: LIGHT, ADVANCED, INTELLIGENCE, and CUSTOM, a comparison matrix, environments, optional hardware, and how a configuration is priced. There are no dollar figures. The request form posts to `/api/contact`. Plan CTAs can still open `/contact?plan=ADVANCED` from older links.
 
 `/api/contact` accepts briefing requests and acknowledges them (no inbox is wired by default). `/backend` writes through `/api/equipment`, `/api/notifications`, `/api/audit`, `/api/integrations`, and `/api/users`. Unauthorized writes return 403.

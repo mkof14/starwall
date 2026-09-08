@@ -985,7 +985,7 @@ export const en: Messages = {
       bridge: "AGRON Bridge — situational picture and scenario walkthrough.",
       connections: "Radial map of Core, sensors, Bridge, and Support Center.",
       levels: "LIGHT / ADVANCED / INTELLIGENCE / CUSTOM and what is available now.",
-      pricing: "Open plan names and descriptions. A salesperson on the contract names the figure.",
+      pricing: "LIGHT, ADVANCED, INTELLIGENCE, CUSTOM — what each level includes, and how to request a configuration.",
       technology: "Equipment categories and how StarWall sits on existing systems.",
       faq: "Answers on responsibility, connectivity, data, and specialized modules.",
       containers: "Deployable AGRON container hardware running StarWall.",

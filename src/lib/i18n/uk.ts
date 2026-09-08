@@ -39,7 +39,7 @@ export const uk: Messages = {
     howItWorks: "Як працює StarWall — StarWall by AGRON",
     interface: "AGRON Bridge — інтерактивне демо — StarWall by AGRON",
     levels: "Рівні підписки — StarWall by AGRON",
-    pricing: "Ціни — StarWall by AGRON",
+    pricing: "Плани — StarWall by AGRON",
     technology: "Обладнання та інтеграція — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "Контейнери — AGRON",

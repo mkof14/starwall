@@ -39,7 +39,7 @@ export const zh: Messages = {
     howItWorks: "StarWall 如何工作 — StarWall by AGRON",
     interface: "AGRON Bridge — 交互演示 — StarWall by AGRON",
     levels: "订阅层级 — StarWall by AGRON",
-    pricing: "价格 — StarWall by AGRON",
+    pricing: "方案 — StarWall by AGRON",
     technology: "设备与集成 — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "集装箱 — AGRON",

@@ -39,7 +39,7 @@ export const ja: Messages = {
     howItWorks: "StarWall の仕組み — StarWall by AGRON",
     interface: "AGRON Bridge — インタラクティブデモ — StarWall by AGRON",
     levels: "サブスクリプションレベル — StarWall by AGRON",
-    pricing: "料金 — StarWall by AGRON",
+    pricing: "プラン — StarWall by AGRON",
     technology: "装備と統合 — StarWall by AGRON",
     faq: "FAQ — StarWall by AGRON",
     containers: "コンテナ — AGRON",
