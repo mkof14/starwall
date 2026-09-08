@@ -58,8 +58,8 @@ export function PricingDashboardView() {
       .catch((err: Error) => setError(err.message));
   }, []);
 
-  const tickets = data?.quotes?.length ? data.quotes : data?.recent ?? [];
   const filtered = useMemo(() => {
+    const tickets = data?.quotes?.length ? data.quotes : data?.recent ?? [];
     const q = query.trim().toLowerCase();
     return tickets.filter((row) => {
       if (plan !== "ALL" && row.plan !== plan) return false;
@@ -68,7 +68,7 @@ export function PricingDashboardView() {
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(q));
     });
-  }, [tickets, query, plan]);
+  }, [data, query, plan]);
 
   if (error) {
     return (

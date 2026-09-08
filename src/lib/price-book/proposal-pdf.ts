@@ -77,9 +77,8 @@ export async function buildProposalPdf(
 
   const page = doc.addPage([612, 792]);
   drawLetterhead(page, { serif, serifBold, sans, sansBold, logo, input });
-  let y = 620;
-  y = drawPartyBlock(page, y, { serifBold, sans, sansBold, input });
-  y = drawLines(doc, page, y, { sans, sansBold, serifBold, input });
+  const afterParty = drawPartyBlock(page, 620, { serifBold, sans, sansBold, input });
+  drawLines(doc, page, afterParty, { sans, sansBold, serifBold, input });
   drawFooter(page, { sans, input });
 
   doc.setTitle(`${ISSUER.product} proposal ${input.quoteNumber}`);
