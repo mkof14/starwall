@@ -62,18 +62,22 @@ export function NewQuoteView() {
         : Boolean(form.plan);
 
   return (
-    <DeskShell title="Open a commercial ticket">
+    <DeskShell title="New quote" plan={form.plan}>
       <ol className="mb-8 flex flex-wrap gap-6">
         {STEPS.map((label, index) => (
           <li key={label} className="flex items-center gap-2">
             <span
-              className={`flex h-7 w-7 items-center justify-center font-mono text-xs ${
-                index === step ? "bg-orange text-white" : index < step ? "bg-navy text-sand" : "border border-stroke text-muted"
+              className={`flex h-9 w-9 items-center justify-center font-heading text-lg font-bold ${
+                index === step
+                  ? `${PLAN_LOOK[form.plan].solid}`
+                  : index < step
+                    ? "bg-[#1B8F4E] text-white"
+                    : "bg-panel text-muted"
               }`}
             >
-              {String(index + 1).padStart(2, "0")}
+              {index + 1}
             </span>
-            <span className={index === step ? "font-heading text-lg font-bold" : "text-sm text-muted"}>
+            <span className={index === step ? "font-heading text-2xl font-bold" : "text-lg text-muted"}>
               {label}
             </span>
           </li>
@@ -100,11 +104,11 @@ export function NewQuoteView() {
                 key={item}
                 type="button"
                 onClick={() => set("objectType", item)}
-                className={`border px-3 py-4 text-start ${
-                  form.objectType === item ? "border-orange bg-[#F8DFCC]" : "border-stroke bg-panel hover:border-orange/50"
+                className={`px-4 py-5 text-start ${
+                  form.objectType === item ? "bg-navy text-sand" : "bg-panel hover:ring-2 hover:ring-navy"
                 }`}
               >
-                <p className="font-heading text-lg font-bold">{item}</p>
+                <p className="font-heading text-2xl font-bold">{item}</p>
               </button>
             ))}
           </div>
@@ -124,10 +128,10 @@ export function NewQuoteView() {
               onChange={(v) => set("vesselCount", Number(v) || 1)}
               type="number"
             />
-            <label className="block text-sm sm:col-span-2">
+            <label className="block text-lg sm:col-span-2">
               What is already on the object
               <textarea
-                className="mt-1 w-full border-b border-stroke bg-transparent py-1"
+                className="mt-1 w-full border-b-2 border-stroke bg-transparent py-2 text-lg"
                 rows={3}
                 value={form.objectNotes}
                 onChange={(event) => set("objectNotes", event.target.value)}
@@ -147,14 +151,14 @@ export function NewQuoteView() {
                 key={item}
                 type="button"
                 onClick={() => set("plan", item)}
-                className={`border text-start ${form.plan === item ? "border-orange" : "border-stroke"}`}
+                className={`text-start ${look.wash} ${form.plan === item ? `ring-4 ${look.ring}` : ""}`}
               >
-                <span className={`block h-1.5 ${look.bar}`} />
-                <div className={`px-4 py-4 ${form.plan === item ? look.wash : "bg-panel"}`}>
-                  <PlanMark plan={item} />
-                  <p className="mt-3 font-heading text-3xl font-bold">{item}</p>
-                  <p className="mt-2 text-sm text-muted">Annual license list, this desk only.</p>
-                  <p className="mt-3 font-heading text-2xl font-bold text-ink">{moneyLabel(price)}</p>
+                <span className={`block h-3 ${look.bar}`} />
+                <div className="px-5 py-6">
+                  <PlanMark plan={item} size="lg" />
+                  <p className={`mt-4 font-heading text-5xl font-bold leading-none ${look.text}`}>{item}</p>
+                  <p className="mt-3 text-lg text-muted">Annual license list — this desk only.</p>
+                  <p className="mt-4 font-heading text-5xl font-bold leading-none">{moneyLabel(price)}</p>
                 </div>
               </button>
             );
@@ -162,10 +166,10 @@ export function NewQuoteView() {
         </div>
       ) : null}
 
-      {error ? <p className="mt-4 text-sm text-crit">{error}</p> : null}
+      {error ? <p className="mt-4 text-lg text-crit">{error}</p> : null}
       <div className="mt-8 flex flex-wrap gap-3">
         {step > 0 ? (
-          <button type="button" className="border border-stroke px-4 py-2 text-sm" onClick={() => setStep(step - 1)}>
+          <button type="button" className="border border-stroke px-5 py-3 font-heading text-lg" onClick={() => setStep(step - 1)}>
             Back
           </button>
         ) : null}
@@ -173,7 +177,7 @@ export function NewQuoteView() {
           <button
             type="button"
             disabled={!canNext}
-            className="bg-orange px-4 py-2 text-sm text-white disabled:opacity-40"
+            className={`px-5 py-3 font-heading text-xl font-bold text-white disabled:opacity-40 ${PLAN_LOOK[form.plan].bar}`}
             onClick={() => setStep(step + 1)}
           >
             Continue
@@ -183,9 +187,9 @@ export function NewQuoteView() {
             type="button"
             disabled={pending || !form.customerName.trim()}
             onClick={() => void submit()}
-            className="bg-orange px-4 py-2 text-sm text-white disabled:opacity-40"
+            className={`px-5 py-3 font-heading text-xl font-bold text-white disabled:opacity-40 ${PLAN_LOOK[form.plan].bar}`}
           >
-            {pending ? "Opening…" : "Open ticket"}
+            {pending ? "Opening…" : "Create quote"}
           </button>
         )}
       </div>
@@ -207,11 +211,11 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <label className="block text-sm">
+    <label className="block text-lg">
       {label}
-      {required ? <span className="text-orange"> *</span> : null}
+      {required ? <span className="text-[#0E8FA8]"> *</span> : null}
       <input
-        className="mt-1 w-full border-b border-stroke bg-transparent py-1"
+        className="mt-1 w-full border-b-2 border-stroke bg-transparent py-2 text-xl"
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}

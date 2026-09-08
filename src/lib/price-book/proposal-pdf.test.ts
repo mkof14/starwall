@@ -50,6 +50,7 @@ describe("proposal PDF", () => {
     expect(doc.getAuthor()).toBe(ISSUER.legalName);
     expect(plain).toContain(ISSUER.legalName);
     expect(plain).toContain("COMMERCIAL PROPOSAL");
+    expect(plain).toContain("StarWall INTELLIGENCE");
     expect(plain).not.toMatch(/internal cost/i);
     expect(plain).not.toMatch(/margin/i);
     expect(plain).not.toMatch(/\bCommand\b/);

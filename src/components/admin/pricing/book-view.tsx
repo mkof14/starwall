@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import {
   CategoryChip,
   DeskShell,
+  PlanDots,
   moneyLabel,
 } from "@/components/admin/pricing/desk-ui";
-import { categoryLook } from "@/lib/price-book/desk-visual";
+import { categoryLook, plansFromList } from "@/lib/price-book/desk-visual";
 
 type Item = {
   id: string;
@@ -98,48 +99,45 @@ export function PriceBookView() {
   }
 
   return (
-    <DeskShell
-      title={`Catalog ${version || ""}`}
-      role={role}
-      actions={
-        <>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search SKU or name…"
-            className="min-w-[14rem] flex-1 border-b border-sand/25 bg-transparent py-1 text-sm text-sand placeholder:text-sand/40 focus:border-orange focus:outline-none"
-          />
-          <select
-            value={priced}
-            onChange={(event) => setPriced(event.target.value as typeof priced)}
-            className="border-b border-sand/25 bg-transparent py-1 text-sm text-sand"
+    <DeskShell title="Prices">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search a price…"
+          className="min-w-0 flex-1 border-b-2 border-stroke bg-transparent py-2 text-lg focus:border-navy focus:outline-none"
+        />
+        <select
+          value={priced}
+          onChange={(event) => setPriced(event.target.value as typeof priced)}
+          className="border-b-2 border-stroke bg-transparent py-2 text-base"
+        >
+          <option value="all">All rows</option>
+          <option value="ready">Priced</option>
+          <option value="open">PRICE REQUIRED</option>
+        </select>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setLayout("cards")}
+            className={`px-4 py-2 font-heading text-lg font-bold ${layout === "cards" ? "bg-navy text-sand" : "bg-panel"}`}
           >
-            <option value="all">All rows</option>
-            <option value="ready">Priced</option>
-            <option value="open">PRICE REQUIRED</option>
-          </select>
-          <div className="flex border border-sand/25">
-            <button
-              type="button"
-              onClick={() => setLayout("cards")}
-              className={`px-3 py-1 font-ui text-[10px] uppercase ${layout === "cards" ? "bg-orange text-white" : "text-sand/70"}`}
-            >
-              Shelf
-            </button>
-            <button
-              type="button"
-              onClick={() => setLayout("table")}
-              className={`px-3 py-1 font-ui text-[10px] uppercase ${layout === "table" ? "bg-orange text-white" : "text-sand/70"}`}
-            >
-              Sheet
-            </button>
-          </div>
-        </>
-      }
-    >
-      {error ? <p className="mb-4 text-sm text-crit">{error}</p> : null}
-      <p className="mb-4 text-sm text-muted">
-        {rows.length} of {items.length} rows · {openCount} still PRICE REQUIRED
+            Cards
+          </button>
+          <button
+            type="button"
+            onClick={() => setLayout("table")}
+            className={`px-4 py-2 font-heading text-lg font-bold ${layout === "table" ? "bg-navy text-sand" : "bg-panel"}`}
+          >
+            Table
+          </button>
+        </div>
+      </div>
+      {error ? <p className="mb-4 text-lg text-crit">{error}</p> : null}
+      <p className="mb-4 text-lg text-muted">
+        {rows.length} of {items.length} · {openCount} still PRICE REQUIRED
+        {version ? ` · book ${version}` : ""}
+        {role ? ` · ${role}` : ""}
       </p>
       <div className="mb-6 flex flex-wrap gap-2">
         {categories.map((key) => {
@@ -150,12 +148,12 @@ export function PriceBookView() {
               key={key}
               type="button"
               onClick={() => setCategory(key)}
-              className={`px-2 py-1 font-ui text-[10px] uppercase tracking-wider ${
+              className={`px-3 py-1.5 font-heading text-base font-bold ${
                 category === key
-                  ? "bg-orange text-white"
+                  ? "bg-navy text-sand"
                   : look
                     ? look.tone
-                    : "border border-stroke text-muted"
+                    : "bg-panel text-muted"
               }`}
             >
               {key === "ALL" ? "All" : look?.label} · {count}
@@ -167,24 +165,24 @@ export function PriceBookView() {
       {layout === "cards" ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {rows.map((item) => (
-            <article key={item.id} className="flex flex-col border border-stroke bg-panel">
-              <div className="flex items-center justify-between gap-2 border-b border-stroke px-4 py-2">
+            <article key={item.id} className="flex flex-col bg-panel">
+              <div className="flex items-center justify-between gap-2 px-5 pt-4">
                 <CategoryChip category={item.category} />
-                <span className="font-mono text-[10px] text-muted">{item.itemCode}</span>
+                <PlanDots plans={item.applicablePlans} />
               </div>
-              <div className="flex flex-1 flex-col px-4 py-3">
-                <h3 className="font-heading text-xl font-bold leading-tight">{item.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
-                <p className="mt-3 text-xs text-muted">
+              <div className="flex flex-1 flex-col px-5 py-3">
+                <p className="font-mono text-sm text-muted">{item.itemCode}</p>
+                <h3 className="mt-1 font-heading text-3xl font-bold leading-tight">{item.name}</h3>
+                <p className="mt-2 text-base leading-relaxed text-muted">{item.description}</p>
+                <p className="mt-3 text-sm text-muted">
                   {item.billingType} · {item.unit}
-                  {item.applicablePlans ? ` · ${item.applicablePlans}` : ""}
                 </p>
-                <div className="mt-auto flex items-end justify-between gap-3 pt-4">
-                  <p className={`font-heading text-2xl font-bold ${item.listPrice == null ? "text-attn" : "text-ink"}`}>
+                <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+                  <p className={`font-heading text-4xl font-bold leading-none ${item.listPrice == null ? "text-[#C98900]" : "text-ink"}`}>
                     {moneyLabel(item.listPrice)}
                   </p>
                   {role === "admin" ? (
-                    <button type="button" className="text-xs text-orange" onClick={() => setEditing(item)}>
+                    <button type="button" className="text-base text-[#0E8FA8]" onClick={() => setEditing(item)}>
                       Edit
                     </button>
                   ) : null}
@@ -201,44 +199,54 @@ export function PriceBookView() {
         </div>
       ) : (
         <div className="overflow-x-auto border-y border-stroke">
-          <table className="w-full min-w-[64rem] text-start text-sm">
+          <table className="w-full min-w-[64rem] text-start">
             <thead>
-              <tr className="border-b border-stroke">
-                <th className="py-2 pe-3 text-start">Code</th>
-                <th className="py-2 pe-3 text-start">Item</th>
-                <th className="py-2 pe-3 text-start">Category</th>
-                <th className="py-2 pe-3 text-start">Bill</th>
-                <th className="py-2 pe-3 text-start">List</th>
-                {role === "admin" ? <th className="py-2 pe-3 text-start">Cost</th> : null}
-                {role === "admin" ? <th className="py-2 pe-3 text-start">Margin</th> : null}
-                <th className="py-2 pe-3 text-start">Status</th>
-                <th className="py-2 text-start"> </th>
+              <tr className="border-b border-stroke text-base text-muted">
+                <th className="py-3 pe-3 text-start">Code</th>
+                <th className="py-3 pe-3 text-start">Item</th>
+                <th className="py-3 pe-3 text-start">Plans</th>
+                <th className="py-3 pe-3 text-start">Category</th>
+                <th className="py-3 pe-3 text-start">Bill</th>
+                <th className="py-3 pe-3 text-start">List</th>
+                {role === "admin" ? <th className="py-3 pe-3 text-start">Cost</th> : null}
+                {role === "admin" ? <th className="py-3 pe-3 text-start">Margin</th> : null}
+                <th className="py-3 pe-3 text-start">Status</th>
+                <th className="py-3 text-start"> </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((item) => (
                 <tr key={item.id} className="border-t border-stroke align-top">
-                  <td className="py-2 pe-3 font-mono text-[11px]">{item.itemCode}</td>
-                  <td className="py-2 pe-3">
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-xs text-muted">{item.description}</p>
+                  <td className="py-3 pe-3 font-mono text-sm text-muted">{item.itemCode}</td>
+                  <td className="py-3 pe-3">
+                    <p className="font-heading text-2xl font-bold leading-tight">{item.name}</p>
+                    <p className="mt-1 text-base text-muted">{item.description}</p>
                   </td>
-                  <td className="py-2 pe-3">
+                  <td className="py-3 pe-3">
+                    {plansFromList(item.applicablePlans).length ? (
+                      <PlanDots plans={item.applicablePlans} />
+                    ) : (
+                      <span className="text-base text-muted">—</span>
+                    )}
+                  </td>
+                  <td className="py-3 pe-3">
                     <CategoryChip category={item.category} />
                   </td>
-                  <td className="py-2 pe-3">{item.billingType}</td>
-                  <td className="py-2 pe-3">{moneyLabel(item.listPrice)}</td>
-                  {role === "admin" ? <td className="py-2 pe-3">{moneyLabel(item.internalCost)}</td> : null}
+                  <td className="py-3 pe-3 text-base">{item.billingType}</td>
+                  <td className={`py-3 pe-3 font-heading text-2xl font-bold ${item.listPrice == null ? "text-[#C98900]" : ""}`}>
+                    {moneyLabel(item.listPrice)}
+                  </td>
+                  {role === "admin" ? <td className="py-3 pe-3 text-lg">{moneyLabel(item.internalCost)}</td> : null}
                   {role === "admin" ? (
-                    <td className="py-2 pe-3">
+                    <td className="py-3 pe-3 text-lg">
                       {item.grossMargin === null || item.grossMargin === undefined ? "—" : `${item.grossMargin}%`}
                     </td>
                   ) : null}
-                  <td className="py-2 pe-3">{item.active ? item.priceStatus : "INACTIVE"}</td>
-                  <td className="py-2">
+                  <td className="py-3 pe-3 text-base">{item.active ? item.priceStatus : "INACTIVE"}</td>
+                  <td className="py-3">
                     {role === "admin" ? (
-                      <div className="flex flex-wrap gap-2 text-xs">
-                        <button type="button" className="text-orange" onClick={() => setEditing(item)}>
+                      <div className="flex flex-wrap gap-3 text-base">
+                        <button type="button" className="font-bold text-[#0E8FA8]" onClick={() => setEditing(item)}>
                           Edit
                         </button>
                         <button type="button" onClick={() => void act(item.id, "duplicate")}>
@@ -258,8 +266,8 @@ export function PriceBookView() {
       )}
 
       {editing && role === "admin" ? (
-        <div className="mt-8 max-w-xl space-y-3 border-t border-orange/40 bg-[#F8DFCC]/40 px-4 py-6">
-          <p className="font-heading text-xl font-bold">Edit {editing.itemCode}</p>
+        <div className="mt-8 max-w-xl space-y-3 border-t border-[#0E8FA8]/40 bg-[#D3F1F6]/50 px-5 py-6">
+          <p className="font-heading text-3xl font-bold">Edit {editing.itemCode}</p>
           <Num
             label="List price"
             value={editing.listPrice}
@@ -290,14 +298,14 @@ export function PriceBookView() {
             value={editing.markupPercent ?? null}
             onChange={(value) => setEditing({ ...editing, markupPercent: value })}
           />
-          <p className="text-xs text-muted">
+          <p className="text-base text-muted">
             Margin is calculated. Hardware list follows landed cost + markup unless you override list price.
           </p>
           <div className="flex gap-3">
-            <button type="button" className="bg-orange px-3 py-2 text-sm text-white" onClick={() => void save()}>
+            <button type="button" className="bg-[#0E8FA8] px-5 py-3 font-heading text-lg font-bold text-white" onClick={() => void save()}>
               Save
             </button>
-            <button type="button" className="text-sm text-muted" onClick={() => setEditing(null)}>
+            <button type="button" className="text-lg text-muted" onClick={() => setEditing(null)}>
               Cancel
             </button>
           </div>
@@ -317,7 +325,7 @@ function Num({
   onChange: (value: number | null) => void;
 }) {
   return (
-    <label className="block text-sm">
+    <label className="block text-base">
       {label}
       <input
         className="mt-1 w-full border-b border-stroke bg-transparent py-1"

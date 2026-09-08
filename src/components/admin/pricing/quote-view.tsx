@@ -10,6 +10,7 @@ import {
   StatusStamp,
   moneyLabel,
 } from "@/components/admin/pricing/desk-ui";
+import { planLook } from "@/lib/price-book/desk-visual";
 import { deskPaths } from "@/lib/price-book/paths";
 import { INCLUSIONS, INFRA_KEYS, INFRA_STATUSES, QUOTE_STATUSES } from "@/lib/price-book/types";
 
@@ -168,14 +169,14 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
   if (error) {
     return (
       <DeskShell title="Ticket">
-        <p className="text-sm text-crit">{error}</p>
+        <p className="text-lg text-crit">{error}</p>
       </DeskShell>
     );
   }
   if (!data) {
     return (
       <DeskShell title="Ticket">
-        <p className="text-sm text-muted">Loading ticket…</p>
+        <p className="text-lg text-muted">Opening quote…</p>
       </DeskShell>
     );
   }
@@ -203,53 +204,46 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
             : "Keep the ticket moving — status is on the right.";
 
   return (
-    <DeskShell
-      title={`${quote.number} · v${quote.version}`}
-      role={role}
-      actions={
-        <>
-          <PlanMark plan={quote.plan} />
-          <StatusStamp status={quote.status} />
-          <FloorMark state={quote.approvalState} />
-          <span className="text-sm text-sand/70">
-            {quote.customer.name}
-            {quote.location ? ` · ${quote.location}` : ""}
-          </span>
-          <span className="ms-auto flex flex-wrap gap-2">
-            <Link
-              href={deskPaths.proposal(quote.id)}
-              className="border border-sand/25 px-3 py-1.5 font-ui text-[11px] uppercase tracking-wider text-sand hover:border-orange"
-            >
-              Preview
-            </Link>
-            <button
-              type="button"
-              data-testid="download-proposal-pdf"
-              onClick={() => void downloadPdf()}
-              className="bg-orange px-3 py-1.5 font-ui text-[11px] uppercase tracking-wider text-white"
-            >
-              Download PDF
-            </button>
-          </span>
-        </>
-      }
-    >
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <DeskShell title={quote.customer.name} plan={quote.plan} role={role}>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <p className="font-mono text-lg text-muted">
+          {quote.number} v{quote.version}
+        </p>
+        <StatusStamp status={quote.status} />
+        <FloorMark state={quote.approvalState} />
+        <span className="ms-auto flex flex-wrap gap-2">
+          <Link
+            href={deskPaths.proposal(quote.id)}
+            className="bg-panel px-4 py-2 font-heading text-lg font-bold"
+          >
+            Preview
+          </Link>
+          <button
+            type="button"
+            data-testid="download-proposal-pdf"
+            onClick={() => void downloadPdf()}
+            className={`px-4 py-2 font-heading text-lg font-bold text-white ${planLook(quote.plan).bar}`}
+          >
+            Download PDF
+          </button>
+        </span>
+      </div>
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-10">
           <section className="grid gap-4 sm:grid-cols-2">
-            <div className="border border-stroke bg-panel px-4 py-4">
-              <p className="font-ui text-[11px] uppercase tracking-wider text-orange">Customer</p>
-              <p className="mt-1 font-heading text-2xl font-bold">{quote.customer.name}</p>
-              <p className="mt-1 text-sm text-muted">
+            <div className={`${planLook(quote.plan).wash} px-5 py-5`}>
+              <p className="text-base text-muted">Customer</p>
+              <p className="mt-1 font-heading text-4xl font-bold leading-tight">{quote.customer.name}</p>
+              <p className="mt-2 text-base text-muted">
                 {[quote.customer.company, quote.customer.contact, quote.customer.email, quote.customer.country]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
             </div>
-            <div className="border border-stroke bg-panel px-4 py-4">
-              <p className="font-ui text-[11px] uppercase tracking-wider text-orange">Object</p>
-              <p className="mt-1 font-heading text-2xl font-bold">{quote.objectName || quote.objectType}</p>
-              <p className="mt-1 text-sm text-muted">
+            <div className="bg-panel px-5 py-5">
+              <p className="text-base text-muted">Object</p>
+              <p className="mt-1 font-heading text-4xl font-bold leading-tight">{quote.objectName || quote.objectType}</p>
+              <p className="mt-2 text-base text-muted">
                 {[quote.objectType, quote.objectSize, quote.location, `${quote.siteCount} site(s)`, `${quote.vesselCount} vessel(s)`]
                   .filter(Boolean)
                   .join(" · ")}
@@ -260,8 +254,8 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
           <section>
             <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
               <div>
-                <h2 className="font-heading text-2xl font-bold">Configuration cart</h2>
-                <p className="text-xs text-muted">Book {quote.priceBook.version}. Add from the catalog like a shelf.</p>
+                <h2 className="font-heading text-3xl font-bold">What they buy</h2>
+                <p className="text-base text-muted">Book {quote.priceBook.version}. Add a line from Prices.</p>
               </div>
               <select
                 className="border-b border-stroke bg-transparent py-1 text-sm"
@@ -289,7 +283,7 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
                     </span>
                     <button
                       type="button"
-                      className="text-xs text-orange"
+                      className="text-base font-bold text-[#0E8FA8]"
                       onClick={() => void patchQuote({ action: "add-item", priceItemId: item.id })}
                     >
                       Add · {item.priceStatus === "PRICED" ? moneyLabel(item.listPrice) : "TBD"}
@@ -304,13 +298,13 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
                 <article key={line.id} className="border border-stroke bg-panel">
                   <div className="flex flex-wrap items-start justify-between gap-3 px-4 py-3">
                     <div>
-                      <p className="font-heading text-lg font-bold">{line.name}</p>
+                      <p className="font-heading text-2xl font-bold">{line.name}</p>
                       <div className="mt-1 flex flex-wrap items-center gap-2">
                         <CategoryChip category={line.category} />
                         <span className="text-xs text-muted">{line.billingType}</span>
                       </div>
                     </div>
-                    <p className="font-heading text-xl font-bold">{moneyLabel(line.customerPrice)}</p>
+                    <p className="font-heading text-3xl font-bold">{moneyLabel(line.customerPrice)}</p>
                   </div>
                   <div className="grid gap-3 border-t border-stroke px-4 py-3 sm:grid-cols-4">
                     <label className="text-xs text-muted">
@@ -382,8 +376,8 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
           </section>
 
           <section>
-            <h2 className="font-heading text-2xl font-bold">What is already on site</h2>
-            <p className="mt-1 text-xs text-muted">Project map — existing, integrate, replace, or new.</p>
+            <h2 className="font-heading text-3xl font-bold">What is already on site</h2>
+            <p className="mt-1 text-base text-muted">Project map — existing, integrate, replace, or new.</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {INFRA_KEYS.map((key) => (
                 <label key={key} className="border border-stroke bg-panel px-3 py-2 text-sm capitalize">
@@ -410,8 +404,8 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
 
           <section className="grid gap-6 lg:grid-cols-2">
             <div>
-              <h2 className="font-heading text-2xl font-bold">Travel and expenses</h2>
-              <p className="mt-1 text-xs text-muted">Kept off professional-service rates.</p>
+              <h2 className="font-heading text-3xl font-bold">Travel and expenses</h2>
+              <p className="mt-1 text-base text-muted">Kept off professional-service rates.</p>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 {Object.entries(quote.expenses).map(([key, value]) => (
                   <label key={key} className="border border-stroke bg-panel px-3 py-2 text-sm capitalize">
@@ -427,7 +421,7 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
               </div>
             </div>
             <div>
-              <h2 className="font-heading text-2xl font-bold">Ticket discount</h2>
+              <h2 className="font-heading text-3xl font-bold">Quote discount</h2>
               <label className="mt-3 block border border-stroke bg-panel px-3 py-2 text-sm">
                 Overall %
                 <input
@@ -450,22 +444,21 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
           </section>
 
           {admin && totals.year1Cost !== undefined ? (
-            <section className="border border-stroke bg-navy px-4 py-5 text-sand">
-              <p className="font-ui text-[11px] uppercase tracking-wider text-orange">Internal only</p>
-              <h2 className="mt-1 font-heading text-2xl font-bold">Profitability</h2>
-              <p className="text-xs text-sand/60">Never printed on the customer PDF.</p>
+            <section className="border border-stroke bg-panel px-5 py-6">
+              <p className="text-base text-muted">Internal only · never on the customer PDF</p>
+              <h2 className="mt-1 font-heading text-3xl font-bold">Profitability</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <p>
-                  <span className="block text-xs text-sand/60">Year 1 cost</span>
-                  {moneyLabel(totals.year1Cost)}
+                  <span className="block text-base text-muted">Year 1 cost</span>
+                  <span className="font-heading text-3xl font-bold">{moneyLabel(totals.year1Cost)}</span>
                 </p>
                 <p>
-                  <span className="block text-xs text-sand/60">Year 1 profit</span>
-                  {moneyLabel(totals.year1Profit)}
+                  <span className="block text-base text-muted">Year 1 profit</span>
+                  <span className="font-heading text-3xl font-bold">{moneyLabel(totals.year1Profit)}</span>
                 </p>
                 <p>
-                  <span className="block text-xs text-sand/60">Year 1 margin</span>
-                  {totals.year1Margin == null ? "—" : `${totals.year1Margin}%`}
+                  <span className="block text-base text-muted">Year 1 margin</span>
+                  <span className="font-heading text-3xl font-bold">{totals.year1Margin == null ? "—" : `${totals.year1Margin}%`}</span>
                 </p>
               </div>
             </section>
@@ -473,27 +466,28 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="bg-navy px-4 py-5 text-sand">
-            <p className="font-ui text-[11px] uppercase tracking-[0.18em] text-orange">Year 1</p>
-            <p className="mt-2 font-heading text-4xl font-bold">{moneyLabel(totals.year1)}</p>
-            <dl className="mt-4 space-y-2 text-sm">
+          <div className={`${planLook(quote.plan).solid} px-5 py-6`}>
+            <p className="text-base opacity-80">Year 1</p>
+            <p className="mt-2 font-heading text-6xl font-bold leading-none">{moneyLabel(totals.year1)}</p>
+            <PlanMark plan={quote.plan} size="lg" />
+            <dl className="mt-5 space-y-2 text-lg">
               <div className="flex justify-between gap-3">
-                <dt className="text-sand/60">Recurring</dt>
+                <dt className="opacity-80">Each year after</dt>
                 <dd>{moneyLabel(totals.annualRecurring)}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-sand/60">One-time</dt>
+                <dt className="opacity-80">One-time</dt>
                 <dd>{moneyLabel(totals.oneTime)}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-sand/60">Expenses</dt>
+                <dt className="opacity-80">Expenses</dt>
                 <dd>{moneyLabel(totals.expenses)}</dd>
               </div>
             </dl>
           </div>
-          <div className="border border-stroke bg-panel px-4 py-4">
-            <p className="font-heading text-lg font-bold">Ready to send?</p>
-            <ul className="mt-3 space-y-2 text-sm">
+          <div className="bg-panel px-5 py-5">
+            <p className="font-heading text-2xl font-bold">Can we send this?</p>
+            <ul className="mt-3 space-y-2 text-base">
               {checks.map((item) => (
                 <li key={item.label} className="flex gap-2">
                   <span className={item.ok ? "text-[#0F6B55]" : "text-attn"}>{item.ok ? "●" : "○"}</span>
@@ -501,17 +495,17 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm text-ink">{next}</p>
+            <p className="mt-4 text-lg text-ink">{next}</p>
             {admin && quote.approvalState === "BELOW MINIMUM" ? (
               <button
                 type="button"
-                className="mt-4 w-full bg-orange py-2 text-sm text-white"
+                className="mt-4 w-full bg-[#C98900] py-3 font-heading text-lg font-bold text-navy"
                 onClick={() => void patchQuote({ action: "approve" })}
               >
                 Approve floor
               </button>
             ) : null}
-            {pdfState ? <p className="mt-3 text-xs text-muted">{pdfState}</p> : null}
+            {pdfState ? <p className="mt-3 text-base text-muted">{pdfState}</p> : null}
           </div>
         </aside>
       </div>

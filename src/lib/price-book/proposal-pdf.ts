@@ -1,4 +1,5 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
+import { hexToRgb, planLook } from "@/lib/price-book/desk-visual";
 import { ISSUER } from "@/lib/price-book/issuer";
 
 export type ProposalPdfInput = {
@@ -34,12 +35,17 @@ export type ProposalPdfInput = {
 };
 
 const NAVY = rgb(15 / 255, 25 / 255, 34 / 255);
-const ORANGE = rgb(241 / 255, 90 / 255, 0);
+const WALL = rgb(241 / 255, 90 / 255, 0);
 const SAND = rgb(233 / 255, 228 / 255, 218 / 255);
 const INK = rgb(27 / 255, 42 / 255, 58 / 255);
 const MUTED = rgb(85 / 255, 104 / 255, 122 / 255);
 const RULE = rgb(183 / 255, 201 / 255, 216 / 255);
 const PAGE = rgb(1, 1, 1);
+
+function planColor(plan: string) {
+  const { r, g, b } = hexToRgb(planLook(plan).hex);
+  return rgb(r, g, b);
+}
 
 function money(value: number | null | undefined) {
   if (value === null || value === undefined) return "To be confirmed";
@@ -100,8 +106,9 @@ function drawLetterhead(
   },
 ) {
   const { width, height } = page.getSize();
+  const accent = planColor(ctx.input.plan);
   page.drawRectangle({ x: 0, y: height - 92, width, height: 92, color: NAVY });
-  page.drawRectangle({ x: 0, y: height - 96, width, height: 4, color: ORANGE });
+  page.drawRectangle({ x: 0, y: height - 96, width, height: 4, color: accent });
   if (ctx.logo) {
     const fit = ctx.logo.scaleToFit(168, 36);
     page.drawImage(ctx.logo, {
@@ -112,14 +119,14 @@ function drawLetterhead(
     });
   } else {
     page.drawText("Star", { x: 36, y: height - 42, size: 22, font: ctx.serifBold, color: SAND });
-    page.drawText("Wall", { x: 78, y: height - 42, size: 22, font: ctx.serifBold, color: ORANGE });
+    page.drawText("Wall", { x: 78, y: height - 42, size: 22, font: ctx.serifBold, color: WALL });
   }
   page.drawText("COMMERCIAL PROPOSAL", {
     x: 360,
     y: height - 38,
     size: 9,
     font: ctx.sansBold,
-    color: ORANGE,
+    color: accent,
   });
   page.drawText(`${ctx.input.quoteNumber}  ·  v${ctx.input.version}`, {
     x: 360,
@@ -159,13 +166,14 @@ function drawPartyBlock(
   ctx: { serifBold: PDFFont; sans: PDFFont; sansBold: PDFFont; input: ProposalPdfInput },
 ) {
   const { input } = ctx;
+  const accent = planColor(input.plan);
   page.drawRectangle({ x: 36, y: y - 78, width: 540, height: 86, color: rgb(0.97, 0.94, 0.9) });
-  page.drawRectangle({ x: 36, y: y - 78, width: 4, height: 86, color: ORANGE });
-  page.drawText("PREPARED FOR", { x: 50, y: y - 8, size: 8, font: ctx.sansBold, color: ORANGE });
+  page.drawRectangle({ x: 36, y: y - 78, width: 4, height: 86, color: accent });
+  page.drawText("PREPARED FOR", { x: 50, y: y - 8, size: 8, font: ctx.sansBold, color: accent });
   page.drawText(input.customer.name || "Customer", {
     x: 50,
     y: y - 26,
-    size: 14,
+    size: 18,
     font: ctx.serifBold,
     color: INK,
   });
@@ -191,9 +199,9 @@ function drawPartyBlock(
   page.drawText(`StarWall ${input.plan}`, {
     x: 400,
     y: y - 26,
-    size: 12,
+    size: 16,
     font: ctx.serifBold,
-    color: ORANGE,
+    color: accent,
   });
   const scale = [
     input.object.sites ? `${input.object.sites} site(s)` : "",
@@ -213,7 +221,8 @@ function drawLines(
 ) {
   let page = startPage;
   let y = startY;
-  page.drawText("CONFIGURATION", { x: 36, y, size: 8, font: ctx.sansBold, color: ORANGE });
+  const accent = planColor(ctx.input.plan);
+  page.drawText("CONFIGURATION", { x: 36, y, size: 8, font: ctx.sansBold, color: accent });
   y -= 16;
   const header = [
     { x: 36, t: "Item" },
@@ -251,12 +260,12 @@ function drawLines(
 
   y -= 10;
   page.drawRectangle({ x: 300, y: y - 70, width: 276, height: 78, color: NAVY });
-  page.drawRectangle({ x: 300, y: y - 70, width: 276, height: 3, color: ORANGE });
-  page.drawText("YEAR 1", { x: 316, y: y - 16, size: 8, font: ctx.sansBold, color: ORANGE });
+  page.drawRectangle({ x: 300, y: y - 70, width: 276, height: 3, color: accent });
+  page.drawText("YEAR 1", { x: 316, y: y - 16, size: 8, font: ctx.sansBold, color: accent });
   page.drawText(money(ctx.input.commercial.year1), {
     x: 316,
     y: y - 36,
-    size: 16,
+    size: 22,
     font: ctx.serifBold,
     color: SAND,
   });
