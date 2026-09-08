@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DeskShell } from "@/components/admin/pricing/desk-shell";
+import { deskPaths } from "@/lib/price-book/paths";
 import { OBJECT_TYPES, STARWALL_PLANS } from "@/lib/price-book/types";
 
 export function NewQuoteView() {
@@ -41,7 +42,7 @@ export function NewQuoteView() {
       setError(data.error === "forbidden" ? "Your desk role cannot open a quote." : "Could not create quote.");
       return;
     }
-    router.push(`/admin/starwall/pricing/quotes/${data.id}`);
+    router.push(deskPaths.quote(data.id));
   }
 
   function field(key: keyof typeof form, label: string, type = "text") {

@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { isCommercialRole, resolveCommercialRole } from "@/lib/commercial-rbac";
 import { isUserRole } from "@/lib/rbac";
 import {
   authenticateUser,
@@ -71,6 +72,8 @@ export const authOptions: NextAuthOptions = {
           token.sub = stored.id;
           token.role = stored.role;
           token.name = stored.name;
+          token.commercialRole =
+            resolveCommercialRole(stored.role, stored.commercialRole) ?? "none";
         }
       }
       return token;
@@ -82,6 +85,9 @@ export const authOptions: NextAuthOptions = {
         session.user.email =
           typeof token.email === "string" ? token.email : session.user.email;
         session.user.role = isUserRole(token.role) ? token.role : "Operator";
+        session.user.commercialRole = isCommercialRole(token.commercialRole)
+          ? token.commercialRole
+          : undefined;
       }
       return session;
     },

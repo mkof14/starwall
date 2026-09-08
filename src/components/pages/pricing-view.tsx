@@ -11,8 +11,12 @@ import {
 } from "@/components/page-chrome";
 import { PlansRequestForm } from "@/components/plans-request-form";
 import { cn } from "@/lib/cn";
+import { useAuthSession } from "@/lib/auth-session";
+import { sessionHasDeskAccess } from "@/lib/commercial-rbac";
+import { getPlansDesk } from "@/lib/i18n/plans-desk";
 import { getPlansPage } from "@/lib/i18n/plans-page";
 import { usePreferences } from "@/lib/i18n/context";
+import { deskPaths } from "@/lib/price-book/paths";
 import {
   COMPARE_KEYS,
   COMPARE_ROWS,
@@ -31,7 +35,10 @@ function scrollToId(id: string) {
 
 export function PricingView() {
   const { locale } = usePreferences();
+  const { session } = useAuthSession();
   const copy = getPlansPage(locale);
+  const desk = getPlansDesk(locale);
+  const hasDesk = sessionHasDeskAccess(session);
   const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
 
   function goToRequest(plan?: PlanId) {
@@ -41,6 +48,30 @@ export function PricingView() {
 
   return (
     <PageShell>
+      {hasDesk ? (
+        <div
+          data-testid="plans-desk-entry"
+          className="border-b border-stroke bg-panel px-4 py-4 md:px-6"
+        >
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-ui text-[11px] tracking-wide text-orange">
+                {desk.kicker}
+              </p>
+              <p className="mt-1 font-heading text-xl font-bold text-ink">
+                {desk.title}
+              </p>
+              <p className="mt-1 max-w-2xl text-sm text-muted">{desk.body}</p>
+            </div>
+            <Link
+              href={deskPaths.root}
+              className="inline-flex shrink-0 items-center justify-center bg-orange px-4 py-2.5 text-sm font-medium text-white hover:bg-orange/90"
+            >
+              {desk.cta}
+            </Link>
+          </div>
+        </div>
+      ) : null}
       <PageHero kicker={copy.kicker} title={copy.title}>
         <p className="max-w-2xl font-heading text-2xl font-semibold leading-snug text-ink sm:text-3xl">
           {copy.supporting}

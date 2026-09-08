@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import { AuthGate } from "@/components/auth/auth-gate";
-import { QuoteDeskView } from "@/components/admin/pricing/quote-view";
+import { redirect } from "next/navigation";
+import { deskPaths } from "@/lib/price-book/paths";
 
-export const metadata: Metadata = {
-  title: "StarWall quote — AGRON internal",
-  robots: { index: false, follow: false },
-};
-
-export default function QuotePage({ params }: { params: { id: string } }) {
-  return (
-    <AuthGate next={`/admin/starwall/pricing/quotes/${params.id}`}>
-      <QuoteDeskView quoteId={params.id} />
-    </AuthGate>
-  );
+export default function LegacyQuotePage({ params }: { params: { id: string } }) {
+  redirect(deskPaths.quote(params.id));
 }

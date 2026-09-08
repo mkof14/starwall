@@ -9,8 +9,10 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AccountMenu } from "@/components/auth/account-menu";
 import { isAuthRoute, isInternalDesk, useAuthSession } from "@/lib/auth-session";
+import { sessionHasDeskAccess } from "@/lib/commercial-rbac";
 import { usePreferences } from "@/lib/i18n/context";
 import { headerNavItems, headerWorkItems } from "@/lib/nav";
+import { deskPaths } from "@/lib/price-book/paths";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -22,6 +24,7 @@ export function SiteHeader() {
     pathname.startsWith("/backend") ||
     pathname.startsWith("/tasks");
   const workItems = session ? [] : [...headerWorkItems];
+  const hasDesk = sessionHasDeskAccess(session);
 
   if (isAuthRoute(pathname) || isInternalDesk(pathname)) return null;
 
@@ -41,6 +44,7 @@ export function SiteHeader() {
           aria-label={t.nav.primary}
         >
           {headerNavItems.map((item) => {
+            const href = navHref(item, hasDesk);
             const active =
               item.href === "/"
                 ? pathname === "/"
@@ -48,7 +52,7 @@ export function SiteHeader() {
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={href}
                 className={`relative font-ui text-[13px] ${
                   active
                     ? "text-ink after:absolute after:-bottom-1 after:start-0 after:h-px after:w-full after:bg-orange"
@@ -122,7 +126,7 @@ export function SiteHeader() {
             {headerNavItems.map((item) => (
               <li key={item.href} className="border-b border-stroke last:border-b-0">
                 <Link
-                  href={item.href}
+                  href={navHref(item, hasDesk)}
                   className="block px-4 py-3 text-sm text-ink"
                   onClick={() => setOpen(false)}
                 >
@@ -152,4 +156,12 @@ export function SiteHeader() {
       ) : null}
     </header>
   );
+}
+
+function navHref(
+  item: (typeof headerNavItems)[number],
+  hasDesk: boolean,
+) {
+  if (item.key === "pricing" && hasDesk) return deskPaths.root;
+  return item.href;
 }

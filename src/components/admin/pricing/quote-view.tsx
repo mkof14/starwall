@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { DeskShell, Warning, moneyLabel } from "@/components/admin/pricing/desk-shell";
+import { deskPaths } from "@/lib/price-book/paths";
 import { INFRA_KEYS, INFRA_STATUSES, QUOTE_STATUSES } from "@/lib/price-book/types";
 
 type Line = {
@@ -164,7 +165,7 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
           {quote.customer.name} · {quote.objectType} · {quote.plan} · book {quote.priceBook.version}
         </p>
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link href={`/admin/starwall/pricing/quotes/${quote.id}/proposal`} className="text-orange">
+          <Link href={deskPaths.proposal(quote.id)} className="text-orange">
             Preview customer proposal
           </Link>
           <select

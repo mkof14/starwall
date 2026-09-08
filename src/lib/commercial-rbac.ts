@@ -26,6 +26,18 @@ export function canAccessPriceBook(role: CommercialRole | null | undefined) {
   return Boolean(role);
 }
 
+export function sessionHasDeskAccess(
+  session:
+    | { role?: UserRole | null; commercialRole?: string | null }
+    | null
+    | undefined,
+) {
+  if (!session?.role) return false;
+  return canAccessPriceBook(
+    resolveCommercialRole(session.role, session.commercialRole),
+  );
+}
+
 export function canSeeInternalCost(role: CommercialRole | null | undefined) {
   return role === "admin";
 }

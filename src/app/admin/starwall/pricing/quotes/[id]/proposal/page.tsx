@@ -1,16 +1,10 @@
-import type { Metadata } from "next";
-import { AuthGate } from "@/components/auth/auth-gate";
-import { ProposalView } from "@/components/admin/pricing/proposal-view";
+import { redirect } from "next/navigation";
+import { deskPaths } from "@/lib/price-book/paths";
 
-export const metadata: Metadata = {
-  title: "Customer proposal preview — AGRON internal",
-  robots: { index: false, follow: false },
-};
-
-export default function ProposalPage({ params }: { params: { id: string } }) {
-  return (
-    <AuthGate next={`/admin/starwall/pricing/quotes/${params.id}/proposal`}>
-      <ProposalView quoteId={params.id} />
-    </AuthGate>
-  );
+export default function LegacyProposalPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  redirect(deskPaths.proposal(params.id));
 }

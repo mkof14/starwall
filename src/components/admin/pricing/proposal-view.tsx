@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DeskShell, moneyLabel } from "@/components/admin/pricing/desk-shell";
+import { deskPaths } from "@/lib/price-book/paths";
 
 type Proposal = {
   quoteNumber: string;
@@ -104,7 +105,7 @@ export function ProposalView({ quoteId }: { quoteId: string }) {
         <p>{data.terms}</p>
         <p>Validity: {data.validity}</p>
       </div>
-      <Link href={`/admin/starwall/pricing/quotes/${quoteId}`} className="mt-8 inline-block text-sm text-orange">
+      <Link href={deskPaths.quote(quoteId)} className="mt-8 inline-block text-sm text-orange">
         Back to internal quote
       </Link>
     </DeskShell>

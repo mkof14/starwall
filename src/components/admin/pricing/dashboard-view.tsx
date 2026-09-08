@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DeskShell, Warning, moneyLabel } from "@/components/admin/pricing/desk-shell";
+import { deskPaths } from "@/lib/price-book/paths";
 
 type Dash = {
   role: string;
@@ -98,7 +99,7 @@ export function PricingDashboardView() {
               data.recent.map((row) => (
                 <tr key={row.id} className="border-t border-stroke">
                   <td className="py-2 pe-3">
-                    <Link href={`/admin/starwall/pricing/quotes/${row.id}`} className="text-orange">
+                    <Link href={deskPaths.quote(row.id)} className="text-orange">
                       {row.number} v{row.version}
                     </Link>
                   </td>

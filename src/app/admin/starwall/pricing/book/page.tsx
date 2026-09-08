@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import { AuthGate } from "@/components/auth/auth-gate";
-import { PriceBookView } from "@/components/admin/pricing/book-view";
+import { redirect } from "next/navigation";
+import { deskPaths } from "@/lib/price-book/paths";
 
-export const metadata: Metadata = {
-  title: "Master Price Book — AGRON internal",
-  robots: { index: false, follow: false },
-};
-
-export default function PriceBookPage() {
-  return (
-    <AuthGate next="/admin/starwall/pricing/book">
-      <PriceBookView />
-    </AuthGate>
-  );
+export default function LegacyPriceBookPage() {
+  redirect(deskPaths.book);
 }

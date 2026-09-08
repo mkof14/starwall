@@ -13,5 +13,7 @@ export const config = {
     "/backend",
     "/backend/:path*",
     "/admin/:path*",
+    "/pricing/desk",
+    "/pricing/desk/:path*",
   ],
 };

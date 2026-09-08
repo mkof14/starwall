@@ -8,12 +8,17 @@ import {
   type ReactNode,
 } from "react";
 import { SessionProvider, signOut, useSession } from "next-auth/react";
+import {
+  isCommercialRole,
+  type CommercialRole,
+} from "@/lib/commercial-rbac";
 import { isUserRole, type UserRole } from "@/lib/rbac";
 
 export type AuthSession = {
   name: string;
   email: string;
   role: UserRole;
+  commercialRole: CommercialRole | null;
   at: string;
 };
 
@@ -66,6 +71,9 @@ function AuthSessionInner({ children }: { children: ReactNode }) {
       name,
       email: data.user.email?.trim() ?? "",
       role: isUserRole(data.user.role) ? data.user.role : "Operator",
+      commercialRole: isCommercialRole(data.user.commercialRole)
+        ? data.user.commercialRole
+        : null,
       at: new Date().toISOString(),
     };
   }, [data]);

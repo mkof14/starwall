@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { deskPaths } from "@/lib/price-book/paths";
 
 const LINKS = [
-  { href: "/admin/starwall/pricing", label: "Dashboard" },
-  { href: "/admin/starwall/pricing/book", label: "Price Book" },
-  { href: "/admin/starwall/pricing/quotes/new", label: "New Quote" },
+  { href: deskPaths.root, label: "Dashboard" },
+  { href: deskPaths.book, label: "Price Book" },
+  { href: deskPaths.newQuote, label: "New Quote" },
 ];
 
 export function DeskShell({
@@ -22,7 +23,7 @@ export function DeskShell({
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6">
           <div>
             <p className="font-ui text-[11px] tracking-wide text-orange">
-              Internal · StarWall commercial
+              Plans · closed commercial desk
             </p>
             <h1 className="font-heading text-2xl font-bold">{title}</h1>
           </div>
@@ -32,6 +33,9 @@ export function DeskShell({
                 {link.label}
               </Link>
             ))}
+            <Link href={deskPaths.catalog} className="text-muted hover:text-ink">
+              Public Plans
+            </Link>
             {role ? <span className="font-mono text-[11px] text-muted">{role}</span> : null}
           </nav>
         </div>

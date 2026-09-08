@@ -6,6 +6,7 @@ import {
   canEditPriceBook,
   canSeeInternalCost,
   resolveCommercialRole,
+  sessionHasDeskAccess,
 } from "@/lib/commercial-rbac";
 
 describe("commercial desk access", () => {
@@ -30,5 +31,14 @@ describe("commercial desk access", () => {
 
   it("rejects unsigned callers before any price data", () => {
     expect(denyUnlessSignedIn(null).ok).toBe(false);
+  });
+
+  it("opens the Plans desk for Super Admin, Admin, and assigned commercial roles", () => {
+    expect(sessionHasDeskAccess({ role: "Super Admin", commercialRole: "none" })).toBe(true);
+    expect(sessionHasDeskAccess({ role: "Admin" })).toBe(true);
+    expect(sessionHasDeskAccess({ role: "Operator", commercialRole: "sales" })).toBe(true);
+    expect(sessionHasDeskAccess({ role: "Operator", commercialRole: "none" })).toBe(false);
+    expect(sessionHasDeskAccess({ role: "Viewer" })).toBe(false);
+    expect(sessionHasDeskAccess(null)).toBe(false);
   });
 });

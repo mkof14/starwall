@@ -6,8 +6,10 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePathname } from "next/navigation";
 import { isAuthRoute, isInternalDesk, useAuthSession } from "@/lib/auth-session";
+import { sessionHasDeskAccess } from "@/lib/commercial-rbac";
 import { usePreferences } from "@/lib/i18n/context";
 import { footerWorkItems, navItems } from "@/lib/nav";
+import { deskPaths } from "@/lib/price-book/paths";
 
 const productHrefs = [
   "/",
@@ -25,6 +27,7 @@ export function SiteFooter() {
   const { t } = usePreferences();
   const pathname = usePathname();
   const { session } = useAuthSession();
+  const hasDesk = sessionHasDeskAccess(session);
   if (isAuthRoute(pathname) || isInternalDesk(pathname)) return null;
 
   const product = productHrefs
@@ -51,7 +54,10 @@ export function SiteFooter() {
           <ul className="space-y-2 text-[13px] text-sand/70">
             {product.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hover:text-sand">
+                <Link
+                  href={item.href === "/pricing" && hasDesk ? deskPaths.root : item.href}
+                  className="hover:text-sand"
+                >
                   {t.nav[item.key]}
                 </Link>
               </li>
@@ -75,9 +81,9 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
-            {session ? (
+            {hasDesk ? (
               <li>
-                <Link href="/admin/starwall/pricing" className="hover:text-sand">
+                <Link href={deskPaths.root} className="hover:text-sand">
                   {t.nav.desk}
                 </Link>
               </li>

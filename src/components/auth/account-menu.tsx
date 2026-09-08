@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { useAuthSession } from "@/lib/auth-session";
+import { sessionHasDeskAccess } from "@/lib/commercial-rbac";
 import { usePreferences } from "@/lib/i18n/context";
+import { deskPaths } from "@/lib/price-book/paths";
 
 export function AccountMenu() {
   const { session, signOut } = useAuthSession();
@@ -61,14 +63,16 @@ export function AccountMenu() {
           <p className="px-3 pb-2 font-mono text-[10px] text-orange">
             {session.role}
           </p>
-          <Link
-            href="/admin/starwall/pricing"
-            data-testid="account-desk"
-            onClick={() => setOpen(false)}
-            className="block w-full px-3 py-1.5 text-start text-sm text-ink hover:bg-page"
-          >
-            {t.nav.desk}
-          </Link>
+          {sessionHasDeskAccess(session) ? (
+            <Link
+              href={deskPaths.root}
+              data-testid="account-desk"
+              onClick={() => setOpen(false)}
+              className="block w-full px-3 py-1.5 text-start text-sm text-ink hover:bg-page"
+            >
+              {t.nav.desk}
+            </Link>
+          ) : null}
           <button
             type="button"
             data-testid="account-sign-out"
