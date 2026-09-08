@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { DeskShell, Warning, moneyLabel } from "@/components/admin/pricing/desk-shell";
 import { INFRA_KEYS, INFRA_STATUSES, QUOTE_STATUSES } from "@/lib/price-book/types";
 
@@ -89,7 +89,7 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
   const [addId, setAddId] = useState("");
   const [infra, setInfra] = useState<Record<string, string>>({});
 
-  async function load() {
+  const load = useCallback(async function load() {
     const [quoteRes, bookRes] = await Promise.all([
       fetch(`/api/admin/starwall/pricing/quotes/${quoteId}`),
       fetch("/api/admin/starwall/pricing/book"),
@@ -115,11 +115,11 @@ export function QuoteDeskView({ quoteId }: { quoteId: string }) {
       setRole(bookJson.role);
       setBook(bookJson.items.filter((item) => item.active));
     }
-  }
+  }, [quoteId]);
 
   useEffect(() => {
     void load();
-  }, [quoteId]);
+  }, [load]);
 
   const addable = useMemo(() => book.filter((item) => item.category !== "LICENSE" || item.name.includes(data?.quote.plan ?? "")), [book, data]);
 
