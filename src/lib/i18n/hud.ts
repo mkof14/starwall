@@ -78,6 +78,8 @@ export type HudCopy = {
     fullscreenEnter: string;
     fullscreenExit: string;
     openPicture: string;
+    fullPicture: string;
+    closePicture: string;
     dismissToast: string;
     liveEvents: string;
   };
@@ -293,6 +295,8 @@ const en: HudCopy = {
     fullscreenEnter: "Enter fullscreen",
     fullscreenExit: "Exit fullscreen",
     openPicture: "Open picture full screen",
+    fullPicture: "FULL PICTURE",
+    closePicture: "ESC · CLOSE",
     dismissToast: "Dismiss notification",
     liveEvents: "Live event notifications",
   },
@@ -544,6 +548,8 @@ const ru = overlay({
     fullscreenEnter: "На весь экран",
     fullscreenExit: "Выйти из полного экрана",
     openPicture: "Открыть картину на весь экран",
+    fullPicture: "ПОЛНАЯ КАРТИНА",
+    closePicture: "ESC · ЗАКРЫТЬ",
     dismissToast: "Закрыть уведомление",
     liveEvents: "Живые уведомления о событиях",
   },
@@ -773,6 +779,8 @@ const es = overlay({
     fullscreenEnter: "Pantalla completa",
     fullscreenExit: "Salir de pantalla completa",
     openPicture: "Abrir imagen a pantalla completa",
+    fullPicture: "IMAGEN COMPLETA",
+    closePicture: "ESC · CERRAR",
     dismissToast: "Cerrar notificación",
     liveEvents: "Notificaciones de sucesos en vivo",
   },
@@ -1003,6 +1011,8 @@ const fr = overlay({
     fullscreenEnter: "Plein écran",
     fullscreenExit: "Quitter le plein écran",
     openPicture: "Ouvrir l'image en plein écran",
+    fullPicture: "IMAGE COMPLÈTE",
+    closePicture: "ESC · FERMER",
     dismissToast: "Fermer la notification",
     liveEvents: "Notifications d'événements en direct",
   },
@@ -1233,6 +1243,8 @@ const de = overlay({
     fullscreenEnter: "Vollbild",
     fullscreenExit: "Vollbild verlassen",
     openPicture: "Bild im Vollbild öffnen",
+    fullPicture: "VOLLBILD",
+    closePicture: "ESC · SCHLIESSEN",
     dismissToast: "Meldung schließen",
     liveEvents: "Live-Ereignismeldungen",
   },
@@ -1463,6 +1475,8 @@ const uk = overlay({
     fullscreenEnter: "На весь екран",
     fullscreenExit: "Вийти з повного екрана",
     openPicture: "Відкрити картину на весь екран",
+    fullPicture: "ПОВНА КАРТИНА",
+    closePicture: "ESC · ЗАКРИТИ",
     dismissToast: "Закрити сповіщення",
     liveEvents: "Живі сповіщення про події",
   },
@@ -1692,6 +1706,8 @@ const ar = overlay({
     fullscreenEnter: "ملء الشاشة",
     fullscreenExit: "الخروج من ملء الشاشة",
     openPicture: "فتح الصورة بملء الشاشة",
+    fullPicture: "الصورة الكاملة",
+    closePicture: "ESC · إغلاق",
     dismissToast: "إغلاق الإشعار",
     liveEvents: "إشعارات الأحداث الحيّة",
   },
@@ -1920,6 +1936,8 @@ const zh = overlay({
     fullscreenEnter: "进入全屏",
     fullscreenExit: "退出全屏",
     openPicture: "全屏打开态势图",
+    fullPicture: "完整态势",
+    closePicture: "ESC · 关闭",
     dismissToast: "关闭通知",
     liveEvents: "实时事件通知",
   },
@@ -2143,6 +2161,8 @@ const ja = overlay({
     fullscreenEnter: "全画面にする",
     fullscreenExit: "全画面を終了",
     openPicture: "状況図を全画面で開く",
+    fullPicture: "全画面",
+    closePicture: "ESC · 閉じる",
     dismissToast: "通知を閉じる",
     liveEvents: "ライブ事象通知",
   },
@@ -2368,6 +2388,8 @@ const he = overlay({
     fullscreenEnter: "מסך מלא",
     fullscreenExit: "יציאה ממסך מלא",
     openPicture: "פתיחת התמונה במסך מלא",
+    fullPicture: "תמונה מלאה",
+    closePicture: "ESC · סגירה",
     dismissToast: "סגירת ההתראה",
     liveEvents: "התראות אירועים חיים",
   },

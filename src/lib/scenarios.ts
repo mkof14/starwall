@@ -25,6 +25,7 @@ export type SessionEvent = {
   category: string;
   riskLevel: RiskLevel;
   actionText: string;
+  scenarioId?: string;
 };
 
 export const SCENARIO_CATEGORIES = [

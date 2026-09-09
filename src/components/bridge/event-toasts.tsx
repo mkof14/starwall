@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
+import { useHud } from "@/lib/i18n/use-hud";
 import type { RiskLevel } from "@/lib/scenarios";
 
 export type ToastKind =
@@ -88,6 +89,7 @@ export function EventToasts({
   onDismiss: (id: string) => void;
   onOpen: (id: string) => void;
 }) {
+  const { hud } = useHud();
   if (toasts.length === 0) return null;
 
   return (
@@ -95,7 +97,7 @@ export function EventToasts({
       data-testid="event-toast-stack"
       className="pointer-events-none fixed end-4 top-20 z-[60] flex w-[min(22.5rem,calc(100vw-1.5rem))] flex-col gap-2 print:hidden"
       role="region"
-      aria-label="Live event notifications"
+      aria-label={hud.chrome.liveEvents}
     >
       {toasts.map((toast) => {
         const critical = toast.level === "CRITICAL";
@@ -137,7 +139,7 @@ export function EventToasts({
                           : "text-bridge-dim",
                     )}
                   >
-                    {toast.auto ? "AUTO" : toast.level}
+                    {toast.auto ? hud.chrome.autoPrefix : toast.level}
                     <span className="ms-2 text-bridge-dim">{toast.time}</span>
                   </span>
                 </span>
@@ -153,7 +155,7 @@ export function EventToasts({
               <button
                 type="button"
                 data-testid="event-toast-dismiss"
-                aria-label="Dismiss notification"
+                aria-label={hud.chrome.dismissToast}
                 className="shrink-0 px-1 font-ui text-sm leading-none text-bridge-dim hover:text-bridge-text"
                 onClick={(event) => {
                   event.stopPropagation();

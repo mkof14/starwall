@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BridgeRadar } from "@/components/bridge/bridge-radar";
 import { CrisisBanner } from "@/components/bridge/crisis-banner";
 import { CrisisProtocolPanel } from "@/components/bridge/crisis-protocol-panel";
@@ -27,7 +27,6 @@ import { AUTOMATED_ACTIONS } from "@/lib/automated-actions";
 import { CRISIS_PROTOCOLS, FALLBACK_CRISIS_STEPS } from "@/lib/crisis-protocols";
 import {
   EQUIPMENT,
-  equipmentName,
   type EquipmentId,
 } from "@/lib/equipment";
 import { useBlackBox } from "@/lib/black-box";
@@ -35,6 +34,9 @@ import { useBridgeSession } from "@/lib/bridge-session";
 import { cloudVesselName, syncEventToCloud } from "@/lib/cloud-sync";
 import { listEvents, putEvents, putSessionReport, type StoredEvent } from "@/lib/local-db";
 import { useCrisisMode } from "@/lib/crisis-mode";
+import { fill, type HudCopy } from "@/lib/i18n/hud";
+import { localizeAutoActions, localizeCrisisSteps, localizeScenario } from "@/lib/i18n/hud-scenarios";
+import { useHud } from "@/lib/i18n/use-hud";
 import { usePreferences } from "@/lib/i18n/context";
 import { useAuthSession } from "@/lib/auth-session";
 import { useAppMode } from "@/lib/mode";
@@ -42,8 +44,6 @@ import { canTriggerScenarios } from "@/lib/rbac";
 import { applyScenarioToWatch, liveWatchBaseline, resetWatchToNormal } from "@/lib/watch-state";
 import { cn } from "@/lib/cn";
 import {
-  PANEL_CHROME,
-  RESET_LOG,
   SCENARIOS,
   type PanelType,
   type RiskLevel,
@@ -51,12 +51,7 @@ import {
   type ScenarioOption,
   type SessionEvent,
 } from "@/lib/scenarios";
-import {
-  perimeterScene,
-  radarScene,
-  sonarScene,
-  spectrumScene,
-} from "@/lib/picture-scenes";
+import { radarScene } from "@/lib/picture-scenes";
 
 type LogEntry = EventToast;
 
@@ -110,14 +105,15 @@ function pictureFor(
   scenarioId: string,
   situational: string,
   pictureFault: "radar" | "ais" | null,
-  empty?: boolean,
+  empty: boolean | undefined,
+  hud: HudCopy,
 ) {
   if (empty || panelType === "radar") {
     const scene = radarScene(empty ? "" : scenarioId);
     return {
       testId: "radar-panel",
       title: situational,
-      extra: empty ? "NO SENSORS" : scene.extra,
+      extra: empty ? hud.chrome.noSensors : scene.extra,
       view: (
         <BridgeRadar
           scenarioId={empty ? "" : scenarioId}
@@ -127,33 +123,33 @@ function pictureFor(
       ),
     };
   }
-  const chrome = PANEL_CHROME[panelType];
   if (panelType === "sonar") {
     return {
-      testId: chrome.testId,
-      title: chrome.title,
-      extra: sonarScene(scenarioId).extra,
+      testId: "sonar-panel",
+      title: hud.panels.sonarTitle,
+      extra: hud.panels.sonarExtra,
       view: <SonarView scenarioId={scenarioId} />,
     };
   }
   if (panelType === "spectrum") {
     return {
-      testId: chrome.testId,
-      title: chrome.title,
-      extra: spectrumScene(scenarioId).extra,
+      testId: "spectrum-panel",
+      title: hud.panels.spectrumTitle,
+      extra: hud.panels.spectrumExtra,
       view: <SpectrumView scenarioId={scenarioId} />,
     };
   }
   return {
-    testId: chrome.testId,
-    title: chrome.title,
-    extra: perimeterScene(scenarioId).extra,
+    testId: "perimeter-panel",
+    title: hud.panels.perimeterTitle,
+    extra: hud.panels.perimeterExtra,
     view: <PerimeterView scenarioId={scenarioId} />,
   };
 }
 
 export function BridgeConsole() {
   const { t } = usePreferences();
+  const { locale, hud } = useHud();
   const { live } = useAppMode();
   const { session } = useAuthSession();
   const canRunScenarios = canTriggerScenarios(session?.role);
@@ -169,14 +165,17 @@ export function BridgeConsole() {
   );
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
-  const [logSeed] = useState(() => [
-    { id: "seed-1", time: "14:32:07", level: "NORMAL" as const, text: t.bridge.log[0], kind: "watch" as const },
-    { id: "seed-2", time: "14:18:44", level: "NORMAL" as const, text: t.bridge.log[1], kind: "watch" as const },
-    { id: "seed-3", time: "13:55:12", level: "ATTENTION" as const, text: t.bridge.log[2], kind: "watch" as const },
-    { id: "seed-4", time: "13:40:03", level: "NORMAL" as const, text: t.bridge.log[3], kind: "watch" as const },
-    { id: "seed-5", time: "13:12:58", level: "NORMAL" as const, text: t.bridge.log[4], kind: "watch" as const },
-  ]);
-  const [logEntries, setLogEntries] = useState<LogEntry[]>(logSeed);
+  const seedLogs = useMemo<LogEntry[]>(
+    () => [
+      { id: "seed-1", time: "14:32:07", level: "NORMAL", text: t.bridge.log[0], kind: "watch" },
+      { id: "seed-2", time: "14:18:44", level: "NORMAL", text: t.bridge.log[1], kind: "watch" },
+      { id: "seed-3", time: "13:55:12", level: "ATTENTION", text: t.bridge.log[2], kind: "watch" },
+      { id: "seed-4", time: "13:40:03", level: "NORMAL", text: t.bridge.log[3], kind: "watch" },
+      { id: "seed-5", time: "13:12:58", level: "NORMAL", text: t.bridge.log[4], kind: "watch" },
+    ],
+    [t.bridge.log],
+  );
+  const [logEntries, setLogEntries] = useState<LogEntry[]>(seedLogs);
   const [toasts, setToasts] = useState<EventToast[]>([]);
   const [flashId, setFlashId] = useState<string | null>(null);
   const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
@@ -209,13 +208,18 @@ export function BridgeConsole() {
     const next = rows
       .filter((row) => row.kind === "scenario" && row.scenarioId)
       .sort((a, b) => a.timestamp.localeCompare(b.timestamp))
-      .map((row) => ({
-        timestamp: row.time,
-        name: SCENARIOS.find((item) => item.id === row.scenarioId)?.name ?? row.scenarioId ?? row.text,
-        category: row.category ?? "",
-        riskLevel: row.level,
-        actionText: row.actionText ?? "",
-      }));
+      .map((row) => {
+        const catalog = SCENARIOS.find((item) => item.id === row.scenarioId);
+        const view = catalog ? localizeScenario(locale, catalog) : undefined;
+        return {
+          timestamp: row.time,
+          name: view?.name ?? row.scenarioId ?? row.text,
+          category: view?.category ?? row.category ?? "",
+          riskLevel: row.level,
+          actionText: view?.actionText ?? row.actionText ?? "",
+          scenarioId: row.scenarioId,
+        };
+      });
     setSessionEvents(next);
   }
 
@@ -358,7 +362,7 @@ export function BridgeConsole() {
     void listEvents()
       .then((rows) => {
         if (rows.length) applyStoredLog(rows);
-        else setLogEntries(logSeed);
+        else setLogEntries(seedLogs);
         setToasts([]);
       })
       .catch(() => undefined);
@@ -367,20 +371,57 @@ export function BridgeConsole() {
   }, [live, storageReady]);
 
   useEffect(() => {
+    setLogEntries((entries) => {
+      if (!entries.length || entries.every((entry) => entry.id.startsWith("seed-"))) {
+        return seedLogs;
+      }
+      return entries;
+    });
+  }, [seedLogs]);
+
+  useEffect(() => {
+    if (live || !selectedId) return;
+    const catalog = SCENARIOS.find((item) => item.id === selectedId);
+    if (!catalog) return;
+    const view = localizeScenario(locale, catalog);
+    setSelectedName(view.name);
+    setActionText(view.actionText);
+    setActionOptions(view.riskLevel === "CRITICAL" ? null : view.options ?? null);
+  }, [locale, selectedId, live]);
+
+  useEffect(() => {
+    setSessionEvents((events) =>
+      events.map((event) => {
+        const catalog = event.scenarioId
+          ? SCENARIOS.find((item) => item.id === event.scenarioId)
+          : undefined;
+        if (!catalog) return event;
+        const view = localizeScenario(locale, catalog);
+        return {
+          ...event,
+          name: view.name,
+          category: view.category,
+          actionText: view.actionText,
+        };
+      }),
+    );
+  }, [locale]);
+
+  useEffect(() => {
     if (live) {
       setSession({
-        scenarioName: "No live picture",
+        scenarioName: hud.chrome.noLivePicture,
         riskLevel: "NO DATA",
-        vessel: "Unconnected deployment",
+        vessel: hud.chrome.unconnected,
       });
       return;
     }
     setSession({
-      scenarioName: selectedName || "Normal watch",
+      scenarioName: selectedName || hud.chrome.normalWatch,
       riskLevel,
       vessel: "M/Y AURELIA",
     });
-  }, [live, selectedName, riskLevel, setSession]);
+  }, [live, selectedName, riskLevel, setSession, hud]);
 
   const systems = t.bridge.systems.map((name, index) => {
     const id = EQUIPMENT[index]?.id;
@@ -401,19 +442,29 @@ export function BridgeConsole() {
     t.bridge.situational,
     pictureFault,
     live,
+    hud,
   );
-  const activeScenario = SCENARIOS.find((item) => item.id === selectedId);
+  const catalogScenario = SCENARIOS.find((item) => item.id === selectedId);
+  const activeScenario = catalogScenario
+    ? localizeScenario(locale, catalogScenario)
+    : undefined;
+  const displayedOptions =
+    activeScenario && activeScenario.riskLevel !== "CRITICAL"
+      ? activeScenario.options ?? null
+      : actionOptions;
+  const displayedAction = activeScenario?.actionText ?? actionText;
   const pictureOverlay =
     faultId === "radar"
-      ? "Radar offline — showing AIS/last known positions only"
+      ? hud.chrome.radarOffline
       : faultId === "ais"
-        ? "AIS offline — showing radar tracks only"
+        ? hud.chrome.aisOffline
         : null;
 
   function applyScenario(scenario: Scenario) {
     if (live || !canRunScenarios) return;
     clearAutoTimer();
-    const next = applyScenarioToWatch(scenario, { training, faultId });
+    const view = localizeScenario(locale, scenario);
+    const next = applyScenarioToWatch(view, { training, faultId });
     setSelectedId(next.selectedId);
     setSelectedName(next.selectedName);
     setRiskLevel(next.riskLevel);
@@ -432,18 +483,18 @@ export function BridgeConsole() {
       actionText?: string;
     }[] = [
       {
-        level: scenario.riskLevel,
-        text: scenario.logText,
+        level: view.riskLevel,
+        text: view.logText,
         kind: "scenario",
-        scenarioId: scenario.id,
-        category: scenario.category,
-        actionText: scenario.actionText,
+        scenarioId: view.id,
+        category: view.category,
+        actionText: view.actionText,
       },
     ];
     if (next.crisis) {
       nextRows.unshift({
         level: "CRITICAL",
-        text: `CRISIS MODE ACTIVATED — ${scenario.name}`,
+        text: fill(hud.chrome.crisisActivated, { name: view.name }),
         kind: "crisis",
       });
     }
@@ -452,29 +503,32 @@ export function BridgeConsole() {
       ...events,
       {
         timestamp: stamp,
-        name: scenario.name,
-        category: scenario.category,
-        riskLevel: scenario.riskLevel,
-        actionText: scenario.actionText,
+        name: view.name,
+        category: view.category,
+        riskLevel: view.riskLevel,
+        actionText: view.actionText,
+        scenarioId: view.id,
       },
     ]);
     recordScenario({
-      summary: `${scenario.name} · ${scenario.riskLevel}`,
+      summary: `${view.name} · ${view.riskLevel}`,
       fullContent: [
-        `Scenario: ${scenario.name}`,
-        `Category: ${scenario.category}`,
-        `Risk: ${scenario.riskLevel}`,
-        `Recommendation: ${scenario.actionText}`,
-        `Alert: ${scenario.logText}`,
+        `${view.name}`,
+        `${view.category}`,
+        `${view.riskLevel}`,
+        `${view.actionText}`,
+        `${view.logText}`,
       ].join("\n"),
     });
-    const autoRows = !next.crisis ? AUTOMATED_ACTIONS[scenario.id] : undefined;
-    if (autoRows?.length) {
+    const autoRows = !next.crisis
+      ? localizeAutoActions(locale, view.id, AUTOMATED_ACTIONS[view.id] ?? [])
+      : [];
+    if (autoRows.length) {
       autoTimer.current = window.setTimeout(() => {
         pushLogs(
           autoRows.map((text) => ({
             level: "NORMAL" as const,
-            text: `AUTO — ${text}`,
+            text: `${hud.chrome.autoPrefix} — ${text}`,
             auto: true,
             kind: "auto" as const,
           })),
@@ -494,7 +548,7 @@ export function BridgeConsole() {
     setActionOptions(next.actionOptions);
     setCrisis(next.crisis);
     setFaultId(next.faultId);
-    pushLogs([{ level: "NORMAL", text: RESET_LOG, kind: "reset" }]);
+    pushLogs([{ level: "NORMAL", text: hud.chrome.resetLog, kind: "reset" }]);
   }
 
   function logRow(level: RiskLevel, text: string, kind: ToastKind) {
@@ -505,7 +559,7 @@ export function BridgeConsole() {
     setFaultId(null);
     logRow(
       "NORMAL",
-      `${equipmentName(id)} connection restored — full capability resumed`,
+      fill(hud.chrome.restored, { name: hud.equipment[id] }),
       "restore",
     );
   }
@@ -515,14 +569,14 @@ export function BridgeConsole() {
     if (faultId) {
       logRow(
         "NORMAL",
-        `${equipmentName(faultId)} connection restored — full capability resumed`,
+        fill(hud.chrome.restored, { name: hud.equipment[faultId] }),
         "restore",
       );
     }
     setFaultId(id);
     logRow(
       "ATTENTION",
-      `${equipmentName(id)} connection lost — switching to degraded mode`,
+      fill(hud.chrome.lostDegraded, { name: hud.equipment[id] }),
       "fault",
     );
   }
@@ -531,14 +585,18 @@ export function BridgeConsole() {
     pushLogs([
       {
         level: "CRITICAL",
-        text: "Escalated to Support Center — connection established",
+        text: hud.chrome.escalated,
         kind: "escalate",
       },
     ]);
   }
 
   const crisis = riskLevel === "CRITICAL" && selectedId !== "";
-  const crisisSteps = CRISIS_PROTOCOLS[selectedId] ?? FALLBACK_CRISIS_STEPS;
+  const crisisSteps = localizeCrisisSteps(
+    locale,
+    selectedId,
+    CRISIS_PROTOCOLS[selectedId] ?? FALLBACK_CRISIS_STEPS,
+  );
 
   return (
     <div
@@ -549,7 +607,7 @@ export function BridgeConsole() {
       )}
     >
       {crisis ? (
-        <CrisisBanner scenarioName={selectedName} onExit={resetToNormal} />
+        <CrisisBanner scenarioName={activeScenario?.name ?? selectedName} onExit={resetToNormal} />
       ) : null}
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-6 md:px-6">
         <p className="hidden max-[599px]:block border border-attn/40 bg-attn/10 px-3 py-2 font-mono text-[11px] text-attn">
@@ -570,7 +628,7 @@ export function BridgeConsole() {
               data-testid="connections-map-link"
               className="border border-bridge-text/40 px-3 py-1.5 font-ui text-xs text-bridge-text hover:border-orange hover:text-orange"
             >
-              Connections Map
+              {hud.chrome.connectionsMap}
             </Link>
             <ModeToggle />
             <FullscreenButton />
@@ -591,7 +649,7 @@ export function BridgeConsole() {
                   : "border-bridge-text/40 text-bridge-text hover:border-orange hover:text-orange",
               )}
             >
-              Training Mode
+              {hud.chrome.trainingMode}
             </button>
             )}
           {crisis ? null : (
@@ -612,7 +670,7 @@ export function BridgeConsole() {
                   live ? "text-bridge-dim" : tone.text,
                 )}
               >
-                {live ? "NO DATA" : riskLevel}
+                {live ? hud.chrome.noData : (t.bridge.risks[RISK_KEYS.indexOf(riskLevel)] ?? riskLevel)}
               </span>
             </div>
             <p className="mt-1 font-mono text-[10px] text-bridge-dim">
@@ -660,16 +718,16 @@ export function BridgeConsole() {
           >
             <p className="font-mono text-[10px] tracking-[0.22em] text-orange">
               {activeScenario
-                ? "TRAINING LIBRARY · SELECT SCENARIO"
-                : "WATCH · SELECT SCENARIO"}
+                ? hud.chrome.trainingSelect
+                : hud.chrome.watchSelect}
             </p>
             <p className="mt-0.5 font-ui text-lg font-bold tracking-wide text-bridge-text">
-              {activeScenario?.name ?? "Normal watch"}
+              {activeScenario?.name ?? hud.chrome.normalWatch}
             </p>
             <p className="font-mono text-[10px] text-bridge-dim">
               {activeScenario
-                ? `${activeScenario.category} · ${activeScenario.riskLevel}`
-                : "Pick a case from the library to load its picture."}
+                ? `${activeScenario.category} · ${t.bridge.risks[RISK_KEYS.indexOf(activeScenario.riskLevel)] ?? activeScenario.riskLevel}`
+                : hud.chrome.pickCase}
             </p>
           </div>
           <HudPanel
@@ -688,8 +746,7 @@ export function BridgeConsole() {
                   data-testid="live-picture-empty"
                   className="pointer-events-none absolute inset-x-6 top-1/2 -translate-y-1/2 border border-bridge-line bg-bridge-panel/90 px-3 py-2.5 text-center font-ui text-xs leading-relaxed text-bridge-text"
                 >
-                  No live sensors connected — this view activates once
-                  radar/AIS/camera equipment is integrated.
+                  {hud.chrome.livePictureEmpty}
                 </p>
               ) : null}
               {pictureOverlay && !live ? (
@@ -749,7 +806,7 @@ export function BridgeConsole() {
               extra={
                 <div className="flex flex-wrap items-center justify-end gap-2">
                   <label className="sr-only" htmlFor="simulate-fault">
-                    Simulate equipment fault
+                    {hud.chrome.simulateFault}
                   </label>
                   <select
                     id="simulate-fault"
@@ -758,7 +815,7 @@ export function BridgeConsole() {
                     disabled={live}
                     title={
                       live
-                        ? "Scenario simulation is a DEMO mode feature."
+                        ? hud.chrome.simulateFaultLive
                         : undefined
                     }
                     onChange={(event) => {
@@ -767,10 +824,10 @@ export function BridgeConsole() {
                     }}
                     className="max-w-[11rem] border border-bridge-line bg-bridge-bg px-2 py-1 font-ui text-[11px] text-bridge-text disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    <option value="">Simulate equipment fault</option>
+                    <option value="">{hud.chrome.simulateFault}</option>
                     {EQUIPMENT.map((item) => (
                       <option key={item.id} value={item.id}>
-                        {item.name}
+                        {hud.equipment[item.id]}
                       </option>
                     ))}
                   </select>
@@ -808,9 +865,9 @@ export function BridgeConsole() {
                         )}
                       />
                       {live
-                        ? "Not connected"
+                        ? hud.chrome.notConnected
                         : system.faulted
-                          ? "Offline"
+                          ? hud.chrome.offline
                           : system.online
                             ? t.bridge.online
                             : t.bridge.standby}
@@ -827,17 +884,17 @@ export function BridgeConsole() {
                   live ? "border-bridge-line text-bridge-dim" : tone.chip,
                 )}
               >
-                {live ? "NO DATA" : riskLevel}
+                {live ? hud.chrome.noData : (t.bridge.risks[RISK_KEYS.indexOf(riskLevel)] ?? riskLevel)}
               </span>
               {live ? (
                 <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
-                  No recommendation — waiting for equipment integration.
+                  {hud.chrome.noRecommendation}
                 </p>
-              ) : actionOptions ? (
-                <RankedActionList options={actionOptions} />
+              ) : displayedOptions ? (
+                <RankedActionList options={displayedOptions} />
               ) : (
                 <p className="mt-3 text-sm leading-relaxed text-bridge-dim">
-                  {actionText ?? t.bridge.normalAdvice}
+                  {displayedAction ?? t.bridge.normalAdvice}
                 </p>
               )}
             </HudPanel>
@@ -875,7 +932,7 @@ export function BridgeConsole() {
           title={t.bridge.eventLog}
           extra={
             live ? (
-              <span className="font-mono text-[10px] text-bridge-dim">NO FEED</span>
+              <span className="font-mono text-[10px] text-bridge-dim">{hud.chrome.noFeed}</span>
             ) : (
             <span className="flex items-center gap-1.5 text-ok">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ok" />
@@ -889,7 +946,7 @@ export function BridgeConsole() {
               data-testid="event-log-empty"
               className="py-6 text-center font-ui text-sm text-bridge-dim"
             >
-              No events — no equipment connected yet.
+              {hud.chrome.noEvents}
             </p>
           ) : (
           <>
@@ -899,11 +956,11 @@ export function BridgeConsole() {
           >
             <span className="inline-flex items-center gap-1.5">
               <span className="h-2 w-2 bg-orange" />
-              Human decision required
+              {hud.chrome.humanDecision}
             </span>
             <span className="inline-flex items-center gap-1.5 text-ok">
               <GearMark />
-              Automated (procedural only)
+              {hud.chrome.automatedOnly}
             </span>
           </p>
           <ul className="max-h-56 space-y-2 overflow-y-auto pe-1">
@@ -952,7 +1009,7 @@ export function BridgeConsole() {
                     entry.auto ? "border-ok text-ok" : levelClass(entry.level),
                   )}
                 >
-                  {entry.auto ? "AUTO" : entry.level}
+                  {entry.auto ? hud.chrome.autoPrefix : entry.level}
                 </span>
                 <span className={entry.auto ? "text-ok" : "text-bridge-text"}>
                   {entry.text}

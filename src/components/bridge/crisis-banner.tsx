@@ -1,9 +1,12 @@
+import { useHud } from "@/lib/i18n/use-hud";
+
 type CrisisBannerProps = {
   scenarioName: string;
   onExit: () => void;
 };
 
 export function CrisisBanner({ scenarioName, onExit }: CrisisBannerProps) {
+  const { hud } = useHud();
   return (
     <div
       data-testid="crisis-banner"
@@ -16,7 +19,7 @@ export function CrisisBanner({ scenarioName, onExit }: CrisisBannerProps) {
           aria-hidden
         />
         <h2 className="font-ui text-2xl font-bold tracking-wide md:text-3xl">
-          CRISIS MODE — {scenarioName.toUpperCase()}
+          {hud.chrome.crisisMode} — {scenarioName.toUpperCase()}
         </h2>
       </div>
       <button
@@ -25,7 +28,7 @@ export function CrisisBanner({ scenarioName, onExit }: CrisisBannerProps) {
         onClick={onExit}
         className="shrink-0 border-2 border-white bg-white px-4 py-2 font-ui text-xs font-bold tracking-wide text-crit hover:bg-sand"
       >
-        EXIT CRISIS MODE
+        {hud.chrome.exitCrisis}
       </button>
     </div>
   );

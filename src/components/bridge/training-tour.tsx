@@ -1,51 +1,19 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useHud } from "@/lib/i18n/use-hud";
 
-type Step = {
-  target: string | null;
-  text: string;
-};
-
-const STEPS: Step[] = [
-  {
-    target: "risk-badge",
-    text: "This shows the current threat level at a glance — Normal, Attention, Elevated, or Critical. It changes color so you can see it from across the bridge.",
-  },
-  {
-    target: "telemetry-strip",
-    text: "Live vessel data — position, heading, speed, wind, depth. Always visible, no need to switch screens.",
-  },
-  {
-    target: "situational-panel",
-    text: "This is your unified picture — radar, AIS, and other sensors combined into one view. It switches automatically to show sonar, RF, or perimeter data depending on what kind of event is happening.",
-  },
-  {
-    target: "risk-level-panel",
-    text: "The four-level scale StarWall uses. The current level is always highlighted here.",
-  },
-  {
-    target: "connected-systems-panel",
-    text: "Shows which equipment is online. If something goes offline, you'll see it here first.",
-  },
-  {
-    target: "recommended-action-panel",
-    text: "StarWall's suggested next step for the current situation — always a suggestion, never an automatic action. You decide.",
-  },
-  {
-    target: "scenario-picker",
-    text: "This is the scenario library — six visible sections, twenty-three situations. Pick any case to see how StarWall responds. Training Mode stays on so you can walk the rest of the console against that situation.",
-  },
-  {
-    target: "event-log-panel",
-    text: "Every event is logged automatically with a timestamp — nothing has to be written up by hand.",
-  },
-  {
-    target: null,
-    text: "That's the basics. Open SELECT SCENARIO — use Show library if it is folded — and pick a case to see it in action.",
-  },
-  // Adaptive Learning sits below the watch console and is left out of this tour on purpose.
-];
+const TOUR_TARGETS = [
+  "risk-badge",
+  "telemetry-strip",
+  "situational-panel",
+  "risk-level-panel",
+  "connected-systems-panel",
+  "recommended-action-panel",
+  "scenario-picker",
+  "event-log-panel",
+  null,
+] as const;
 
 type Rect = { top: number; left: number; width: number; height: number };
 
@@ -55,6 +23,11 @@ type TrainingTourProps = {
 };
 
 export function TrainingTour({ active, onClose }: TrainingTourProps) {
+  const { hud } = useHud();
+  const steps = hud.tour.steps.map((text, index) => ({
+    target: TOUR_TARGETS[index],
+    text,
+  }));
   const [step, setStep] = useState(0);
   const [spot, setSpot] = useState<Rect | null>(null);
   const calloutRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +40,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
     if (!active) return;
 
     function measure() {
-      const target = STEPS[step]?.target;
+      const target = TOUR_TARGETS[step];
       if (!target) {
         setSpot(null);
         return;
@@ -86,7 +59,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
       });
     }
 
-    const target = STEPS[step]?.target;
+    const target = TOUR_TARGETS[step];
     const el = target ? document.querySelector(`[data-testid="${target}"]`) : null;
     if (el instanceof HTMLElement) {
       el.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -128,8 +101,8 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
 
   if (!active) return null;
 
-  const last = step === STEPS.length - 1;
-  const callout = STEPS[step];
+  const last = step === steps.length - 1;
+  const callout = steps[step];
   const calloutStyle = last
     ? { top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
     : placeCallout(spot, calloutRef.current);
@@ -158,7 +131,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
         style={calloutStyle}
       >
         <p className="font-mono text-[10px] tracking-[0.18em] text-orange">
-          {step + 1} / {STEPS.length}
+          {step + 1} / {steps.length}
         </p>
         <p className="mt-2 text-sm leading-relaxed">{callout.text}</p>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
@@ -168,7 +141,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
             onClick={onClose}
             className="text-xs text-sand/70 underline-offset-2 hover:text-sand hover:underline"
           >
-            Skip tour
+            {hud.tour.skip}
           </button>
           <div className="flex gap-2">
             {step > 0 ? (
@@ -178,7 +151,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
                 onClick={() => setStep((current) => current - 1)}
                 className="border border-sand/30 px-3 py-1 text-xs text-sand hover:border-sand"
               >
-                Back
+                {hud.tour.back}
               </button>
             ) : null}
             {last ? (
@@ -188,7 +161,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
                 onClick={onClose}
                 className="bg-orange px-3 py-1 text-xs font-medium text-white hover:bg-orange/90"
               >
-                Finish tour
+                {hud.tour.finish}
               </button>
             ) : (
               <button
@@ -197,7 +170,7 @@ export function TrainingTour({ active, onClose }: TrainingTourProps) {
                 onClick={() => setStep((current) => current + 1)}
                 className="bg-orange px-3 py-1 text-xs font-medium text-white hover:bg-orange/90"
               >
-                Next
+                {hud.tour.next}
               </button>
             )}
           </div>

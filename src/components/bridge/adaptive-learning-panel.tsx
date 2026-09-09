@@ -4,44 +4,25 @@ import { useState } from "react";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { cn } from "@/lib/cn";
 import { useCrisisMode } from "@/lib/crisis-mode";
+import { useHud } from "@/lib/i18n/use-hud";
 import { useAppMode } from "@/lib/mode";
 
 const MONO = "var(--font-jetbrains), ui-monospace, monospace";
 
-const DAYS = [
-  {
-    id: "1",
-    label: "Day 1",
-    stats:
-      "Known vessels in area: 3 · Baseline established: No · False-positive rate: Not yet measured",
-    blurb: "StarWall has no history yet for this object — every contact is treated as new.",
-  },
-  {
-    id: "30",
-    label: "Day 30",
-    stats:
-      "Known vessels in area: 14 · Baseline established: Partial · False-positive rate: ~22%",
-    blurb:
-      "A baseline is forming. StarWall recognizes regular traffic but still flags some routine activity for review.",
-  },
-  {
-    id: "90",
-    label: "Day 90",
-    stats:
-      "Known vessels in area: 37 · Baseline established: Yes · False-positive rate: ~6%",
-    blurb:
-      "StarWall reliably distinguishes routine activity from genuine anomalies for this specific object.",
-  },
-] as const;
-
-const LIVE_LEARNING_TIP = "Day 30 and Day 90 require live operational data.";
+type DayId = "1" | "30" | "90";
 
 export function AdaptiveLearningPanel() {
-  const [day, setDay] = useState<(typeof DAYS)[number]["id"]>("1");
+  const { hud } = useHud();
+  const [day, setDay] = useState<DayId>("1");
   const [expanded, setExpanded] = useState(true);
   const { crisis } = useCrisisMode();
   const { live } = useAppMode();
-  const current = DAYS.find((item) => item.id === day) ?? DAYS[0];
+  const days = [
+    { id: "1" as const, label: hud.learning.day1, stats: hud.learning.stats1, blurb: hud.learning.blurb1 },
+    { id: "30" as const, label: hud.learning.day30, stats: hud.learning.stats30, blurb: hud.learning.blurb30 },
+    { id: "90" as const, label: hud.learning.day90, stats: hud.learning.stats90, blurb: hud.learning.blurb90 },
+  ];
+  const current = days.find((item) => item.id === day) ?? days[0];
   if (crisis) return null;
 
   return (
@@ -51,11 +32,11 @@ export function AdaptiveLearningPanel() {
           id="adaptive-learning-panel"
           testId="adaptive-learning-panel"
           className="scroll-mt-20"
-          title="OBJECT PROFILE — LEARNING OVER TIME"
+          title={hud.learning.title}
           extra={
             <div className="flex items-center gap-3">
               <span className="hidden font-mono text-[10px] text-bridge-dim sm:inline">
-                {live ? "NO OPERATIONAL HISTORY" : "ILLUSTRATIVE SIMULATION"}
+                {live ? hud.learning.noHistory : hud.learning.illustrative}
               </span>
               <button
                 type="button"
@@ -63,23 +44,23 @@ export function AdaptiveLearningPanel() {
                 onClick={() => setExpanded((open) => !open)}
                 className="font-ui text-xs text-orange hover:underline"
               >
-                {expanded ? "Hide" : "Show"}
+                {expanded ? hud.learning.hide : hud.learning.show}
               </button>
             </div>
           }
         >
           {expanded ? (
           <>
-          <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Learning timeline">
+          <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label={hud.learning.timeline}>
             {live ? (
               <span
                 className="bg-orange px-3 py-1.5 font-ui text-xs text-white"
                 data-testid="learning-day-0"
               >
-                Day 0
+                {hud.learning.day0}
               </span>
             ) : null}
-            {DAYS.map((item) => {
+            {days.map((item) => {
               const locked = live && item.id !== "1";
               const active = !live && item.id === day;
               return (
@@ -90,7 +71,7 @@ export function AdaptiveLearningPanel() {
                   aria-selected={active}
                   data-testid={`learning-day-${item.id}`}
                   disabled={locked}
-                  title={locked ? LIVE_LEARNING_TIP : undefined}
+                  title={locked ? hud.learning.lockedTip : undefined}
                   onClick={() => {
                     if (!locked) setDay(item.id);
                   }}
@@ -114,7 +95,7 @@ export function AdaptiveLearningPanel() {
               data-testid="learning-live-empty"
               className="border border-bridge-line bg-bridge-bg px-4 py-6 font-ui text-sm text-bridge-dim"
             >
-              Day 0 — no operational history yet.
+              {hud.learning.liveEmpty}
             </p>
           ) : (
           <>
@@ -204,7 +185,7 @@ export function AdaptiveLearningPanel() {
               ) : null}
 
               <text x="340" y="268" textAnchor="middle" fontFamily={MONO} fontSize="9" fill="#7C8894">
-                KNOWN NORMAL ACTIVITY
+                {hud.learning.knownActivity}
               </text>
             </svg>
           </div>
@@ -219,15 +200,14 @@ export function AdaptiveLearningPanel() {
             {current.blurb}
           </p>
           <p className="mt-4 text-xs italic text-bridge-dim">
-            Illustrative simulation of the learning process — actual timelines and accuracy
-            depend on the object and available data.
+            {hud.learning.footnote}
           </p>
           </>
           )}
           </>
           ) : (
             <p className="font-mono text-[10px] text-bridge-dim">
-              ILLUSTRATIVE SIMULATION
+              {hud.learning.illustrative}
             </p>
           )}
         </HudPanel>

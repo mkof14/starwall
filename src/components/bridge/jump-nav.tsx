@@ -6,13 +6,13 @@ import { cn } from "@/lib/cn";
 import { useAuthSession } from "@/lib/auth-session";
 import { useCrisisMode } from "@/lib/crisis-mode";
 import { HELM_STATE_EVENT, openHelm } from "@/lib/helm-events";
+import { useHud } from "@/lib/i18n/use-hud";
 import { canUseHelm } from "@/lib/rbac";
 
 type JumpKind = "scroll" | "helm" | "link";
 
 type JumpItem = {
-  id: string;
-  label: string;
+  id: keyof import("@/lib/i18n/hud").HudCopy["jump"];
   kind: JumpKind;
   href?: string;
   targetId?: string;
@@ -26,7 +26,6 @@ const ICON = "h-4 w-4";
 const ITEMS: JumpItem[] = [
   {
     id: "picture",
-    label: "Situational Picture",
     kind: "scroll",
     targetId: "situational-picture",
     icon: (
@@ -40,7 +39,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "risk",
-    label: "Risk Level",
     kind: "scroll",
     targetId: "risk-level-panel",
     hideInCrisis: true,
@@ -55,7 +53,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "systems",
-    label: "Connected Systems",
     kind: "scroll",
     targetId: "connected-systems-panel",
     hideInCrisis: true,
@@ -70,7 +67,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "action",
-    label: "Recommended Action",
     kind: "scroll",
     targetId: "recommended-action-panel",
     hideInCrisis: true,
@@ -85,7 +81,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "library",
-    label: "Scenario Library",
     kind: "scroll",
     targetId: "scenario-library",
     hideInCrisis: true,
@@ -100,7 +95,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "crisis",
-    label: "Crisis Protocol",
     kind: "scroll",
     targetId: "crisis-protocol-panel",
     crisisOnly: true,
@@ -115,7 +109,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "log",
-    label: "Event Log",
     kind: "scroll",
     targetId: "event-log-panel",
     icon: (
@@ -129,7 +122,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "helm",
-    label: "Pilot",
     kind: "helm",
     icon: (
       <svg viewBox="0 0 16 16" className={ICON} aria-hidden>
@@ -142,7 +134,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "blackbox",
-    label: "Black Box",
     kind: "scroll",
     targetId: "black-box-panel",
     icon: (
@@ -156,7 +147,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "learning",
-    label: "Adaptive Learning",
     kind: "scroll",
     targetId: "adaptive-learning-panel",
     hideInCrisis: true,
@@ -171,7 +161,6 @@ const ITEMS: JumpItem[] = [
   },
   {
     id: "map",
-    label: "Connections Map",
     kind: "link",
     href: "/interface/connections",
     icon: (
@@ -197,6 +186,7 @@ function typingInField(target: EventTarget | null) {
 }
 
 export function JumpNav() {
+  const { hud } = useHud();
   const { crisis } = useCrisisMode();
   const { session } = useAuthSession();
   const helmAllowed = canUseHelm(session?.role);
@@ -305,15 +295,15 @@ export function JumpNav() {
     >
       <div className="flex h-10 items-center justify-between border-b border-bridge-line px-2">
         {expanded ? (
-          <p className="font-mono text-[9px] tracking-[0.18em] text-bridge-dim">JUMP</p>
+          <p className="font-mono text-[9px] tracking-[0.18em] text-bridge-dim">{hud.jump.kicker}</p>
         ) : (
-          <span className="sr-only">Section jump</span>
+          <span className="sr-only">{hud.jump.sections}</span>
         )}
         <button
           type="button"
           data-testid="jump-nav-toggle"
           aria-expanded={expanded}
-          aria-label={pinned ? "Collapse section jump" : "Pin section jump"}
+          aria-label={pinned ? hud.jump.unpin : hud.jump.pin}
           onClick={() => setPinned((value) => !value)}
           className="inline-flex h-7 w-7 items-center justify-center border border-bridge-line text-bridge-dim hover:border-orange hover:text-orange"
         >
@@ -330,11 +320,12 @@ export function JumpNav() {
         </button>
       </div>
 
-      <nav aria-label="Bridge sections" className="flex-1 overflow-y-auto py-1">
+      <nav aria-label={hud.jump.sections} className="flex-1 overflow-y-auto py-1">
         <ul>
           {visible.map((item) => {
             const key = numbered.find((row) => row.item.id === item.id)?.key;
             const current = active === item.id;
+            const label = hud.jump[item.id];
             const inner = (
               <>
                 <span
@@ -343,13 +334,13 @@ export function JumpNav() {
                     current ? "text-orange" : "text-bridge-text",
                   )}
                 >
-                  {item.icon}
-                </span>
-                {expanded ? (
-                  <>
-                    <span className="min-w-0 flex-1 truncate text-left font-ui text-xs">
-                      {item.label}
+                      {item.icon}
                     </span>
+                    {expanded ? (
+                      <>
+                        <span className="min-w-0 flex-1 truncate text-left font-ui text-xs">
+                          {label}
+                        </span>
                     {key ? (
                       <span className="font-mono text-[9px] text-bridge-dim">{key}</span>
                     ) : null}
@@ -369,7 +360,7 @@ export function JumpNav() {
                 <li key={item.id} className="group relative">
                   <Link
                     href={item.href}
-                    title={item.label}
+                    title={label}
                     data-testid={`jump-${item.id}`}
                     className={className}
                   >
@@ -380,7 +371,7 @@ export function JumpNav() {
                       role="tooltip"
                       className="pointer-events-none absolute start-full top-1/2 z-40 ml-2 hidden -translate-y-1/2 whitespace-nowrap border border-bridge-line bg-navy px-2 py-1 font-ui text-[11px] text-sand group-hover:block"
                     >
-                      {item.label}
+                      {label}
                     </span>
                   ) : null}
                 </li>
@@ -391,7 +382,7 @@ export function JumpNav() {
               <li key={item.id} className="group relative">
                 <button
                   type="button"
-                  title={item.label}
+                  title={label}
                   data-testid={`jump-${item.id}`}
                   aria-current={current ? "location" : undefined}
                   data-active={current ? "true" : "false"}
@@ -405,7 +396,7 @@ export function JumpNav() {
                     role="tooltip"
                     className="pointer-events-none absolute start-full top-1/2 z-40 ml-2 hidden -translate-y-1/2 whitespace-nowrap border border-bridge-line bg-navy px-2 py-1 font-ui text-[11px] text-sand group-hover:block"
                   >
-                    {item.label}
+                    {label}
                   </span>
                 ) : null}
               </li>

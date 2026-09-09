@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { HudPanel } from "@/components/bridge/hud-panel";
 import { cn } from "@/lib/cn";
+import { useHud } from "@/lib/i18n/use-hud";
 
 type Escalation = "idle" | "connecting" | "connected";
 
@@ -15,6 +16,7 @@ export function CrisisProtocolPanel({
   steps,
   onEscalated,
 }: CrisisProtocolPanelProps) {
+  const { hud } = useHud();
   const [checked, setChecked] = useState<boolean[]>(() => steps.map(() => false));
   const [escalation, setEscalation] = useState<Escalation>("idle");
   const onEscalatedRef = useRef(onEscalated);
@@ -44,7 +46,7 @@ export function CrisisProtocolPanel({
     <HudPanel
       id="crisis-protocol-panel"
       testId="crisis-protocol-panel"
-      title="CRISIS PROTOCOL"
+      title={hud.chrome.crisisProtocol}
       className="scroll-mt-20 border-crit"
     >
       <ol className="space-y-2">
@@ -91,10 +93,10 @@ export function CrisisProtocolPanel({
           <div className="border border-ok bg-ok/10 px-3 py-3">
             <p className="flex items-center gap-2 font-ui text-sm font-semibold text-ok">
               <span className="h-2 w-2 rounded-full bg-ok" />
-              Support Center: Live
+              {hud.chrome.supportLive}
             </p>
             <p className="mt-1 text-sm text-bridge-text">
-              CONNECTED — Support Center specialist is reviewing this situation
+              {hud.chrome.supportConnected}
             </p>
           </div>
         ) : (
@@ -108,10 +110,10 @@ export function CrisisProtocolPanel({
             {escalation === "connecting" ? (
               <>
                 <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                Connecting...
+                {hud.chrome.connecting}
               </>
             ) : (
-              "ESCALATE TO SUPPORT CENTER"
+              hud.chrome.escalate
             )}
           </button>
         )}

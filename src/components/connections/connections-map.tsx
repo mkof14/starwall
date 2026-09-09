@@ -13,6 +13,8 @@ import {
   pointOnLine,
   type MapEndpoint,
 } from "@/lib/connections";
+import type { HudCopy } from "@/lib/i18n/hud";
+import { useHud } from "@/lib/i18n/use-hud";
 import { useAppMode } from "@/lib/mode";
 import { cn } from "@/lib/cn";
 
@@ -136,6 +138,43 @@ function Hex({
   );
 }
 
+function endpointCopy(item: MapEndpoint, hud: HudCopy) {
+  switch (item.id) {
+    case "radar":
+      return { label: hud.equipment.radar, tip: hud.map.radarTip };
+    case "sonar":
+      return { label: hud.equipment.sonar, tip: hud.map.sonarTip };
+    case "rf":
+      return { label: hud.map.rfLabel, tip: hud.map.rfTip };
+    case "cameras":
+      return { label: hud.map.camerasLabel, tip: hud.map.camerasTip };
+    case "power":
+      return { label: hud.map.powerLabel, tip: hud.map.powerTip };
+    case "ais":
+      return { label: hud.equipment.ais, tip: hud.map.aisTip };
+    case "satcom":
+      return { label: hud.map.satcomLabel, tip: hud.map.satcomTip };
+    case "perimeter":
+      return { label: hud.map.perimeterLabel, tip: hud.map.perimeterTip };
+    case "support":
+      return { label: "Support Center", tip: hud.map.supportTip };
+    case "bridge":
+      return { label: "AGRON Bridge", tip: hud.map.bridgeTip };
+    default:
+      return { label: item.label, tip: item.tip };
+  }
+}
+
+function containerTipParts(tip: string) {
+  const marker = "/containers";
+  const at = tip.indexOf(marker);
+  if (at === -1) return { before: tip, after: "" };
+  return {
+    before: tip.slice(0, at),
+    after: tip.slice(at + marker.length),
+  };
+}
+
 function linePath(item: MapEndpoint) {
   const start =
     item.flow === "in"
@@ -151,6 +190,7 @@ function linePath(item: MapEndpoint) {
 
 export function ConnectionsMap() {
   const { live } = useAppMode();
+  const { hud } = useHud();
   const [hover, setHover] = useState<string | null>(null);
   const [tipAt, setTipAt] = useState<{ x: number; y: number } | null>(null);
 
@@ -165,7 +205,7 @@ export function ConnectionsMap() {
       <svg
         viewBox={`0 0 ${MAP_W} ${MAP_H}`}
         role="img"
-        aria-label="StarWall system connections map"
+        aria-label={hud.map.aria}
         className="h-auto w-full"
       >
         <defs>
@@ -320,7 +360,7 @@ export function ConnectionsMap() {
             fontWeight="600"
             letterSpacing="0.28em"
           >
-            AGRON CONTAINER
+            {hud.map.container}
           </text>
         </g>
 
@@ -377,7 +417,7 @@ export function ConnectionsMap() {
               fontSize="9"
               letterSpacing="0.08em"
             >
-              not connected
+              {hud.chrome.notConnected}
             </text>
           ) : null}
           <circle
@@ -389,6 +429,7 @@ export function ConnectionsMap() {
         </g>
 
         {ENDPOINTS.map((item) => {
+          const copy = endpointCopy(item, hud);
           const lit = active === item.id || (containerHot && item.group === "container");
           const tone = live ? "#4B5760" : lit ? "#E7ECEF" : "#8A97A3";
           return (
@@ -437,7 +478,7 @@ export function ConnectionsMap() {
                 fontSize="13"
                 fontWeight="500"
               >
-                {item.label}
+                {copy.label}
               </text>
               {live ? (
                 <text
@@ -448,7 +489,7 @@ export function ConnectionsMap() {
                   fontSize="9"
                   letterSpacing="0.08em"
                 >
-                  not connected
+                  {hud.chrome.notConnected}
                 </text>
               ) : null}
             </g>
@@ -483,13 +524,14 @@ export function ConnectionsMap() {
         >
           {showContainerTip ? (
             <p>
-              Deployable hardware unit —{" "}
+              {containerTipParts(hud.map.containerTip).before}
               <Link href="/containers" className="text-orange hover:underline">
-                see /containers for details
+                /containers
               </Link>
+              {containerTipParts(hud.map.containerTip).after}
             </p>
           ) : (
-            <p>{hovered?.tip}</p>
+            <p>{hovered ? endpointCopy(hovered, hud).tip : null}</p>
           )}
         </div>
       ) : null}

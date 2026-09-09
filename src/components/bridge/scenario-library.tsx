@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { useHud } from "@/lib/i18n/use-hud";
+import { localizeScenario } from "@/lib/i18n/hud-scenarios";
 import {
   SCENARIO_CATEGORIES,
   SCENARIOS,
@@ -17,22 +19,11 @@ type ScenarioLibraryProps = {
   disabled?: boolean;
 };
 
-const SECTION_SHORT: Record<string, string> = {
-  Air: "AIR",
-  Surface: "SURFACE",
-  Underwater: "UNDERWATER",
-  "RF / Electronic Warfare": "RF / EW",
-  "Perimeter & Access": "PERIMETER",
-  "Complex / Crisis": "CRISIS",
-};
-
 function riskChip(level: Exclude<RiskLevel, "NORMAL">) {
   if (level === "ATTENTION") return "text-attn border-attn/60 bg-attn/10";
   if (level === "ELEVATED") return "text-orange border-orange/60 bg-orange/10";
   return "text-crit border-crit/60 bg-crit/10";
 }
-
-const DISABLED_TIP = "Scenario triggering is unavailable in this session.";
 
 export function ScenarioLibrary({
   selectedId,
@@ -41,8 +32,10 @@ export function ScenarioLibrary({
   onReport,
   disabled = false,
 }: ScenarioLibraryProps) {
+  const { locale, hud } = useHud();
   const [open, setOpen] = useState(true);
   const selected = SCENARIOS.find((item) => item.id === selectedId);
+  const selectedView = selected ? localizeScenario(locale, selected) : null;
 
   function expand() {
     setOpen(true);
@@ -59,7 +52,7 @@ export function ScenarioLibrary({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <p className="font-mono text-[11px] tracking-[0.32em] text-[#C47A4A]">
-              TRAINING LIBRARY
+              {hud.chrome.libraryKicker}
             </p>
             <h2
               className={cn(
@@ -67,13 +60,11 @@ export function ScenarioLibrary({
                 open ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl",
               )}
             >
-              SELECT SCENARIO
+              {hud.chrome.libraryTitle}
             </h2>
             {open ? (
               <p className="mt-2 max-w-2xl text-sm text-sand/75">
-                Six visible sections. Twenty-three situations. Pick one to load
-                it across the console — risk, picture, recommended action, and
-                event log all change with it.
+                {hud.chrome.libraryLead}
               </p>
             ) : null}
           </div>
@@ -82,19 +73,17 @@ export function ScenarioLibrary({
               data-testid="scenario-library-status"
               className="border border-sand/25 bg-white/5 px-3 py-1.5 font-mono text-[11px] tracking-wider text-sand"
             >
-              {selected
-                ? selected.name.toUpperCase()
-                : "23 SITUATIONS · 6 SECTIONS"}
+              {selectedView ? selectedView.name.toUpperCase() : hud.chrome.situationsCount}
             </span>
             <button
               type="button"
               data-testid="reset-normal"
               disabled={disabled}
-              title={disabled ? DISABLED_TIP : undefined}
+              title={disabled ? hud.chrome.disabledTip : undefined}
               onClick={onReset}
               className="border border-sand/40 bg-transparent px-3 py-1.5 font-ui text-xs font-medium text-sand hover:border-sand hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Reset to Normal
+              {hud.chrome.resetNormal}
             </button>
             <button
               type="button"
@@ -102,7 +91,7 @@ export function ScenarioLibrary({
               onClick={onReport}
               className="bg-[#3A2418] px-3 py-1.5 font-ui text-xs font-medium text-sand hover:bg-[#4A2E1C]"
             >
-              Generate report
+              {hud.chrome.generateReport}
             </button>
             <button
               type="button"
@@ -112,7 +101,7 @@ export function ScenarioLibrary({
               onClick={() => setOpen((value) => !value)}
               className="border border-[#C47A4A] px-3 py-1.5 font-ui text-xs font-medium text-[#E8B48A] hover:bg-[#3A2418]"
             >
-              {open ? "Hide library" : "Show library"}
+              {open ? hud.chrome.hideLibrary : hud.chrome.showLibrary}
             </button>
           </div>
         </div>
@@ -140,7 +129,7 @@ export function ScenarioLibrary({
                   )}
                 >
                   {String(index + 1).padStart(2, "0")}{" "}
-                  {SECTION_SHORT[category] ?? category.toUpperCase()}
+                  {hud.categoryShort[category]}
                   <span className="ms-2 text-[#C47A4A]">{count}</span>
                 </button>
               );
@@ -162,12 +151,12 @@ export function ScenarioLibrary({
         aria-hidden
         tabIndex={-1}
       >
-        <option value="">Select a scenario…</option>
+        <option value="">{hud.chrome.selectScenario}</option>
         {SCENARIO_CATEGORIES.map((category) => (
-          <optgroup key={category} label={category}>
+          <optgroup key={category} label={hud.categories[category]}>
             {SCENARIOS.filter((item) => item.category === category).map((item) => (
               <option key={item.id} value={item.id}>
-                {item.name}
+                {localizeScenario(locale, item).name}
               </option>
             ))}
           </optgroup>
@@ -193,23 +182,24 @@ export function ScenarioLibrary({
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span className="truncate font-ui text-sm font-bold tracking-wide text-bridge-text">
-                      {category.toUpperCase()}
+                      {hud.categories[category]}
                     </span>
                   </span>
                   <span className="shrink-0 font-mono text-[10px] tracking-wider text-[#8B4A28]">
-                    {items.length} {items.length === 1 ? "CASE" : "CASES"}
+                    {items.length} {items.length === 1 ? hud.chrome.caseOne : hud.chrome.caseMany}
                   </span>
                 </h3>
                 <ul className="flex flex-1 flex-col gap-2 p-3">
                   {items.map((item) => {
                     const active = item.id === selectedId;
+                    const view = localizeScenario(locale, item);
                     return (
                       <li key={item.id}>
                         <button
                           type="button"
                           data-testid={`scenario-${item.id}`}
                           disabled={disabled}
-                          title={disabled ? DISABLED_TIP : undefined}
+                          title={disabled ? hud.chrome.disabledTip : undefined}
                           onClick={() => onSelect(item)}
                           className={cn(
                             "flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left font-ui text-sm",
@@ -219,7 +209,7 @@ export function ScenarioLibrary({
                             disabled && "cursor-not-allowed opacity-45 hover:border-bridge-line hover:text-bridge-text",
                           )}
                         >
-                          <span>{item.name}</span>
+                          <span>{view.name}</span>
                           <span
                             className={cn(
                               "shrink-0 border px-1.5 py-0.5 font-mono text-[9px] tracking-wider",

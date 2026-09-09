@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { useHud } from "@/lib/i18n/use-hud";
 import type { ScenarioOption } from "@/lib/scenarios";
 
 type RankedActionListProps = {
@@ -6,6 +7,7 @@ type RankedActionListProps = {
 };
 
 export function RankedActionList({ options }: RankedActionListProps) {
+  const { hud } = useHud();
   const ranked = [...options].sort(
     (a, b) => Number(b.recommended) - Number(a.recommended),
   );
@@ -26,7 +28,7 @@ export function RankedActionList({ options }: RankedActionListProps) {
           >
             {top ? (
               <p className="mb-1 font-mono text-[10px] font-semibold tracking-[0.2em] text-orange">
-                RECOMMENDED
+                {hud.chrome.recommended}
               </p>
             ) : null}
             <p

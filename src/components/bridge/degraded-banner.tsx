@@ -1,5 +1,6 @@
 import type { EquipmentId } from "@/lib/equipment";
-import { equipmentName } from "@/lib/equipment";
+import { fill } from "@/lib/i18n/hud";
+import { useHud } from "@/lib/i18n/use-hud";
 
 type DegradedBannerProps = {
   faultId: EquipmentId;
@@ -7,7 +8,8 @@ type DegradedBannerProps = {
 };
 
 export function DegradedBanner({ faultId, onRestore }: DegradedBannerProps) {
-  const name = equipmentName(faultId);
+  const { hud } = useHud();
+  const name = hud.equipment[faultId];
   return (
     <div
       data-testid="degraded-banner"
@@ -26,10 +28,10 @@ export function DegradedBanner({ faultId, onRestore }: DegradedBannerProps) {
         </svg>
         <p className="font-ui text-sm text-bridge-text">
           <span className="font-bold tracking-wide text-attn">
-            DEGRADED MODE
+            {hud.chrome.degradedMode}
           </span>
           {" — "}
-          operating without {name}. Other systems continue normally.
+          {fill(hud.chrome.degradedBody, { name })}
         </p>
       </div>
       <button
@@ -38,7 +40,7 @@ export function DegradedBanner({ faultId, onRestore }: DegradedBannerProps) {
         onClick={onRestore}
         className="shrink-0 border border-attn px-3 py-1.5 font-ui text-xs font-medium text-attn hover:bg-attn/20"
       >
-        Restore {name}
+        {fill(hud.chrome.restore, { name })}
       </button>
     </div>
   );

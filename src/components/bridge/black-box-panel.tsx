@@ -4,6 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { useBlackBox, type BlackBoxRecord, type StorageLocation } from "@/lib/black-box";
 import { useAppMode } from "@/lib/mode";
+import { useHud } from "@/lib/i18n/use-hud";
 
 function MicIcon() {
   return (
@@ -49,10 +50,10 @@ function CloudIcon() {
   );
 }
 
-function storageLabel(location: StorageLocation) {
-  if (location === "local") return "Local";
-  if (location === "cloud") return "Cloud";
-  return "Local + Cloud";
+function storageLabel(location: StorageLocation, hud: ReturnType<typeof useHud>["hud"]) {
+  if (location === "local") return hud.blackbox.local;
+  if (location === "cloud") return hud.blackbox.cloud;
+  return hud.blackbox.both;
 }
 
 function formatStamp(iso: string) {
@@ -74,6 +75,7 @@ function downloadRecord(record: BlackBoxRecord) {
 }
 
 export function BlackBoxPanel() {
+  const { hud } = useHud();
   const { records } = useBlackBox();
   const { live } = useAppMode();
   const visible = live
@@ -91,7 +93,7 @@ export function BlackBoxPanel() {
   function shareRecord(record: BlackBoxRecord) {
     // Illustrative only — no sharing backend. Copies a lookalike review link.
     void copyText(`https://starwall.agron.example/review/${record.id}`).then(() => {
-      flash("Link copied");
+      flash(hud.blackbox.linkCopied);
     });
   }
 
@@ -108,19 +110,15 @@ export function BlackBoxPanel() {
         <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-orange" />
 
         <header className="mb-3">
-          <h2 className="font-ui text-sm font-semibold tracking-wide">BLACK BOX</h2>
+          <h2 className="font-ui text-sm font-semibold tracking-wide">{hud.blackbox.title}</h2>
           <p className="mt-2 max-w-3xl text-xs leading-relaxed text-bridge-dim">
-            All sessions are retained for review — StarWall records locally and
-            syncs to cloud storage for redundancy, so no record depends on a
-            single point of failure.
+            {hud.blackbox.lead}
           </p>
         </header>
 
         {visible.length === 0 ? (
           <p className="font-mono text-xs text-bridge-dim">
-            {live
-              ? "No records yet."
-              : "No records yet this session — run a scenario or talk to Pilot."}
+            {live ? hud.blackbox.emptyLive : hud.blackbox.emptyDemo}
           </p>
         ) : (
           <ul className="space-y-2">
@@ -160,7 +158,7 @@ export function BlackBoxPanel() {
                         record.storageLocation === "both") && <DriveIcon />}
                       {(record.storageLocation === "cloud" ||
                         record.storageLocation === "both") && <CloudIcon />}
-                      {storageLabel(record.storageLocation)}
+                      {storageLabel(record.storageLocation, hud)}
                     </span>
                   </button>
 
@@ -178,12 +176,12 @@ export function BlackBoxPanel() {
                           data-testid="black-box-copy"
                           onClick={() => {
                             void copyText(record.summary).then(() =>
-                              flash("Copied"),
+                              flash(hud.blackbox.copied),
                             );
                           }}
                           className="border border-bridge-line px-2.5 py-1 font-ui text-xs hover:border-orange"
                         >
-                          Copy
+                          {hud.blackbox.copy}
                         </button>
                         <button
                           type="button"
@@ -191,18 +189,18 @@ export function BlackBoxPanel() {
                           onClick={() => setPrintRecord(record)}
                           className="border border-bridge-line px-2.5 py-1 font-ui text-xs hover:border-orange"
                         >
-                          Print
+                          {hud.blackbox.print}
                         </button>
                         <button
                           type="button"
                           data-testid="black-box-download"
                           onClick={() => {
                             downloadRecord(record);
-                            flash("Download started");
+                            flash(hud.blackbox.downloadStarted);
                           }}
                           className="border border-bridge-line px-2.5 py-1 font-ui text-xs hover:border-orange"
                         >
-                          Download
+                          {hud.blackbox.download}
                         </button>
                         <button
                           type="button"
@@ -210,7 +208,7 @@ export function BlackBoxPanel() {
                           onClick={() => shareRecord(record)}
                           className="border border-bridge-line px-2.5 py-1 font-ui text-xs hover:border-orange"
                         >
-                          Share
+                          {hud.blackbox.share}
                         </button>
                         <button
                           type="button"
@@ -218,8 +216,8 @@ export function BlackBoxPanel() {
                           disabled={!record.pdfEnabled}
                           title={
                             record.pdfEnabled
-                              ? "Print / Save as PDF"
-                              : "Not available for this file type"
+                              ? hud.blackbox.pdfOk
+                              : hud.blackbox.pdfNo
                           }
                           onClick={() => {
                             if (record.pdfEnabled) setPrintRecord(record);
@@ -231,7 +229,7 @@ export function BlackBoxPanel() {
                               : "cursor-not-allowed border-bridge-line/40 text-bridge-dim",
                           )}
                         >
-                          PDF
+                          {hud.blackbox.pdf}
                         </button>
                       </div>
                     </div>
@@ -264,27 +262,27 @@ export function BlackBoxPanel() {
               onClick={() => window.print()}
               className="bg-orange px-3 py-1.5 font-ui text-sm font-medium text-white"
             >
-              Print / Save as PDF
+              {hud.blackbox.printSave}
             </button>
             <button
               type="button"
               onClick={() => setPrintRecord(null)}
               className="border border-navyText/30 px-3 py-1.5 font-ui text-sm"
             >
-              Close
+              {hud.blackbox.close}
             </button>
           </div>
           <article className="session-report-page mx-auto max-w-3xl bg-white px-8 py-10">
             <p className="font-mono text-xs tracking-wider text-[#6B7280]">
-              STARWALL BLACK BOX
+              {hud.blackbox.heading}
             </p>
             <h1 className="mt-2 font-ui text-2xl font-bold">
               {printRecord.type === "conversation"
-                ? "Conversation transcript"
-                : "Scenario record"}
+                ? hud.blackbox.conversation
+                : hud.blackbox.scenario}
             </h1>
             <p className="mt-2 font-mono text-xs text-[#6B7280]">
-              {formatStamp(printRecord.timestamp)} · {storageLabel(printRecord.storageLocation)}
+              {formatStamp(printRecord.timestamp)} · {storageLabel(printRecord.storageLocation, hud)}
             </p>
             <p className="mt-4 text-sm font-semibold">{printRecord.summary}</p>
             <pre className="mt-4 whitespace-pre-wrap font-mono text-sm leading-relaxed">

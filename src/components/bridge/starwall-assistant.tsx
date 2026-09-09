@@ -11,7 +11,7 @@ import { DEMO_CLEARED_EVENT } from "@/lib/demo-storage";
 import { listConversations, putConversation, type StoredConversation } from "@/lib/local-db";
 import { isAuthRoute, useAuthSession } from "@/lib/auth-session";
 import { canUseHelm } from "@/lib/rbac";
-import { usePreferences } from "@/lib/i18n/context";
+import { useHud } from "@/lib/i18n/use-hud";
 import { localeMeta, locales, type Locale } from "@/lib/i18n/locales";
 import { useAppMode } from "@/lib/mode";
 import { usePathname } from "next/navigation";
@@ -62,7 +62,7 @@ export function Helm() {
   const { session: auth } = useAuthSession();
   const helmAllowed = !auth || canUseHelm(auth.role);
   const { live } = useAppMode();
-  const { t } = usePreferences();
+  const { t, locale, hud } = useHud();
   const { recordConversation } = useBlackBox();
   const surface = t.surface;
   const [open, setOpen] = useState(false);
@@ -70,7 +70,7 @@ export function Helm() {
   const [mic, setMic] = useState<MicState>("idle");
   const [voiceOn, setVoiceOn] = useState(true);
   const [levels, setLevels] = useState<number[]>(() => Array(BAR_COUNT).fill(0));
-  const [recogLang, setRecogLang] = useState<Locale>("en");
+  const [recogLang, setRecogLang] = useState<Locale>(locale);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typed, setTyped] = useState("");
@@ -96,6 +96,10 @@ export function Helm() {
     window.addEventListener(HELM_OPEN_EVENT, onOpen);
     return () => window.removeEventListener(HELM_OPEN_EVENT, onOpen);
   }, []);
+
+  useEffect(() => {
+    setRecogLang(locale);
+  }, [locale]);
 
   useEffect(() => {
     publishHelmState(open);
@@ -239,7 +243,7 @@ export function Helm() {
 
     const Engine = SpeechEngine();
     if (!Engine) {
-      setMicError("This browser has no Speech Recognition. Type instead.");
+      setMicError(hud.helm.noSpeech);
       return;
     }
 
@@ -264,7 +268,7 @@ export function Helm() {
       };
       recognition.onerror = () => {
         stopListening();
-        setMicError("Microphone recognition stopped. You can type instead.");
+        setMicError(hud.helm.micStopped);
       };
       recognition.onend = () => {
         stopMeter();
@@ -272,7 +276,7 @@ export function Helm() {
       };
       recognition.start();
     } catch {
-      setMicError("Microphone permission was denied. Type instead.");
+      setMicError(hud.helm.micDenied);
       stopListening(true);
       setMic("idle");
     }
@@ -351,7 +355,7 @@ export function Helm() {
         error?: string;
       };
       if (!response.ok || !data.reply) {
-        const errorText = data.error ?? "Pilot could not reply.";
+        const errorText = data.error ?? hud.helm.noReply;
         const errorId = messageId();
         setMessages((current) => [
           ...current,
@@ -393,13 +397,13 @@ export function Helm() {
       const errorId = messageId();
       setMessages((current) => [
         ...current,
-        { id: errorId, role: "error", text: "Network error — try again." },
+          { id: errorId, role: "error", text: hud.helm.network },
       ]);
       persistChat({
         id: errorId,
         timestamp: new Date().toISOString(),
         role: "error",
-        content: "Network error — try again.",
+        content: hud.helm.network,
         langCode: recogLang,
       });
       recordConversation({
@@ -456,6 +460,8 @@ export function Helm() {
                   data-testid="helm-lang-toggle"
                   aria-expanded={langsOpen}
                   aria-controls={menuId}
+                  aria-label={hud.helm.language}
+                  title={hud.helm.language}
                   onClick={() => setLangsOpen((value) => !value)}
                   className="inline-flex items-center gap-1.5 border border-sand/20 px-2 py-1 font-mono text-[10px] text-sand hover:border-orange"
                 >
@@ -549,7 +555,7 @@ export function Helm() {
                   mic === "idle" && "border-sand/25 text-sand/70 hover:text-sand",
                 )}
                 aria-label={
-                  mic === "listening" ? "Stop listening" : "Start listening"
+                  mic === "listening" ? hud.helm.listenStop : hud.helm.listenStart
                 }
               >
                 {mic === "processing" ? (

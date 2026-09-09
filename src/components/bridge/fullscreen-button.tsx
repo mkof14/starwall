@@ -2,13 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
-import {
-  enterFullscreen,
-  exitFullscreen,
-  fullscreenTarget,
-  isFullscreen,
-  onFullscreenChange,
-} from "@/lib/fullscreen";
+import { useHud } from "@/lib/i18n/use-hud";
+import { enterFullscreen, exitFullscreen, fullscreenTarget, isFullscreen, onFullscreenChange } from "@/lib/fullscreen";
 
 function ExpandIcon() {
   return (
@@ -39,6 +34,7 @@ function CollapseIcon() {
 }
 
 export function FullscreenButton() {
+  const { hud } = useHud();
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -67,8 +63,8 @@ export function FullscreenButton() {
       data-testid="fullscreen-toggle"
       onClick={toggle}
       aria-pressed={active}
-      aria-label={active ? "Exit fullscreen" : "Enter fullscreen"}
-      title={active ? "Exit fullscreen" : "Enter fullscreen"}
+      aria-label={active ? hud.chrome.fullscreenExit : hud.chrome.fullscreenEnter}
+      title={active ? hud.chrome.fullscreenExit : hud.chrome.fullscreenEnter}
       className={cn(
         "inline-flex h-9 w-9 items-center justify-center border",
         active

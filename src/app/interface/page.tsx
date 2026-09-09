@@ -12,7 +12,7 @@ import { useAppMode } from "@/lib/mode";
 function InterfaceBody() {
   const { live } = useAppMode();
   return (
-    <div id="bridge-root" className="min-h-screen bg-bridge-bg ps-12" dir="ltr" lang="en">
+    <div id="bridge-root" className="min-h-screen bg-bridge-bg ps-12" dir="ltr">
       <JumpNav />
       {live ? <LiveModeBanner /> : null}
       {live ? null : <ScenarioWalkthrough />}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useHud } from "@/lib/i18n/use-hud";
 
 type ExpandablePictureProps = {
   children: ReactNode;
@@ -9,6 +10,7 @@ type ExpandablePictureProps = {
 
 export function ExpandablePicture({ children }: ExpandablePictureProps) {
   const [open, setOpen] = useState(false);
+  const { hud } = useHud();
 
   useEffect(() => {
     if (!open) return;
@@ -33,11 +35,11 @@ export function ExpandablePicture({ children }: ExpandablePictureProps) {
           }
         }}
         className="group relative cursor-zoom-in"
-        aria-label="Open picture full screen"
+        aria-label={hud.chrome.openPicture}
       >
         {children}
         <span className="pointer-events-none absolute bottom-2 end-2 border border-white/20 bg-black/55 px-2 py-1 font-mono text-[10px] tracking-wider text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
-          CLICK TO ENLARGE
+          {hud.chrome.openPicture}
         </span>
       </div>
       {open && typeof document !== "undefined"
@@ -53,7 +55,7 @@ export function ExpandablePicture({ children }: ExpandablePictureProps) {
               >
                 <div className="flex items-center justify-between border-b border-stroke px-4 py-2">
                   <p className="font-mono text-[10px] tracking-[0.22em] text-orange">
-                    FULL PICTURE
+                    {hud.chrome.fullPicture}
                   </p>
                   <button
                     type="button"
@@ -61,7 +63,7 @@ export function ExpandablePicture({ children }: ExpandablePictureProps) {
                     onClick={() => setOpen(false)}
                     className="border border-stroke px-2 py-1 font-mono text-[10px] text-ink hover:border-orange hover:text-orange"
                   >
-                    ESC · CLOSE
+                    {hud.chrome.closePicture}
                   </button>
                 </div>
                 <div className="p-2 md:p-4">{children}</div>

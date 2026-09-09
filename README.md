@@ -121,9 +121,9 @@ Generate `NEXTAUTH_SECRET` with `openssl rand -base64 32`. After a successful si
 
 `/backend` and `/tasks` still require a signed-in session.
 
-Translated now: marketing chrome (nav, footer), all public pages, Pilot chrome, the Connections Map legend, the LIVE banner, `/backend`, and `/tasks`. Arabic and Hebrew also load Noto Sans for body and headings.
+Translated now: marketing chrome (nav, footer), all public pages, the Bridge Interface HUD (jump rail, library, crisis protocol, Pilot chrome, connections map labels), the LIVE banner, `/backend`, and `/tasks`. The watch picture itself stays `dir="ltr"` so Arabic and Hebrew do not mirror radar and instruments. Arabic and Hebrew also load Noto Sans for body and headings.
 
-Still English: sign-in / sign-up / forgot-password forms (credentials and role names stay as printed), the Bridge HUD itself (scenario library, Crisis Mode, instrument skins — forced `dir="ltr"` so RTL languages do not break the watch picture), product names (StarWall, Bridge, Support Center, Pilot, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Pilot replies (those follow the spoken/typed language when an API key is set).
+Still English: sign-in / sign-up / forgot-password forms (credentials and role names stay as printed), instrument skins on the radar/sonar/spectrum drawings (HF SONAR, CORE, range rings), product names (StarWall, Bridge, Support Center, Pilot, tier codes LIGHT / ADVANCED / INTELLIGENCE / CUSTOM), and Pilot replies (those follow the spoken/typed language when an API key is set).
 
 ## Deploy on Vercel
 

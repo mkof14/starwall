@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppMode, type AppMode } from "@/lib/mode";
+import { useHud } from "@/lib/i18n/use-hud";
 import { cn } from "@/lib/cn";
 
 export function ModeToggle({
@@ -9,12 +10,13 @@ export function ModeToggle({
   tone?: "on-light" | "on-dark";
 }) {
   const { mode, setMode } = useAppMode();
+  const { hud } = useHud();
   const onDark = tone === "on-dark";
 
   return (
     <div
       role="group"
-      aria-label="Deployment mode"
+      aria-label={hud.mode.group}
       data-testid="mode-toggle"
       className={cn(
         "inline-flex shrink-0 border font-mono text-[10px] font-semibold tracking-wider",
@@ -40,7 +42,7 @@ export function ModeToggle({
                   : "text-muted hover:text-ink"),
             )}
           >
-            {value.toUpperCase()}
+            {value === "demo" ? hud.mode.demo : hud.mode.live}
           </button>
         );
       })}

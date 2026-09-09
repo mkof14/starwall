@@ -1,7 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import type { RiskLevel, SessionEvent } from "@/lib/scenarios";
+import { fill } from "@/lib/i18n/hud";
+import { localizeScenario } from "@/lib/i18n/hud-scenarios";
+import { useHud } from "@/lib/i18n/use-hud";
+import { SCENARIOS, type RiskLevel, type SessionEvent } from "@/lib/scenarios";
 
 type SessionReportProps = {
   events: SessionEvent[];
@@ -22,6 +25,7 @@ function formatGeneratedAt(date: Date) {
 }
 
 export function SessionReport({ events, generatedAt, onBack }: SessionReportProps) {
+  const { locale, hud } = useHud();
   const counts = {
     NORMAL: events.filter((item) => item.riskLevel === "NORMAL").length,
     ATTENTION: events.filter((item) => item.riskLevel === "ATTENTION").length,
@@ -42,7 +46,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
           onClick={() => window.print()}
           className="bg-orange px-3 py-1.5 font-ui text-sm font-medium text-white hover:bg-orange/90"
         >
-          Print / Save as PDF
+          {hud.report.print}
         </button>
         <button
           type="button"
@@ -50,20 +54,20 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
           onClick={onBack}
           className="border border-navyText/30 px-3 py-1.5 font-ui text-sm text-navyText hover:border-orange hover:text-orange"
         >
-          Back to console
+          {hud.report.back}
         </button>
       </div>
 
       <article className="session-report-page mx-auto max-w-4xl bg-white px-6 py-10 shadow-sm md:px-12 md:py-14">
         <header className="border-b border-[#d5d0c8] pb-6">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-orange">
-            AGRON Maritime
+            {hud.report.kicker}
           </p>
           <h1 className="mt-2 font-heading text-3xl font-bold text-navyText sm:text-4xl">
-            StarWall Session Report
+            {hud.report.title}
           </h1>
           <p className="mt-3 text-sm text-[#6B7280]">
-            Vessel <span className="font-medium text-navyText">M/Y AURELIA</span>
+            {hud.report.vessel} <span className="font-medium text-navyText">M/Y AURELIA</span>
             <span className="mx-2 text-[#d5d0c8]">·</span>
             {formatGeneratedAt(generatedAt)}
           </p>
@@ -71,36 +75,46 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
 
         {events.length === 0 ? (
           <p className="mt-8 text-base text-[#6B7280]">
-            No events yet this session — pick a case from the SELECT SCENARIO
-            block, then generate a report.
+            {hud.report.empty}
           </p>
         ) : (
           <>
             <p className="mt-6 text-base text-navyText">
-              {events.length} event{events.length === 1 ? "" : "s"} reviewed during this
-              session — {counts.NORMAL} Normal, {counts.ATTENTION} Attention,{" "}
-              {counts.ELEVATED} Elevated, {counts.CRITICAL} Critical
+              {fill(hud.report.summary, {
+                count: String(events.length),
+                normal: String(counts.NORMAL),
+                attention: String(counts.ATTENTION),
+                elevated: String(counts.ELEVATED),
+                critical: String(counts.CRITICAL),
+              })}
             </p>
 
             <div className="mt-8 overflow-x-auto">
               <table className="w-full min-w-[40rem] border-collapse text-left font-ui text-sm">
                 <thead>
                   <tr className="border-b border-[#d5d0c8] text-xs uppercase tracking-wider text-[#6B7280]">
-                    <th className="py-2 pr-3 font-medium">Time</th>
-                    <th className="py-2 pr-3 font-medium">Scenario</th>
-                    <th className="py-2 pr-3 font-medium">Category</th>
-                    <th className="py-2 pr-3 font-medium">Risk</th>
-                    <th className="py-2 font-medium">Recommendation</th>
+                    <th className="py-2 pr-3 font-medium">{hud.report.time}</th>
+                    <th className="py-2 pr-3 font-medium">{hud.report.scenario}</th>
+                    <th className="py-2 pr-3 font-medium">{hud.report.category}</th>
+                    <th className="py-2 pr-3 font-medium">{hud.report.risk}</th>
+                    <th className="py-2 font-medium">{hud.report.recommendation}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map((event, index) => (
+                  {events.map((event, index) => {
+                    const catalog = event.scenarioId
+                      ? SCENARIOS.find((item) => item.id === event.scenarioId)
+                      : undefined;
+                    const view = catalog
+                      ? localizeScenario(locale, catalog)
+                      : undefined;
+                    return (
                     <tr key={`${event.timestamp}-${event.name}-${index}`} className="border-b border-[#ece8e1] align-top">
                       <td className="whitespace-nowrap py-3 pr-3 font-mono text-xs text-[#6B7280]">
                         {event.timestamp}
                       </td>
-                      <td className="py-3 pr-3 font-medium text-navyText">{event.name}</td>
-                      <td className="py-3 pr-3 text-[#6B7280]">{event.category}</td>
+                      <td className="py-3 pr-3 font-medium text-navyText">{view?.name ?? event.name}</td>
+                      <td className="py-3 pr-3 text-[#6B7280]">{view?.category ?? event.category}</td>
                       <td
                         className={cn(
                           "whitespace-nowrap py-3 pr-3 font-mono text-xs font-semibold",
@@ -109,9 +123,10 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
                       >
                         {event.riskLevel}
                       </td>
-                      <td className="py-3 text-navyText">{event.actionText}</td>
+                      <td className="py-3 text-navyText">{view?.actionText ?? event.actionText}</td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -119,8 +134,7 @@ export function SessionReport({ events, generatedAt, onBack }: SessionReportProp
         )}
 
         <p className="mt-10 border-t border-[#d5d0c8] pt-6 text-xs leading-relaxed text-[#6B7280]">
-          Report generated by StarWall by AGRON — illustrative session data, not a live
-          vessel.
+          {hud.report.footer}
         </p>
       </article>
     </div>
